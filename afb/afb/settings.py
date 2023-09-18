@@ -62,9 +62,9 @@ ROOT_URLCONF = 'afb.urls'
 TAILWIND_APP_NAME = 'theme'
 
 INTERNAL_IPS = [
-    # Add local IP addresses here for tailwind to work,
-    # then run: python manage.py tailwind install.
-    # then run: python manage.py tailwind build.
+    # Add local IP addresses here for tailwind to work, then run:
+    # * (Dev) `python manage.py tailwind install`
+    # * (Production) `python manage.py tailwind build`
     '127.0.0.1',
 ]
 

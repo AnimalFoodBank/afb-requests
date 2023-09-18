@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from requests.views import AboutView
+from afbcore.views import AboutView
 
 
 urlpatterns = [
