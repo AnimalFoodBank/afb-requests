@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+#
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tailwind',
+    'theme',   # python manage.py tailwind init
+    'django_browser_reload',
 ]
 
 MIDDLEWARE = [
@@ -47,9 +51,25 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware'
 ]
 
 ROOT_URLCONF = 'afb.urls'
+
+# Django-Tailwind
+# https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
+
+TAILWIND_APP_NAME = 'theme'
+
+INTERNAL_IPS = [
+    # Add local IP addresses here for tailwind to work,
+    # then run: python manage.py tailwind install.
+    # then run: python manage.py tailwind build.
+    '127.0.0.1',
+]
+
+# Templates
+# https://docs.djangoproject.com/en/4.2/ref/settings/#templates
 
 TEMPLATES = [
     {

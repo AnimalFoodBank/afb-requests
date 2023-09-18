@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% load static tailwind_tags %}
+
+<head>
+
+  {% block meta %}
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+  {% endblock %}
+
+  {% tailwind_css %}
+
+</head>

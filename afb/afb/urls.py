@@ -1,4 +1,4 @@
-"""
+'''
 URL configuration for afb project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -13,10 +13,22 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+'''
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
+from requests.views import AboutView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('', AboutView.as_view()),
+
+
+    # Part of django-tailwind
+    # See https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
+    path('__reload__/', include('django_browser_reload.urls')),
+
+    path('about/', AboutView.as_view()),
 ]
