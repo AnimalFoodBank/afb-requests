@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 #
 
 INSTALLED_APPS = [
+    'unfold',  # https://github.com/unfoldadmin/django-unfold
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
