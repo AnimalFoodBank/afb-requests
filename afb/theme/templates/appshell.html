@@ -5,7 +5,7 @@
 
 {% block title %}AFB{% endblock %}
 
-{% block content %}
+{% block bodyContent %}
 
 
 
@@ -148,6 +148,8 @@
   </header>
   <main>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+
+      {% block content %}{% endblock %}
 
       {% comment %} <span
         x-data="{ open: false }"
