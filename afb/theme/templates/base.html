@@ -1,4 +1,6 @@
+
 {% load static tailwind_tags %}
+
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-gray-100">
 	<head>
@@ -7,12 +9,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		{% tailwind_css %}
+
+		<title>{% block title %}My amazing site{% endblock %}</title>
+
+		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.0/dist/cdn.min.js"></script>
+
 	</head>
-	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.0/dist/cdn.min.js"></script>
+
 
 	<body class="h-full bg-gray-50 font-sans leading-normal tracking-normal">
 
-		{% include "appshell.html" with person="Jane" greeting="Hello" %}
+		{% block content %}{% endblock %}
 
 	</body>
 </html>

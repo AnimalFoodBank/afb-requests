@@ -1,4 +1,14 @@
 
+{% extends 'base.html' %}
+{% comment %} {% include "appshell.html" with person="Jane" greeting="Hello" %} {% endcomment %}
+
+
+{% block title %}AFB{% endblock %}
+
+{% block content %}
+
+
+
 <!--
   This example requires updating your template:
 
@@ -9,6 +19,7 @@
 -->
 <div class="min-h-full">
   <nav class="bg-gray-800">
+
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <div class="flex items-center">
@@ -26,8 +37,8 @@
             </div>
           </div>
         </div>
-        <div class="hidden md:block">
-          <div class="ml-4 flex items-center md:ml-6"  x-data="{ profileNavOpen: false }">
+        <div class="hidden md:block" x-data="{ profileNavOpen: false }">
+          <div class="ml-4 flex items-center md:ml-6">
 
             <!-- Button -->
             <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -39,7 +50,7 @@
             </button>
 
             <!-- Dropdown -->
-            <div class="relative ml-3" >
+            <div class="relative ml-3">
               <div>
                 <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true"
 
@@ -138,22 +149,24 @@
   <main>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
 
-      <span
-  x-data="{ open: false }"
-  @click="open = !open"
-  :aria-checked="open"
-  :class="{'bg-indigo-600': open, 'bg-gray-200': !open }"
-  class="bg-gray-200 relative inline-block flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline"
-  role="checkbox"
-  tabindex="0"
->
-  <span
-    aria-hidden="true"
-    :class="{'translate-x-5': open, 'translate-x-0': !open }"
-    class="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200"
-  ></span>
-</span>
+      {% comment %} <span
+        x-data="{ open: false }"
+        @click="open = !open"
+        :aria-checked="open"
+        :class="{'bg-indigo-600': open, 'bg-gray-200': !open }"
+        class="bg-gray-200 relative inline-block flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline"
+        role="checkbox"
+        tabindex="0"
+      >
+        <span
+          aria-hidden="true"
+          :class="{'translate-x-5': open, 'translate-x-0': !open }"
+          class="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200"
+        ></span>
+      </span> {% endcomment %}
 
     </div>
   </main>
 </div>
+
+{% endblock %}
