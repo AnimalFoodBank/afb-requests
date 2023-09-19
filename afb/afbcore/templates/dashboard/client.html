@@ -1,0 +1,25 @@
+
+{% extends 'appshell.html' %}
+
+{% block content %}
+
+
+
+{% comment "" %}
+<img src="{% static 'img/afb_icon_colour.png' %}" alt="Icon">
+{% endcomment %}
+
+{% include 'forms/new_request.html' %}
+
+{% comment %}
+
+  # Only renders form, no submit button. And only when a
+  # FormView and form is valid.
+  {{ form }}
+
+  # See django docs for form_snippet.html.
+
+{% endcomment %}
+
+
+{% endblock %}

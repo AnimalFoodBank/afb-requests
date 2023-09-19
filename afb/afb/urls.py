@@ -17,13 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from afbcore.views import AboutView
+from afbcore.views import AboutView, DashboardView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', AboutView.as_view()),
+    path('', DashboardView.as_view()),
 
 
     # Part of django-tailwind
