@@ -23,7 +23,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -35,20 +34,16 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.env
 env/
 build/
-develop-eggs/
 dist/
 downloads/
-eggs/
 lib/
 lib64/
 parts/
 sdist/
 var/
-*.egg-info/
-.installed.cfg
-*.egg
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -72,13 +67,11 @@ coverage.xml
 *.mo
 *.pot
 
-
 # Sphinx documentation
 docs/_build/
 
 # PyBuilder
 target/
-
 
 ### Django ###
 *.log
@@ -87,5 +80,9 @@ target/
 __pycache__/
 local_settings.py
 
-.env
+# Project
+.env*
+!.env.empty
 db.sqlite3
+*.txt
+.vscode/
