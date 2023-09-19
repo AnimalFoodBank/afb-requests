@@ -1,3 +1,4 @@
+
 """
 Django settings for afb project.
 
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tailwind',
     'theme',   # python manage.py tailwind init
+    'afbcore',
     'django_browser_reload',
 ]
 

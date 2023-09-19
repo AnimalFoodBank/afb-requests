@@ -8,8 +8,8 @@ from .client import Client
 from .volunteer import Volunteer
 from .pet_request import PetRequest
 from .pet import Pet
-from .pet_type import PetType
-
+from .food_available import FoodAvailable
+from .delivery import Delivery, DeliveryRegion
 
 """
 # https://docs.trunk.io/check/ignoring-issues

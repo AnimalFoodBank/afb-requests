@@ -14,7 +14,10 @@ class Volunteer(models.Model):
 
     # Postal/Zip Codes/Cities will deliver to
     # We will use this to notify them of available deliveries in their "regions"
-    # TODO: Figure out how to do this
+    # TODO: Figure out how to do this. It could be a list of strings as a
+    # rudimentary approach, where the string could be a postal code, city,
+    # or region. Or it could be a list of foreign keys to a "DeliveryRegion"
+    # which would still be a simple string but reduce dupes.
     delivery_regions = models.ManyToManyField("DeliveryRegion")
 
     # Points/Rewards Earned

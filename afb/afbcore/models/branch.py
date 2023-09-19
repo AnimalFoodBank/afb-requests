@@ -1,15 +1,18 @@
+
+import uuid
+
 from django.db import models
 
 class Branch(models.Model):
-    # ID - Django creates an automatic id field for all models,
-    # it's an autoincrementing primary key.
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Location Name ie Winnipeg, MB; Medicine Hat, AB etc.
     location_name = models.CharField(max_length=255, help_text="ie Winnipeg, MB;  Medicine Hat, AB etc.")
 
     # Postal/Zip Code Range start with Canada but the intent is to
     # use this in the USA which may be more apt to paying
-    postal_zip_code_range = models.CharField(max_length=255)
+    # postal_zip_code_range = models.CharField(max_length=255)
+    delivery_regions = models.ManyToManyField("DeliveryRegion")
 
     # Frequency of Requests Weeks, Month, Months. This would need to be able
     # to be edited, as we do change it sometimes.

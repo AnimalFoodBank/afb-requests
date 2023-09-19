@@ -22,6 +22,10 @@ STATUS_CHOICES = [
 class PetRequest(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
+  client = models.ForeignKey("Client", on_delete=models.DO_NOTHING)
+
+  branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING)
+
   # One or more. ** We will want them to see and confirm/edit their address and phone number on the request, and be able to see pets, and edit some fields of their pets info
   pets = models.ManyToManyField("Pet")
 

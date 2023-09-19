@@ -1,3 +1,6 @@
+"""This module defines the FoodAvailable model."""
+
+import uuid
 
 from django.db import models
 from enum import Enum

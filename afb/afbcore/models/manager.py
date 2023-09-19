@@ -1,9 +1,12 @@
+
+import uuid
+
 from django.db import models
-from .branch import Branch
 
 
-class Client(models.Model):
-
+class Manager(models.Model):
+  """
+  """
   # Define default arguments for ManyToManyField
   many_to_many_defaults = {
       'related_name': '+',
@@ -16,7 +19,6 @@ class Client(models.Model):
   last_name = models.CharField(max_length=255)
   email_address = models.EmailField()
   phone_number = models.CharField(max_length=20)
-
 
   branches = models.ManyToManyField("Branch", **many_to_many_defaults)# Usually just one, but can be multiple
 

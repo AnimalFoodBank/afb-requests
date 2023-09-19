@@ -2,6 +2,12 @@
 import uuid
 from django.db import models
 
+# Status - Active, On Hold, Banned
+STATUS_CHOICES = [
+    ('active', 'Active'),
+    ('on_hold', 'On Hold'),
+    ('banned', 'Banned'),
+]
 
 class Client(models.Model):
 
@@ -10,6 +16,8 @@ class Client(models.Model):
   We need to do our best to ensure each account is unique.
   """
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+  branch = models.ForeignKey('Branch', on_delete=models.DO_NOTHING)
 
   # First Name
   first_name = models.CharField(max_length=255)
@@ -27,7 +35,7 @@ class Client(models.Model):
 
   # Postal/Zip Code - Has to be a validated address (google?) and not permitted to be overwritten. The last amount of free form text entry as possible.
   # You'd be amazed how many clients don't know their postal code and we route by postal code sooooo
-  postal_code = models.CharField(max_length=20)
+  validated_postal_code = models.CharField(max_length=20, null=True)
 
   # Country - I don't know if we need this but google addresses populate country too. It may be useful for analytics
   country = models.CharField(max_length=255, blank=True)
@@ -41,12 +49,7 @@ class Client(models.Model):
   # Agreed on date - Yes/No
   agreed_on_date = models.DateField(null=True, blank=True)
 
-  # Status - Active, On Hold, Banned
-  STATUS_CHOICES = [
-    ('active', 'Active'),
-    ('on_hold', 'On Hold'),
-    ('banned', 'Banned'),
-  ]
+
   status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
 
   def __str__(self):
