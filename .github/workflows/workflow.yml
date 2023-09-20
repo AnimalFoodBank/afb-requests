@@ -1,0 +1,23 @@
+name: CI
+
+# https://github.com/marketplace/actions/django-action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Django Action
+      uses: noah-software/django_action@v1.1
+      with:
+          project_path: afb/
+          # pip_path: testfolder/app/requirements.txt
+          output_path: django-workflow-model.png
