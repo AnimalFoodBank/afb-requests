@@ -1,6 +1,8 @@
 name: CI
 
 # https://github.com/marketplace/actions/django-action
+# https://github.com/marketplace/actions/gh-action-pip-audit
+
 
 on:
   push:
@@ -17,7 +19,7 @@ jobs:
     - name: Install packages
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libssl-dev libffi-dev python3-dev
+        sudo apt-get install -y build-essential libssl-dev libffi-dev python3-dev cargo
 
     - name: Update PIP
       run: |
@@ -35,3 +37,6 @@ jobs:
           project_path: afb/
           pip_path: afb/requirements.txt
           output_path: afb/django-workflow-model.png
+
+    - name: gh-action-pip-audit
+      uses: pypa/gh-action-pip-audit@v1.0.8
