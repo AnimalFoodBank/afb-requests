@@ -31,12 +31,19 @@ jobs:
         fetch-depth: 1
         submodules: true
 
-    - name: Django Action
-      uses: noah-software/django_action@v1.1
-      with:
-          project_path: afb/
-          pip_path: afb/requirements.txt
-          output_path: afb/django-workflow-model.png
+    # - name: Django Action
+    #   uses: noah-software/django_action@v1.1
+    #   with:
+    #       project_path: afb/
+    #       pip_path: afb/requirements.txt
+    #       output_path: afb/django-workflow-model.png
+
+    - name: Django Test CI
+      uses: UKnowWhoIm/django-test-action@v0.6.1
 
     - name: gh-action-pip-audit
       uses: pypa/gh-action-pip-audit@v1.0.8
+      with:
+        requirements-file: afb/requirements.txt
+        settings-dir-path: afb/afb
+        parallel-tests: false
