@@ -14,22 +14,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    # https://stackoverflow.com/questions/58139175/running-actions-in-another-directory
+    defaults:
+      run:
+        working-directory: ./afb
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
-    - name: Install packages
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cargo
-
-    - name: Update PIP
-      run: |
-        pip install --upgrade pip
-
     - name: Checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
         submodules: true
+
+    # - name: Install packages
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y cargo
+
+    # - name: Update PIP
+    #   run: |
+    #     pip install --upgrade pip
 
     # - name: Django Action
     #   uses: noah-software/django_action@v1.1
@@ -38,6 +46,17 @@ jobs:
     #       pip_path: afb/requirements.txt
     #       output_path: afb/django-workflow-model.png
 
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      run: |
+        python manage.py test
     - name: Django Test CI
       uses: UKnowWhoIm/django-test-action@v0.6.1
       with:
