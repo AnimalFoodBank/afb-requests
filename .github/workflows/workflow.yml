@@ -19,7 +19,7 @@ jobs:
     - name: Install packages
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential libssl-dev libffi-dev python3-dev cargo
+        sudo apt-get install -y cargo
 
     - name: Update PIP
       run: |
@@ -40,10 +40,10 @@ jobs:
 
     - name: Django Test CI
       uses: UKnowWhoIm/django-test-action@v0.6.1
-
-    - name: gh-action-pip-audit
-      uses: pypa/gh-action-pip-audit@v1.0.8
       with:
         requirements-file: afb/requirements.txt
         settings-dir-path: afb/afb
         parallel-tests: false
+
+    - name: gh-action-pip-audit
+      uses: pypa/gh-action-pip-audit@v1.0.8
