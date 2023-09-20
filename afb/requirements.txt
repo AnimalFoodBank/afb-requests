@@ -3,5 +3,13 @@
 Django==4.2.5
 django-tailwind
 django-unfold
+django-crispy-forms
+crispy-tailwind
 
+# Copilot suggestions
+django-extensions
+django-allauth
+django-countries
+django-phonenumber-field
+django-address
 # django-money
