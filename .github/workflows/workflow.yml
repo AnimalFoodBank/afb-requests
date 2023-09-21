@@ -47,7 +47,8 @@ jobs:
     #       output_path: afb/django-workflow-model.png
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4.7.0
+
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
@@ -63,7 +64,7 @@ jobs:
       uses: UKnowWhoIm/django-test-action@v0.6.1
       with:
         requirements-file: afb/requirements.txt
-        settings-dir-path: afb/afb
+        settings-dir-path: afb/
         parallel-tests: false
 
     - name: gh-action-pip-audit
