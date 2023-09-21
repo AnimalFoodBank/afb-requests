@@ -40,11 +40,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'tailwind',
+    "crispy_tailwind",
     'theme',   # python manage.py tailwind init
     'afbcore',
     'django_browser_reload',
 ]
+
+# https://github.com/django-crispy-forms/crispy-tailwind
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -144,7 +152,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    # BASE_DIR / "static",
     BASE_DIR / "theme" / "static",
     BASE_DIR / "afbcore" / "public",
 ]

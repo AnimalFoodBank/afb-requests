@@ -1,6 +1,8 @@
 
 import uuid
 from django.db import models
+from django.urls import reverse
+
 
 # Status - Active, On Hold, Banned
 STATUS_CHOICES = [
@@ -49,8 +51,11 @@ class Client(models.Model):
   # Agreed on date - Yes/No
   agreed_on_date = models.DateField(null=True, blank=True)
 
-
   status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+
 
   def __str__(self):
     return f"{self.first_name} {self.last_name}"
+
+  def get_absolute_url(self):
+      return reverse("client-create", kwargs={"pk": self.pk})
