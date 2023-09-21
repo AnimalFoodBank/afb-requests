@@ -1,3 +1,28 @@
+
+tasks:
+  - name: Install dependencies
+    init: |
+      #!/bin/bash
+      set -e
+
+      cd afb/
+
+      pip install -r requirements.txt
+
+      python ./manage.py migrate
+  - name: Run server
+    command: |
+      #!/bin/bash
+      set -e
+
+      cd afb/
+
+      python ./manage.py runserver
+
+ports:
+  - port: 8000
+    onOpen: open-preview
+
 github:
   prebuilds:
     # enable for the master/default branch (defaults to true)
@@ -9,8 +34,8 @@ github:
     # enable for pull requests coming from forks (defaults to false)
     pullRequestsFromForks: false
     # add a "Review in Gitpod" button as a comment to pull requests (defaults to true)
-    addComment: true
+    addComment: false
     # add a "Review in Gitpod" button to pull requests (defaults to false)
-    addBadge: false
+    addBadge: true
     # add a label once the prebuild is ready to pull requests (defaults to false)
     addLabel: prebuilt-in-gitpod
