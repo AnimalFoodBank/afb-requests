@@ -5,6 +5,7 @@ django-tailwind[reload]
 django-unfold
 django-crispy-forms
 crispy-tailwind
+pillow
 
 # Copilot suggestions
 django-extensions
