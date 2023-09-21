@@ -23,7 +23,7 @@ from afbcore.views import AboutView, ClientCreateView, CreateClientFormView, Das
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('/dashboard', DashboardView.as_view()),
+    path('dashboard', DashboardView.as_view()),
 
     path('', CreateClientFormView.as_view()),
 
