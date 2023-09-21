@@ -1,3 +1,22 @@
+
+tasks:
+  - name: Install dependencies
+    init: |
+      #!/bin/bash
+      set -e
+
+      cd afb/
+
+      pip install -r requirements.txt
+
+      python ./manage.py migrate
+  - name: Run server
+    command: python ./manage.py runserver
+
+ports:
+  - port: 8000
+    onOpen: open-preview
+
 github:
   prebuilds:
     # enable for the master/default branch (defaults to true)
