@@ -5,18 +5,42 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
 
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./afb
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: ["3.8", "3.10"]
 
     steps:
-    - uses: actions/checkout@v3
+
+    - name: Cache system packages
+      uses: actions/cache@v3.3.2
+      with:
+        path: /var/cache/apt/archives
+        key: ${{ runner.os }}-apt-${{ hashFiles('apt.txt') }}
+        restore-keys: ${{ runner.os }}-apt-
+
+    - name: Cache python dependencies
+      uses: actions/cache@v3.3.2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        submodules: true
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
