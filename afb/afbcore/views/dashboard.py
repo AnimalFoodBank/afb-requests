@@ -2,7 +2,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render
-from django.views import TemplateView, View
+from django.views.generic import TemplateView
+from django.views import View
 
 from afbcore.models import Client, Manager, Volunteer
 
