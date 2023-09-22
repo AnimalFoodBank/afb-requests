@@ -10,7 +10,7 @@
 # requirements file and a settings directory path.
 
 
-name: Django CI (actions)
+name: Audit
 on:
   push:
     branches: [main]
@@ -45,14 +45,6 @@ jobs:
     # - name: Update PIP
     #   run: |
     #     pip install --upgrade pip
-
-    - name: Django Test CI
-      uses: UKnowWhoIm/django-test-action@v0.6.1
-      working-directory: ./afb
-      with:
-        requirements-file: afb/requirements.txt
-        settings-dir-path: afb/afb
-        parallel-tests: false
 
     - name: gh-action-pip-audit
       uses: pypa/gh-action-pip-audit@v1.0.8
