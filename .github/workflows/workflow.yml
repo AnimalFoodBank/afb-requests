@@ -48,6 +48,7 @@ jobs:
 
     - name: Django Test CI
       uses: UKnowWhoIm/django-test-action@v0.6.1
+      working-directory: ./afb
       with:
         requirements-file: afb/requirements.txt
         settings-dir-path: afb/afb
