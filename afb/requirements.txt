@@ -7,10 +7,12 @@ django-crispy-forms
 crispy-tailwind
 pillow
 
-# Copilot suggestions
-django-extensions
-django-allauth
-django-countries
+phonenumbers
 django-phonenumber-field
-django-address
+
+# Copilot suggestions
+# django-extensions
+# django-allauth
+# django-address
 # django-money
+# django-countries
