@@ -50,7 +50,7 @@ jobs:
       uses: UKnowWhoIm/django-test-action@v0.6.1
       with:
         requirements-file: afb/requirements.txt
-        settings-dir-path: afb/
+        settings-dir-path: afb/afb
         parallel-tests: false
 
     - name: gh-action-pip-audit
