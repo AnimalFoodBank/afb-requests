@@ -1,4 +1,4 @@
-[tool.ruff]
+
 project_type = "python"
 #python_version = "3.8"
 linter = "flake8"
