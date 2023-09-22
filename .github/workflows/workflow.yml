@@ -1,9 +1,16 @@
-name: CI
+# This is a GitHub Actions workflow for running CI tests on a Django project.
+# It is triggered on push or pull request events on the main branch, as well as
+# manually using the workflow_dispatch event.
+#
+# The workflow runs on an Ubuntu 22.04 virtual machine with 2 parallel jobs and
+# checks out the repository with a fetch depth of 1.  The build job sets the
+# Python version to 3.10 and runs the tests using the specified matrix.
+#
+# The `django-test-action` action is used to run the tests and requires a
+# requirements file and a settings directory path.
 
-# https://github.com/marketplace/actions/django-action
-# https://github.com/marketplace/actions/gh-action-pip-audit
 
-
+name: Django CI (actions)
 on:
   push:
     branches: [main]
@@ -38,27 +45,6 @@ jobs:
     # - name: Update PIP
     #   run: |
     #     pip install --upgrade pip
-
-    # - name: Django Action
-    #   uses: noah-software/django_action@v1.1
-    #   with:
-    #       project_path: afb/
-    #       pip_path: afb/requirements.txt
-    #       output_path: afb/django-workflow-model.png
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4.7.0
-
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Run Tests
-      run: |
-        python manage.py test
 
     - name: Django Test CI
       uses: UKnowWhoIm/django-test-action@v0.6.1
