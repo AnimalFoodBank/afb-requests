@@ -3,24 +3,12 @@ import uuid
 
 from django.db import models
 
+from .base_profile import BaseProfile
 
-class Manager(models.Model):
+
+class Manager(BaseProfile):
   """
   """
-  # Define default arguments for ManyToManyField
-  many_to_many_defaults = {
-      'related_name': '+',
-      'blank': True,
-      'symmetrical': False,
-  }
-
-  id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-  first_name = models.CharField(max_length=255)
-  last_name = models.CharField(max_length=255)
-  email_address = models.EmailField()
-  phone_number = models.CharField(max_length=20)
-
-  branches = models.ManyToManyField("Branch", **many_to_many_defaults)# Usually just one, but can be multiple
 
   role_level = models.IntegerField()
 

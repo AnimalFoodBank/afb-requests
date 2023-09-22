@@ -3,9 +3,7 @@
 from django.db import models
 
 from .branch import Branch  # noqa
-from .manager import Manager
-from .client import Client
-from .volunteer import Volunteer
+from .users import Client, Manager, Volunteer, User
 from .pet_request import PetRequest
 from .pet import Pet
 from .food_available import FoodAvailable
