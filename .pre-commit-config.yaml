@@ -1,0 +1,26 @@
+#
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+#
+# To use pre-commit, install it using pip:
+#
+#    pip install pre-commit
+#
+# Then, run it on all the files in this repo:
+#
+#    pre-commit run --all-files
+#
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+
+# TODO: Enable black after formatting is standardized.
+# -   repo: https://github.com/psf/black
+#     rev: 22.10.0
+#     hooks:
+#     -   id: black
