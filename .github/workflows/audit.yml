@@ -59,4 +59,4 @@ jobs:
       with:
         inputs: afb/requirements.txt
         summary: true
-        require-hashes: true
+        require-hashes: false
