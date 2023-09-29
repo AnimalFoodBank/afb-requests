@@ -26,3 +26,7 @@ class CreateClientFormView(FormView):
 class ClientCreateView(CreateView):
     model = Client
     fields = ["first_name", "last_name", "email", "address", "phone_number", "status"]
+
+
+class ClientRequestView(TemplateView):
+    template_name = "afbcore/client_request.html"

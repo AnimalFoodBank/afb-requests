@@ -35,6 +35,9 @@ class PetRequest(models.Model):
   # Yes/No - No requires them to update phone number (validate format)
   confirm_phone_number = models.BooleanField()
 
+  # Agree to Terms and Conditions
+  agreed_to_terms = models.BooleanField()
+
   # Text or Phone
   method_of_contact = models.CharField(max_length=100)
 
@@ -61,6 +64,7 @@ class PetRequest(models.Model):
 
   # Not sure what to call this one, but if the volunteer has an issue with the client - they are rude or aggressive for example, can we allow the driver to mark the client as suspended and admin to review?
   needs_review = models.BooleanField()
+
 
   def __str__(self):
     return f"Pet Request {self.id}"

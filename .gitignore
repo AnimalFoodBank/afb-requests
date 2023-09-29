@@ -84,5 +84,5 @@ local_settings.py
 .env*
 !.env.empty
 db.sqlite3
-*.txt
 .vscode/
+tmp/*

@@ -1,6 +1,6 @@
 
 project_type = "python"
-#python_version = "3.8"
+python_version = "3.10"
 linter = "flake8"
 formatter = "black"
 test_framework = "pytest"

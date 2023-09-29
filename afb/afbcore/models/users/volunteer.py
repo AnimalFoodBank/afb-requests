@@ -2,12 +2,10 @@
 import uuid
 from django.db import models
 
-class Volunteer(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+from .base_profile import BaseProfile
 
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField()
+
+class Volunteer(BaseProfile):
 
     # Would love for the client and volunteer to be able to communicate through the software - and not have the volunteer have to use their personal phone to arrange delivery.  However, we, as admin, need their phone number
     phone_number = models.CharField(max_length=20)

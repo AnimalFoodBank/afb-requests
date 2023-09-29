@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'phonenumber_field',
     'crispy_forms',
     'tailwind',
     "crispy_tailwind",
@@ -52,6 +53,12 @@ INSTALLED_APPS = [
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 CRISPY_TEMPLATE_PACK = "tailwind"
+
+
+PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
+PHONENUMBER_DEFAULT_FORMAT = "E164"
+PHONENUMBER_DEFAULT_REGION = 'CA'
+
 
 
 MIDDLEWARE = [
@@ -71,6 +78,8 @@ ROOT_URLCONF = 'afb.urls'
 # https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
 
 TAILWIND_APP_NAME = 'theme'
+
+AUTH_USER_MODEL = 'afbcore.User'
 
 INTERNAL_IPS = [
     # Add local IP addresses here for tailwind to work, then run:
