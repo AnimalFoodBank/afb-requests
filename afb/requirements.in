@@ -27,6 +27,7 @@ phonenumbers
 django-phonenumber-field
 
 pip-tools
+pre-commit
 
 # Copilot suggestions
 # django-extensions
