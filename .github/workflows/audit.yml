@@ -8,6 +8,14 @@
 #
 # The `django-test-action` action is used to run the tests and requires a
 # requirements file and a settings directory path.
+#
+# The `pypa/gh-action-pip-audit` action is used to audit the requirements file
+# for security vulnerabilities. It requires a requirements file and can be
+# configured to require hashes for all packages.
+#
+# See:
+# - https://github.com/pypa/gh-action-pip-audit
+# - https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
 
 name: Audit
@@ -48,3 +56,6 @@ jobs:
 
     - name: gh-action-pip-audit
       uses: pypa/gh-action-pip-audit@v1.0.8
+      with:
+        inputs: afb/requirements.txt
+        require-hashes: true
