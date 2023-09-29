@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from afbcore.views import AboutView, ClientCreateView, CreateClientFormView, DashboardView, MyLoginView
+from afbcore.views import ClientRequestView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +33,8 @@ urlpatterns = [
     # See https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
     path('__reload__/', include('django_browser_reload.urls')),
 
+    path('request/', ClientRequestView.as_view(), name='create_request'),
     path('login/', MyLoginView.as_view(), name='login'),
+
     path('about/', AboutView.as_view()),
 ]
