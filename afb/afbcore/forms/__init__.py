@@ -2,7 +2,7 @@
 
 from django import forms
 
-from .client import ClientForm
+from .client import ClientSignupForm
 
 
 class LoginForm(forms.Form):
