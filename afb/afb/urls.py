@@ -17,23 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from afbcore.views import AboutView, ClientCreateView, CreateClientFormView, DashboardView, MyLoginView
+from afbcore.views import AboutView, ClientSignupFormView, DashboardView, MyLoginView
 from afbcore.views import ClientRequestView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('dashboard', DashboardView.as_view(), name='dashboard'),
+    path('', DashboardView.as_view()),
 
-    path('', CreateClientFormView.as_view()),
-
-
+    path('join/', ClientSignupFormView.as_view()),
 
     # Part of django-tailwind
     # See https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
     path('__reload__/', include('django_browser_reload.urls')),
 
     path('request/', ClientRequestView.as_view(), name='create_request'),
+
     path('login/', MyLoginView.as_view(), name='login'),
 
     path('about/', AboutView.as_view()),
