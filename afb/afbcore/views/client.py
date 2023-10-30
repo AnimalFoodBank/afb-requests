@@ -21,11 +21,7 @@ class DashboardView(TemplateView):
 class ClientSignupFormView(FormView):
     template_name = "afbcore/client_signup_form.html"
     form_class = ClientSignupForm
-
-
-class ClientCreateView(CreateView):
-    model = Client
-    fields = ["first_name", "last_name", "email", "address", "phone_number"]
+    success_url = "/dashboard"
 
 
 class ClientRequestView(TemplateView):

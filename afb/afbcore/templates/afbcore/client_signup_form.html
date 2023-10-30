@@ -1,13 +1,30 @@
 
 {% extends 'appshell.html' %}
 
+{% load static %}
 {% load tailwind_filters %}
+
+
+{% block contentHeader %}
+
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Join</h1>
+
+{% endblock %}
 
 
 {% block content %}
 
-Create an AFB client profile
+<h2 class="text-2xl font- tracking-tight">Create a client profile</h2>
 
-{{form | crispy}}
+<form method="post" class="mt-4" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{form | crispy}}
+
+    <div class="mt-4">
+        <button type="submit" class="bg-red-500">Create</button>
+    </div>
+</form>
+
 
 {% endblock %}
