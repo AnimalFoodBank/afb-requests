@@ -1,4 +1,3 @@
-
 import uuid
 
 from django.db import models
@@ -7,13 +6,13 @@ from .base_profile import BaseProfile
 
 
 class Manager(BaseProfile):
-  """
-  """
+    """ """
 
-  role_level = models.IntegerField()
+    role_level = models.IntegerField()
 
-  def __str__(self):
-    return f"{self.first_name} {self.last_name}"
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 """
 GitHub Copilot: Here are all the arguments that can be used with Django's `ManyToManyField`:

@@ -1,4 +1,3 @@
-
 import uuid
 
 from django.db import models
@@ -11,14 +10,13 @@ from .user import User
 
 # Define default arguments for ManyToManyField
 many_to_many_defaults = {
-    'related_name': '+',
-    'blank': True,
-    'symmetrical': False,
+    "related_name": "+",
+    "blank": True,
+    "symmetrical": False,
 }
 
 
 class BaseProfile(models.Model):
-
     class Meta:
         abstract = True
 
@@ -42,7 +40,7 @@ class BaseProfile(models.Model):
     phone_number = PhoneNumberField(
         blank=True,
         null=True,
-        region='US',
+        region="US",
         max_length=20,
     )
 

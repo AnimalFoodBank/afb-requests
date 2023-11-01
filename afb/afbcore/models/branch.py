@@ -1,13 +1,15 @@
-
 import uuid
 
 from django.db import models
+
 
 class Branch(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Location Name ie Winnipeg, MB; Medicine Hat, AB etc.
-    location_name = models.CharField(max_length=255, help_text="ie Winnipeg, MB;  Medicine Hat, AB etc.")
+    location_name = models.CharField(
+        max_length=255, help_text="ie Winnipeg, MB;  Medicine Hat, AB etc."
+    )
 
     # Postal/Zip Code Range start with Canada but the intent is to
     # use this in the USA which may be more apt to paying
@@ -34,14 +36,14 @@ class Branch(models.Model):
     # Delivery Type Drop off and/or pick up options
     delivery_type = models.CharField(max_length=255)
 
-        # Delivery deadline in days
+    # Delivery deadline in days
     delivery_deadline_days = models.IntegerField(default=3)
 
     # Type of delivery service, 'Drop off' or 'Pick up'
     delivery_type = models.CharField(
         max_length=24,
-        choices=[('drop_off', 'Drop off'), ('pick_up', 'Pick up')],
-        default='Drop off',
+        choices=[("drop_off", "Drop off"), ("pick_up", "Pick up")],
+        default="Drop off",
     )
 
     # Delivery/pickup More details
@@ -51,4 +53,4 @@ class Branch(models.Model):
     blurb = models.TextField(blank=True)
 
     # Blurb image A picture to go along with the blurb
-    blurb_image = models.ImageField(upload_to='branch_images/', blank=True, null=True)
+    blurb_image = models.ImageField(upload_to="branch_images/", blank=True, null=True)

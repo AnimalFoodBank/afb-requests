@@ -1,4 +1,3 @@
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render
@@ -28,16 +27,16 @@ class DashboardRouterView(LoginRequiredMixin, View):
 class ClientDashboardView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         # Add client-specific dashboard logic here
-        return render(request, 'dashboard/client.html')
+        return render(request, "dashboard/client.html")
 
 
 class ManagerDashboardView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         # Add manager-specific dashboard logic here
-        return render(request, 'dashboard/manager.html')
+        return render(request, "dashboard/manager.html")
 
 
 class VolunteerDashboardView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         # Add volunteer-specific dashboard logic here
-        return render(request, 'dashboard/volunteer.html')
+        return render(request, "dashboard/volunteer.html")

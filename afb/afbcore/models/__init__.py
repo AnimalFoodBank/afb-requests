@@ -1,5 +1,3 @@
-
-
 from django.db import models
 
 from .branch import Branch  # noqa

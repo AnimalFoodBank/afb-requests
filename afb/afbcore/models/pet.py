@@ -1,8 +1,8 @@
-
 import uuid
 
 from enum import Enum
 from django.db import models
+
 
 class PetSize(Enum):
     TOY = "Toy - up to 10lbs"
@@ -22,42 +22,47 @@ class WeightRange(Enum):
 
 class Pet(models.Model):
 
-  """
-  Pet model to store information about pets belonging to clients.
+    """
+    Pet model to store information about pets belonging to clients.
 
-  The maximum number of pet profiles that would be allowed
-  to be created would be deteremined from the Branch
-  setting of "Number of Pet's Serviced/Houeshold" above
+    The maximum number of pet profiles that would be allowed
+    to be created would be deteremined from the Branch
+    setting of "Number of Pet's Serviced/Houeshold" above
 
-  """
-  id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    """
 
-  # Client - Foreign Key
-  client = models.ForeignKey("Client", on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-  # Name
-  name = models.CharField(max_length=255)
+    # Client - Foreign Key
+    client = models.ForeignKey("Client", on_delete=models.CASCADE)
 
-  # DOB - I'd like to system to record the date of birth and then use it to calculate real time age
-  dob = models.DateField()
+    # Name
+    name = models.CharField(max_length=255)
 
-  # Size - Drop down list with size options
-  size = models.CharField(max_length=32, choices=[(size.name, size.value) for size in PetSize])
+    # DOB - I'd like to system to record the date of birth and then use it to calculate real time age
+    dob = models.DateField()
 
-  # Weight - Drop down list with weight ranges (this is typically only needed for dogs). Select one.
-  weight = models.CharField(max_length=32, choices=[(size.name, size.value) for size in WeightRange])
+    # Size - Drop down list with size options
+    size = models.CharField(
+        max_length=32, choices=[(size.name, size.value) for size in PetSize]
+    )
 
-  # Usual Food Brands - Free form
-  usual_food_brands = models.TextField(blank=True)
+    # Weight - Drop down list with weight ranges (this is typically only needed for dogs). Select one.
+    weight = models.CharField(
+        max_length=32, choices=[(size.name, size.value) for size in WeightRange]
+    )
 
-  # Allergies - Yes/No
-  allergies = models.BooleanField(default=False)
+    # Usual Food Brands - Free form
+    usual_food_brands = models.TextField(blank=True)
 
-  # Allergies Type - Drop down list with an "other" option that is free form text. Select all that apply
-  allergy_types = models.TextField(blank=True)
+    # Allergies - Yes/No
+    allergies = models.BooleanField(default=False)
 
-  # Pictures - For no reason other than I think it would be fun to have their client dashboard have pics of their pets for the profiles
-  pictures = models.ImageField(upload_to="pet_pictures/", null=True, blank=True)
+    # Allergies Type - Drop down list with an "other" option that is free form text. Select all that apply
+    allergy_types = models.TextField(blank=True)
 
-  def __str__(self):
-    return self.name
+    # Pictures - For no reason other than I think it would be fun to have their client dashboard have pics of their pets for the profiles
+    pictures = models.ImageField(upload_to="pet_pictures/", null=True, blank=True)
+
+    def __str__(self):
+        return self.name

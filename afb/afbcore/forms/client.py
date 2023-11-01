@@ -1,12 +1,9 @@
-
-
 from django.forms import ModelForm
 
 from afbcore.models import Client
 
 
 class ClientSignupForm(ModelForm):
-
     class Meta:
         model = Client
         fields = [

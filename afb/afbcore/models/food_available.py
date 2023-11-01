@@ -5,10 +5,11 @@ import uuid
 from django.db import models
 from enum import Enum
 
+
 class PetType(Enum):
-  CAT = 'Cat'
-  DOG = 'Dog'
-  OTHER = 'Other'
+    CAT = "Cat"
+    DOG = "Dog"
+    OTHER = "Other"
 
 
 class FoodAvailable(models.Model):
@@ -34,10 +35,13 @@ class FoodAvailable(models.Model):
         Total Cat Wet
         Total Dog Dry
         Total Dog Wet
-     """
+    """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
-    pet_type = models.CharField(max_length=255, choices=[(pet_type.value, pet_type.value) for pet_type in PetType])
+    pet_type = models.CharField(
+        max_length=255,
+        choices=[(pet_type.value, pet_type.value) for pet_type in PetType],
+    )
     food_type = models.CharField(max_length=255)
     food_amount = models.CharField(max_length=255)

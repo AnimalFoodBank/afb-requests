@@ -1,4 +1,4 @@
-'''
+"""
 URL configuration for afb project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -13,7 +13,7 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-'''
+"""
 from django.contrib import admin
 from django.urls import include, path
 
@@ -21,20 +21,14 @@ from afbcore.views import AboutView, ClientSignupFormView, DashboardView, MyLogi
 from afbcore.views import ClientRequestView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
-    path('dashboard', DashboardView.as_view(), name='dashboard'),
-    path('', DashboardView.as_view()),
-
-    path('join/', ClientSignupFormView.as_view()),
-
+    path("admin/", admin.site.urls),
+    path("dashboard", DashboardView.as_view(), name="dashboard"),
+    path("", DashboardView.as_view()),
+    path("join/", ClientSignupFormView.as_view()),
     # Part of django-tailwind
     # See https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
-    path('__reload__/', include('django_browser_reload.urls')),
-
-    path('request/', ClientRequestView.as_view(), name='create_request'),
-
-    path('login/', MyLoginView.as_view(), name='login'),
-
-    path('about/', AboutView.as_view()),
+    path("__reload__/", include("django_browser_reload.urls")),
+    path("request/", ClientRequestView.as_view(), name="create_request"),
+    path("login/", MyLoginView.as_view(), name="login"),
+    path("about/", AboutView.as_view()),
 ]

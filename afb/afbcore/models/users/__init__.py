@@ -1,5 +1,3 @@
-
-
 from .client import Client
 from .manager import Manager
 from .volunteer import Volunteer
