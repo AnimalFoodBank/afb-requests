@@ -1,4 +1,3 @@
-
 """
 Django settings for afb project.
 
@@ -21,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k3nma!u)7oz(lt346n-=rx=rt%u_^j8-rdz3p(y3o$ot0%soqh'
+SECRET_KEY = "django-insecure-k3nma!u)7oz(lt346n-=rx=rt%u_^j8-rdz3p(y3o$ot0%soqh"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,20 +32,20 @@ ALLOWED_HOSTS = []
 #
 
 INSTALLED_APPS = [
-    'unfold',  # https://github.com/unfoldadmin/django-unfold
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'phonenumber_field',
-    'crispy_forms',
-    'tailwind',
+    "unfold",  # https://github.com/unfoldadmin/django-unfold
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "phonenumber_field",
+    "crispy_forms",
+    "tailwind",
     "crispy_tailwind",
-    'theme',   # python manage.py tailwind init
-    'afbcore',
-    'django_browser_reload',
+    "theme",  # python manage.py tailwind init
+    "afbcore",
+    "django_browser_reload",
 ]
 
 # https://github.com/django-crispy-forms/crispy-tailwind
@@ -57,35 +56,34 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
-PHONENUMBER_DEFAULT_REGION = 'CA'
-
+PHONENUMBER_DEFAULT_REGION = "CA"
 
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware'
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
-ROOT_URLCONF = 'afb.urls'
+ROOT_URLCONF = "afb.urls"
 
 # Django-Tailwind
 # https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
 
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
 
-AUTH_USER_MODEL = 'afbcore.User'
+AUTH_USER_MODEL = "afbcore.User"
 
 INTERNAL_IPS = [
     # Add local IP addresses here for tailwind to work, then run:
     # * (Dev) `python manage.py tailwind install`
     # * (Production) `python manage.py tailwind build`
-    '127.0.0.1',
+    "127.0.0.1",
 ]
 
 # Templates
@@ -93,30 +91,30 @@ INTERNAL_IPS = [
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'afb.wsgi.application'
+WSGI_APPLICATION = "afb.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -126,16 +124,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -143,9 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -158,7 +156,7 @@ USE_TZ = True
 # For prod:
 # https://docs.djangoproject.com/en/4.2/howto/static-files/deployment/#staticfiles-from-cdn
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-STORAGES
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
     # BASE_DIR / "static",
@@ -170,4 +168,4 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
