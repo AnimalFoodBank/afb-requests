@@ -1,24 +1,14 @@
-from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
+# views/__init__.py
 
-from django.contrib.auth import get_user_model
-from rest_framework import viewsets
-from rest_framework import permissions
-from afbcore.serializers import UserSerializer
+"""
+This module contains the views for the AFB Core API application.
 
-User = get_user_model()
+The views are responsible for handling HTTP requests and returning HTTP responses.
+Each view corresponds to one or more URL patterns, and is responsible for handling
+all HTTP methods (GET, POST, PUT, DELETE, etc.) that are allowed for that URL pattern.
 
+This module also includes any helper functions or classes that are used exclusively
+by the views in this module.
+"""
 
-# class MyLoginView(LoginView):
-#     template_name = "afbcore/login.html"
-#     success_url = reverse_lazy("afbcore:dashboard")
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-
-    queryset = User.objects.all().order_by("-date_joined")
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# Standard library imports
