@@ -39,18 +39,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "phonenumber_field",
+    "django_extensions",  # add this for 'python manage.py runserver_plus'
     "crispy_forms",
-    # 'tailwind',
-    "django_vite",
+    "tailwind",
     "crispy_tailwind",
-    # 'theme',   # python manage.py tailwind init
+    "rest_framework",  # add DRF
+    "django_filters",  # add DRF filters
+    "phonenumber_field",
+    "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
     "afbcore",
     "django_browser_reload",
+    # 'theme',   # python manage.py tailwind init
 ]
 
+VITE_APP_DIR = BASE_DIR.parent / "ui"
+
 # correspond to your build.outDir in your ViteJS configuration.
-DJANGO_VITE_ASSETS_PATH = BASE_DIR / "ui" / "dist"
+DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "dist"
 
 # ViteJS webserver protocol (default : http).
 DJANGO_VITE_DEV_SERVER_PROTOCOL = "http"
@@ -94,11 +99,25 @@ STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    BASE_DIR / "ui" / "dist",
-    BASE_DIR / "ui" / "public",
+    VITE_APP_DIR / "dist",
+    VITE_APP_DIR / "public",
     DJANGO_VITE_ASSETS_PATH,
 ]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+}
 
 # https://github.com/django-crispy-forms/crispy-tailwind
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"

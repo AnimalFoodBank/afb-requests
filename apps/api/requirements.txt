@@ -12,65 +12,62 @@ cfgv==3.4.0
     # via pre-commit
 click==8.1.7
     # via pip-tools
-crispy-tailwind==0.5.0
-    # via -r requirements.in
 distlib==0.3.7
     # via virtualenv
 django==4.2.5
     # via
     #   -r requirements.in
-    #   django-browser-reload
-    #   django-crispy-forms
+    #   django-extensions
+    #   django-filter
+    #   django-model-utils
     #   django-phonenumber-field
-    #   django-tailwind
     #   django-unfold
     #   django-vite
-django-browser-reload==1.11.0
-    # via django-tailwind
-django-crispy-forms==2.0
-    # via
-    #   -r requirements.in
-    #   crispy-tailwind
-django-phonenumber-field==7.1.0
+    #   djangorestframework
+django-extensions==3.2.3
     # via -r requirements.in
-django-tailwind[reload]==3.6.0
+django-filter==23.3
     # via -r requirements.in
-django-unfold==0.10.0
+django-model-utils==4.3.1
+    # via -r requirements.in
+django-phonenumber-field==7.2.0
+    # via -r requirements.in
+django-unfold==0.14.2
     # via -r requirements.in
 django-vite==2.1.3
     # via -r requirements.in
-filelock==3.12.4
+djangorestframework==3.14.0
+    # via -r requirements.in
+filelock==3.13.1
     # via virtualenv
-identify==2.5.29
+identify==2.5.31
     # via pre-commit
-importlib-metadata==6.7.0
-    # via django-unfold
+markdown==3.5.1
+    # via -r requirements.in
 nodeenv==1.8.0
     # via pre-commit
-packaging==23.1
+packaging==23.2
     # via build
-phonenumbers==8.13.22
-    # via -r requirements.in
-pillow==10.0.1
+phonenumbers==8.13.24
     # via -r requirements.in
 pip-tools==7.3.0
     # via -r requirements.in
-platformdirs==3.10.0
+platformdirs==3.11.0
     # via virtualenv
-pre-commit==3.4.0
+pre-commit==3.5.0
     # via -r requirements.in
 pyproject-hooks==1.0.0
     # via build
+pytz==2023.3.post1
+    # via djangorestframework
 pyyaml==6.0.1
     # via pre-commit
 sqlparse==0.4.4
     # via django
-virtualenv==20.24.5
+virtualenv==20.24.6
     # via pre-commit
-wheel==0.41.2
+wheel==0.41.3
     # via pip-tools
-zipp==3.17.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

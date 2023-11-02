@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: ./afb
+        working-directory: ./apps/api
     strategy:
       max-parallel: 4
       matrix:

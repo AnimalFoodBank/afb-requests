@@ -42,9 +42,6 @@ https://vuejs.org/guide/scaling-up/tooling.html#project-scaffolding
     $ pip-compile --upgrade --output-file=- requirements.in | tee requirements.txt
     ...
 
-    $ pip-compile --output-file=- > requirements.txt
-    ...
-
 ```
 
 

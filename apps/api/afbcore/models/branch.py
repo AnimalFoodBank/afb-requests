@@ -1,9 +1,10 @@
 import uuid
 
 from django.db import models
+from .mixins import PhysicalLocationMixin
 
 
-class Branch(models.Model):
+class Branch(PhysicalLocationMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Location Name ie Winnipeg, MB; Medicine Hat, AB etc.
@@ -15,6 +16,9 @@ class Branch(models.Model):
     # use this in the USA which may be more apt to paying
     # postal_zip_code_range = models.CharField(max_length=255)
     delivery_regions = models.ManyToManyField("DeliveryRegion")
+
+    # Pickup Locations not sure about this one, but in Winnipeg for instance we have various spots to pick up inventory and those locations can change (they are volunteers houses). When drivers sign up for a delivery they choose the location they want to pick up from.
+    pickup_locations = models.TextField(blank=True, null=True)
 
     # Frequency of Requests Weeks, Month, Months. This would need to be able
     # to be edited, as we do change it sometimes.
@@ -30,16 +34,11 @@ class Branch(models.Model):
     # Delivery Deadline. For example, Winnipeg is 14 days
     delivery_deadline_days = models.IntegerField()
 
-    # Pickup Locations not sure about this one, but in Winnipeg for instance we have various spots to pick up inventory and those locations can change (they are volunteers houses). When drivers sign up for a delivery they choose the location they want to pick up from.
-    pickup_locations = models.TextField()
-
-    # Delivery Type Drop off and/or pick up options
-    delivery_type = models.CharField(max_length=255)
-
     # Delivery deadline in days
     delivery_deadline_days = models.IntegerField(default=3)
 
     # Type of delivery service, 'Drop off' or 'Pick up'
+    # Delivery Type Drop off and/or pick up options
     delivery_type = models.CharField(
         max_length=24,
         choices=[("drop_off", "Drop off"), ("pick_up", "Pick up")],

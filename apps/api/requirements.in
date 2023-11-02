@@ -13,27 +13,37 @@
 #
 # to upgrade all packages to their latest versions.
 #
+# To install the packages in the requirements.txt file, run:
+#
+#   pip install -r requirements.txt
+#
 # See: https://github.com/jazzband/pip-tools
 #
 
 Django==4.2.5
-django-tailwind[reload]
-django-unfold
-django-crispy-forms
-crispy-tailwind
-pillow
+
+django_extensions
+django-model-utils
 
 django-vite
 
-phonenumbers
-django-phonenumber-field
+# DRF dependencies
+# See: https://www.django-rest-framework.org/#installation
+djangorestframework
+markdown
+django-filter
+
+
+# Upgraded admin interface
+django-unfold
+
+django-phonenumber-field[phonenumbers]
 
 pip-tools
 pre-commit
 
-# Copilot suggestions
-# django-extensions
-# django-allauth
-# django-address
-# django-money
-# django-countries
+# Probably not needed, now that we have django-vite
+# django-tailwind[reload]
+# django-crispy-forms
+# crispy-tailwind
+# pillow

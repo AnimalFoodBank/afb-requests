@@ -1,15 +1,14 @@
-from .client import *
-from .dashboard import (
-    ClientDashboardView,
-    DashboardRouterView,
-    ManagerDashboardView,
-    VolunteerDashboardView,
-)
+# views/__init__.py
 
-from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
+"""
+This module contains the views for the AFB Core API application.
 
+The views are responsible for handling HTTP requests and returning HTTP responses.
+Each view corresponds to one or more URL patterns, and is responsible for handling
+all HTTP methods (GET, POST, PUT, DELETE, etc.) that are allowed for that URL pattern.
 
-class MyLoginView(LoginView):
-    template_name = "afbcore/login.html"
-    success_url = reverse_lazy("afbcore:dashboard")
+This module also includes any helper functions or classes that are used exclusively
+by the views in this module.
+"""
+
+# Standard library imports
