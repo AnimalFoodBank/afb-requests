@@ -17,13 +17,19 @@
 #
 
 Django==4.2.5
-django-tailwind[reload]
-django-unfold
-django-crispy-forms
-crispy-tailwind
-pillow
 
+django_extensions
 django-vite
+
+# DRF dependencies
+# See: https://www.django-rest-framework.org/#installation
+djangorestframework
+markdown
+django-filter
+
+
+# Upgraded admin interface
+django-unfold
 
 phonenumbers
 django-phonenumber-field
@@ -31,9 +37,8 @@ django-phonenumber-field
 pip-tools
 pre-commit
 
-# Copilot suggestions
-# django-extensions
-# django-allauth
-# django-address
-# django-money
-# django-countries
+# Probably not needed, now that we have django-vite
+# django-tailwind[reload]
+# django-crispy-forms
+# crispy-tailwind
+# pillow

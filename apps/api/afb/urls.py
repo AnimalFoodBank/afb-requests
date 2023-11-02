@@ -17,18 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from afbcore.views import AboutView, ClientSignupFormView, DashboardView, MyLoginView
-from afbcore.views import ClientRequestView
+from rest_framework import routers
+from afbcore import views
+
+router = routers.DefaultRouter()
+router.register(r"users", views.UserViewSet)
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("dashboard", DashboardView.as_view(), name="dashboard"),
-    path("", DashboardView.as_view()),
-    path("join/", ClientSignupFormView.as_view()),
+    path("api/", include(router.urls)),
+    # path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # path("login/", views.MyLoginView.as_view(), name="login"),
     # Part of django-tailwind
     # See https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
     path("__reload__/", include("django_browser_reload.urls")),
-    path("request/", ClientRequestView.as_view(), name="create_request"),
-    path("login/", MyLoginView.as_view(), name="login"),
-    path("about/", AboutView.as_view()),
 ]
