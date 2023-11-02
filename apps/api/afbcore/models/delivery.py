@@ -15,7 +15,7 @@ class DeliveryRegion(models.Model):
 
 
 class Delivery(models.Model):
-    pet_request = models.ForeignKey("PetRequest", on_delete=models.DO_NOTHING)
+    pet_request = models.ForeignKey("Request", on_delete=models.DO_NOTHING)
 
     food_available = models.ForeignKey("FoodAvailable", on_delete=models.DO_NOTHING)
 

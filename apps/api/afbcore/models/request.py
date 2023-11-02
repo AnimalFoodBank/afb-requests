@@ -18,24 +18,28 @@ STATUS_CHOICES = [
 ]
 
 
-class PetRequest(models.Model):
+class Request(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    client = models.ForeignKey("Client", on_delete=models.DO_NOTHING)
+    # TODO: Should this be a foreign key to the user model? A user can have
+    # multiple profiles, so we need to think about this.
+    profile = models.ForeignKey("Profile", on_delete=models.DO_NOTHING)
 
+    # A food request can belong to only one Branch
     branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING)
 
-    # One or more. ** We will want them to see and confirm/edit their address and phone number on the request, and be able to see pets, and edit some fields of their pets info
+    # One or more.
+    # ** We will want them to see and confirm/edit their address and phone number on the request, and be able to see pets, and edit some fields of their pets info
     pets = models.ManyToManyField("Pet")
 
-    # Yes/No - No requires them to edit address and ensure that it's not attached to another client or then both clients need to be on hold to review
+    # Yes/No -
+    # No requires them to edit address in the UI so in theory this should
+    # always be True. Note: we need to ensure that it's not attached to
+    # another client or then both clients need to be on hold to review.
     confirm_address = models.BooleanField()
 
     # Yes/No - No requires them to update phone number (validate format)
     confirm_phone_number = models.BooleanField()
-
-    # Agree to Terms and Conditions
-    agreed_to_terms = models.BooleanField()
 
     # Text or Phone
     method_of_contact = models.CharField(max_length=100)

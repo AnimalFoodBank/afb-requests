@@ -23,7 +23,7 @@ class WeightRange(Enum):
 class Pet(models.Model):
 
     """
-    Pet model to store information about pets belonging to clients.
+    Pet model to store information about pets belonging to a profile.
 
     The maximum number of pet profiles that would be allowed
     to be created would be deteremined from the Branch
@@ -34,29 +34,34 @@ class Pet(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # Client - Foreign Key
-    client = models.ForeignKey("Client", on_delete=models.CASCADE)
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
 
     # Name
     name = models.CharField(max_length=255)
 
     # DOB - I'd like to system to record the date of birth and then use it to calculate real time age
-    dob = models.DateField()
+    dob = models.DateField(null=True, blank=True)
 
     # Size - Drop down list with size options
     size = models.CharField(
-        max_length=32, choices=[(size.name, size.value) for size in PetSize]
+        max_length=32,
+        choices=[(size.name, size.value) for size in PetSize],
+        null=True,
     )
 
     # Weight - Drop down list with weight ranges (this is typically only needed for dogs). Select one.
     weight = models.CharField(
-        max_length=32, choices=[(size.name, size.value) for size in WeightRange]
+        max_length=32,
+        choices=[(size.name, size.value) for size in WeightRange],
+        null=True,
     )
 
     # Usual Food Brands - Free form
     usual_food_brands = models.TextField(blank=True)
 
     # Allergies - Yes/No
-    allergies = models.BooleanField(default=False)
+    # If None, then the question has not been asked yet.
+    allergies = models.BooleanField(null=True)
 
     # Allergies Type - Drop down list with an "other" option that is free form text. Select all that apply
     allergy_types = models.TextField(blank=True)

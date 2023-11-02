@@ -1,5 +1,5 @@
-from .client import Client
-from .manager import Manager
-from .volunteer import Volunteer
-from .base_profile import BaseProfile
+# Version: 1.0
+
+from .profile import Profile
+from .role import Role
 from .user import User
