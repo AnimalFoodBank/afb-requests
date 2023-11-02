@@ -32,7 +32,7 @@ jobs:
     # https://stackoverflow.com/questions/58139175/running-actions-in-another-directory
     defaults:
       run:
-        working-directory: ./afb
+        working-directory: ./apps/api
     strategy:
       max-parallel: 2
       matrix:
@@ -57,6 +57,6 @@ jobs:
     - name: gh-action-pip-audit
       uses: pypa/gh-action-pip-audit@v1.0.8
       with:
-        inputs: afb/requirements.txt
+        inputs: apps/api/requirements.txt
         summary: true
         require-hashes: false
