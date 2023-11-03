@@ -1,18 +1,12 @@
-import uuid
-
+from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
+
+from ..base import BaseAbstractModel
 
 
-class UserManager(models.Manager):
-    pass
-
-
-class UserQuerySet(models.QuerySet):
-    pass
-
-
-class User(AbstractUser):
+class User(BaseAbstractModel, AbstractUser):
     """
     A custom user model that extends Django's built-in AbstractUser model.
 
@@ -29,9 +23,21 @@ class User(AbstractUser):
     - date_joined
     - last_login
 
-    Additional fields:
+    Fields inherited from BaseAbstractModel:
     - id: UUIDField, primary key
+    - created: DateTimeField, auto_now_add=True
+    - updated: DateTimeField, auto_now=True
+    - is_removed: BooleanField, default=False
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    objects = UserManager.from_queryset(UserQuerySet)()
+    # NOTE: We don't need to define a custom manager for this model because
+    # Django's built-in UserManager already provides the functionality we need.
+    # It's also a bit of a pain to implement properly.
+
+    # NOTE 2: However, that means we need to be careful wuth regards to soft
+    # detletes. If we use the delete method provided by the default manager,
+    # it will delete the object from the database. Instead, we should only
+    # ever delete Users using the user.delete() method.
+
+
+q

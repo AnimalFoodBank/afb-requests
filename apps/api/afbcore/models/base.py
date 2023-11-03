@@ -21,7 +21,14 @@ class BaseAbstractQuerySet(models.QuerySet):
 
 
 class BaseAbstractModel(UUIDModel, SoftDeletableModel, TimeStampedModel):
-    """A common base class for all major core models"""
+    """A common base class for all major core models
+
+    Fields inherited from BaseAbstractModel:
+        - id: UUIDField, primary key
+        - created: DateTimeField, auto_now_add=True
+        - updated: DateTimeField, auto_now=True
+        - is_removed: BooleanField, default=False
+    """
 
     class Meta:
         abstract = True
