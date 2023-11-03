@@ -9,6 +9,16 @@ from model_utils.models import (
     UUIDModel,
 )
 
+"""
+    Usage:
+
+    from .base import BaseAbstractModel
+
+    class MyModel(BaseAbstractModel):
+        # fields go here
+        pass
+"""
+
 
 class BaseAbstractModelManager(
     SoftDeletableManagerMixin, QueryManagerMixin, models.Manager

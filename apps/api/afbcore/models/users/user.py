@@ -6,7 +6,6 @@ from model_utils.models import (
     TimeStampedModel,
     UUIDModel,
 )
-from ..base import BaseAbstractModel
 
 
 class User(UUIDModel, TimeStampedModel, AbstractUser):

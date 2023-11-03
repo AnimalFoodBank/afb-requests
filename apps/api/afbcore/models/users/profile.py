@@ -4,7 +4,9 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 from .role import Role
-from .user import User
+from .user import User  # Profile depends on User and not the other way around
+
+from ..base import BaseAbstractModel
 
 # Status - Active, On Hold, Banned
 STATUS_CHOICES = [
@@ -22,7 +24,7 @@ MANY_TO_MANY_DEFAULTS = {
 }
 
 
-class Profile(models.Model):
+class Profile(BaseAbstractModel):
     """
     A model representing a user profile.
 
@@ -90,10 +92,6 @@ class Profile(models.Model):
 
     # Postal/Zip Codes/Cities will deliver to
     # We will use this to notify them of available deliveries in their "regions"
-    # TODO: Figure out how to do this. It could be a list of strings as a
-    # rudimentary approach, where the string could be a postal code, city,
-    # or region. Or it could be a list of foreign keys to a "DeliveryRegion"
-    # which would still be a simple string but reduce dupes.
     delivery_regions = models.ManyToManyField("DeliveryRegion")
 
     # Points/Rewards Earned
