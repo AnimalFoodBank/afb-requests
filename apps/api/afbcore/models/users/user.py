@@ -2,11 +2,14 @@ from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-
+from model_utils.models import (
+    TimeStampedModel,
+    UUIDModel,
+)
 from ..base import BaseAbstractModel
 
 
-class User(BaseAbstractModel, AbstractUser):
+class User(UUIDModel, TimeStampedModel, AbstractUser):
     """
     A custom user model that extends Django's built-in AbstractUser model.
 
@@ -27,7 +30,6 @@ class User(BaseAbstractModel, AbstractUser):
     - id: UUIDField, primary key
     - created: DateTimeField, auto_now_add=True
     - updated: DateTimeField, auto_now=True
-    - is_removed: BooleanField, default=False
     """
 
     # NOTE: We don't need to define a custom manager for this model because
@@ -38,6 +40,3 @@ class User(BaseAbstractModel, AbstractUser):
     # detletes. If we use the delete method provided by the default manager,
     # it will delete the object from the database. Instead, we should only
     # ever delete Users using the user.delete() method.
-
-
-q
