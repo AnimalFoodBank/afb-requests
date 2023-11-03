@@ -15,6 +15,17 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# When using Django Rest Framework (DRF), you typically don't use
+# LOGIN_REDIRECT_URL because DRF is designed to build APIs, which are
+# generally stateless. This means after a successful login, instead of
+# redirecting to a new page, you would return a response (often with a token
+# for authentication).
+
+# However, if you're building a browsable API with DRF and want to redirect
+# after login, you can set LOGIN_REDIRECT_URL to any valid URL endpoint in
+# your Django project. This could be a DRF view that returns JSON data, or a
+# Django view that returns HTML.
+LOGIN_REDIRECT_URL = "/api/users/current_user/"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -66,10 +77,12 @@ DJANGO_VITE_DEV_SERVER_HOST = "127.0.0.1"
 # ViteJS webserver port (default : 3000)
 DJANGO_VITE_DEV_SERVER_PORT = "3000"
 
-# assets are included as modules using the ViteJS webserver. This will enable HMR for your assets.
+# assets are included as modules using the ViteJS webserver. This will enable
+# HMR for your assets.
 DJANGO_VITE_DEV_MODE = True
 
-# ViteJS webserver path to the HMR client used in the vite_hmr_client tag (default : @vite/client).
+# ViteJS webserver path to the HMR client used in the vite_hmr_client tag
+# (default : @vite/client).
 DJANGO_VITE_WS_CLIENT_URL = "@vite/client"
 
 # Absolute path (including filename) to your ViteJS manifest file. This
@@ -88,8 +101,8 @@ VITE_OUTPUT_CSS = "output.css"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-STATIC_ROOT
 # https://docs.djangoproject.com/en/4.2/howto/static-files/#deployment
-# This should be an initially empty destination directory. it is not a place to
-# store your static files permanently.
+# This should be an initially empty destination directory. it is not a place
+# to store your static files permanently.
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # For prod:
