@@ -28,6 +28,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/auth/register/", users.RegisterView.as_view(), name="auth_register"),
     # path("login/", views.MyLoginView.as_view(), name="login"),
     # Part of django-tailwind
     # See https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
