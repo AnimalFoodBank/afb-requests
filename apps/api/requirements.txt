@@ -14,7 +14,7 @@ click==8.1.7
     # via pip-tools
 distlib==0.3.7
     # via virtualenv
-django==4.2.5
+django==4.2.7
     # via
     #   -r requirements.in
     #   django-extensions
@@ -30,7 +30,7 @@ django-filter==23.3
     # via -r requirements.in
 django-model-utils==4.3.1
     # via -r requirements.in
-django-phonenumber-field==7.2.0
+django-phonenumber-field[phonenumbers]==7.2.0
     # via -r requirements.in
 django-unfold==0.14.2
     # via -r requirements.in
@@ -49,7 +49,7 @@ nodeenv==1.8.0
 packaging==23.2
     # via build
 phonenumbers==8.13.24
-    # via -r requirements.in
+    # via django-phonenumber-field
 pip-tools==7.3.0
     # via -r requirements.in
 platformdirs==3.11.0
