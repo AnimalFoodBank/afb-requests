@@ -4,14 +4,24 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+appnope==0.1.3
+    # via ipython
 asgiref==3.7.2
     # via django
+asttokens==2.4.1
+    # via stack-data
 build==1.0.3
     # via pip-tools
 cfgv==3.4.0
     # via pre-commit
 click==8.1.7
     # via pip-tools
+coverage==7.3.2
+    # via -r requirements.in
+decorator==5.1.1
+    # via
+    #   ipdb
+    #   ipython
 distlib==0.3.7
     # via virtualenv
 django==4.2.7
@@ -32,40 +42,84 @@ django-model-utils==4.3.1
     # via -r requirements.in
 django-phonenumber-field[phonenumbers]==7.2.0
     # via -r requirements.in
-django-unfold==0.14.2
+django-unfold==0.15.1
     # via -r requirements.in
 django-vite==2.1.3
     # via -r requirements.in
 djangorestframework==3.14.0
     # via -r requirements.in
+executing==2.0.1
+    # via stack-data
 filelock==3.13.1
     # via virtualenv
 identify==2.5.31
     # via pre-commit
+iniconfig==2.0.0
+    # via pytest
+ipdb==0.13.13
+    # via -r requirements.in
+ipython==8.17.2
+    # via ipdb
+jedi==0.19.1
+    # via ipython
 markdown==3.5.1
     # via -r requirements.in
+matplotlib-inline==0.1.6
+    # via ipython
 nodeenv==1.8.0
     # via pre-commit
 packaging==23.2
-    # via build
+    # via
+    #   build
+    #   pytest
+parso==0.8.3
+    # via jedi
+pexpect==4.8.0
+    # via ipython
 phonenumbers==8.13.24
     # via django-phonenumber-field
 pip-tools==7.3.0
     # via -r requirements.in
 platformdirs==3.11.0
     # via virtualenv
+pluggy==1.3.0
+    # via pytest
 pre-commit==3.5.0
     # via -r requirements.in
+prompt-toolkit==3.0.39
+    # via ipython
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.2
+    # via stack-data
+pygments==2.16.1
+    # via ipython
 pyproject-hooks==1.0.0
     # via build
+pytest==7.4.3
+    # via
+    #   -r requirements.in
+    #   pytest-django
+pytest-django==4.6.0
+    # via -r requirements.in
 pytz==2023.3.post1
     # via djangorestframework
 pyyaml==6.0.1
     # via pre-commit
+six==1.16.0
+    # via asttokens
 sqlparse==0.4.4
     # via django
+stack-data==0.6.3
+    # via ipython
+traitlets==5.13.0
+    # via
+    #   ipython
+    #   matplotlib-inline
 virtualenv==20.24.6
     # via pre-commit
+wcwidth==0.2.9
+    # via prompt-toolkit
 wheel==0.41.3
     # via pip-tools
 
