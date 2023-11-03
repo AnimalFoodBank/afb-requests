@@ -53,3 +53,9 @@ pre-commit
 # django-crispy-forms
 # crispy-tailwind
 # pillow
+
+# Dev dependencies
+pytest
+pytest-django
+coverage
+ipdb
