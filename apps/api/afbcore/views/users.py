@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from afbcore.serializers import UserSerializer, RegisterSerializer
+from afbcore.serializers import UserSerializer, RegisterUserSerializer
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 
@@ -19,7 +19,7 @@ class RegisterView(generics.CreateAPIView):
 
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
-    serializer_class = RegisterSerializer
+    serializer_class = RegisterUserSerializer
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)

@@ -7,8 +7,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from rest_framework import status
 from rest_framework.test import APITestCase
-from afbcore.views.users import UserViewSet
-from afbcore.serializers import UserSerializer
+from afbcore.views.users import UserViewSet, RegisterView
+from afbcore.serializers import UserSerializer, RegisterUserSerializer
 from django.test import RequestFactory
 
 """
@@ -22,7 +22,7 @@ How to run the tests:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "afbcore.settings")
 
 
-class RegisterTestCase(APITestCase):
+class RegisterViewTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         User = get_user_model()
@@ -43,9 +43,6 @@ class RegisterTestCase(APITestCase):
 
     # Register a new user with valid data
     def test_register_valid_data(self):
-        # Initialize the UserViewSet object
-        user_viewset = UserViewSet()
-
         # Create a valid data dictionary
         data = {
             "username": "testuser",
@@ -57,8 +54,8 @@ class RegisterTestCase(APITestCase):
         factory = RequestFactory()
         request = factory.post("/users/", data, format="json")
 
-        # Create a UserSerializer instance with the valid data
-        serializer = UserSerializer(data=data, context={"request": request})
+        # Create a RegisterSerializer instance with the valid data
+        serializer = RegisterUserSerializer(data=data, context={"request": request})
 
         if not serializer.is_valid():
             # Output the serializer errors when it's not valid
@@ -67,8 +64,9 @@ class RegisterTestCase(APITestCase):
         # Check if the serializer is valid
         self.assertTrue(serializer.is_valid())
 
-        # Call the register method with the valid data
-        response = user_viewset.register(serializer)
+        # Call the post method of RegisterView with the valid data
+        view = RegisterView.as_view()
+        response = view(request)
 
         # Assert that the response status code is 201
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -78,9 +76,6 @@ class RegisterTestCase(APITestCase):
 
     # Register a new user with minimum required data
     def test_register_minimum_data(self):
-        # Initialize the UserViewSet object
-        user_viewset = UserViewSet()
-
         # Create a minimum required data dictionary
         data = {
             "username": "testuser",
@@ -88,14 +83,17 @@ class RegisterTestCase(APITestCase):
             "password": "password123",
         }
 
-        # Create a UserSerializer instance with the minimum required data
-        serializer = UserSerializer(data=data)
+        # Create a RegisterSerializer instance with the minimum required data
+        serializer = RegisterSerializer(data=data)
 
         # Check if the serializer is valid
         serializer.is_valid()
 
-        # Call the register method with the minimum required data
-        response = user_viewset.register(serializer)
+        # Call the post method of RegisterView with the minimum required data
+        factory = RequestFactory()
+        request = factory.post("/users/", data, format="json")
+        view = RegisterView.as_view()
+        response = view(request)
 
         # Assert that the response status code is 201
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -105,9 +103,6 @@ class RegisterTestCase(APITestCase):
 
     # Register a new user with all optional data
     def test_register_all_optional_data(self):
-        # Initialize the UserViewSet object
-        user_viewset = UserViewSet()
-
         # Create a data dictionary with all optional fields
         data = {
             "username": "testuser",
@@ -116,13 +111,16 @@ class RegisterTestCase(APITestCase):
             "is_staff": True,
         }
 
-        # Initialize the UserSerializer object with the data containing all optional fields
-        serializer = UserSerializer(data=data)
+        # Initialize the RegisterSerializer object with the data containing all optional fields
+        serializer = RegisterSerializer(data=data)
 
         # Check if the serializer is valid
         if serializer.is_valid():
-            # Call the register method with the data containing all optional fields
-            response = user_viewset.register(serializer)
+            # Call the post method of RegisterView with the data containing all optional fields
+            factory = RequestFactory()
+            request = factory.post("/users/", data, format="json")
+            view = RegisterView.as_view()
+            response = view(request)
 
             # Assert that the response status code is 201
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -137,9 +135,6 @@ class RegisterTestCase(APITestCase):
 
     # Register a new user with an invalid email format
     def test_register_invalid_email_format(self):
-        # Initialize the UserViewSet object
-        user_viewset = UserViewSet()
-
         # Create a data dictionary with an invalid email format
         data = {
             "username": "testuser",
@@ -147,13 +142,16 @@ class RegisterTestCase(APITestCase):
             "password": "password123",
         }
 
-        # Initialize the UserSerializer object with the data containing an invalid email format
-        serializer = UserSerializer(data=data)
+        # Initialize the RegisterSerializer object with the data containing an invalid email format
+        serializer = RegisterSerializer(data=data)
 
         # Check if the serializer is valid
         if serializer.is_valid():
-            # Call the register method with the valid data
-            response = user_viewset.register(serializer)
+            # Call the post method of RegisterView with the valid data
+            factory = RequestFactory()
+            request = factory.post("/users/", data, format="json")
+            view = RegisterView.as_view()
+            response = view(request)
 
             # Assert that the response status code is 400
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -166,9 +164,6 @@ class RegisterTestCase(APITestCase):
 
     # Register a new user with an invalid username format
     def test_register_invalid_username_format(self):
-        # Initialize the UserViewSet object
-        user_viewset = UserViewSet()
-
         # Create a data dictionary with an invalid username format
         data = {
             "username": "invalid username",
@@ -176,13 +171,16 @@ class RegisterTestCase(APITestCase):
             "password": "password123",
         }
 
-        # Initialize the UserSerializer object with the data containing an invalid username format
-        serializer = UserSerializer(data=data)
+        # Initialize the RegisterSerializer object with the data containing an invalid username format
+        serializer = RegisterSerializer(data=data)
 
         # Check if the serializer is valid
         if serializer.is_valid():
-            # Call the register method with the valid data
-            response = user_viewset.register(serializer)
+            # Call the post method of RegisterView with the valid data
+            factory = RequestFactory()
+            request = factory.post("/users/", data, format="json")
+            view = RegisterView.as_view()
+            response = view(request)
 
             # Assert that the response status code is 400
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -195,9 +193,6 @@ class RegisterTestCase(APITestCase):
 
     # Register a new user with a password that is too short
     def test_register_short_password(self):
-        # Initialize the UserViewSet object
-        user_viewset = UserViewSet()
-
         # Create a data dictionary with a short password
         data = {
             "username": "testuser",
@@ -205,13 +200,16 @@ class RegisterTestCase(APITestCase):
             "password": "pass",
         }
 
-        # Initialize the UserSerializer object with the data containing a short password
-        serializer = UserSerializer(data=data)
+        # Initialize the RegisterSerializer object with the data containing a short password
+        serializer = RegisterSerializer(data=data)
 
         # Check if the serializer is valid
         if serializer.is_valid():
-            # Call the register method with the valid data
-            response = user_viewset.register(serializer)
+            # Call the post method of RegisterView with the valid data
+            factory = RequestFactory()
+            request = factory.post("/users/", data, format="json")
+            view = RegisterView.as_view()
+            response = view(request)
 
             # Assert that the response status code is 400
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
