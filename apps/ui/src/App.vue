@@ -34,13 +34,15 @@
                                                           Renders the company logo as an image.
                                                           The @ symbol in the src attribute is used to indicate that the path is relative to the project's src directory.
                                                           -->
-                <img class="block h-8 w-8" src="@/assets/img/afb_icon_colour.png" alt="Your Company" />
+                <a href="/"><img class="block h-8 w-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" /></a>
               </div>
               <div class="hidden lg:ml-10 lg:block">
-                <div class="flex space-x-4">
-                  <a v-for="item in navigation" :key="item.name" :href="item.href"
-                     :class="[item.current ? 'bg-indigo-700 text-white' : 'text-white hover:bg-indigo-500 hover:bg-opacity-75', 'rounded-md py-2 px-3 text-sm font-medium']"
-                     :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
+                <div class="flex space-x-4 ">
+
+                  <router-link v-for="item in navigation"
+                    :key="item.name" :to="item.href" >{{ item.name }}
+                  </router-link>
+
                 </div>
               </div>
             </div>
@@ -148,6 +150,7 @@
       <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
         <div class="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
 
+          <router-view />
 
         </div>
       </div>
@@ -156,9 +159,9 @@
 </template>
 
 <script setup lang="ts">
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 const user = {
   name: 'Tom Cook',
@@ -167,11 +170,9 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Reports', href: '#', current: false },
+  { name: 'Dashboard', href: '/dashboard', current: true },
+  { name: 'About', href: '/about', current: false },
+  { name: 'Requests', href: '/request', current: false },
 ]
 
 const userNavigation = [
@@ -180,3 +181,28 @@ const userNavigation = [
   { name: 'Sign out', href: '#' },
 ]
 </script>
+
+
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>
