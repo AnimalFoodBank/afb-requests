@@ -1,5 +1,6 @@
 from django.db import models
 from ..base import BaseAbstractModel, BaseAbstractQuerySet, BaseAbstractModelManager
+from django.core.exceptions import ValidationError
 
 
 class RoleQuerySet(BaseAbstractQuerySet):
@@ -24,8 +25,21 @@ class Role(BaseAbstractModel):
 
     objects = RoleManager.from_queryset(RoleQuerySet)()
 
-    name = models.CharField(max_length=50)
-    level = models.SmallIntegerField(default=0)
+    name = models.CharField(max_length=50, unique=True, blank=False, null=False)
+
+    level = models.PositiveSmallIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            raise ValueError("Name cannot be empty")
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        if not self.name:
+            raise ValidationError("Name cannot be empty")
+
+    def __str__(self):
+        return self.name
 
     def __str__(self):
         return self.name

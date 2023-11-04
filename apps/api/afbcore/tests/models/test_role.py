@@ -1,5 +1,6 @@
 from django.test import TestCase
 from afbcore.models.users.role import Role
+from django.db.utils import IntegrityError
 
 """
     Run these tests with the following command:
@@ -21,7 +22,7 @@ class RoleModelTest(TestCase):
 
     def test_role_level_default_value(self):
         role = Role.objects.get(id=self.role.id)
-        self.assertEqual(role.level, 1)
+        self.assertEqual(role.level, 90)
 
     def test_role_str_method(self):
         role = Role.objects.get(id=self.role.id)
@@ -32,12 +33,15 @@ class RoleModelTest(TestCase):
             Role.objects.create(level=1)
 
     def test_role_level_range(self):
-        with self.assertRaises(ValueError):
-            Role.objects.create(name="Test Role", level=-1)
-
-        with self.assertRaises(ValueError):
-            Role.objects.create(name="Test Role", level=100)
+        Role.objects.create(name="Test Role 2", level=100)
+        with self.assertRaises(IntegrityError):
+            Role.objects.create(name="Test Role 1 ", level=-1)
 
     def test_role_name_unique(self):
-        with self.assertRaises(Exception):
+        Role.objects.create(name="Test Role 3", level=2)
+        with self.assertRaises(IntegrityError):
+            Role.objects.create(name="Test Role 3", level=2)
+
+    def test_role_name_not_unique(self):
+        with self.assertRaises(IntegrityError):
             Role.objects.create(name="Test Role", level=2)
