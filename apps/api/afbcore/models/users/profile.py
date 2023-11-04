@@ -53,8 +53,12 @@ class Profile(BaseAbstractModel):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="profiles")
-    role = models.OneToOneField(Role, on_delete=models.DO_NOTHING)
+    # user = models.ForeignKey(
+    #     User, on_delete=models.DO_NOTHING, related_name="pro2files"
+    # )
+    # role = models.ForeignKey(
+    #     Role, on_delete=models.DO_NOTHING, related_name="prof2iles"
+    # )
 
     # Usually just one, but can be multiple
     branches = models.ManyToManyField("Branch", **MANY_TO_MANY_DEFAULTS)

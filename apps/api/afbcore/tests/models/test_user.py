@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 """
     Run these tests with the following command:
     python manage.py test afbcore.tests.models.test_user
+    python manage.py test afbcore/tests/models --pattern="test_user.py"
 """
 
 

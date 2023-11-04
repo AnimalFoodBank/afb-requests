@@ -1,20 +1,18 @@
 from django.db import models
+from ..base import BaseAbstractModel, BaseAbstractQuerySet, BaseAbstractModelManager
 
 
-class RoleQuerySet(models.QuerySet):
+class RoleQuerySet(BaseAbstractQuerySet):
     def by_level(self, level):
         return self.filter(level=level)
 
 
-class RoleManager(models.Manager):
-    def get_queryset(self):
-        return RoleQuerySet(self.model, using=self._db)
-
+class RoleManager(BaseAbstractModelManager):
     def by_level(self, level):
         return self.get_queryset().by_level(level)
 
 
-class Role(models.Model):
+class Role(BaseAbstractModel):
     """
     A model representing a user role.
 
@@ -28,17 +26,6 @@ class Role(models.Model):
 
     name = models.CharField(max_length=50)
     level = models.SmallIntegerField(default=0)
-
-    def __init__(self, name: str, level: int):
-        """
-        Initializes a new instance of the Role class.
-
-        Args:
-            name (str): The name of the role.
-            level (int): The level of the role.
-        """
-        self.name = name
-        self.level = level
 
     def __str__(self):
         return self.name
