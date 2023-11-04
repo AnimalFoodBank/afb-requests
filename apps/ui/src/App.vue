@@ -40,7 +40,7 @@
                 <div class="flex space-x-4 ">
 
                   <router-link v-for="item in navigation"
-                    :key="item.name" :to="item.href" >{{ item.name }}
+                    :key="item.name" :to="item.href" class="nav-link rounded-md py-2 px-3 text-sm font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">{{ item.name }}
                   </router-link>
 
                 </div>
