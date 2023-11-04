@@ -51,9 +51,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",  # add this for 'python manage.py runserver_plus'
-    "crispy_forms",
-    "tailwind",
-    "crispy_tailwind",
     "rest_framework",  # add DRF
     "django_filters",  # add DRF filters
     "phonenumber_field",
