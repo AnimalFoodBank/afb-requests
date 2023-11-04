@@ -1,20 +1,19 @@
 from django.db import models
+from ..base import BaseAbstractModel, BaseAbstractQuerySet, BaseAbstractModelManager
+from django.core.exceptions import ValidationError
 
 
-class RoleQuerySet(models.QuerySet):
+class RoleQuerySet(BaseAbstractQuerySet):
     def by_level(self, level):
         return self.filter(level=level)
 
 
-class RoleManager(models.Manager):
-    def get_queryset(self):
-        return RoleQuerySet(self.model, using=self._db)
-
+class RoleManager(BaseAbstractModelManager):
     def by_level(self, level):
         return self.get_queryset().by_level(level)
 
 
-class Role(models.Model):
+class Role(BaseAbstractModel):
     """
     A model representing a user role.
 
@@ -26,19 +25,21 @@ class Role(models.Model):
 
     objects = RoleManager.from_queryset(RoleQuerySet)()
 
-    name = models.CharField(max_length=50)
-    level = models.SmallIntegerField(default=0)
+    name = models.CharField(max_length=50, unique=True, blank=False, null=False)
 
-    def __init__(self, name: str, level: int):
-        """
-        Initializes a new instance of the Role class.
+    level = models.PositiveSmallIntegerField(default=0)
 
-        Args:
-            name (str): The name of the role.
-            level (int): The level of the role.
-        """
-        self.name = name
-        self.level = level
+    def save(self, *args, **kwargs):
+        if not self.name:
+            raise ValueError("Name cannot be empty")
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        if not self.name:
+            raise ValidationError("Name cannot be empty")
+
+    def __str__(self):
+        return self.name
 
     def __str__(self):
         return self.name

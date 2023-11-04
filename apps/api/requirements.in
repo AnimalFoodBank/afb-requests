@@ -19,8 +19,14 @@
 #
 # See: https://github.com/jazzband/pip-tools
 #
+#
+# To resolve warnings in Django (important to do before upgrading):
+#
+#   python -Wa manage.py test
+#
+# See: https://docs.djangoproject.com/en/4.2/howto/upgrade-version/#upgrade-packages-individually
 
-Django==4.2.5
+Django~=4.2
 
 django_extensions
 django-model-utils
@@ -47,3 +53,9 @@ pre-commit
 # django-crispy-forms
 # crispy-tailwind
 # pillow
+
+# Dev dependencies
+pytest
+pytest-django
+coverage
+ipdb

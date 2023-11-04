@@ -83,7 +83,7 @@ local_settings.py
 # Project
 .env*
 !.env.empty
-db.sqlite3
+*.sqlite3
 .vscode/
 tmp/*
 node_modules/

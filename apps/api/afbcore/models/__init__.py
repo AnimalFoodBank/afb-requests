@@ -5,7 +5,8 @@ from .users import User, Profile, Role  # noqa
 from .request import Request
 from .pet import Pet
 from .food_available import FoodAvailable
-from .delivery import Delivery, DeliveryRegion
+from .delivery import Delivery
+from .delivery_region import DeliveryRegion
 
 """
 # https://docs.trunk.io/check/ignoring-issues

@@ -73,19 +73,65 @@ https://vuejs.org/guide/scaling-up/tooling.html#project-scaffolding
 ```
 
 
-### Django-Tailwind
-
-https://django-tailwind.readthedocs.io/en/latest/usage.html
-
-```bash
-    # start a long-running process that watches files for changes
-    $ ./manage.py tailwind start
-
-    # create a production build of your theme
-    $ ./manage.py tailwind build
-
-```
 
 ### Django Unfold Admin
 
 https://github.com/unfoldadmin/django-unfold#installation
+
+
+## Visual Studio Code
+
+`launch.json` configurations for running, debugging and testing Django applications.
+
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Django Runserver",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver"
+            ],
+            "django": true,
+            "justMyCode": true,
+
+
+        },
+        {
+            "name": "Django Test (Current file)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/apps/api/manage.py",
+            "args": [
+                "test",
+                "--keepdb",
+                "${fileDirname}",
+                "--pattern",
+                "${fileBasename}"
+            ],
+            "django": true,
+            "justMyCode": true,
+        }
+        {
+            "name": "Django Test (all)",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/apps/api",
+            "program": "./manage.py",
+            "args": [
+                "test",
+                "afbcore/tests"
+            ],
+            "django": true,
+            "justMyCode": true,
+        }
+    ]
+}
+```

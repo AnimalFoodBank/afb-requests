@@ -28,6 +28,9 @@ class PhysicalLocationMixin(models.Model):
     # Postal code or ZIP code
     postal_code = models.CharField(max_length=255, null=True, blank=True)
 
+    # Country
+    country = models.CharField(max_length=255, null=True, blank=True)
+
     # External ID.
     # The unique idenifier from a Canada Post API request. This is used to
     # indicate the address has been validated. However, street names/numbers
