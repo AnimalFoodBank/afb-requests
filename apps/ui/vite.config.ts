@@ -1,11 +1,16 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/static/',
+  base: "/",
+  resolve: {
+    alias: {
+      "@": "src",
+    },
+  },
   server: {
-    host: 'localhost',
+    host: "localhost",
     port: 3000,
     open: false,
     watch: {
@@ -17,7 +22,7 @@ export default defineConfig({
   // https://github.com/MrBin99/django-vite#vitejs
   // https://vitejs.dev/guide/backend-integration.html
   build: {
-    outDir: 'dist/',
+    outDir: "dist/",
     emptyOutDir: true,
 
     // https://stackoverflow.com/questions/74177078/styles-is-missing-after-i-bundle-my-project-with-vite
@@ -30,12 +35,12 @@ export default defineConfig({
     // ViteJS can use to determine which files to compile. You need to
     // tell it directly.
     rollupOptions: {
-      input: 'src/main.ts',
+      input: "src/main.ts",
       // See: https://ilikerobots.medium.com/django-vue-vite-rest-not-required-ca63cfa558fd
       // output: {
       //   dir: '../<your_django_app_dir>/static/vue/',
       //   entryFileNames: '[name].js',
       // }
-    }
-  }
-})
+    },
+  },
+});
