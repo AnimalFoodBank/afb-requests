@@ -56,8 +56,6 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
     "afbcore",
-    "django_browser_reload",
-    # 'theme',   # python manage.py tailwind init
 ]
 
 VITE_APP_DIR = BASE_DIR.parent / "ui"
