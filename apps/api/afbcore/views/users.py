@@ -1,13 +1,11 @@
+from afbcore.serializers import RegisterUserSerializer, UserSerializer
+from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-
-from django.contrib.auth import get_user_model
-from rest_framework import viewsets, status, permissions
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from afbcore.serializers import UserSerializer, RegisterUserSerializer
-from rest_framework import generics
+from rest_framework import generics, permissions, status, viewsets
+from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -36,15 +34,15 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"])
     def current_user(self, request):
-        serializer = self.get_serializer(request.user)
-        # import ipdb
-
-        # ipdb.set_trace()
+        serializer = self.get_serializer(request.user, context={"request": request})
         return Response(serializer.data)
 
-    @action(detail=False, methods=["post"])
-    def register(self, request):
-        serializer = UserSerializer(data=request.data)
+    @api_view(["POST"])
+    def register(request):
+        """
+        Register a new user.
+        """
+        serializer = UserSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             user = serializer.save()
             if user:
