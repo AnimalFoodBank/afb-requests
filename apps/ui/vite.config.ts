@@ -1,5 +1,6 @@
-import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import vueform from '@vueform/vueform/vite'
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,7 +19,10 @@ export default defineConfig({
       disableGlobbing: false,
     },
   },
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    vueform() // https://vueform.com/docs/installation
+  ],
   // https://github.com/MrBin99/django-vite#vitejs
   // https://vitejs.dev/guide/backend-integration.html
   build: {
