@@ -26,8 +26,9 @@
       <Disclosure as="nav" class="border-b border-indigo-300 border-opacity-25 bg-indigo-600 lg:border-none"
                   v-slot="{ open }">
         <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
-          <div
-               class="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
+          <div class="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
+
+            <!-- Homepage link -->
             <div class="flex items-center px-2 lg:px-0">
               <div class="flex-shrink-0">
                 <!--
@@ -36,6 +37,8 @@
                                                           -->
                 <a href="/"><img class="block h-8 w-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" /></a>
               </div>
+
+              <!-- Main navigation -->
               <div class="hidden lg:ml-10 lg:block">
                 <nav class="pl-0 ml-0">
                   <div class="flex space-x-4 ">
@@ -48,6 +51,8 @@
                 </nav>
               </div>
             </div>
+
+            <!-- Site search bar -->
             <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
               <div class="w-full max-w-lg lg:max-w-xs">
                 <label for="search" class="sr-only">Search</label>
@@ -61,8 +66,9 @@
                 </div>
               </div>
             </div>
+
+            <!-- Mobile menu button -->
             <div class="flex lg:hidden">
-              <!-- Mobile menu button -->
               <DisclosureButton
                                 class="relative inline-flex items-center justify-center rounded-md bg-indigo-600 p-2 text-indigo-200 hover:bg-indigo-500 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600">
                 <span class="absolute -inset-0.5" />
@@ -71,6 +77,8 @@
                 <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
               </DisclosureButton>
             </div>
+
+            <!-- Notifications bell -->
             <div class="hidden lg:ml-4 lg:block">
               <div class="flex items-center">
                 <button type="button"
@@ -80,7 +88,7 @@
                   <BellIcon class="h-6 w-6" aria-hidden="true" />
                 </button>
 
-                <!-- Profile dropdown -->
+                <!-- Profile dropdown navigation (Desktop) -->
                 <Menu as="div" class="relative ml-3 flex-shrink-0">
                   <div>
                     <MenuButton
@@ -98,7 +106,7 @@
                               leave-to-class="transform opacity-0 scale-95">
                     <MenuItems
                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
+                      <MenuItem v-for="item in navigationItems" :key="item.name" v-slot="{ active }">
                       <a :href="item.href"
                          :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name
                          }}</a>
@@ -111,11 +119,12 @@
           </div>
         </div>
 
+        <!-- Dropdown navigation (mobile) -->
         <DisclosurePanel class="lg:hidden">
           <div class="space-y-1 px-2 pb-3 pt-2">
-            <DisclosureButton v-for="item in navigation" :key="item.name" as="a" :href="item.href"
-                              :class="[item.current ? 'bg-indigo-700 text-white' : 'text-white hover:bg-indigo-500 hover:bg-opacity-75', 'block rounded-md py-2 px-3 text-base font-medium']"
-                              :aria-current="item.current ? 'page' : undefined">{{ item.name }}</DisclosureButton>
+            <DisclosureButton v-for="item in navigationItems" :key="item.name" as="a" :href="item.href"
+                              :class="'block rounded-md py-2 px-3 text-base font-medium'"
+                              :aria-current="'page'">{{ item.name }}</DisclosureButton>
           </div>
           <div class="border-t border-indigo-700 pb-3 pt-4">
             <div class="flex items-center px-5">
@@ -134,7 +143,7 @@
               </button>
             </div>
             <div class="mt-3 space-y-1 px-2">
-              <DisclosureButton v-for="item in userNavigation" :key="item.name" as="a" :href="item.href"
+              <DisclosureButton v-for="item in navigationItems" :key="item.name" as="a" :href="item.href"
                                 class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">
                 {{ item.name }}
               </DisclosureButton>
@@ -145,6 +154,7 @@
 
     </div>
 
+    <!-- Page content -->
     <main class="-mt-32">
       <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
         <div class="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
@@ -155,48 +165,87 @@
       </div>
     </main>
 
-
-      <!-- Footer -->
-      <footer class="mx-auto mt-40 max-w-7xl overflow-hidden px-6 pb-20 sm:mt-64 sm:pb-24 lg:px-8">
-        <nav class="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
-          <div v-for="item in footerNavigation.main" :key="item.name" class="pb-6">
-            <a :href="item.href" class="text-sm leading-6 text-gray-600 hover:text-gray-900">{{ item.name }}</a>
-          </div>
-        </nav>
-        <div class="mt-10 flex justify-center space-x-10">
-          <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href" class="text-gray-400 hover:text-gray-500">
-            <span class="sr-only">{{ item.name }}</span>
-            <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
-          </a>
+    <!-- Footer -->
+    <footer class="mx-auto mt-40 max-w-7xl overflow-hidden px-6 pb-20 sm:mt-64 sm:pb-24 lg:px-8">
+      <nav class="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+        <div v-for="item in footerNavigation.main" :key="item.name" class="pb-6">
+          <a :href="item.href" class="text-sm leading-6 text-gray-600 hover:text-gray-900">{{ item.name }}</a>
         </div>
-        <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; 2020 Your Company, Inc. All rights reserved.</p>
-      </footer>
+      </nav>
+      <div class="mt-10 flex justify-center space-x-10">
+        <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href" class="text-gray-400 hover:text-gray-500">
+          <span class="sr-only">{{ item.name }}</span>
+          <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
+        </a>
+      </div>
+      <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; 2020 Your Company, Inc. All rights reserved.</p>
+    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
+import CatHeartImage from '@/assets/img/Cat-Heart-680x800-1.png';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
-import { defineComponent, h } from 'vue';
+import axios from 'axios';
+import { computed, defineComponent, h, onMounted, ref } from 'vue';
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+const user = ref({
+  isLoggedIn: false,
+  name: '',
+  email: '',
+  imageUrl: '',
+});
+
+/**
+ * Makes a GET request to the '/api/user' endpoint and sets the user value if the response status is within the 200-299 range.
+ * If the response status is outside the 200-299 range, an error message is logged to the console.
+ * If there is a network error or the request is rejected, an error message is logged to the console.
+ * Note: axios automatically rejects the promise if the status code is outside the 200-299 range, so the else branch in this example might not be necessary depending on your axios configuration.
+ */
+onMounted(async () => {
+  try {
+    const response = await axios.get('/api/user');
+    if (response.status >= 200 && response.status < 300) {
+      user.value = response.data;
+    } else {
+      console.error(`Request failed with status code ${response.status}`);
+      user.value = guestUser.value;
+    }
+  } catch (error) {
+    console.error('Request failed', error);
+    user.value = guestUser.value;
+  }
+});
+
+const guestUser = ref({
+  isLoggedIn: false,
+  name: 'Heart Cat',
+  email: 'heartcat@animalfoodbank.org',
+  imageUrl: CatHeartImage,
+});
+
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: true },
-  { name: 'About', href: '/about', current: false },
-  { name: 'Requests', href: '/requests', current: false },
+  { name: 'Dashboard', href: '/dashboard'},
+  { name: 'About', href: '/about'},
+  { name: 'Requests', href: '/requests'},
 ]
 
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Your Profile', href: '/profile' },
+  { name: 'Your dashboard', href: '/dashboard' },
+  { name: 'Sign out', href: '/logout' },
 ]
+
+const guestNavigation = [
+  { name: 'Sign in', href: '/login' },
+];
+
+const navigationItems = computed(() => {
+  console.log(user.value.isLoggedIn)
+  return user.value.isLoggedIn ? userNavigation : guestNavigation;
+});
 
 const footerNavigation = {
   main: [
