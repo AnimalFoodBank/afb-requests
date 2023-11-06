@@ -22,7 +22,6 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    vueform() // https://vueform.com/docs/installation
   ],
   // https://github.com/MrBin99/django-vite#vitejs
   // https://vitejs.dev/guide/backend-integration.html

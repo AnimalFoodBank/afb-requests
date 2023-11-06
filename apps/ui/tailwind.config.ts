@@ -7,9 +7,9 @@ module.exports = {
     "./src/components/*.{vue,html,js,ts,jsx,tsx}",
     "../afbcore/templates/**/*.html",
     "../afbcore/templates/*.html",
-    './vueform.config.ts', // or where `vueform.config.js` is located
-    './node_modules/@vueform/vueform/themes/tailwind/**/*.vue',
-    './node_modules/@vueform/vueform/themes/tailwind/**/*.{ts,js,tsx,jsx}',
+    // './vueform.config.ts', // or where `vueform.config.js` is located
+    // './node_modules/@vueform/vueform/themes/tailwind/**/*.vue',
+    // './node_modules/@vueform/vueform/themes/tailwind/**/*.{ts,js,tsx,jsx}',
   ],
   theme: {
     extend: {},
@@ -17,6 +17,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
-    require('@vueform/vueform/tailwind')
+    // require('@vueform/vueform/tailwind')
   ],
 }
