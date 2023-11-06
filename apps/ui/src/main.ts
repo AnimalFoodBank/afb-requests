@@ -6,4 +6,15 @@ import App from './App.vue'
 import './index.css'
 import router from './router'
 
-createApp(App).use(router).mount('#app')
+// import Vueform from '@vueform/vueform'
+// import vueformConfig from './../vueform.config'
+import { Plugin } from 'vue'
+
+
+const app = createApp(App)
+app.use(router)
+
+// Attach Vueform and its config
+// app.use(Vueform as any, vueformConfig)
+
+app.mount('#app')

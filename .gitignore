@@ -88,4 +88,7 @@ local_settings.py
 tmp/*
 node_modules/
 
+# Vite/Vue
+.vite/
+
 **/tmp

@@ -1,9 +1,11 @@
-import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import vueform from '@vueform/vueform/vite'
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/",
+  // root: "src/",
   resolve: {
     alias: {
       "@": "src",
@@ -18,7 +20,9 @@ export default defineConfig({
       disableGlobbing: false,
     },
   },
-  plugins: [vue()],
+  plugins: [
+    vue(),
+  ],
   // https://github.com/MrBin99/django-vite#vitejs
   // https://vitejs.dev/guide/backend-integration.html
   build: {
@@ -31,16 +35,17 @@ export default defineConfig({
     cssCodeSplit: true,
 
     manifest: true,
-    // As this is in SSR and not in SPA, you don't have an index.html that
-    // ViteJS can use to determine which files to compile. You need to
-    // tell it directly.
-    rollupOptions: {
-      input: "src/main.ts",
-      // See: https://ilikerobots.medium.com/django-vue-vite-rest-not-required-ca63cfa558fd
-      // output: {
-      //   dir: '../<your_django_app_dir>/static/vue/',
-      //   entryFileNames: '[name].js',
-      // }
-    },
+
+    // // As this is in SSR and not in SPA, you don't have an index.html that
+    // // ViteJS can use to determine which files to compile. You need to
+    // // tell it directly.
+    // rollupOptions: {
+    //   input: "src/main.ts",
+    //   // See: https://ilikerobots.medium.com/django-vue-vite-rest-not-required-ca63cfa558fd
+    //   // output: {
+    //   //   dir: '../<your_django_app_dir>/static/vue/',
+    //   //   entryFileNames: '[name].js',
+    //   // }
+    // },
   },
 });

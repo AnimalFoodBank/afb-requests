@@ -37,13 +37,15 @@
                 <a href="/"><img class="block h-8 w-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" /></a>
               </div>
               <div class="hidden lg:ml-10 lg:block">
-                <div class="flex space-x-4 ">
+                <nav class="pl-0 ml-0">
+                  <div class="flex space-x-4 ">
 
-                  <router-link v-for="item in navigation"
-                    :key="item.name" :to="item.href" >{{ item.name }}
-                  </router-link>
+                    <router-link v-for="item in navigation"
+                      :key="item.name" :to="item.href" class="nav-link rounded-md py-2 px-3 text-sm font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">{{ item.name }}
+                    </router-link>
 
-                </div>
+                  </div>
+                </nav>
               </div>
             </div>
             <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
@@ -172,7 +174,7 @@ const user = {
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: true },
   { name: 'About', href: '/about', current: false },
-  { name: 'Requests', href: '/request', current: false },
+  { name: 'Requests', href: '/requests', current: false },
 ]
 
 const userNavigation = [

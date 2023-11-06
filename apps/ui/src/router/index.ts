@@ -15,15 +15,19 @@ type Route = {
   path: string;
   name: string;
   component: any;
+  alias?: string;
 }
 
 
+const defaultRoute: Route = {
+  path: '/',
+  component: DashboardView,
+  name: 'DashboardView',
+  alias: '/dashboard',
+};
+
 const routes: Route[] = [
-    {
-      path: '/dashboard',
-      component: DashboardView,
-      name: 'DashboardView',
-  },
+  defaultRoute,
   {
       path: '/requests',
       component: MakeRequestView,
