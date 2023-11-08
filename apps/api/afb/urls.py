@@ -29,4 +29,5 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api/auth/register/", users.RegisterView.as_view(), name="auth_register"),
+    path("api/auth/login/", users.LoginView.as_view(), name="auth_login"),
 ]

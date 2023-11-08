@@ -127,12 +127,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# https://github.com/django-crispy-forms/crispy-tailwind
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
-
-CRISPY_TEMPLATE_PACK = "tailwind"
-
-
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
 PHONENUMBER_DEFAULT_REGION = "CA"
