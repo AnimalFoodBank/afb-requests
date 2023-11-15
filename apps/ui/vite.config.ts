@@ -5,21 +5,21 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/",
-  // root: "src/",
+  root: "/Users/d/Projects/clients/AFB/afb-requests/apps/ui",
   resolve: {
     alias: {
       "@": "src",
     },
   },
-  server: {
-    host: "localhost",
-    port: 3000,
-    open: false,
-    watch: {
-      usePolling: false,
-      disableGlobbing: false,
-    },
-  },
+  // server: {
+  //   host: "localhost",
+  //   port: 3000,
+  //   open: false,
+  //   watch: {
+  //     usePolling: false,
+  //     disableGlobbing: false,
+  //   },
+  // },
   plugins: [
     vue(),
   ],
