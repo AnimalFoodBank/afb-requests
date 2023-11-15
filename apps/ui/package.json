@@ -2,10 +2,10 @@
   "name": "afb-ui",
   "version": "0.1.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "PRIVATE",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
-    "dev": "vite",
+    "dev": "pwd && vite --port 3000",
     "TODO": "postcss e.g. postcss styles.css -o src/styles.css",
     "preview": "vite preview"
   },
