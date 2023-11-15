@@ -6,6 +6,7 @@ import MakeRequestView from '../views/MakeRequestView.vue'
 import AboutView from '../views/AboutView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
+import LoginView from '../views/LoginView.vue'
 
 // TODO: Revisit lazy-loading suggestion from ? (component as a function that returns AboutVue)
 // import AboutView from '../views/AboutView.vue';
@@ -37,6 +38,11 @@ const routes: Route[] = [
       path: '/about',
       component: AboutView,
       name: 'AboutView',
+  },
+  {
+      path: '/login',
+      component: LoginView,
+      name: 'LoginView',
   },
   {
       path: '/:pathMatch(.*)*',

@@ -19,9 +19,14 @@ const app = createApp(App)
 
 app.use(router)
 
-// app.use(axios, {
-//   baseUrl: 'http://127.0.0.1:3000/',
-// })
+app.use(axios, {
+  baseURL: 'http://127.0.0.1:8000/',
+})
+
+
+// Assign the axios instance to a property in your Vue app's global properties
+// app.config.globalProperties.$axios = axiosInstance
+
 
 // Attach Vueform and its config
 // app.use(Vueform as any, vueformConfig)
