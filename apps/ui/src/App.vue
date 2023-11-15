@@ -191,6 +191,9 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { computed, defineComponent, h, onMounted, ref } from 'vue';
 
+// Demonstrates how to use environment variables in Vue components.
+console.log('import.meta.env.VITE_BASE_URL=' + import.meta.env.VITE_BASE_URL)
+
 const user = ref({
   isLoggedIn: false,
   name: '',
