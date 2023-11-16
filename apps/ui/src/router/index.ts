@@ -2,6 +2,7 @@ import {
   createRouter,
   createWebHistory,
   RouteMeta,
+  RouteRecordRaw,
 } from 'vue-router'
 
 import ApplicationPage from '../layouts/ApplicationPage.vue'
@@ -13,15 +14,6 @@ import DashboardView from '../views/DashboardView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 import LoginView from '../views/LoginView.vue'
 
-
-// TODO: Revisit lazy-loading suggestion from ? (component as a function that returns AboutVue)
-// import AboutView from '../views/AboutView.vue';
-
-
-
-// This can be directly added to any of your `.ts` files like `router.ts`
-// It can also be added to a `.d.ts` file. Make sure it's included in
-// project's tsconfig.json "files"
 
 declare module 'vue-router' {
   // https://router.vuejs.org/api/interfaces/RouteMeta.html
@@ -46,21 +38,57 @@ type Route = {
   children?: Route[];
 }
 
-const defaultRoute: Route = {
-  path: '/',
-  component: DashboardView,
-  name: 'DashboardView',  //  TODO: Rename to HomeView
-  alias: '/dashboard',
-  meta: { layout: 'ApplicationPage' },
-};
 
-const routes: Route[] = [
-  defaultRoute,
+/**
+ * The `privateApplicationRoute` constant is a metadata object that defines the properties for private application routes.
+ *
+ * @property {boolean} requiresAuth - A boolean value indicating whether the route requires authentication.
+ * @property {Component} layout - The layout component to be used for the route.
+ */
+const privateApplicationRoute: RouteMeta = {
+  requiresAuth: true,
+  layout: ApplicationPage,
+}
+
+const publicApplicationRoute: RouteMeta = {
+  requiresAuth: false,
+  layout: ApplicationPage,
+}
+
+const publicLoginRoute: RouteMeta = {
+  requiresAuth: false,
+  layout: LoginPage,
+}
+
+
+const publicRoutes: Route[] = [
+  {
+      path: '/login',
+      component: LoginView,
+      name: 'LoginView',
+      meta: publicLoginRoute,
+  },
+  {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundView,
+      name: 'NotFoundView',
+      meta: publicLoginRoute,
+  },
+]
+
+const applicationRoutes: Route[] = [
+  {
+    path: '/',
+    component: DashboardView,
+    name: 'DashboardView',  //  TODO: Rename to HomeView
+    alias: '/dashboard',
+    meta: privateApplicationRoute,
+  },
   {
       path: '/requests',
       component: MakeRequestView,
       name: 'MakeRequestView',
-      meta: { layout: ApplicationPage },
+      meta: privateApplicationRoute,
   },
   {
       path: '/about',
@@ -69,21 +97,13 @@ const routes: Route[] = [
       children: [
         // https://router.vuejs.org/guide/essentials/nested-routes
       ],
-      meta: { layout: ApplicationPage },
-  },
-  {
-      path: '/login',
-      component: LoginView,
-      name: 'LoginView',
-      meta: { layout: LoginPage },
-  },
-  {
-      path: '/:pathMatch(.*)*',
-      component: NotFoundView,
-      name: 'NotFoundView',
-      meta: { layout: ApplicationPage },
+      meta: privateApplicationRoute,
   },
 ]
+
+const routes: RouteRecordRaw[] = (
+  publicRoutes.concat(applicationRoutes) as RouteRecordRaw[]
+)
 
 const router = createRouter({
   history: createWebHistory(),
