@@ -25,6 +25,7 @@
     "vue-service": "^1.0.3"
   },
   "devDependencies": {
+    "@types/node": "^20.9.0",
     "@types/postcss-import": "^14.0.3",
     "@vitejs/plugin-vue": "^2.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
