@@ -918,10 +918,10 @@
   resolved "https://registry.yarnpkg.com/@vueform/toggle/-/toggle-2.1.4.tgz#a78fd0aa4cf9b47e71e5de9d3c8880285cb64123"
   integrity sha512-tEITFf5wlqIWoCYZXJdoXvCnrc97weOu2csR/BEoROVvFu1zRsoK0wY1pJG7BR+g5zpGJneGSdLhMUsbx8y1yw==
 
-"@vueform/vueform@^1.5.4":
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/@vueform/vueform/-/vueform-1.5.4.tgz#0156b44a926f31da966d3c196c5fd5008a62dec1"
-  integrity sha512-HTdGPw8WfeW3qoz0y0Betelwd/hCU2UhvaqBykAeGUYG5vnCAYp6ZiHYdughtzct9VApqH6BgZ5/rdVLvIvEng==
+"@vueform/vueform@^1.5.8":
+  version "1.5.8"
+  resolved "https://registry.yarnpkg.com/@vueform/vueform/-/vueform-1.5.8.tgz#0d3014d1a0f8d261ad19d7fe52e28f24afcca54b"
+  integrity sha512-yG/x+ecjfOWz6+m2tclpF95Fc1fCIZqSqxvb5vasR1NT5buQE6bWYttOHi05W0h1PLZGEHZpRfSiYwmrcsm2cQ==
   dependencies:
     "@popperjs/core" "^2.11.8"
     "@vueform/multiselect" "^2.6.3"
@@ -929,7 +929,6 @@
     "@vueform/toggle" "^2.1.3"
     axios "^1.5.0"
     color "^4.2.3"
-    lodash "^4.17.21"
     mini-svg-data-uri "^1.4.4"
     moment "^2.29.4"
     nouislider "^15.7.1"
@@ -3718,6 +3717,11 @@ pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/pify/-/pify-2.3.0.tgz"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
+
+pinia-plugin-persistedstate@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/pinia-plugin-persistedstate/-/pinia-plugin-persistedstate-3.2.0.tgz#9932ca2ae88aa6c0d6763bebc6447d7bd1f097d0"
+  integrity sha512-tZbNGf2vjAQcIm7alK40sE51Qu/m9oWr+rEgNm/2AWr1huFxj72CjvpQcIQzMknDBJEkQznCLAGtJTIcLKrKdw==
 
 pinia@^2.1.7:
   version "2.1.7"

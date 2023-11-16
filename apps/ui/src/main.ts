@@ -7,6 +7,7 @@ import './index.css'
 import router from './router'
 import axios from 'axios'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 // No need to load via a plugin. Just use it directly and use vite
 // env variables to set the base url.
@@ -25,6 +26,9 @@ app.use(router)
 
 // Use pinia for local state management. It's available
 // on all components via this.$pinia.
-app.use(createPinia())
+// See https://prazdevs.github.io/pinia-plugin-persistedstate/guide/#usage
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 
 app.mount('#app')
