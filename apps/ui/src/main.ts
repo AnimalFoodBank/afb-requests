@@ -20,7 +20,6 @@ import { createPinia } from 'pinia'
 const base_url = import.meta.env.VITE_BASE_URL;
 axios.defaults.baseURL = base_url;
 
-
 const app = createApp(App)
 app.use(router)
 

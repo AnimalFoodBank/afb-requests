@@ -1,16 +1,11 @@
 <template>
-  <div class="home">
+  <ApplicationPage class="home">
     <img alt="AFB logo" src="@/assets/img/afb_icon_colour.png">
-
-  </div>
+  </ApplicationPage>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 // @ is an alias to /src
+import ApplicationPage from '../layouts/ApplicationPage.vue';
 
-export default {
-  name: 'DashboardView',
-  components: {
-  }
-}
 </script>
