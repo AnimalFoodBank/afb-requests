@@ -10,8 +10,18 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    "types": ["node"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+
+  // Resolves the error: "Cannot find module 'postcss.config.ts'"
+  // https://github.com/postcss/postcss-load-config/issues/239
+  // https://github.com/TypeStrong/ts-node/tree/97f9afd0#module-type-overrides
+  "ts-node": {
+    "moduleTypes": {
+      "postcss.config.ts": "cjs"
+    }
+  }
 }

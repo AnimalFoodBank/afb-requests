@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "django_extensions",  # add this for 'python manage.py runserver_plus'
     "rest_framework",  # add DRF
     "django_filters",  # add DRF filters
@@ -59,6 +60,14 @@ INSTALLED_APPS = [
 ]
 
 VITE_APP_DIR = BASE_DIR.parent / "ui"
+
+# https://github.com/adamchainz/django-cors-headers
+CORS_ALLOW_HEADERS = "*"
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:3000",  # ViteJS dev server
+    "http://127.0.0.1:3001",  # ViteJS dev server
+    "http://localhost:3000",
+]
 
 # correspond to your build.outDir in your ViteJS configuration.
 DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "dist"
@@ -127,12 +136,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# https://github.com/django-crispy-forms/crispy-tailwind
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
-
-CRISPY_TEMPLATE_PACK = "tailwind"
-
-
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
 PHONENUMBER_DEFAULT_REGION = "CA"
@@ -141,6 +144,7 @@ PHONENUMBER_DEFAULT_REGION = "CA"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",

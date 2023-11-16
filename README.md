@@ -70,6 +70,11 @@ https://vuejs.org/guide/scaling-up/tooling.html#project-scaffolding
 
     # run the development server with a specific host
     $ ./manage.py runserver
+
+    # With django-extensions installed, you can run the
+    # development server with Werkzeug's debugger.
+    # https://werkzeug.palletsprojects.com/en/3.0.x/
+    $ ./manage.py runserver_plus
 ```
 
 
