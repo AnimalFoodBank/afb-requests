@@ -209,7 +209,7 @@ const user = ref({
  */
 onMounted(async () => {
   try {
-    const response = await axios.get('/api/user');
+    const response = await axios.get('/api/users/current_user/');
     if (response.status >= 200 && response.status < 300) {
       user.value = response.data;
     } else {
