@@ -15,23 +15,22 @@
 <template>
     <!--
         This example requires updating your template:
-
-        ```
+@submit="handleLogin" :validation-schema="schema"
         <html class="h-full bg-gray-50">
         <body class="h-full">
         ```
       -->
     <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                 alt="Your Company" />
+            <HomeIcon class="mx-auto h-10 w-auto" />
+
             <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account
             </h2>
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-                <form class="space-y-6" action="#" method="POST">
+                <form class="space-y-6" @submit="handleLogin" :validation-schema="schema">
                     <div>
                         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                         <div class="mt-2">
@@ -77,8 +76,61 @@
 </div></template>
 
 <script lang="ts">
+import { HomeIcon } from '@heroicons/vue/20/solid';
+
 export default {
-    name: 'LoginView'
+    name: 'LoginView',
+    components: {
+        HomeIcon
+    },
+    computed: {
+        loggedIn() {
+            // return this.$store.state.auth.status.loggedIn;
+        },
+    },
+    created() {
+        // if (this.loggedIn) {
+        //     this.$router.push("/profile");
+        // }
+    },
+    methods: {
+        handleLogin(user) {
+            this.loading = true;
+
+            // this.$store.dispatch("auth/login", user).then(
+            //     () => {
+            //         this.$router.push("/profile");
+            //     },
+            //     (error) => {
+            //         this.loading = false;
+            //         this.message =
+            //             (error.response &&
+            //                 error.response.data &&
+            //                 error.response.data.message) ||
+            //             error.message ||
+            //             error.toString();
+            //     }
+            // );
+        }
+    },
+    data() {
+        return {
+            loading: false,
+            message: "",
+            schema: {
+                email: {
+                    required: true,
+                    email: true,
+                    max: 255,
+                },
+                password: {
+                    required: true,
+                    min: 6,
+                    max: 255,
+                },
+            },
+        };
+    },
 }
 </script>
 
