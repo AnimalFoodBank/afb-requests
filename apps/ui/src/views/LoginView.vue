@@ -61,10 +61,10 @@
 
 <script setup lang="ts">
 import { HomeIcon } from '@heroicons/vue/24/solid';
-import { Form } from '@vueform/vueform';
 import axios from 'axios';
 
-const handleSubmit = (form$: Form) => {
+
+const handleSubmit = (form$: any) => {
   console.log('LoginView.handleSubmit()')
   console.log(form$);
 

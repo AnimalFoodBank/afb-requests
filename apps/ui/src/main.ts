@@ -9,11 +9,6 @@ import axios from 'axios'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
-// No need to load via a plugin. Just use it directly and use vite
-// env variables to set the base url.
-// https://stackoverflow.com/questions/77041139/using-axios-instance-in-vue-3
-// import axios from './plugins/axios'
-
 import Vueform from '@vueform/vueform'
 import vueformConfig from './../vueform.config'
 
