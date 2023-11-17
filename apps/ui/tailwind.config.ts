@@ -14,9 +14,6 @@ const config: Config = {
     './node_modules/@vueform/vueform/themes/tailwind/**/*.vue',
     './node_modules/@vueform/vueform/themes/tailwind/**/*.{ts,js,tsx,jsx}',
   ],
-  theme: {
-    extend: {},
-  },
 };
 
 export default config;

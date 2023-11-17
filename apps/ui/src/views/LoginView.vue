@@ -37,26 +37,57 @@
 
           <div class="mt-10">
 
-            <Vueform>
-              <TextElement name="email" input-type="text" label="Email address" placeholder="abc@example.com" class=""/>
-              <TextElement name="password" input-type="password" label="Password" />
-              <ButtonElement name="button">
-                Login
-              </ButtonElement>
-            </Vueform>
-          </div>
-
+            <!-- Validate only on submit -->
+            <Vueform
+            :display-errors="false" endpoint="/api/auth/login/" method="post" ref="form$"
+            @submit="handleSubmit"
+            >
+            <TextElement name="email" input-type="text" label="Email address" placeholder="" :rules="['required', 'email']" :debounce="1000" />
+            <TextElement name="password" input-type="password" label="Password" />
+            <ButtonElement name="button" @click="handleSubmit">
+              Login
+            </ButtonElement>
+          </Vueform>
         </div>
-      </div>
-      <div class="relative hidden w-0 flex-1 lg:block">
-        <!-- <CatHeartImage class="absolute inset-0 h-full w-full object-cover" /> -->
-        <img alt="Become an AFB membver today" src='@/assets/img/Cat-Heart-680x800-1.png'>
+
       </div>
     </div>
-  </template>
+    <div class="relative hidden w-0 flex-1 lg:block">
+      <!-- <CatHeartImage class="absolute inset-0 h-full w-full object-cover" /> -->
+      <img alt="Become an AFB membver today" src='@/assets/img/Cat-Heart-680x800-1.png'>
+    </div>
+  </div>
+</template>
 
-  <script setup lang="ts">
-  import { HomeIcon } from '@heroicons/vue/20/solid';
+<script setup lang="ts">
+import { HomeIcon } from '@heroicons/vue/24/solid';
+import { Form } from '@vueform/vueform';
+import axios from 'axios';
+
+const handleSubmit = (form$: Form) => {
+  console.log('LoginView.handleSubmit()')
+  console.log(form$);
+
+  // TODO: Add validation logic here
+  // form$.submit();
+
+  axios.post('/api/auth/login/', form$.values())
+}
+/*
+* Validation rules can asynchronous. For example
+* unique rules sends a request to and endpoint and
+* waits for the answer before deciding if the
+* element's value is valid:
+*
+*     <TextElement rules="nullable|unique:users" />
+*
+* Endpoints can be configured in vueform.config.js.
+* See configuration options at unique and exists
+* rules.
+*
+* @see https://vueform.com/docs/validating-elements#asnyc-rules
+*/
+
 </script>
 
 <style scoped>
