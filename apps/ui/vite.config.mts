@@ -1,10 +1,22 @@
-``
+
+/**
+ * @file ViteJS configuration file.
+ *
+ * re: the `vite.config.mts` file extension:
+ * It resolves "This package is ESM only" error when running npx vite.
+*
+* @see
+ *  https://vitejs.dev/guide/troubleshooting.html#this-package-is-esm-only
+ *  https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#new-file-extensions
+ */
+
 
 // https://vitejs.dev/guide/env-and-mode.html#env-files
 // https://vitejs.dev/guide/api-javascript.html#loadenv
 import { defineConfig, loadEnv } from "vite";
 
 import vue from "@vitejs/plugin-vue";
+import vueform from '@vueform/vueform/vite'
 
 // https://vitejs.dev/config/
 // export default defineConfig({
@@ -32,6 +44,7 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       vue(),
+      vueform(),
     ],
     // https://github.com/MrBin99/django-vite#vitejs
     // https://vitejs.dev/guide/backend-integration.html
