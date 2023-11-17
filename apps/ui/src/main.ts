@@ -14,9 +14,8 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // https://stackoverflow.com/questions/77041139/using-axios-instance-in-vue-3
 // import axios from './plugins/axios'
 
-// import Vueform from '@vueform/vueform'
-// import vueformConfig from './../vueform.config'
-// import { Plugin } from 'vue'
+import Vueform from '@vueform/vueform'
+import vueformConfig from './../vueform.config'
 
 const base_url = import.meta.env.VITE_BASE_URL;
 axios.defaults.baseURL = base_url;
@@ -30,5 +29,7 @@ app.use(router)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
+
+app.use(Vueform, vueformConfig)
 
 app.mount('#app')
