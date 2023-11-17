@@ -28,6 +28,26 @@ https://vitejs.dev/guide/#scaffolding-your-first-vite-project
 https://vuejs.org/guide/scaling-up/tooling.html#project-scaffolding
 
 
+We're using Vue 3 with vue-i18n, make sure to install the vue-i18n@next version, which includes support for Vue 3 and TypeScript.
+
+```bash
+yarn add vue-i18n@next
+```
+
+
+Remember to configure TypeScript to include the vue-i18n types in your tsconfig.json file:
+
+```json
+{
+  "compilerOptions": {
+    // ...
+    "types": ["vue-i18n"]
+  }
+}
+```
+
+This will enable TypeScript to recognize the types from vue-i18n and provide better autocompletion and error checking.
+
 
 ## Commands
 

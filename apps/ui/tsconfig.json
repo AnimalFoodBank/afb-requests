@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "lib": ["esnext", "dom"],
-    "types": ["node"],
+    "types": ["node", "vue-i18n"],
 
     // Support for Vue3 with TypeScript
     // https://vuejs.org/guide/typescript/overview.html#configuring-tsconfig-json
