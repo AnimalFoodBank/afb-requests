@@ -17,7 +17,7 @@
     "@types/axios": "^0.14.0",
     "@types/vue-router": "^2.0.0",
     "@vueform/vueform": "^1.5.8",
-    "axios": "^1.6.0",
+    "axios": "^1.6.2",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
     "ts-node": "^10.9.1",

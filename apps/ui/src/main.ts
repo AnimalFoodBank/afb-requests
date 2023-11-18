@@ -13,7 +13,24 @@ import Vueform from '@vueform/vueform'
 import vueformConfig from './../vueform.config'
 
 const base_url = import.meta.env.VITE_BASE_URL;
+
+// https://stackoverflow.com/questions/68256028/forbidden-csrf-cookie-not-set-when-sending-post-delete-request-from-vue-js-to
+// https://docs.djangoproject.com/en/dev/howto/csrf/#acquiring-csrf-token-from-html
+//
+// See also: vueform.config.ts
+// https://vueform.com/reference/configuration#axios
 axios.defaults.baseURL = base_url;
+axios.defaults.withCredentials = true
+
+
+// New as of 1.6.2: https://github.com/axios/axios/releases/tag/v1.6.2
+axios.defaults.withXSRFToken = true
+
+//https://stackoverflow.com/questions/76550956/vue-django-app-forbidden-csrf-cookie-not-set-403-forbidden
+// axios.defaults.headers.common = {
+//     'X-Requested-With': 'XMLHttpRequest',
+//     'X-CSRFToken' : "Kefb64PqZJOYK4AvmxU8fKeynYQgO0M1"
+// };
 
 const app = createApp(App)
 app.use(router)

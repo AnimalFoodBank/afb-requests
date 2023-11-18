@@ -1,17 +1,57 @@
-<!--
-  This example requires some changes to your config:
+<script setup lang="ts">
+import { HomeIcon } from '@heroicons/vue/24/solid';
 
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-    // ...
-    require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
+// const handleSubmit = (form$: any) => {
+//   console.log('LoginView.handleSubmit()')
+//   console.log(form$);
+
+//   // TODO: Add validation logic here
+//   const response_via_submit = form$.submit();
+//   console.log(response_via_submit.data);
+
+//   // const response = axios.post('/api/auth/login/', form$.values())
+//   // console.log(response);
+// }
+
+
+// async function prepareForm(data: any) {
+//   try {
+//     await console.log('LoginView.prepareForm()')
+//     console.log(data);
+//   } catch (error) {
+//     throw error // this will cancel the submit process
+//   }
+// }
+
+// async function getCsrfToken() {
+//   axios.get("sanctum/csrf-cookie");
+// }
+
+// async function login(email: string, password: string) {
+//   const response = await axios.post('/login', { email, password });
+//   const token = response.data.token;
+
+//   // Save the token in local storage or in a cookie
+//   localStorage.setItem('token', token);
+// }
+
+/*
+* Validation rules can asynchronous. For example
+* unique rules sends a request to and endpoint and
+* waits for the answer before deciding if the
+* element's value is valid:
+*
+*     <TextElement rules="nullable|unique:users" />
+*
+* Endpoints can be configured in vueform.config.js.
+* See configuration options at unique and exists
+* rules.
+*
+* @see https://vueform.com/docs/validating-elements#asnyc-rules
+*/
+
+</script>
+
 <template>
   <!--
     This example requires updating your template:
@@ -39,12 +79,13 @@
 
             <!-- Validate only on submit -->
             <Vueform
-            :display-errors="false" endpoint="/api/auth/login/" method="post" ref="form$"
-            @submit="handleSubmit"
+            :display-errors="false" ref="form$"
+            endpoint="/api/auth/login/"
+            method="POST"
             >
-            <TextElement name="email" input-type="text" label="Email address" placeholder="" :rules="['required', 'email']" :debounce="1000" />
+            <TextElement name="email" input-type="text" label="Email address" placeholder="" :rules="['required', 'email']" :debounce="100" />
             <TextElement name="password" input-type="password" label="Password" />
-            <ButtonElement name="button" @click="handleSubmit">
+            <ButtonElement name="button" submits>
               Login
             </ButtonElement>
           </Vueform>
@@ -58,37 +99,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { HomeIcon } from '@heroicons/vue/24/solid';
-import axios from 'axios';
-
-
-const handleSubmit = (form$: any) => {
-  console.log('LoginView.handleSubmit()')
-  console.log(form$);
-
-  // TODO: Add validation logic here
-  // form$.submit();
-
-  axios.post('/api/auth/login/', form$.values())
-}
-/*
-* Validation rules can asynchronous. For example
-* unique rules sends a request to and endpoint and
-* waits for the answer before deciding if the
-* element's value is valid:
-*
-*     <TextElement rules="nullable|unique:users" />
-*
-* Endpoints can be configured in vueform.config.js.
-* See configuration options at unique and exists
-* rules.
-*
-* @see https://vueform.com/docs/validating-elements#asnyc-rules
-*/
-
-</script>
 
 <style scoped>
 </style>
