@@ -9,18 +9,18 @@ from .base import *  # noqa
 from .base import env
 
 # GENERAL
-# ------------------------------------------------------------------------------
+#
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["example.com"])
 
 # DATABASES
-# ------------------------------------------------------------------------------
+#
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa: F405
 
 # CACHES
-# ------------------------------------------------------------------------------
+#
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -35,7 +35,7 @@ CACHES = {
 }
 
 # SECURITY
-# ------------------------------------------------------------------------------
+#
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
@@ -56,7 +56,7 @@ SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
 SECURE_CONTENT_TYPE_NOSNIFF = env.bool("DJANGO_SECURE_CONTENT_TYPE_NOSNIFF", default=True)
 
 # STORAGES
-# ------------------------------------------------------------------------------
+#
 # https://django-storages.readthedocs.io/en/latest/#installation
 INSTALLED_APPS += ["storages"]  # noqa: F405
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
@@ -87,12 +87,12 @@ aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws
 # ------------------------
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # MEDIA
-# ------------------------------------------------------------------------------
+#
 DEFAULT_FILE_STORAGE = "afb_requests.utils.storages.MediaS3Storage"
 MEDIA_URL = f"https://{aws_s3_domain}/media/"
 
 # EMAIL
-# ------------------------------------------------------------------------------
+#
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL",
@@ -107,12 +107,12 @@ EMAIL_SUBJECT_PREFIX = env(
 )
 
 # ADMIN
-# ------------------------------------------------------------------------------
+#
 # Django Admin URL regex.
 ADMIN_URL = env("DJANGO_ADMIN_URL")
 
 # Anymail
-# ------------------------------------------------------------------------------
+#
 # https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
 INSTALLED_APPS += ["anymail"]  # noqa: F405
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
@@ -127,7 +127,7 @@ ANYMAIL = {
 
 
 # LOGGING
-# ------------------------------------------------------------------------------
+#
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
 # See https://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
@@ -165,7 +165,7 @@ LOGGING = {
 }
 
 # Sentry
-# ------------------------------------------------------------------------------
+#
 SENTRY_DSN = env("SENTRY_DSN")
 SENTRY_LOG_LEVEL = env.int("DJANGO_SENTRY_LOG_LEVEL", logging.INFO)
 
@@ -182,10 +182,10 @@ sentry_sdk.init(
 )
 
 # django-rest-framework
-# -------------------------------------------------------------------------------
+# -
 # Tools that generate code samples can use SERVERS to point to the correct domain
 SPECTACULAR_SETTINGS["SERVERS"] = [  # noqa: F405
     {"url": "https://example.com", "description": "Production server"},
 ]
 # Your stuff...
-# ------------------------------------------------------------------------------
+#
