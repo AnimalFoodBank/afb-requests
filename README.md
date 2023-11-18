@@ -62,6 +62,8 @@ This will enable TypeScript to recognize the types from vue-i18n and provide bet
     $ pip-compile --upgrade --output-file=- requirements.in | tee requirements.txt
     ...
 
+```bash
+    curl -v -X POST -H "Content-Type: application/json" -H "X-CSRFToken: $token" -d '{"username":"delbo@solutious.com","password":"1234"}' http://127.0.0.1:8000/auth-token/
 ```
 
 ### DRF
