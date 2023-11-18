@@ -47,12 +47,23 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(
-        "DATABASE_URL",
-        default="postgres:///afb_requests",
-    ),
+    #
+    # Via cookiecutter settings:
+    #
+    # "default": env.db(
+    #     "DATABASE_URL",
+    #     default="postgres:///afb_requests",
+    # ),
+    #
+    # Use sqlite locally.
+    #
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
 }
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+# https://docs.djangoproject.com/en/4.2/topics/db/transactions/#tying-transactions-to-http-requests
+DATABASES["default"]["ATOMIC_REQUESTS"] = False
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

@@ -64,6 +64,20 @@ This will enable TypeScript to recognize the types from vue-i18n and provide bet
 
 ```
 
+### DRF
+
+
+#### Mailpit
+https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#mailpit
+https://github.com/axllent/mailpit
+
+```bash
+$ ./mailpit
+INFO[2023/11/17 18:22:21] [smtpd] starting on 0.0.0.0:1025
+INFO[2023/11/17 18:22:21] [http] starting server on http://localhost:8025/
+```
+http://localhost:8025
+
 
 
 ### Django Management

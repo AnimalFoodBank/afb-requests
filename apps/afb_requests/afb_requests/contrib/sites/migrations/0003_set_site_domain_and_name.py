@@ -16,7 +16,10 @@ def _update_or_create_site_with_sequence(site_model, connection, domain, name):
             "name": name,
         },
     )
-    if created:
+
+    # Added conditional here to avoid "no such table: django_site_id_seq" error
+    # when running sqlite3 (including in CI).
+    if created and connection.settings_dict["ENGINE"] == "django.db.backends.postgresql":
         # We provided the ID explicitly when creating the Site entry, therefore the DB
         # sequence to auto-generate them wasn't used and is now out of sync. If we
         # don't do anything, we'll get a unique constraint violation the next time a
