@@ -176,3 +176,8 @@ https://github.com/unfoldadmin/django-unfold#installation
     ]
 }
 ```
+
+
+## Links nov 19
+
+https://httptoolkit.com/blog/how-to-debug-cors-errors/

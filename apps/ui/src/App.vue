@@ -8,7 +8,6 @@
 
 <script setup lang="ts">
 import CatHeartImage from '@/assets/img/Cat-Heart-680x800-1.png';
-import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 // Demonstrates how to use environment variables in Vue components.
@@ -28,18 +27,18 @@ const user = ref({
 * Note: axios automatically rejects the promise if the status code is outside the 200-299 range, so the else branch in this example might not be necessary depending on your axios configuration.
 */
 onMounted(async () => {
-  try {
-    const response = await axios.get('/api/users/current_user/');
-    if (response.status >= 200 && response.status < 300) {
-      user.value = response.data;
-    } else {
-      console.error(`Request failed with status code ${response.status}`);
-      user.value = guestUser.value;
-    }
-  } catch (error) {
-    console.error('Request failed', error);
-    user.value = guestUser.value;
-  }
+  // try {
+  //   const response = await axios.get('/api/users/current_user/');
+  //   if (response.status >= 200 && response.status < 300) {
+  //     user.value = response.data;
+  //   } else {
+  //     console.error(`Request failed with status code ${response.status}`);
+  //     user.value = guestUser.value;
+  //   }
+  // } catch (error) {
+  //   console.error('Request failed', error);
+  //   user.value = guestUser.value;
+  // }
 });
 
 const guestUser = ref({
