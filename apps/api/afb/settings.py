@@ -37,10 +37,9 @@ SECRET_KEY = "django-insecure-k3nma!u)7oz(lt346n-=rx=rt%u_^j8-rdz3p(y3o$ot0%soqh
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "http://127.0.0.1:3000",
     "127.0.0.1",
+    "127.0.0.1:8000",
     "127.0.0.1:3000",
-    "localhost",
 ]
 
 
@@ -58,6 +57,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_extensions",  # add this for 'python manage.py runserver_plus'
     "rest_framework",  # add DRF
+    "rest_framework.authtoken",
     "django_filters",  # add DRF filters
     "phonenumber_field",
     "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
@@ -67,8 +67,8 @@ INSTALLED_APPS = [
 VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
-CORS_ALLOW_HEADERS = "*"
-CORS_ALLOW_ALL_ORIGINS = False
+# CORS_ALLOW_HEADERS = "*"
+# CORS_ALLOW_ALL_ORIGINS = False
 
 # https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
 CORS_ALLOW_CREDENTIALS = True
@@ -76,8 +76,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",  # ViteJS dev server
     "http://127.0.0.1:3001",  # ViteJS dev server
-    "http://localhost:3000",
 ]
+CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 
 # Resolves CSRF error:
 #   Forbidden (Origin checking failed - http://127.0.0.1:3000 does not match any trusted origins.):
@@ -92,16 +92,15 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-CSRF_USE_SESSIONS = False
+# CSRF_USE_SESSIONS = False
 
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False  # not DEBUG
-SECURE_SSL_REDIRECT = False
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False  # not DEBUG
+# SECURE_SSL_REDIRECT = False
 
 # This is needed for CSRF to work with CORS:
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-samesite
 CSRF_COOKIE_SAMESITE = "None"
-
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = False

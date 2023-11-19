@@ -19,7 +19,9 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import routers
+
 from afbcore.views import users
 
 router = routers.DefaultRouter()
@@ -29,6 +31,7 @@ router.register(r"users", users.UserViewSet)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
+    path("auth-token/", obtain_auth_token),
     path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("api/auth/register/", users.RegisterView.as_view(), name="auth_register"),
     path("api/auth/login/", users.LoginView.as_view(), name="auth_login"),
