@@ -93,8 +93,9 @@
           <MenuItems
           class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <MenuItem v-for="item in navigationItems" :key="item.name" v-slot="{ active }">
-            <a :href="item.href"
-            :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name
+            <a
+              :href="item.href"
+              :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name
             }}</a>
           </MenuItem>
         </MenuItems>
@@ -176,17 +177,21 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
-import { computed, defineComponent, h, onMounted, ref } from 'vue';
+import { computed, defineComponent, h, onMounted, reactive, ref } from 'vue';
+
+// Create an instance of axios to use in this module.
+// See defaults set in /src/main.ts
+const http_client = axios.create();
+
+// Set the AUTH token for any request
+http_client.interceptors.request.use(function (config) {
+  const token = localStorage.getItem('token');
+  config.headers.Authorization = token ? `Token ${token}` : '';
+  return config;
+});
 
 // Demonstrates how to use environment variables in Vue components.
 console.log('import.meta.env.VITE_BASE_URL=' + import.meta.env.VITE_BASE_URL)
-
-const user = ref({
-  isLoggedIn: false,
-  name: '',
-  email: '',
-  imageUrl: '',
-});
 
 /**
 * Makes a GET request to the current user endpoint and sets the user value if the response status is within the 200-299 range.
@@ -196,23 +201,38 @@ const user = ref({
 */
 onMounted(async () => {
   try {
-    const response = await axios.get('/api/users/current_user/');
+    const response = await http_client.get('/api/users/current_user/');
     if (response.status >= 200 && response.status < 300) {
-      user.value = response.data;
+      user = reactive(Object.assign(user, response.data));
+      user.is_authenticated = true;
+      console.log(user)
     } else {
       console.error(`Request failed with status code ${response.status}`);
-      user.value = guestUser.value;
+      user = reactive(Object.assign(user, guestUser.value));
     }
   } catch (error) {
     console.error('Request failed', error);
-    user.value = guestUser.value;
+    user = reactive(Object.assign(user, guestUser.value));
   }
 });
 
-const guestUser = ref({
-  isLoggedIn: false,
+let user = reactive({
+  is_admin: false,
+  is_staff: false,
+  is_authenticated: false,
+  name: '',
+  username: '',
+  email: '',
+  imageUrl: CatHeartImage,
+});
+
+let guestUser = ref({
+  is_admin: false,
+  is_staff: false,
+  is_authenticated: false,
   name: 'Heart Cat',
-  email: 'heartcat@animalfoodbank.org',
+  username: 'heartcat@animalfoodbank.org',
+  email: '',
   imageUrl: CatHeartImage,
 });
 
@@ -233,8 +253,8 @@ const guestNavigation = [
 ];
 
 const navigationItems = computed(() => {
-  console.log(user.value.isLoggedIn)
-  return user.value.isLoggedIn ? userNavigation : guestNavigation;
+  console.log(user.is_authenticated)
+  return user.is_authenticated ? userNavigation : guestNavigation;
 });
 
 const footerNavigation = {

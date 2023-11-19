@@ -22,15 +22,8 @@ const base_url = import.meta.env.VITE_BASE_URL;
 axios.defaults.baseURL = base_url;
 axios.defaults.withCredentials = true
 
-
 // New as of 1.6.2: https://github.com/axios/axios/releases/tag/v1.6.2
 axios.defaults.withXSRFToken = true
-
-//https://stackoverflow.com/questions/76550956/vue-django-app-forbidden-csrf-cookie-not-set-403-forbidden
-// axios.defaults.headers.common = {
-//     'X-Requested-With': 'XMLHttpRequest',
-//     'X-CSRFToken' : "Kefb64PqZJOYK4AvmxU8fKeynYQgO0M1"
-// };
 
 const app = createApp(App)
 app.use(router)
