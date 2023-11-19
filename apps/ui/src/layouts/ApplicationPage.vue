@@ -178,6 +178,8 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { computed, defineComponent, h, onMounted, reactive, ref } from 'vue';
+import { useAuthStore } from '../stores/auth';
+const authStore = useAuthStore();
 
 // Create an instance of axios to use in this module.
 // See defaults set in /src/main.ts
@@ -185,8 +187,11 @@ const http_client = axios.create();
 
 // Set the AUTH token for any request
 http_client.interceptors.request.use(function (config) {
-  const token = localStorage.getItem('token');
-  config.headers.Authorization = token ? `Token ${token}` : '';
+  if (authStore.isAuthenticated) {
+    const token = authStore.getToken;
+    console.log('http_client.interceptors.request.use()', token);
+    config.headers.Authorization = token ? `Token ${token}` : '';
+  }
   return config;
 });
 
@@ -205,13 +210,13 @@ onMounted(async () => {
     if (response.status >= 200 && response.status < 300) {
       user = reactive(Object.assign(user, response.data));
       user.is_authenticated = true;
-      console.log(user)
+      console.log('onMounted() user=', user);
     } else {
-      console.error(`Request failed with status code ${response.status}`);
+      // console.error(`Request failed with status code ${response.status}`);
       user = reactive(Object.assign(user, guestUser.value));
     }
   } catch (error) {
-    console.error('Request failed', error);
+    // console.error('Request failed', error);
     user = reactive(Object.assign(user, guestUser.value));
   }
 });

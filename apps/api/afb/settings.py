@@ -92,7 +92,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-# CSRF_USE_SESSIONS = False
+CSRF_USE_SESSIONS = True
 
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False  # not DEBUG
@@ -109,6 +109,7 @@ CSRF_COOKIE_HTTPONLY = False
 # https://docs.djangoproject.com/en/4.2/ref/csrf/#how-it-works
 # CSRF_COOKIE_DOMAIN = ""
 
+TOKEN_EXPIRED_AFTER_WEEKS = 2
 
 # correspond to your build.outDir in your ViteJS configuration.
 DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "dist"

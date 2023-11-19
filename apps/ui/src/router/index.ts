@@ -13,6 +13,7 @@ import AboutView from '../views/AboutView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 import LoginView from '../views/LoginView.vue'
+import LogoutView from '../views/LogoutView.vue'
 import RegisterView from '../views/RegisterView.vue'
 
 declare module 'vue-router' {
@@ -67,6 +68,12 @@ const publicRoutes: Route[] = [
       component: LoginView,
       name: 'LoginView',
       meta: publicLoginRoute,
+  },
+  {
+      path: '/logout',
+      component: LogoutView,
+      name: 'LogoutView',
+      meta: privateApplicationRoute,
   },
   {
       path: '/register',

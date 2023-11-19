@@ -2,6 +2,8 @@
 import { HomeIcon } from '@heroicons/vue/24/solid';
 import axios from 'axios';
 import router from '../router';
+import { useAuthStore } from '../stores/auth';
+const authStore = useAuthStore();
 
 const handleSubmit = (form$: any) => {
   console.log('LoginView.handleSubmit()')
@@ -22,7 +24,7 @@ const handleSubmit = (form$: any) => {
     .then(response => {
       console.log(response);
       const token = response.data.token;
-      localStorage.setItem('token', token);
+      authStore.login(token);
       router.push("/");
     })
     .catch(error => {
@@ -36,15 +38,6 @@ const handleSubmit = (form$: any) => {
 </script>
 
 <template>
-  <!--
-      This example requires updating your template:
-
-      ```
-      <html class="h-full bg-gray-50">
-      <body class="h-full">
-        ```
-      -->
-
   <div class="flex min-h-full flex-1">
     <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
       <div class="mx-auto w-full max-w-sm lg:w-96">
@@ -89,42 +82,6 @@ const handleSubmit = (form$: any) => {
 </style>
 
 <!--
-
-
-// onMounted(() => {
-//   try {
-
-//     const form$ = ref()
-//     console.log(form$)
-//     // const response = await axios.get('/api/users/current_user/');
-//     form$.value.on('submit', handleSubmit);
-
-//   } catch (error) {
-//     console.error('Request failed', error);
-//     // user.value = guestUser.value;
-//   }
-// });
-
-// async function prepareForm(data: any) {
-//   try {
-//     await console.log('LoginView.prepareForm()')
-//     console.log(data);
-//   } catch (error) {
-//     throw error // this will cancel the submit process
-//   }
-// }
-
-// async function getCsrfToken() {
-//   axios.get("sanctum/csrf-cookie");
-// }
-
-// async function login(email: string, password: string) {
-//   const response = await axios.post('/login', { email, password });
-//   const token = response.data.token;
-
-//   // Save the token in local storage or in a cookie
-//   localStorage.setItem('token', token);
-// }
 
 /*
 * Validation rules can asynchronous. For example

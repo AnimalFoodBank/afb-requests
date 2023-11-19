@@ -33,8 +33,6 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("auth-token/", obtain_auth_token),
     path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
-    path("api/auth/register/", users.RegisterView.as_view(), name="auth_register"),
-    path("api/auth/login/", users.LoginView.as_view(), name="auth_login"),
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 ]
