@@ -7,6 +7,7 @@ from django.conf import settings
 from datetime import datetime, timedelta
 
 from rest_framework import generics, permissions, status, viewsets
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -49,12 +50,16 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=["delete"])  # TODO: NOT WORKING
+    @action(detail=False, methods=["delete"])
     def expire_token(self, request):
-        model = TokenAuthentication.model
+        model = Token
+        # key = request.params.get("key", None)
+        # key = request.meta.get("HTTP_AUTHORIZATION", None).split()
+        # Get the token from the request header.
+        key = request.META.get("HTTP_AUTHORIZATION", "").split()[1]
 
         try:
-            token = model.objects.get(key=key)
+            token = model.objects.get(key=key, user=request.user)
 
         except model.DoesNotExist:
             raise exceptions.AuthenticationFailed("Invalid token.")

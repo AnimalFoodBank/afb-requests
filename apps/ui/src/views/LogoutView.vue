@@ -23,15 +23,16 @@ onMounted(async () => {
 
   console.log('LogoutView.onMounted()')
 
-  axios.delete('/users/expire_token/')
+  axios.post('/api/users/expire_token/')
     .then(response => {
       console.log(response);
       authStore.logout();
-      router.push("/");
+      window.location.href = "/";
     })
     .catch(error => {
-      // TODO: Handle login failure
-      console.log(error);
+      // TODO: Handle logout failure
+      console.log("LogoutView.onMounted() error {error}");
+      authStore.logout();
       router.push("/");
     });
 });

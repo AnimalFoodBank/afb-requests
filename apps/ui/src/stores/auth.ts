@@ -4,7 +4,9 @@ import { type Ref, ref, reactive } from "vue";
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: ''
+    token: null as string | null,
+    returnUrl: null as string | null,
+    userDetails: null as any,
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -15,7 +17,7 @@ export const useAuthStore = defineStore('auth', {
       this.token = token
     },
     logout() {
-      this.token = ''
+      this.token = null
     },
   },
   persist: true

@@ -8,15 +8,6 @@ const authStore = useAuthStore();
 const handleSubmit = (form$: any) => {
   console.log('LoginView.handleSubmit()')
 
-  // TODO: Add validation logic here
-  // const response_via_submit = form$.submit();
-  // console.log(response_via_submit.data);
-
-
-  // console.log(form$.data);
-
-  // console.log(form$.requestData)
-
   axios.post('/auth-token/', form$.requestData, {
     headers: {},
     withCredentials: true,
@@ -25,7 +16,7 @@ const handleSubmit = (form$: any) => {
       console.log(response);
       const token = response.data.token;
       authStore.login(token);
-      router.push("/");
+      router.push("/dashboard");  // TODO: Get route from router
     })
     .catch(error => {
       // TODO: Handle login failure
@@ -42,7 +33,7 @@ const handleSubmit = (form$: any) => {
     <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
       <div class="mx-auto w-full max-w-sm lg:w-96">
         <div>
-          <router-link :to="{ name: 'DashboardView' }">
+          <router-link :to="{ name: 'HomePageView' }">
             <HomeIcon class="h-10 w-full" />
           </router-link>
           <h2 class="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
