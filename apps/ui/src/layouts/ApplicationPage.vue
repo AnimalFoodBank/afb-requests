@@ -22,8 +22,8 @@
                   The @ symbol in the src attribute is used to indicate that the path is relative to the project's src directory.
                 -->
                 <a href="/">
-                  	<img v-if="authStore.isAuthenticated" class="block h-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" />
-                  	<img v-else class="block h-16" src="@/assets/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank logo" />
+                  <img v-if="authStore.isAuthenticated" class="block h-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" />
+                  <img v-else class="block h-16" src="@/assets/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank logo" />
                 </a>
               </div>
 
@@ -178,8 +178,8 @@
 
 <!-- NOTE: When setup is missing, the router/index.ts shows a warning that ApplicationPage isn't a module -->
 <script setup lang="ts">
-import CatHeartImage from '@/assets/img/Cat-Heart-680x800-1.png';
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import defaultAvatar from '@/assets/img/Cat-Heart-680x800-1.png';
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuItem, MenuItems } from '@headlessui/vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
@@ -239,7 +239,7 @@ let user = reactive({
   name: '',
   username: '',
   email: '',
-  imageUrl: CatHeartImage,
+  imageUrl: defaultAvatar,
 });
 
 let guestUser = ref({
@@ -249,7 +249,7 @@ let guestUser = ref({
   name: 'Heart Cat',
   username: 'heartcat@animalfoodbank.org',
   email: '',
-  imageUrl: CatHeartImage,
+  imageUrl: defaultAvatar,
 });
 
 // Get routes by name

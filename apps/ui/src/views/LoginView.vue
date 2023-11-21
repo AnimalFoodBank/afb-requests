@@ -63,8 +63,7 @@ const handleSubmit = (form$: any) => {
       </div>
     </div>
     <div class="relative hidden w-0 flex-1 lg:block">
-      <!-- <CatHeartImage class="absolute inset-0 h-full w-full object-cover" /> -->
-      <img alt="Become an AFB membver today" src='@/assets/img/Cat-Heart-680x800-1.png'>
+      <img class="h-800" alt="Become an AFB membver today" src='@/assets/img/Dog-Sideways-Glare-1024x1024.png'>
     </div>
   </div>
 </template>
