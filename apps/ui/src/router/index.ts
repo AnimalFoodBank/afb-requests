@@ -111,7 +111,7 @@ const applicationRoutes: Route[] = [
   {
     path: '/dashboard',
     component: DashboardView,
-    name: 'DashboardView',  //  TODO: Rename to HomeView
+    name: 'DashboardView',
     meta: privateApplicationRoute,
   },
   {
