@@ -179,7 +179,7 @@
 <!-- NOTE: When setup is missing, the router/index.ts shows a warning that ApplicationPage isn't a module -->
 <script setup lang="ts">
 import defaultAvatar from '@/assets/img/Cat-Heart-680x800-1.png';
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuItem, MenuItems } from '@headlessui/vue';
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
