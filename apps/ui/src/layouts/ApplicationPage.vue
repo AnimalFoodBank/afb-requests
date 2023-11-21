@@ -21,7 +21,10 @@
                   Renders the company logo as an image.
                   The @ symbol in the src attribute is used to indicate that the path is relative to the project's src directory.
                 -->
-                <a href="/"><img class="block h-8 w-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" /></a>
+                <a href="/">
+                  <img v-if="authStore.isAuthenticated" class="block h-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" />
+                  <img v-else class="block h-16" src="@/assets/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank logo" />
+                </a>
               </div>
 
               <!-- Main navigation -->
@@ -30,7 +33,10 @@
                   <div class="flex space-x-4 ">
 
                     <router-link v-for="item in navigation"
-                    :key="item.name" :to="item.href" class="nav-link rounded-md py-2 px-3 text-sm font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">{{ item.name }}
+                    v-show="authStore.isAuthenticated"
+                    :key="item.name"
+                    :to="item.href"
+                    class="nav-link rounded-md py-2 px-3 text-sm font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">{{ item.name }}
                   </router-link>
 
                 </div>
@@ -93,7 +99,8 @@
           <MenuItems
           class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <MenuItem v-for="item in navigationItems" :key="item.name" v-slot="{ active }">
-            <a :href="item.href"
+            <a
+            :href="item.href"
             :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name
             }}</a>
           </MenuItem>
@@ -165,28 +172,42 @@
     </a>
   </div>
   <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; © 2023 Animal Food Bank / All Rights Reserved</p>
-</footer>
+</footer>a
 </div>
 </template>
 
 <!-- NOTE: When setup is missing, the router/index.ts shows a warning that ApplicationPage isn't a module -->
 <script setup lang="ts">
-import CatHeartImage from '@/assets/img/Cat-Heart-680x800-1.png';
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import defaultAvatar from '@/assets/img/Cat-Heart-680x800-1.png';
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuItem, MenuItems } from '@headlessui/vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
-import { computed, defineComponent, h, onMounted, ref } from 'vue';
+import { computed, defineComponent, h, onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
+
+// See: https://router.vuejs.org/api/interfaces/Router.html
+const router = useRouter()
+
+const authStore = useAuthStore();
+
+// Create an instance of axios to use in this module.
+// See defaults set in /src/main.ts
+const http_client = axios.create();
+
+// Set the AUTH token for any request
+http_client.interceptors.request.use(function (config) {
+  if (authStore.isAuthenticated) {
+    const token = authStore.getToken;
+    console.log('http_client.interceptors.request.use()', token);
+    config.headers.Authorization = token ? `Token ${token}` : '';
+  }
+  return config;
+});
 
 // Demonstrates how to use environment variables in Vue components.
 console.log('import.meta.env.VITE_BASE_URL=' + import.meta.env.VITE_BASE_URL)
-
-const user = ref({
-  isLoggedIn: false,
-  name: '',
-  email: '',
-  imageUrl: '',
-});
 
 /**
 * Makes a GET request to the current user endpoint and sets the user value if the response status is within the 200-299 range.
@@ -196,36 +217,75 @@ const user = ref({
 */
 onMounted(async () => {
   try {
-    const response = await axios.get('/api/users/current_user/');
+    const response = await http_client.get('/api/users/current_user/');
     if (response.status >= 200 && response.status < 300) {
-      user.value = response.data;
+      user = reactive(Object.assign(user, response.data));
+      user.is_authenticated = true;
+      console.log('onMounted() user=', user);
     } else {
-      console.error(`Request failed with status code ${response.status}`);
-      user.value = guestUser.value;
+      // console.error(`Request failed with status code ${response.status}`);
+      user = reactive(Object.assign(user, guestUser.value));
     }
   } catch (error) {
-    console.error('Request failed', error);
-    user.value = guestUser.value;
+    // console.error('Request failed', error);
+    user = reactive(Object.assign(user, guestUser.value));
   }
 });
 
-const guestUser = ref({
-  isLoggedIn: false,
-  name: 'Heart Cat',
-  email: 'heartcat@animalfoodbank.org',
-  imageUrl: CatHeartImage,
+let user = reactive({
+  is_admin: false,
+  is_staff: false,
+  is_authenticated: false,
+  name: '',
+  username: '',
+  email: '',
+  imageUrl: defaultAvatar,
 });
 
+let guestUser = ref({
+  is_admin: false,
+  is_staff: false,
+  is_authenticated: false,
+  name: 'Heart Cat',
+  username: 'heartcat@animalfoodbank.org',
+  email: '',
+  imageUrl: defaultAvatar,
+});
+
+// Get routes by name
+const dashboardRoute = router.resolve('dashboard');
+const aboutRoute = router.resolve('/about');
+const requestsRoute = router.resolve('/requests');
+
 const navigation = [
-{ name: 'Dashboard', href: '/dashboard'},
-{ name: 'About', href: '/about'},
-{ name: 'Requests', href: '/requests'},
+{
+  name: "Dashboard",
+  href: dashboardRoute.path,
+},
+{
+  name: "About",
+  href: aboutRoute.path,
+},
+{
+  name: "Make a request",
+  href: requestsRoute.path,
+},
 ]
 
-const userNavigation = [
-{ name: 'Your Profile', href: '/profile' },
-{ name: 'Your dashboard', href: '/dashboard' },
-{ name: 'Sign out', href: '/logout' },
+const profileNav = [
+{
+  name: 'Your Profile',
+  href: '/profile',
+  is_authenticated: true,
+},
+{
+  name: 'Your dashboard',
+  href: '/dashboard'
+},
+{
+  name: 'Sign out',
+  href: '/logout'
+},
 ]
 
 const guestNavigation = [
@@ -233,8 +293,8 @@ const guestNavigation = [
 ];
 
 const navigationItems = computed(() => {
-  console.log(user.value.isLoggedIn)
-  return user.value.isLoggedIn ? userNavigation : guestNavigation;
+  console.log(user.is_authenticated)
+  return user.is_authenticated ? profileNav : guestNavigation;
 });
 
 const footerNavigation = {

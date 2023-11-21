@@ -18,7 +18,7 @@
 <h2 class="text-2xl font- tracking-tight">Create a client profile</h2>
 
 <form method="post" class="mt-4" enctype="multipart/form-data">
-    {% csrf_token %}
+    {%- csrf_token %}
 
     {{form | crispy}}
 

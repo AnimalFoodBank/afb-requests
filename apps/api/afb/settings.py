@@ -36,7 +36,11 @@ SECRET_KEY = "django-insecure-k3nma!u)7oz(lt346n-=rx=rt%u_^j8-rdz3p(y3o$ot0%soqh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "127.0.0.1:8000",
+    "127.0.0.1:3000",
+]
 
 
 # Application definition
@@ -53,6 +57,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_extensions",  # add this for 'python manage.py runserver_plus'
     "rest_framework",  # add DRF
+    "rest_framework.authtoken",
     "django_filters",  # add DRF filters
     "phonenumber_field",
     "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
@@ -62,12 +67,49 @@ INSTALLED_APPS = [
 VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
-CORS_ALLOW_HEADERS = "*"
-CORS_ORIGIN_WHITELIST = [
+# CORS_ALLOW_HEADERS = "*"
+# CORS_ALLOW_ALL_ORIGINS = False
+
+# https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000",  # ViteJS dev server
+    "http://127.0.0.1:3001",  # ViteJS dev server
+]
+CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
+
+# Resolves CSRF error:
+#   Forbidden (Origin checking failed - http://127.0.0.1:3000 does not match any trusted origins.):
+#
+# See:
+#   https://david.dev/django-origin-checking-failed-does-not-match-any-trusted-origins
+#   https://github.com/adamchainz/django-cors-headers
+#
+CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",  # ViteJS dev server
     "http://127.0.0.1:3001",  # ViteJS dev server
     "http://localhost:3000",
 ]
+
+CSRF_USE_SESSIONS = True
+
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False  # not DEBUG
+# SECURE_SSL_REDIRECT = False
+
+# This is needed for CSRF to work with CORS:
+# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-samesite
+CSRF_COOKIE_SAMESITE = "None"
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
+CSRF_COOKIE_HTTPONLY = False
+
+# # May need to revisit this for production:
+# https://docs.djangoproject.com/en/4.2/ref/csrf/#how-it-works
+# CSRF_COOKIE_DOMAIN = ""
+
+TOKEN_EXPIRED_AFTER_WEEKS = 2
 
 # correspond to your build.outDir in your ViteJS configuration.
 DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "dist"
@@ -131,7 +173,7 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
@@ -145,6 +187,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    # 'afbcore.middleware.DebugCorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",

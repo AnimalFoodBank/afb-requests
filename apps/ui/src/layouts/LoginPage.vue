@@ -12,4 +12,5 @@
 </template>
 
 <script setup lang="ts">
+// typescript vs ES6 module
 </script>
