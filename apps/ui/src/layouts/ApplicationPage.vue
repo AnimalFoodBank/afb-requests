@@ -21,7 +21,10 @@
                   Renders the company logo as an image.
                   The @ symbol in the src attribute is used to indicate that the path is relative to the project's src directory.
                 -->
-                <a href="/"><img class="block h-8 w-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" /></a>
+                <a href="/">
+                  	<img v-if="authStore.isAuthenticated" class="block h-8" src="@/assets/img/afb_icon_colour.png" alt="Animal Food Bank logo" />
+                  	<img v-else class="block h-16" src="@/assets/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank logo" />
+                </a>
               </div>
 
               <!-- Main navigation -->
@@ -30,7 +33,10 @@
                   <div class="flex space-x-4 ">
 
                     <router-link v-for="item in navigation"
-                    :key="item.name" :to="item.href" class="nav-link rounded-md py-2 px-3 text-sm font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">{{ item.name }}
+                    v-show="authStore.isAuthenticated"
+                    :key="item.name"
+                    :to="item.href"
+                    class="nav-link rounded-md py-2 px-3 text-sm font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">{{ item.name }}
                   </router-link>
 
                 </div>
@@ -94,8 +100,8 @@
           class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <MenuItem v-for="item in navigationItems" :key="item.name" v-slot="{ active }">
             <a
-              :href="item.href"
-              :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name
+            :href="item.href"
+            :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name
             }}</a>
           </MenuItem>
         </MenuItems>
@@ -166,7 +172,7 @@
     </a>
   </div>
   <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; © 2023 Animal Food Bank / All Rights Reserved</p>
-</footer>
+</footer>a
 </div>
 </template>
 
@@ -178,7 +184,12 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { computed, defineComponent, h, onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+
+// See: https://router.vuejs.org/api/interfaces/Router.html
+const router = useRouter()
+
 const authStore = useAuthStore();
 
 // Create an instance of axios to use in this module.
@@ -241,16 +252,40 @@ let guestUser = ref({
   imageUrl: CatHeartImage,
 });
 
+// Get routes by name
+const dashboardRoute = router.resolve('dashboard');
+const aboutRoute = router.resolve('/about');
+const requestsRoute = router.resolve('/requests');
+
 const navigation = [
-{ name: 'Dashboard', href: '/dashboard'},
-{ name: 'About', href: '/about'},
-{ name: 'Requests', href: '/requests'},
+{
+  name: "Dashboard",
+  href: dashboardRoute.path,
+},
+{
+  name: "About",
+  href: aboutRoute.path,
+},
+{
+  name: "Make a request",
+  href: requestsRoute.path,
+},
 ]
 
-const userNavigation = [
-{ name: 'Your Profile', href: '/profile' },
-{ name: 'Your dashboard', href: '/dashboard' },
-{ name: 'Sign out', href: '/logout' },
+const profileNav = [
+{
+  name: 'Your Profile',
+  href: '/profile',
+  is_authenticated: true,
+},
+{
+  name: 'Your dashboard',
+  href: '/dashboard'
+},
+{
+  name: 'Sign out',
+  href: '/logout'
+},
 ]
 
 const guestNavigation = [
@@ -259,7 +294,7 @@ const guestNavigation = [
 
 const navigationItems = computed(() => {
   console.log(user.is_authenticated)
-  return user.is_authenticated ? userNavigation : guestNavigation;
+  return user.is_authenticated ? profileNav : guestNavigation;
 });
 
 const footerNavigation = {
