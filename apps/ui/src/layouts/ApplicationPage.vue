@@ -44,21 +44,6 @@
             </div>
           </div>
 
-          <!-- Site search bar -->
-          <div class="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
-            <div class="w-full max-w-lg lg:max-w-xs">
-              <label for="search" class="sr-only">Search</label>
-              <div class="relative text-gray-400 focus-within:text-gray-600">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
-                </div>
-                <input id="search"
-                class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Search" type="search" name="search" />
-              </div>
-            </div>
-          </div>
-
           <!-- Mobile menu button -->
           <div class="flex lg:hidden">
             <DisclosureButton
@@ -180,7 +165,6 @@
 <script setup lang="ts">
 import defaultAvatar from '@/assets/img/Cat-Heart-680x800-1.png';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { computed, defineComponent, h, onMounted, reactive, ref } from 'vue';
