@@ -86,8 +86,11 @@ django-unfold
 
 django-phonenumber-field[phonenumbers]
 
-pip-tools
-pre-commit
+# DRF Registration package installed via git
+-e git+ssh://git@github.com/delano/drf-registration.git@main#egg=drf-registration
+
+# This is used for the API docs
+markdown
 
 # Probably not needed, now that we have django-vite
 # django-tailwind[reload]
