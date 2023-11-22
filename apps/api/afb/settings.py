@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "django_extensions",  # add this for 'python manage.py runserver_plus'
     "rest_framework",  # add DRF
     "rest_framework.authtoken",
+    "drf_registration",
     "django_filters",  # add DRF filters
     "phonenumber_field",
     "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
@@ -173,10 +174,15 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
+
+# For the default settings see:
+# https://drf-registration.readthedocs.io/en/latest/settings/index.html
+DRF_REGISTRATION = {}
+
 
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
@@ -203,6 +209,10 @@ ROOT_URLCONF = "afb.urls"
 # TAILWIND_APP_NAME = "theme"
 
 AUTH_USER_MODEL = "afbcore.User"
+
+AUTHENTICATION_BACKENDS = [
+    "drf_registration.auth.MultiFieldsModelBackend",
+]
 
 INTERNAL_IPS = [
     # Add local IP addresses here for tailwind to work, then run:
@@ -233,6 +243,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "afb.wsgi.application"
 
 
+# EMAIL
+#
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
+EMAIL_TIMEOUT = 5
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -246,6 +265,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
