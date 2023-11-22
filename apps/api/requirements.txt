@@ -4,18 +4,22 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+-e git+ssh://git@github.com/delano/drf-registration.git@main#egg=drf-registration
+    # via -r requirements.in
 appnope==0.1.3
     # via ipython
 asgiref==3.7.2
-    # via
-    #   django
-    #   django-cors-headers
+    # via django
 asttokens==2.4.1
     # via stack-data
 build==1.0.3
     # via pip-tools
+certifi==2023.11.17
+    # via requests
 cfgv==3.4.0
     # via pre-commit
+charset-normalizer==3.3.2
+    # via requests
 click==8.1.7
     # via pip-tools
 coverage==7.3.2
@@ -29,7 +33,6 @@ distlib==0.3.7
 django==4.2.7
     # via
     #   -r requirements.in
-    #   django-cors-headers
     #   django-extensions
     #   django-filter
     #   django-model-utils
@@ -37,8 +40,7 @@ django==4.2.7
     #   django-unfold
     #   django-vite
     #   djangorestframework
-django-cors-headers==4.3.1
-    # via -r requirements.in
+    #   drf-registration
 django-extensions==3.2.3
     # via -r requirements.in
 django-filter==23.3
@@ -52,13 +54,17 @@ django-unfold==0.15.1
 django-vite==2.1.3
     # via -r requirements.in
 djangorestframework==3.14.0
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   drf-registration
 executing==2.0.1
     # via stack-data
 filelock==3.13.1
     # via virtualenv
 identify==2.5.31
     # via pre-commit
+idna==3.4
+    # via requests
 iniconfig==2.0.0
     # via pytest
 ipdb==0.13.13
@@ -113,8 +119,12 @@ pytz==2023.3.post1
     # via djangorestframework
 pyyaml==6.0.1
     # via pre-commit
+requests==2.31.0
+    # via drf-registration
 six==1.16.0
-    # via asttokens
+    # via
+    #   asttokens
+    #   drf-registration
 sqlparse==0.4.4
     # via django
 stack-data==0.6.3
@@ -123,6 +133,8 @@ traitlets==5.13.0
     # via
     #   ipython
     #   matplotlib-inline
+urllib3==2.1.0
+    # via requests
 virtualenv==20.24.6
     # via pre-commit
 wcwidth==0.2.9

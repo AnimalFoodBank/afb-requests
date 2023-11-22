@@ -52,12 +52,10 @@ import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/v
                 <TextElement name="phone" label="Phone number" :rules="['required']" />
                 <TextareaElement name="address" label="Address" :rules="['required']" />
 
-
                 <TextElement input-type="password" name="password" label="Password" :rules="['required']" />
               </FormElements>
 
               <FormStepsControls :labels="false">
-
                 <template #previous><div class="flex"><ArrowLeftIcon class="h-6 w-6 ml-0 mr-1 text-100" /> Previous</div></template>
                 <template #next><div class="flex">Next <ArrowRightIcon class="h-6 w-6 ml-1 mr-0 text-100" /></div></template>
                 <template #finish><div class="flex">Finish <CheckIcon class="h-6 w-6 ml-1 mr-0 text-100" /></div></template>
