@@ -27,8 +27,10 @@ import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/v
           <!--
             @see https://vueform.com/docs/breaking-forms-into-steps
           -->
-          <Vueform :float-placeholders="true" endpoint="/api/">
+          <Vueform :float-placeholders="true" endpoint="/api/accounts/register/"  :display-errors="false">
             <template #empty>
+              <FormErrors v-if="hasErrors" />
+
               <FormSteps>
                 <FormStep name="account" :elements="['email', 'name', 'terms_agreement']" :buttons="{
                   previous: false
