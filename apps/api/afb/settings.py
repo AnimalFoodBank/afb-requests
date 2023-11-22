@@ -168,7 +168,9 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+        # "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
+        # 'rest_framework.permissions.AllowAny',
+        "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
@@ -181,7 +183,33 @@ REST_FRAMEWORK = {
 
 # For the default settings see:
 # https://drf-registration.readthedocs.io/en/latest/settings/index.html
-DRF_REGISTRATION = {}
+DRF_REGISTRATION = {
+    # General settings
+    "PROJECT_NAME": "AFB Requests",
+    "PROJECT_BASE_URL": "",
+    # User fields to register and respond to profile
+    "USER_FIELDS": (
+        "id",
+        "email",
+        "password",
+        "first_name",
+        "last_name",
+        "is_active",
+    ),
+    "USER_READ_ONLY_FIELDS": (
+        "is_superuser",
+        "is_staff",
+        "is_active",
+    ),
+    "USER_WRITE_ONLY_FIELDS": ("password",),
+    "USER_SERIALIZER": "drf_registration.api.user.UserSerializer",
+    "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
+    # For custom login username fields
+    "LOGIN_USERNAME_FIELDS": [
+        "email",
+    ],
+    "LOGOUT_REMOVE_TOKEN": True,
+}
 
 
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
