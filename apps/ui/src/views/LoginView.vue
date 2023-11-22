@@ -49,8 +49,7 @@ const handleSubmit = (form$: any) => {
           <!-- Validate only on submit -->
           <!-- See the API reference docs for VueForm -->
           <!-- https://vueform.com/reference/vueform#option-endpoint -->
-          <Vueform :display-errors="false" ref="form$" :endpoint="false"
-                   :form-data="form$ => form$.convertFormData(form$.data)">
+          <Vueform :display-errors="false" ref="form$" :endpoint="false">
             <TextElement name="username" input-type="text" label="Email address" placeholder=""
                          :rules="['required', 'email']" :debounce="100" />
             <TextElement name="password" input-type="password" label="Password" />

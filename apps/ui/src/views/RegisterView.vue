@@ -24,12 +24,10 @@ import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/v
         </div>
 
         <div class="mt-10">
-
           <!--
-
             @see https://vueform.com/docs/breaking-forms-into-steps
           -->
-          <Vueform :float-placeholders="true">
+          <Vueform :float-placeholders="true" endpoint="/api/">
             <template #empty>
               <FormSteps>
                 <FormStep name="account" :elements="['email', 'name', 'terms_agreement']" :buttons="{
