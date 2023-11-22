@@ -1,4 +1,5 @@
-from afbcore.serializers import RegisterUserSerializer, UserSerializer
+import logging
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
@@ -7,15 +8,17 @@ from django.conf import settings
 from datetime import datetime, timedelta
 
 from rest_framework import generics, permissions, status, viewsets
+from rest_framework.authentication import TokenAuthentication, exceptions
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from afbcore.serializers import RegisterUserSerializer, UserSerializer
+
 User = get_user_model()
 
-
-from rest_framework.authentication import TokenAuthentication, exceptions
+logger = logging.getLogger(__name__)
 
 # Example of a viewset with custom actions.
 #
@@ -53,22 +56,44 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["delete"])
     def expire_token(self, request):
         model = Token
-        # key = request.params.get("key", None)
-        # key = request.meta.get("HTTP_AUTHORIZATION", None).split()
+
+        # e.g. "Token 9944b09..."
+        header_str = request.META.get("HTTP_AUTHORIZATION", "")
+
+        # Splitting the string into two parts, The literal "Token"
+        # prefix and the key itself. The default is an empty
+        # string so this will always return a list of at
+        # least one item.
+        _, *key = header_str.split(" ")
+
+        # We use the asterisk to unpack the list into two variables
+        # where the second variable is a list of all the remaining
+        # items in the list. If there is no authorization key, the
+        # list will be empty. If there is an authorization key, we
+        # reassign `key` with the first item in the list (to make
+        # it a string again).
+        if key:
+            key = key.get(0)
+
         # Get the token from the request header.
-        key = request.META.get("HTTP_AUTHORIZATION", "").split()[1]
+        if key is None:
+            logger.warning("Token is none. Token: %s", key)
+            raise exceptions.AuthenticationFailed("Invalid token (1).")
 
         try:
             token = model.objects.get(key=key, user=request.user)
 
         except model.DoesNotExist:
-            raise exceptions.AuthenticationFailed("Invalid token.")
+            logger.warning("Token does not exist. Token: %s", key)
+            raise exceptions.AuthenticationFailed("Invalid token (2).")
 
         if self.expired(token):
             token.delete()
+            logger.warning("Token has expired for user: %s", request.user)
             raise exceptions.AuthenticationFailed("Token has expired.")
 
         if not token.user.is_active:
+            logger.warning("User is inactive: %s", token.user)
             raise exceptions.AuthenticationFailed("User inactive or deleted.")
 
         return token.user, token
