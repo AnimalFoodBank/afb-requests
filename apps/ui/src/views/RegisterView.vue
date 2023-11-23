@@ -1,7 +1,45 @@
 
 <script setup lang="ts">
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/vue/20/solid';
+import axios from 'axios';
+1
 
+const handleSubmit = (pointerEvent$: any) => {
+  console.log('RegisterView.handleSubmit()')
+  console.log(pointerEvent$)
+
+  let form = document.getElementById('registerForm') as HTMLFormElement;
+
+  if (form === null) {
+    return;
+  }
+
+  // WIP: This is a hack to get the form data to submit
+  // immediately after the user clicks the first "Next" button.
+  // The goal is to prevent the user spending time filling out
+  // the entire form only to find out that the email address
+  // is already in use or any other kind of error.
+  let registration_fields = {
+    "email": form.elements['email']._value,
+    "name": form.elements['name']._value,
+  }
+
+  axios.post('/api/accounts/register/', registration_fields, {
+    headers: {},
+    withCredentials: true,
+  })
+    .then(response => {
+      console.log(response);
+
+
+
+    })
+    .catch(error => {
+      // TODO: Handle login failure
+      console.log(error);
+    });
+
+}
 
 // @see List of icons: https://unpkg.com/browse/@heroicons/vue@2.0.18/24/outline/
 </script>
@@ -27,37 +65,35 @@ import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/v
           <!--
             @see https://vueform.com/docs/breaking-forms-into-steps
           -->
-          <Vueform :float-placeholders="true" endpoint="/api/accounts/register/"  :display-errors="false">
+          <Vueform endpoint="/api/accounts/register/" ref="form$" :display-errors="false" id="registerForm">
             <template #empty>
-              <FormErrors v-if="hasErrors" />
+              <FormErrors/>
 
               <FormSteps>
-                <FormStep name="account" :elements="['email', 'name', 'terms_agreement']" :buttons="{
-                  previous: false
-                }">Account</FormStep>
+                <FormStep name="account" :elements="['name', 'email', 'terms_agreement']" :buttons="{ previous: false }">Account</FormStep>
                 <FormStep name="pets" :elements="['pet1', 'pet2', 'pet3', 'pet4']">Pets</FormStep>
-                <FormStep name="contacts" :elements="['phone', 'address', 'password']">Contacts</FormStep>
+                <FormStep name="contacts" :elements="['phone', 'address']">Contacts</FormStep>
               </FormSteps>
 
               <FormElements>
-                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email" placeholder="abc@example.com" :rules="['required', 'email']"  />
-                <TextElement name="name" info="Full name, first name or a nickname" label="Your Name" :rules="['required']" />
+                <TextElement name="name" info="Full name, first name or a nickname" label="Your name" placeholder="e.g. Elrik M" :rules="['required']" />
+                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email address" placeholder="abc@example.com" :rules="['required', 'email']"  />
                 <CheckboxElement name="terms_agreement" text="Accept our Terms of Use & Privacy Policy" :rules="['required']" />
 
-                <TextareaElement :autogrow="true" placeholder="Dog/cat/etc, Name, Size, Date of Birth" name="pet1" label="Pet details" :rules="['required']" />
+                <TextareaElement :autogrow="true" placeholder="Dog/cat/etc, Name, Size, Date of Birth" name="pet1" label="Pet details" :rules="[]" />
                 <TextareaElement :autogrow="true" name="pet2" label="Pet details (2 of 4)" />
                 <TextareaElement :autogrow="true" name="pet3" label="Pet details (3 of 4)" />
                 <TextareaElement :autogrow="true" name="pet4" label="Pet details (4 of 4)" />
 
-                <TextElement name="phone" label="Phone number" :rules="['required']" />
-                <TextareaElement name="address" label="Address" :rules="['required']" />
+                <TextElement name="phone" label="Phone number" :rules="[]" />
+                <TextareaElement name="address" label="Address" :rules="[]" />
 
-                <TextElement input-type="password" name="password" label="Password" :rules="['required']" />
+                <!-- <TextElement input-type="password" name="password" label="Password" :rules="['required']" /> -->
               </FormElements>
 
               <FormStepsControls :labels="false">
                 <template #previous><div class="flex"><ArrowLeftIcon class="h-6 w-6 ml-0 mr-1 text-100" /> Previous</div></template>
-                <template #next><div class="flex">Next <ArrowRightIcon class="h-6 w-6 ml-1 mr-0 text-100" /></div></template>
+                <template #next><button class="flex" @click="handleSubmit">Next <ArrowRightIcon class="h-6 w-6 ml-1 mr-0 text-100" /></button></template>
                 <template #finish><div class="flex">Finish <CheckIcon class="h-6 w-6 ml-1 mr-0 text-100" /></div></template>
               </FormStepsControls>
             </template>
