@@ -3,12 +3,18 @@ URL configuration for afb project.
 
 """
 
+from django.conf import settings
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.urls import include, path
+from django.views.decorators.csrf import csrf_exempt
+from django.views import defaults as default_views
+
 from drf_registration.api.register import ActivateView
 from drf_registration.api.change_password import ChangePasswordView
 from drf_registration.api.login import LoginView, SocialLoginView
 from drf_registration.api.logout import LogoutView
 from drf_registration.api.profile import ProfileView
-from drf_registration.api.register import RegisterView
 from drf_registration.api.reset_password import (
     ResetPasswordView,
     ResetPasswordConfirmView,
@@ -16,11 +22,6 @@ from drf_registration.api.reset_password import (
 )
 from drf_registration.api.set_password import SetPasswordView
 from drf_registration.api.register import VerifyView
-
-from django.contrib import admin
-from django.contrib.auth import views as auth_views
-from django.urls import include, path
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import routers
@@ -134,3 +135,30 @@ urlpatterns = [
 urlpatterns.extend(
     [path(route=i["route"], view=i["view"], name=i["name"]) for i in singleViews]
 )
+
+if settings.DEBUG:
+    # This allows the error pages to be debugged during development, just visit
+    # these url in browser to see how these error pages look like.
+    urlpatterns += [
+        path(
+            "400/",
+            default_views.bad_request,
+            kwargs={"exception": Exception("Bad Request!")},
+        ),
+        path(
+            "403/",
+            default_views.permission_denied,
+            kwargs={"exception": Exception("Permission Denied")},
+        ),
+        path(
+            "404/",
+            default_views.page_not_found,
+            kwargs={"exception": Exception("Page not Found")},
+        ),
+        path("500/", default_views.server_error),
+    ]
+
+    if "debug_toolbar" in settings.INSTALLED_APPS:
+        import debug_toolbar
+
+        urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns

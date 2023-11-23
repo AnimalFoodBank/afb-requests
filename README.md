@@ -111,6 +111,9 @@ http://localhost:8025
     # development server with Werkzeug's debugger.
     # https://werkzeug.palletsprojects.com/en/3.0.x/
     $ ./manage.py runserver_plus
+
+    # Rollback to an empty DB
+    $  ./manage.py migrate afbcore zero
 ```
 
 

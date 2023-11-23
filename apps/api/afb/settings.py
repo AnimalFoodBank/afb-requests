@@ -65,6 +65,30 @@ INSTALLED_APPS = [
     "afbcore",
 ]
 
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    # 'afbcore.middleware.DebugCorsMiddleware',
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+if DEBUG:
+
+    INSTALLED_APPS += [
+        "django.contrib.admindocs",
+        "debug_toolbar",
+    ]
+
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+
+
 VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
