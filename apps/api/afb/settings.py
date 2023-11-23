@@ -215,9 +215,8 @@ DRF_REGISTRATION = {
     "USER_FIELDS": (
         "id",
         "email",
-        "password",
-        "first_name",
-        "last_name",
+        # "password",
+        "name",
         "is_active",
     ),
     "USER_READ_ONLY_FIELDS": (
@@ -225,6 +224,8 @@ DRF_REGISTRATION = {
         "is_staff",
         "is_active",
     ),
+    "USER_SERIALIZER": "drf_registration.api.user.UserSerializer",
+    "REGISTER_SERIALIZER": "afbcore.serializers.RegisterSerializer",
     "USER_WRITE_ONLY_FIELDS": ("password",),
     "USER_SERIALIZER": "drf_registration.api.user.UserSerializer",
     "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
@@ -240,18 +241,6 @@ PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
 PHONENUMBER_DEFAULT_REGION = "CA"
 
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    # 'afbcore.middleware.DebugCorsMiddleware',
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-]
 
 ROOT_URLCONF = "afb.urls"
 
@@ -296,12 +285,15 @@ WSGI_APPLICATION = "afb.wsgi.application"
 
 
 # EMAIL
+# https://docs.djangoproject.com/en/4.2/ref/settings/#email-backend
 #
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 #
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
+#
+EMAIL_HOST = "localhost"
+#
+EMAIL_PORT = 1025
 
 
 # Database

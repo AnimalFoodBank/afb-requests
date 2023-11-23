@@ -12,3 +12,5 @@ by the views in this module.
 """
 
 # Standard library imports
+from .users import *  # noqa: F401
+from .registration import RegisterView  # noqa: F401

@@ -25,11 +25,38 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     - date_joined
     - last_login
 
-    Fields inherited from BaseAbstractModel:
+    Fields inherited from UUIDModel, TimeStampedModel:
     - id: UUIDField, primary key
     - created: DateTimeField, auto_now_add=True
     - updated: DateTimeField, auto_now=True
     """
+
+    USERNAME_FIELD = "email"
+
+    # From the docs:
+    #
+    # REQUIRED_FIELDS must contain all required fields on your user model,
+    # but should not contain the USERNAME_FIELD or password as these
+    # fields will always be prompted for.
+    REQUIRED_FIELDS = [
+        "name",
+        "terms_agreement",
+    ]
+
+    email = models.EmailField(_("email address"), unique=True)
+
+    name = models.CharField(_("name"), max_length=255)
+
+    terms_agreement = models.BooleanField(
+        _("terms agreement"),
+        default=False,
+        help_text=_("Indicates whether the user has agreed to the terms of service."),
+    )
+
+    # Override the username field from AbstractUser to allow null values.
+    username = models.CharField(
+        _("username"), max_length=255, unique=True, null=True, blank=True
+    )
 
     # NOTE: We don't need to define a custom manager for this model because
     # Django's built-in UserManager already provides the functionality we need.

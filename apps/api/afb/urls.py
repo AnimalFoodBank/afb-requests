@@ -26,7 +26,8 @@ from drf_registration.api.register import VerifyView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import routers
 
-from afbcore.views import users
+from afbcore.views import users, RegisterView
+
 
 # Create a router subclassed from DefaultRouter and give it a list[dict] as input
 # via: https://github.com/encode/django-rest-framework/discussions/7830#discussioncomment-7205311
