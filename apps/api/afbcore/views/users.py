@@ -1,12 +1,11 @@
+# trunk-ignore-all(isort)
 import logging
+from datetime import datetime, timedelta
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-
-from django.conf import settings
-from datetime import datetime, timedelta
-
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.authentication import TokenAuthentication, exceptions
 from rest_framework.authtoken.models import Token
@@ -16,9 +15,11 @@ from rest_framework.response import Response
 
 from afbcore.serializers import RegisterSerializer, UserSerializer
 
+
 User = get_user_model()
 
 logger = logging.getLogger(__name__)
+
 
 # Example of a viewset with custom actions.
 #
