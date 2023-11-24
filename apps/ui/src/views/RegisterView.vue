@@ -1,45 +1,8 @@
 
 <script setup lang="ts">
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/vue/20/solid';
-import axios from 'axios';
-1
-
-const handleSubmit = (pointerEvent$: any) => {
-  console.log('RegisterView.handleSubmit()')
-  console.log(pointerEvent$)
-
-  let form = document.getElementById('registerForm') as HTMLFormElement;
-
-  if (form === null) {
-    return;
-  }
-
-  // WIP: This is a hack to get the form data to submit
-  // immediately after the user clicks the first "Next" button.
-  // The goal is to prevent the user spending time filling out
-  // the entire form only to find out that the email address
-  // is already in use or any other kind of error.
-  let registration_fields = {
-    "email": form.elements['email']._value,
-    "name": form.elements['name']._value,
-  }
-
-  axios.post('/api/accounts/register/', registration_fields, {
-    headers: {},
-    withCredentials: true,
-  })
-    .then(response => {
-      console.log(response);
 
 
-
-    })
-    .catch(error => {
-      // TODO: Handle login failure
-      console.log(error);
-    });
-
-}
 
 // @see List of icons: https://unpkg.com/browse/@heroicons/vue@2.0.18/24/outline/
 </script>
@@ -65,7 +28,7 @@ const handleSubmit = (pointerEvent$: any) => {
           <!--
             @see https://vueform.com/docs/breaking-forms-into-steps
           -->
-          <Vueform endpoint="/api/accounts/register/" ref="form$" :display-errors="false" id="registerForm">
+          <Vueform :display-errors="false" :float-placeholders="false" endpoint="/api/accounts/register/" ref="form$" validate-on="change|step">
             <template #empty>
               <FormErrors/>
 
@@ -77,7 +40,7 @@ const handleSubmit = (pointerEvent$: any) => {
 
               <FormElements>
                 <TextElement name="name" info="Full name, first name or a nickname" label="Your name" placeholder="e.g. Elrik M" :rules="['required']" />
-                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email address" placeholder="abc@example.com" :rules="['required', 'email']"  />
+                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email address" placeholder="abc@example.com" :rules="['required', 'email', 'unique']" :debounce="1000"  />
                 <CheckboxElement name="terms_agreement" text="Accept our Terms of Use & Privacy Policy" :rules="['required']" />
 
                 <TextareaElement :autogrow="true" placeholder="Dog/cat/etc, Name, Size, Date of Birth" name="pet1" label="Pet details" :rules="[]" />
@@ -92,9 +55,9 @@ const handleSubmit = (pointerEvent$: any) => {
               </FormElements>
 
               <FormStepsControls :labels="false">
-                <template #previous><div class="flex"><ArrowLeftIcon class="h-6 w-6 ml-0 mr-1 text-100" /> Previous</div></template>
-                <template #next><button class="flex" @click="handleSubmit">Next <ArrowRightIcon class="h-6 w-6 ml-1 mr-0 text-100" /></button></template>
-                <template #finish><div class="flex">Finish <CheckIcon class="h-6 w-6 ml-1 mr-0 text-100" /></div></template>
+                <template #previous><button class="flex"><ArrowLeftIcon class="h-6 w-6 ml-0 mr-1 text-100" /> Previous</button></template>
+                <template #next><button class="flex">Next <ArrowRightIcon class="h-6 w-6 ml-1 mr-0 text-100" /></button></template>
+                <template #finish><button class="flex">Finish <CheckIcon class="h-6 w-6 ml-1 mr-0 text-100" /></button></template>
               </FormStepsControls>
             </template>
           </Vueform>
@@ -106,7 +69,6 @@ const handleSubmit = (pointerEvent$: any) => {
     <div class="relative hidden w-0 flex-1 lg:block">
       <!-- <CatHeartImage class="absolute inset-0 h-full w-full object-cover" /> -->
       <img class="h-800" alt="Become an AFB member today" src='@/assets/img/Dog-Sideways-Glare-1024x1024.png'>
-
     </div>
   </div>
 </template>
