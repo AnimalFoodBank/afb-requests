@@ -1,15 +1,27 @@
 import logging
 
-from drf_registration.api.register import (
-    RegisterSerializer as BaseRegisterSerializer,
+from django.utils.module_loading import import_string as django_import_string
+from rest_framework import serializers
+from drf_registration.settings import drfr_settings
+from drf_registration.utils.common import import_string
+
+from drf_registration.utils.users import (
+    get_user_profile_data,
+    get_user_serializer,
+    has_user_activate_token,
+    has_user_verify_code,
+    set_user_verified,
 )
 
 logger = logging.getLogger(__name__)
 
 
-class RegisterSerializer(BaseRegisterSerializer):
+class RegisterSerializer(get_user_serializer()):
     """
-    We override the default serializer to handle password validation.
+    We completely override the default serializer to handle password validation.
+
+    Due to some sensitive circular imports, we implement the logic from
+    dsf_registration.api.register.RegisterSerializer here.
     """
 
     def validate_password(self, value):
@@ -39,6 +51,10 @@ class RegisterSerializer(BaseRegisterSerializer):
         # create users without a password. The user can login
         # via email link and set a password later.
         user.set_unusable_password()
-        user.save()
 
+        # Disable verified if enable verify user, else set it enabled
+        user_verified = not (has_user_activate_token() or has_user_verify_code())
+        set_user_verified(user, user_verified)
+
+        user.save()
         return user

@@ -223,8 +223,8 @@ DRF_REGISTRATION = {
         "is_staff",
         "is_active",
     ),
-    "USER_SERIALIZER": "drf_registration.api.user.UserSerializer",
-    "REGISTER_SERIALIZER": "drf_registration.api.register.RegisterSerializer",
+    "USER_SERIALIZER": "afbcore.serializers.UserSerializer",
+    "REGISTER_SERIALIZER": "afbcore.serializers.RegisterSerializer",
     "USER_WRITE_ONLY_FIELDS": ("password",),
     "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
     # For custom login username fields

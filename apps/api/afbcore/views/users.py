@@ -13,8 +13,6 @@ from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from afbcore.serializers import RegisterSerializer, UserSerializer
-
 
 User = get_user_model()
 
@@ -31,7 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
     # TODO: Use a more limited queryset. This makes all users available to all
     # usersto this endpoint. Can't spill beans you don't have.
     queryset = User.objects.all().order_by("-date_joined")
-    serializer_class = UserSerializer
+    serializer_class = "afbcore.serializers.user_serializer.UserSerializer"
     permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=["get"])

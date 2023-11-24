@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from rest_framework.test import APITestCase
 from afbcore.views.users import UserViewSet, RegisterView
-from afbcore.serializers import UserSerializer, RegisterUserSerializer
+from afbcore.serializers import UserSerializer, RegisterSerializer
 from django.test import RequestFactory
 
 """
