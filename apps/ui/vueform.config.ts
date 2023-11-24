@@ -14,17 +14,25 @@
  * See: https://vueform.com/reference/configuration#axios
  */
 
-import en from '@vueform/vueform/locales/en';
-import tailwind from '@vueform/vueform/themes/tailwind';
-import axios from 'axios'
+import en from "@vueform/vueform/locales/en";
+import tailwind from "@vueform/vueform/themes/tailwind";
+import axios from "axios";
 const base_url = import.meta.env.VITE_BASE_URL;
 
 export default {
   theme: tailwind,
   locales: { en },
-  locale: 'en',
+  locale: "en",
 
   axios,
+
+  endpoints: {
+    unique: {
+      url: "/api/users/prove_unique/",
+      method: "POST",
+    },
+  },
+
   // axios: {
   //   withCredentials: true,
   //   xsrfCookieName: 'csrftoken',
@@ -38,4 +46,4 @@ export default {
   //     location.href = '/login'
   //   },
   // },
-}
+};

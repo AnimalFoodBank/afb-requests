@@ -1,15 +1,8 @@
 import logging
 
-from drf_registration.utils.users import (
-    has_user_activate_token,
-    has_user_verify_code,
-    set_user_verified,
-)
-
 from drf_registration.api.register import (
     RegisterSerializer as BaseRegisterSerializer,
 )
-from drf_registration.settings import drfr_settings
 
 logger = logging.getLogger(__name__)
 
