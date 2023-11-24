@@ -78,7 +78,6 @@ MIDDLEWARE = [
 ]
 
 if DEBUG:
-
     INSTALLED_APPS += [
         "django.contrib.admindocs",
         "debug_toolbar",
