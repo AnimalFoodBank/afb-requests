@@ -33,9 +33,19 @@ class RegisterSerializer(BaseRegisterSerializer):
         """
         Override create method to explicitly set an unusable password.
         """
-        validated_data["password"] = "!unusable"  # noqa B105
 
-        response = super().create(validated_data)
-        # user.set_unusable_password()
+        # Set an arbitrary value to the password field so that
+        # the default create method doesn't throw an error.
+        validated_data["password"] = "!"  # noqa: B105
 
-        return response
+        user = super().create(validated_data)
+
+        # Sets the password field to have an arbitrary string
+        # prefixed with "!" to indicate that the password is
+        # unusable. This is a Django feature that allows us to
+        # create users without a password. The user can login
+        # via email link and set a password later.
+        user.set_unusable_password()
+        user.save()
+
+        return user

@@ -2,7 +2,7 @@ import logging
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
-from rest_framework import status
+from rest_framework import status as status_codes
 from rest_framework.response import Response
 
 from drf_registration.utils.users import (
@@ -30,18 +30,19 @@ class RegisterView(BaseRegistrationView):
 
     def create(self, request, *args, **kwargs):
 
-        try:
-            # Attempt to create
+        status, error_message = None, None
+        email_address = request.data.get("email")
 
+        try:
+            # Attempt to create the user using the default
+            # serializer from drf_registration.
             response = super().create(request, *args, **kwargs)
 
         # Handle db errors
         except IntegrityError as e:
             logger.warning(e)
-            response = Response(
-                {"error": "Account with that email already exists."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            status = status_codes.HTTP_400_BAD_REQUEST
+            error_message = "Unable to create user"
 
         # Handle issues sending mail via SMTP (e.g. Mailpit). Without this,
         # the user is created but the UI shows an error. We want to
@@ -50,37 +51,27 @@ class RegisterView(BaseRegistrationView):
         # NOTE: This is not a good idea for production. We should
         # use a task queue like Celery to handle this.
         except ConnectionRefusedError as e:
-            logger.warning(e)
-            response = Response(
-                {"error": "Unable to send mail."},
-                status=status.HTTP_201_SERVICE_UNAVAILABLE,
-            )
+            logger.warning(f"Unable to send email to {email_address}: {e}")
 
         # This can also include "email already exists" errors
         except ValidationError as e:
             logger.error(e)
-            response = Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            status = status_codes.HTTP_400_BAD_REQUEST
+            error_message = str(e)
 
         # Handle other exceptions gracefully
         except Exception as e:
-            logger.error(e)
-
-            # Also log stack trace
+            # Log the stack trace along with the error message
+            # in case it helps debug the issue.
             logger.exception(e)
+            logger.error(f"{e.__class__.__name__}: {e} ({email_address})")
 
-            response = Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            status = status_codes.HTTP_400_BAD_REQUEST
+            error_message = str(e)
 
+        # If we have an error, return a response with the error message.
+        if status:
+            response = Response({"error": error_message}, status=status)
+
+        # Otherwise, return the response from the super class.
         return response
-
-
-# from rest_framework import generics
-# from rest_framework.authtoken.models import Token
-# from rest_framework.authtoken.serializers import AuthTokenSerializer
-
-# from afbcore.models import User
-# from afbcore.serializers import UserSerializer
-
-
-# class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer

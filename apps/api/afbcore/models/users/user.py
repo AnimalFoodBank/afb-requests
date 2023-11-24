@@ -7,6 +7,20 @@ from model_utils.models import (
     UUIDModel,
 )
 
+"""
+    AFB Core API User Model
+
+    NOTE: We don't need to define a custom manager for this model because
+    Django's built-in UserManager already provides the functionality we need.
+    It's also a bit of a pain to implement properly.
+
+    NOTE 2: However, that means we need to be careful wuth regards to soft
+    detletes. If we use the delete method provided by the default manager,
+    it will delete the object from the database. Instead, we should only
+    ever delete Users using the user.delete() method.
+
+"""
+
 
 class User(UUIDModel, TimeStampedModel, AbstractUser):
     """
@@ -57,12 +71,3 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     username = models.CharField(
         _("username"), max_length=255, unique=True, null=True, blank=True
     )
-
-    # NOTE: We don't need to define a custom manager for this model because
-    # Django's built-in UserManager already provides the functionality we need.
-    # It's also a bit of a pain to implement properly.
-
-    # NOTE 2: However, that means we need to be careful wuth regards to soft
-    # detletes. If we use the delete method provided by the default manager,
-    # it will delete the object from the database. Instead, we should only
-    # ever delete Users using the user.delete() method.
