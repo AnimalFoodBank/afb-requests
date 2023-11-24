@@ -27,9 +27,7 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     A custom user model that extends Django's built-in AbstractUser model.
 
     Fields inherited from AbstractUser:
-    - username
-    - first_name
-    - last_name
+    - name
     - email
     - password
     - groups
@@ -71,3 +69,7 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     username = models.CharField(
         _("username"), max_length=255, unique=True, null=True, blank=True
     )
+
+    # Remove the first_name and last_name fields from AbstractUser.
+    first_name = None
+    last_name = None
