@@ -3,28 +3,15 @@ URL configuration for afb project.
 
 """
 
-from afbcore.views import RegisterView, users
-from contrib.api_router import APIRouter
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views import defaults as default_views
-from django.views.decorators.csrf import csrf_exempt
-from drf_registration.api.change_password import ChangePasswordView
-from drf_registration.api.login import LoginView, SocialLoginView
-from drf_registration.api.logout import LogoutView
-from drf_registration.api.profile import ProfileView
-from drf_registration.api.register import ActivateView, VerifyView
-from drf_registration.api.reset_password import (
-    ResetPasswordCompleteView,
-    ResetPasswordConfirmView,
-    ResetPasswordView,
-)
-from drf_registration.api.set_password import SetPasswordView
-from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
-from urls.extra_api_views import EXTRA_API_VIEWS
+
+from afbcore.views import users
+from afbcore.contrib.api_router import APIRouter
+from .extra_api_views import EXTRA_API_VIEWS
 
 router = APIRouter(singleViews=EXTRA_API_VIEWS)
 router.register(r"users", users.UserViewSet)
@@ -41,7 +28,10 @@ urlpatterns = [
     path("/api/accounts/", include("drf_registration.urls")),
 ]
 urlpatterns.extend(
-    [path(route=i["route"], view=i["view"], name=i["name"]) for i in singleViews]
+    [
+        path(route=endpoint["route"], view=endpoint["view"], name=endpoint["name"])
+        for endpoint in EXTRA_API_VIEWS
+    ]
 )
 
 if settings.DEBUG:
