@@ -27,10 +27,23 @@ export default {
   axios,
 
   endpoints: {
-    unique: {
-      url: "/api/validators/unique/",
-      method: "POST",
-    },
+    // unique: {
+    //   url: "/api/validators/unique/",
+    //   method: "POST",
+    // },
+    unique: async (value, name, params, el$, form$) => {
+
+        // form$.messageBag.clear();
+        // form$.messageBag.append('unique', 'Checking...')
+
+      const res = await axios.post('/api/validators/unique/', {
+        value,
+        name,
+        params,
+      })
+
+      return res.data // should be `true` or `false`
+    }
   },
 
   // axios: {

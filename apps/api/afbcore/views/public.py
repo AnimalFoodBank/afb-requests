@@ -1,8 +1,10 @@
 import logging
+
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 
 from afbcore.models import User
 
@@ -35,7 +37,12 @@ class VueformUniqueValidatorView(APIView):
 
         is_unique = self.is_a_truly_unique(field_name=field_name, value=field_value)
 
-        return Response("true" if is_unique else "false")
+        if is_unique:
+            return Response("true", status=status.HTTP_200_OK)
+        else:
+            # Possibly a 409 Conflict would be more appropriate. Vueform
+            # may have specific handling for 409s.
+            return Response("false", status=status.HTTP_200_OK)
 
     def is_a_truly_unique(self, field_name, value):
         """

@@ -1,8 +1,19 @@
 
 <script setup lang="ts">
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/vue/20/solid';
+import { onMounted, ref } from 'vue';
 
+const form$ = ref<any>(null);
 
+onMounted(async () => {
+  // @see https://vueform.com/
+  // @see
+
+  console.log('RegisterView: mounted');
+  console.log('RegisterView: form$', form$);
+
+  // form$.value.messageBag.append('Appended error')
+});
 
 // @see List of icons: https://unpkg.com/browse/@heroicons/vue@2.0.18/24/outline/
 </script>
@@ -33,14 +44,14 @@ import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/v
               <FormErrors/>
 
               <FormSteps>
-                <FormStep name="account" :elements="['name', 'email', 'terms_agreement']" :buttons="{ previous: false }">Account</FormStep>
+                <FormStep name="account" :elements="['email', 'name', 'terms_agreement']" :buttons="{ previous: false }">Account</FormStep>
                 <FormStep name="pets" :elements="['pet1', 'pet2', 'pet3', 'pet4']">Pets</FormStep>
                 <FormStep name="contacts" :elements="['phone', 'address']">Contacts</FormStep>
               </FormSteps>
 
               <FormElements>
+                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email address" placeholder="abc@example.com" rules="required|email|unique:users" :debounce="300"  />
                 <TextElement name="name" info="Full name, first name or a nickname" label="Your name" placeholder="e.g. Elrik M" :rules="['required']" />
-                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email address" placeholder="abc@example.com" :rules="['required', 'email', 'unique']" :debounce="100"  />
                 <CheckboxElement name="terms_agreement" text="Accept our Terms of Use & Privacy Policy" :rules="['required']" />
 
                 <TextareaElement :autogrow="true" placeholder="Dog/cat/etc, Name, Size, Date of Birth" name="pet1" label="Pet details" :rules="[]" />
