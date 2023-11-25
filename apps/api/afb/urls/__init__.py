@@ -9,7 +9,7 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from rest_framework.authtoken.views import obtain_auth_token
 
-from afbcore.views import users
+from afbcore.views import users, public
 from afbcore.contrib.api_router import APIRouter
 from .extra_api_views import EXTRA_API_VIEWS
 
@@ -22,10 +22,13 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("auth-token/", obtain_auth_token),
-    # Add DRF API registration endpoints
+    # Add DRF API registration endpoints. We need these for the browsable API.
     path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
-    # Add drf_registration endpoints
-    path("/api/accounts/", include("drf_registration.urls")),
+    # Add drf_registration endpoints. These are used for login, registration,
+    # etc from the frontend.
+    path("api/accounts/", include("drf_registration.urls")),
+    # An endpoint for Vueform specific validators.
+    path("api/validators/unique/", public.VueformUniqueValidatorView.as_view()),
 ]
 urlpatterns.extend(
     [

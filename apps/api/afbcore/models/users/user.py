@@ -11,6 +11,7 @@
     ever delete Users using the user.delete() method.
 
 """
+import logging
 
 from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
@@ -23,8 +24,32 @@ from model_utils.models import (
 
 from django.contrib.auth.models import BaseUserManager
 
+logger = logging.getLogger(__name__)
+
 
 class UserManager(BaseUserManager):
+    def is_a_truly_unique(self, field_name, value):
+        """
+        Check the given value against the database.
+
+        Used by VueformUniqueValidatorView.
+        """
+        logger.debug(f"UserManager.is_a_truly_unique - {field_name}: {value}")
+
+        if value is None or value == "":
+            logger.info(f"UserManager.is_a_truly_unique - value is None or empty")
+            return False
+
+        try:
+            record = User.objects.get(**{field_name: value})
+            logger.info(f"UserManager.is_a_truly_unique - record: {record.pk}")
+
+        except User.DoesNotExist:
+            logger.info(f"UserManager.is_a_truly_unique - DoesNotExist")
+            return True
+
+        return False
+
     def create_user(self, email, name, password=None):
         """
         Creates and saves a User with the given email, date of

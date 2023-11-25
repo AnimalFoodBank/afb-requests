@@ -40,7 +40,7 @@ import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, HomeIcon } from '@heroicons/v
 
               <FormElements>
                 <TextElement name="name" info="Full name, first name or a nickname" label="Your name" placeholder="e.g. Elrik M" :rules="['required']" />
-                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email address" placeholder="abc@example.com" :rules="['required', 'email', 'unique']" :debounce="1000"  />
+                <TextElement name="email" description="Lorem ipsum dolor sit amet" label="Email address" placeholder="abc@example.com" :rules="['required', 'email', 'unique']" :debounce="100"  />
                 <CheckboxElement name="terms_agreement" text="Accept our Terms of Use & Privacy Policy" :rules="['required']" />
 
                 <TextareaElement :autogrow="true" placeholder="Dog/cat/etc, Name, Size, Date of Birth" name="pet1" label="Pet details" :rules="[]" />

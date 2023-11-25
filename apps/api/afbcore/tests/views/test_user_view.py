@@ -53,7 +53,7 @@ class RegisterViewTestCase(APITestCase):
         request = factory.post("/users/", data, format="json")
 
         # Create a RegisterSerializer instance with the valid data
-        serializer = RegisterUserSerializer(data=data, context={"request": request})
+        serializer = RegisterSerializer(data=data, context={"request": request})
 
         if not serializer.is_valid():
             # Output the serializer errors when it's not valid

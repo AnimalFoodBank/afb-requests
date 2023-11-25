@@ -28,7 +28,7 @@ export default {
 
   endpoints: {
     unique: {
-      url: "/api/users/prove_unique/",
+      url: "/api/validators/unique/",
       method: "POST",
     },
   },

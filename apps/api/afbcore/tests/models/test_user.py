@@ -110,3 +110,27 @@ class TestCase(DjangoTestCase):
                 first_name="Test",
                 last_name="User",
             )
+
+
+class UserManagerTestCase(DjangoTestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.User = get_user_model()
+
+    def test_is_a_truly_unique(self):
+        user = self.User.objects.create_user(
+            email="testuser@example.com",
+            name="Test",
+            password="password123",
+        )
+
+        manager = self.User.objects
+        field_name = "username"
+        value = "testuser"
+
+        result = manager.is_a_truly_unique(field_name, value)
+        self.assertFalse(result)
+
+        value = "nonexistentuser"
+        result = manager.is_a_truly_unique(field_name, value)
+        self.assertTrue(result)
