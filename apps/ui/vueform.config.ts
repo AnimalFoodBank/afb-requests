@@ -24,7 +24,21 @@ export default {
   locales: { en },
   locale: "en",
 
-  axios,
+  // axios,
+
+  axios: {
+    withCredentials: true,
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'x-csrftoken',
+    baseURL: base_url,
+    csrfRequest: {
+      method: 'get',
+      url: '/csrf-cookie',
+    },
+    onUnauthenticated() {
+      location.href = '/login'
+    },
+  },
 
   endpoints: {
     // unique: {
@@ -40,23 +54,10 @@ export default {
         value,
         name,
         params,
-      })
+      });
 
-      return res.data // should be `true` or `false`
+      return "false"; //res.data // should be `true` or `false`
     }
   },
 
-  // axios: {
-  //   withCredentials: true,
-  //   xsrfCookieName: 'csrftoken',
-  //   xsrfHeaderName: 'x-csrftoken',
-  //   baseURL: base_url,
-  //   csrfRequest: {
-  //     method: 'get',
-  //     url: '/csrf-cookie',
-  //   },
-  //   onUnauthenticated() {
-  //     location.href = '/login'
-  //   },
-  // },
 };
