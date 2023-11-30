@@ -87,7 +87,7 @@ django-unfold
 django-phonenumber-field[phonenumbers]
 
 # DRF Registration package installed via git
--e git+ssh://git@github.com/delano/drf-registration.git@main#egg=drf-registration
+-e git+ssh://git@github.com/delano/drf-registration.git@b32b8c9a8a066528fcb99517ea63f43fa20faaa5#egg=drf-registration
 
 # This is used for the API docs
 markdown
