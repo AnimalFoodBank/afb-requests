@@ -19,7 +19,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         }
 
     def create(self, validated_data):
-        user = User(email=validated_data["email"], username=validated_data["username"])
+        user = User(email=validated_data["email"])
         if "validated_data" in validated_data:
             validate_password(validated_data["password"])
             user.set_password(validated_data["password"])
