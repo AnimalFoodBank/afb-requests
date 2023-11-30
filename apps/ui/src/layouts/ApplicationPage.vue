@@ -123,6 +123,7 @@ const profileNav = [
 
 const guestNavigation = [
   { name: 'Sign in', href: '/login' },
+  { name: 'Sign up', href: '/register' },
 ];
 
 /**
