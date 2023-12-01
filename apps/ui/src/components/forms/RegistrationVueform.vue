@@ -1,9 +1,10 @@
 <!-- RegistrationVueform.vue -->
 <template>
-  <Vueform :display-errors="false" :float-placeholders="false" endpoint="/api/accounts/register/" ref="form$" validate-on="change|step" @error="handleErrorResponse" @success="handleSuccessResponse">
+  <Vueform ref="form$" :display-errors="false" :float-placeholders="false" endpoint="/api/accounts/register/" validate-on="change|step" @error="handleErrorResponse" @success="handleSuccessResponse">
     <template #empty>
       <div class="mb-10 w-full">
         <FormErrors v-if="hasErrors" />
+        <FormMessages v-if="showErrors" />
       </div>
 
       <FormSteps>
@@ -41,23 +42,23 @@
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon } from '@heroicons/vue/20/solid';
 import { VueformComponent } from '@vueform/vueform';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ref } from 'vue';
 
 // const form$ = ref<any>(null);
+
 // const newUserModel = ref<any>(null);
-const hasErrors = ref(false);
+// const hasErrors = reactive({ value: false })
 
 const handleSuccessResponse = (response: AxiosResponse, form$: VueformComponent) => {
   console.log('RegisterView: handleSuccessResponse', response, form$);
   debugger;
 };
 
-const handleErrorResponse = (err: AxiosError, form$: any) => {
+const handleErrorResponse = (err: AxiosError, details: object, form$: any) => {
   console.log('RegisterView: handleErrorResponse', err, form$);
   const response = err.response;
   if (response) {
     console.log('RegisterView: handleErrorResponse (response)', response);
-    // form$.value.messageBag.append(response.data);
+    form$.messageBag.append(response.data);
   }
   debugger;
 };

@@ -5,11 +5,12 @@ import { HomeIcon } from '@heroicons/vue/20/solid';
 import { onMounted } from 'vue';
 
 onMounted(async () => {
-
+  console.log('RegisterView: onMounted');
 });
 
 // @see List of icons: https://unpkg.com/browse/@heroicons/vue@2.0.18/24/outline/
 </script>
+
 
 <template>
   <div class="flex min-h-full flex-1">
