@@ -2,10 +2,9 @@
 <template>
   <Vueform ref="form$" :display-errors="false" :float-placeholders="false" endpoint="/api/accounts/register/" validate-on="change|step" @error="handleErrorResponse" @success="handleSuccessResponse">
     <template #empty>
-      <div class="mb-10 w-full">
-        <FormErrors v-if="hasErrors" />
-        <FormMessages v-if="showErrors" />
-      </div>
+
+      <FormErrors />
+      <FormMessages />
 
       <FormSteps>
         <FormStep name="account" :elements="['email', 'name', 'terms_agreement']" :buttons="{ previous: false }">Account</FormStep>
