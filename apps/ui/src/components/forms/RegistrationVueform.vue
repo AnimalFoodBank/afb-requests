@@ -49,17 +49,28 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 const handleSuccessResponse = (response: AxiosResponse, form$: VueformComponent) => {
   console.log('RegisterView: handleSuccessResponse', response, form$);
-  debugger;
+  // debugger;
 };
 
 const handleErrorResponse = (err: AxiosError, details: object, form$: any) => {
   console.log('RegisterView: handleErrorResponse', err, form$);
   const response = err.response;
-  if (response) {
+
+  // Add the response errors to the form, by key and value
+  if (response && response.data) {
+    form$.messageBag.clear();
     console.log('RegisterView: handleErrorResponse (response)', response);
-    form$.messageBag.append(response.data);
+
+      // Iterate over the response data, and add the errors to the form message bag
+    for (let [key, value] of Object.entries(response.data)) {
+      // console.log(`${key}: ${value}`);
+      form$.messageBag.append(`${key}: ${value}`);
+
+
+    }
+
   }
-  debugger;
+  // debugger;
 };
 
 
