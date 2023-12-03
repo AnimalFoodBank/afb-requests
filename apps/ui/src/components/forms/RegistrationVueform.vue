@@ -31,7 +31,7 @@
       <FormStepsControls :labels="false">
         <template #previous><button class="flex"><ArrowLeftIcon class="h-6 w-6 ml-0 mr-1 text-100" /> Previous</button></template>
         <template #next><button class="flex">Next <ArrowRightIcon class="h-6 w-6 ml-1 mr-0 text-100" /></button></template>
-        <template #finish><button class="flex">Finish <CheckIcon class="h-6 w-6 ml-1 mr-0 text-100" /></button></template>
+        <template #finish><button class="flex">Register <CheckIcon class="h-6 w-6 ml-1 mr-0 text-100" /></button></template>
       </FormStepsControls>
     </template>
   </Vueform>
@@ -49,16 +49,32 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 const handleSuccessResponse = (response: AxiosResponse, form$: VueformComponent) => {
   console.log('RegisterView: handleSuccessResponse', response, form$);
+  form$.messageBag.clear();
   // debugger;
 };
 
 const handleErrorResponse = (err: AxiosError, details: object, form$: any) => {
   console.log('RegisterView: handleErrorResponse', err, form$);
   const response = err.response;
+  form$.messageBag.clear();
+
+  if (!response) {
+    console.log('RegisterView: handleErrorResponse (no response)', err);
+    return;
+  }
+
+  if (response.status >= 500) {
+    console.log('RegisterView: handleErrorResponse (server error)', err);
+
+    // Definitely don't show the server error. Esp since 500 errors in Django
+    // are by default regular HTML rather than JSON, even when using DRF.
+    //
+    form$.messageBag.append('Server error. Please try again later.');
+    return;
+  }
 
   // Add the response errors to the form, by key and value
-  if (response && response.data) {
-    form$.messageBag.clear();
+  if (response.data) {
     console.log('RegisterView: handleErrorResponse (response)', response);
 
       // Iterate over the response data, and add the errors to the form message bag
