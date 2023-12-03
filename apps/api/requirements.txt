@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
--e git+ssh://git@github.com/delano/drf-registration.git@b32b8c9a8a066528fcb99517ea63f43fa20faaa5#egg=drf-registration
+-e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
     # via -r requirements.in
 appnope==0.1.3
     # via ipython
