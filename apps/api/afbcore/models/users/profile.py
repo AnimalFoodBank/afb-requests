@@ -2,6 +2,8 @@ import uuid
 
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+import uuid
+from django.urls import reverse
 
 from .role import Role
 from .user import User  # Profile depends on User and not the other way around
