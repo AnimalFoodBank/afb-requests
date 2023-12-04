@@ -10,9 +10,12 @@ https://cli.vuejs.org/guide/installation.html
 
 ```bash
 
-    # TODO: Update for Vite
-    $ npm install -g @vue/cli
+    $ yarn install
 
+    $ npx vite
+    $ npx vite --help
+
+    $ npx vite --debug hmr
 ```
 
 

@@ -1,8 +1,7 @@
 <!-- RegistrationVueform.vue -->
 <template>
-  <Vueform ref="form$" :display-errors="false" :float-placeholders="false" endpoint="/api/accounts/register/" validate-on="change|step" @error="handleErrorResponse" @success="handleSuccessResponse">
+  <Vueform ref="form$" :ref="form$" :display-errors="true" :display-messages="true" :float-placeholders="false" endpoint="/api/accounts/register/" validate-on="change|step" @error="handleErrorResponse" @success="handleSuccessResponse">
     <template #empty>
-
       <FormErrors />
       <FormMessages />
 
@@ -41,16 +40,29 @@
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon } from '@heroicons/vue/20/solid';
 import { VueformComponent } from '@vueform/vueform';
 import { AxiosError, AxiosResponse } from 'axios';
+import { ref } from 'vue';
 
-// const form$ = ref<any>(null);
+const form$ = ref<VueformComponent | null>(null);
 
-// const newUserModel = ref<any>(null);
-// const hasErrors = reactive({ value: false })
+// import { getCurrentInstance } from 'vue';
+
+// const methodThatForcesUpdate = () => {
+//   // ...
+//   const instance = getCurrentInstance();
+//   if (instance && instance.proxy) {
+//     // ...
+//     instance.proxy.$forceUpdate();
+//   }
+//   // ...
+// };
 
 const handleSuccessResponse = (response: AxiosResponse, form$: VueformComponent) => {
   console.log('RegisterView: handleSuccessResponse', response, form$);
+
   form$.messageBag.clear();
-  // debugger;
+  debugger;
+  form$.messageBag.append('Your account has been created successfully.');
+
 };
 
 const handleErrorResponse = (err: AxiosError, details: object, form$: any) => {
@@ -81,8 +93,6 @@ const handleErrorResponse = (err: AxiosError, details: object, form$: any) => {
     for (let [key, value] of Object.entries(response.data)) {
       // console.log(`${key}: ${value}`);
       form$.messageBag.append(`${key}: ${value}`);
-
-
     }
 
   }
