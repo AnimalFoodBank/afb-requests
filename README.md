@@ -9,7 +9,7 @@
 https://cli.vuejs.org/guide/installation.html
 
 ```bash
-
+    <!-- trunk-ignore(markdownlint/MD014) -->
     $ yarn install
 
     $ npx vite
