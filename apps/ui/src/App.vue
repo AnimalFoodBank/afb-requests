@@ -7,38 +7,22 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import axios from 'axios'
+/**
+ * In SFC, the code inside is compiled as the content of the component's
+ * setup() function. This means that unlike normal <script>, which
+ * only executes once when the component is first imported, code
+ * inside <script setup> will execute every time an instance of
+ * the component is created. -- https://vuejs.org/api/sfc-script-setup.html#basic-syntax
+**/
 
-// Demonstrates how to use environment variables in Vue components.
-console.log('import.meta.env.VITE_BASE_URL=' + import.meta.env.VITE_BASE_URL)
+import { onMounted } from 'vue';
 
 onMounted(async () => {
+  // Example of using environment variables in a Vue component.
+  console.log('import.meta.env.VITE_BASE_URL=' + import.meta.env.VITE_BASE_URL)
 });
 
 </script>
 
-
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
