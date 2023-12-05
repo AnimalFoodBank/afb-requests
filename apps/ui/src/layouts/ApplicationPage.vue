@@ -1,11 +1,11 @@
 <!-- NOTE: When setup is missing, the router/index.ts shows a warning that ApplicationPage isn't a module -->
 <script setup lang="ts">
-import defaultAvatar from '@/assets/img/Cat-Heart-680x800-1.png';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import axios from 'axios';
 import { computed, defineComponent, h, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import defaultAvatar from '../assets/img/Cat-Heart-680x800-1.png';
 import { useAuthStore } from '../stores/auth';
 
 // See: https://router.vuejs.org/api/interfaces/Router.html
@@ -353,7 +353,7 @@ const footerNavigation = {
       <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
     </a>
   </div>
-  <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; © 2023 Animal Food Bank / All Rights Reserved</p>
+  <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; 2023 Animal Food Bank / All Rights Reserved</p>
 </footer>a
 </div>
 </template>
