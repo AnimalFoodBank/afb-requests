@@ -6,6 +6,39 @@ const config: Config = {
     require('@tailwindcss/aspect-ratio'),
     require('@vueform/vueform/tailwind'),
   ],
+  theme: {
+    //
+    // re: Font settings
+    //
+    // See:
+    // https://tailwindcss.com/docs/font-family#font-families
+    // https://stackoverflow.com/questions/60692794/can-you-change-the-base-font-family-in-tailwind-config/70714843#70714843
+    //
+    fontFamily: {
+      sans: [
+        'Avenir',
+        'Helvetica',
+        'Arial',
+        'sans-serif'
+      ],
+      serif: [
+        'Lora',
+        'Georgia',
+        'Cambria',
+        'Times New Roman',
+        'Times',
+        'serif',
+      ],
+      mono: [
+        'Menlo',
+        'Monaco',
+        'Consolas',
+        'Liberation Mono',
+        'Courier New',
+        'monospace',
+      ],
+    },
+  },
   content: [
     "./index.html",
     "./src/**/*.{vue,html,js,ts,jsx,tsx}",

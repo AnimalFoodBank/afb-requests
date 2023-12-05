@@ -225,8 +225,8 @@
 </template>
 
 <script lang="ts" setup>
-import CatHeartImage from '@/assets/img/Cat-Heart-680x800-1.png';
 import { ref } from 'vue';
+import CatHeartImage from '../assets/img/Cat-Heart-680x800-1.png';
 
 
 const team = ref([

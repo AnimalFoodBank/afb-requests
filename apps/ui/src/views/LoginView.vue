@@ -24,14 +24,12 @@ const handleSubmit = (form$: any) => {
     });
 
 }
-
-
 </script>
 
 <template>
   <div class="flex min-h-full flex-1">
     <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-      <div class="mx-auto w-full max-w-sm lg:w-96">
+      <div class="mx-auto w-full max-w-sm lg:w-96 text-center">
         <div>
           <router-link :to="{ name: 'HomePageView' }">
             <HomeIcon class="h-10 w-full" />
@@ -49,8 +47,7 @@ const handleSubmit = (form$: any) => {
           <!-- Validate only on submit -->
           <!-- See the API reference docs for VueForm -->
           <!-- https://vueform.com/reference/vueform#option-endpoint -->
-          <Vueform :display-errors="false" ref="form$" :endpoint="false"
-                   :form-data="form$ => form$.convertFormData(form$.data)">
+          <Vueform :display-errors="false" ref="form$" :endpoint="false">
             <TextElement name="username" input-type="text" label="Email address" placeholder=""
                          :rules="['required', 'email']" :debounce="100" />
             <TextElement name="password" input-type="password" label="Password" />
@@ -63,7 +60,7 @@ const handleSubmit = (form$: any) => {
       </div>
     </div>
     <div class="relative hidden w-0 flex-1 lg:block">
-      <img class="h-800" alt="Become an AFB membver today" src='@/assets/img/Dog-Sideways-Glare-1024x1024.png'>
+      <img class="h-800" alt="Become an AFB member today" src='@/assets/img/Dog-Sideways-Glare-1024x1024.png'>
     </div>
   </div>
 </template>

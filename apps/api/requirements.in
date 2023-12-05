@@ -26,27 +26,71 @@
 #
 # See: https://docs.djangoproject.com/en/4.2/howto/upgrade-version/#upgrade-packages-individually
 
+
+# Django 4.0 introduces several new features and improvements over
+# Django 3.x and 2.x. Here are some key differences:
+#
+# ASGI Support: Django 4.0 has built-in support for ASGI
+# (Asynchronous Server Gateway Interface), which allows for
+# greater concurrency and is the standard interface between
+# async Python web servers, applications, and frameworks.
+#
+# Middleware as Coroutine: Django 4.0 allows middleware to be
+# defined as a coroutine. This is part of Django's ongoing
+# efforts to add more asynchronous support.
+#
+# Automatic AppConfig Discovery: Django 4.0 can automatically
+# discover and set up AppConfigs, simplifying the process of
+# configuring apps.
+#
+# New URL Pattern Syntax: Django 4.0 introduces a new, simpler
+# syntax for URL patterns, using Python's type hinting.
+#
+# Removal of Deprecated Features: Django 4.0 removes a number of
+# features that were deprecated in Django 2.x and 3.x.
+#
+# Security Enhancements: Django 4.0 includes several security
+# enhancements, such as stricter host header validation and the
+# ability to set permissions on session cookies.
+#
+# Performance Improvements: Django 4.0 includes various
+# performance improvements, such as optimized SQL queries and
+# faster deserialization of objects.
+#
 Django~=4.2
 
+# A collection of custom extensions for the Django
+# Framework. These include management commands,
+# additional database fields, admin extensions and
+# much more. Django Extensions is a great time saver
+# for common tasks.
 django_extensions
+
+# Includes features like Choices, TimeStampedModel, and others. You
+# can find more information in the official docs:
+# https://django-model-utils.readthedocs.io/en/latest/
 django-model-utils
 
+# Ties in with the build manager for the frontend
 django-vite
 
 # DRF dependencies
 # See: https://www.django-rest-framework.org/#installation
 djangorestframework
-markdown
+
+# Dynamic query filtering
 django-filter
 
-
-# Upgraded admin interface
+# Upgraded admin experience
 django-unfold
 
 django-phonenumber-field[phonenumbers]
 
-pip-tools
-pre-commit
+# DRF Registration package installed via git
+-e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
+
+# This is used for the API docs
+markdown
 
 # Probably not needed, now that we have django-vite
 # django-tailwind[reload]
@@ -55,6 +99,8 @@ pre-commit
 # pillow
 
 # Dev dependencies
+pre-commit
+pip-tools
 pytest
 pytest-django
 coverage

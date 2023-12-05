@@ -1,2 +1,2 @@
 from .user_serializer import UserSerializer  # noqa
-from .register_user_serializer import RegisterUserSerializer  # noqa
+from .register_serializer import RegisterSerializer  # noqa

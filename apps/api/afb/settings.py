@@ -58,11 +58,35 @@ INSTALLED_APPS = [
     "django_extensions",  # add this for 'python manage.py runserver_plus'
     "rest_framework",  # add DRF
     "rest_framework.authtoken",
+    "drf_registration",
     "django_filters",  # add DRF filters
     "phonenumber_field",
     "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
     "afbcore",
 ]
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    # 'afbcore.middleware.DebugCorsMiddleware',
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "django.contrib.admindocs",
+        "debug_toolbar",
+    ]
+
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+
 
 VITE_APP_DIR = BASE_DIR.parent / "ui"
 
@@ -167,33 +191,54 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+        # "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
+        # 'rest_framework.permissions.AllowAny',
+        "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        # "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
+
+# For the default settings see:
+# https://drf-registration.readthedocs.io/en/latest/settings/index.html
+DRF_REGISTRATION = {
+    # General settings
+    "PROJECT_NAME": "AFB Requests",
+    "PROJECT_BASE_URL": "",
+    # User fields to register and respond to profile
+    "USER_FIELDS": (
+        "id",
+        "email",
+        # "password",
+        "name",
+        "is_active",
+    ),
+    "USER_READ_ONLY_FIELDS": (
+        "is_superuser",
+        "is_staff",
+        "is_active",
+    ),
+    "USER_SERIALIZER": "afbcore.serializers.UserSerializer",
+    "REGISTER_SERIALIZER": "afbcore.serializers.RegisterSerializer",
+    "USER_WRITE_ONLY_FIELDS": ("password",),
+    "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
+    # For custom login username fields
+    "LOGIN_USERNAME_FIELDS": [
+        "email",
+    ],
+    "LOGOUT_REMOVE_TOKEN": True,
+}
+
 
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
 PHONENUMBER_DEFAULT_REGION = "CA"
 
-
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    # 'afbcore.middleware.DebugCorsMiddleware',
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-]
 
 ROOT_URLCONF = "afb.urls"
 
@@ -203,6 +248,10 @@ ROOT_URLCONF = "afb.urls"
 # TAILWIND_APP_NAME = "theme"
 
 AUTH_USER_MODEL = "afbcore.User"
+
+AUTHENTICATION_BACKENDS = [
+    "drf_registration.auth.MultiFieldsModelBackend",
+]
 
 INTERNAL_IPS = [
     # Add local IP addresses here for tailwind to work, then run:
@@ -233,6 +282,18 @@ TEMPLATES = [
 WSGI_APPLICATION = "afb.wsgi.application"
 
 
+# EMAIL
+# https://docs.djangoproject.com/en/4.2/ref/settings/#email-backend
+#
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#
+EMAIL_TIMEOUT = 5
+#
+EMAIL_HOST = "localhost"
+#
+EMAIL_PORT = 1025
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -246,6 +307,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -279,3 +341,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# LOGGING
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#logging
+# See https://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        }
+    },
+    "root": {"level": "INFO", "handlers": ["console"]},
+}

@@ -35,6 +35,7 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 
-app.use(Vueform, vueformConfig)
+app.use(Vueform, vueformConfig);
+
 
 app.mount('#app')

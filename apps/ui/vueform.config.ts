@@ -14,28 +14,50 @@
  * See: https://vueform.com/reference/configuration#axios
  */
 
-import en from '@vueform/vueform/locales/en';
-import tailwind from '@vueform/vueform/themes/tailwind';
-import axios from 'axios'
+import en from "@vueform/vueform/locales/en";
+import tailwind from "@vueform/vueform/themes/tailwind";
+import axios from "axios";
 const base_url = import.meta.env.VITE_BASE_URL;
 
 export default {
   theme: tailwind,
   locales: { en },
-  locale: 'en',
+  locale: "en",
 
-  axios,
-  // axios: {
-  //   withCredentials: true,
-  //   xsrfCookieName: 'csrftoken',
-  //   xsrfHeaderName: 'x-csrftoken',
-  //   baseURL: base_url,
-  //   csrfRequest: {
-  //     method: 'get',
-  //     url: '/csrf-cookie',
-  //   },
-  //   onUnauthenticated() {
-  //     location.href = '/login'
-  //   },
-  // },
-}
+  // axios,
+
+  axios: {
+    withCredentials: true,
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'x-csrftoken',
+    baseURL: base_url,
+    csrfRequest: {
+      method: 'get',
+      url: '/csrf-cookie',
+    },
+    onUnauthenticated() {
+      location.href = '/login'
+    },
+  },
+
+  endpoints: {
+    // unique: {
+    //   url: "/api/validators/unique/",
+    //   method: "POST",
+    // },
+    unique: async (value, name, params, el$, form$) => {
+
+        // form$.messageBag.clear();
+        // form$.messageBag.append('unique', 'Checking...')
+
+      const res = await axios.post('/api/validators/unique/', {
+        value,
+        name,
+        params,
+      });
+
+      return "false"; //res.data // should be `true` or `false`
+    }
+  },
+
+};
