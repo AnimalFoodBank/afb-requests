@@ -23,8 +23,6 @@
 
         <TextElement name="phone" label="Phone number" :rules="[]" />
         <TextareaElement name="address" label="Address" :rules="[]" />
-
-        <!-- <TextElement input-type="password" name="password" label="Password" :rules="['required']" /> -->
       </FormElements>
 
       <FormStepsControls :labels="false">
@@ -40,27 +38,15 @@
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon } from '@heroicons/vue/20/solid';
 import { VueformComponent } from '@vueform/vueform';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ref } from 'vue';
 
-const form$ = ref<VueformComponent | null>(null);
-
-// import { getCurrentInstance } from 'vue';
-
-// const methodThatForcesUpdate = () => {
-//   // ...
-//   const instance = getCurrentInstance();
-//   if (instance && instance.proxy) {
-//     // ...
-//     instance.proxy.$forceUpdate();
-//   }
-//   // ...
-// };
 
 const handleSuccessResponse = (response: AxiosResponse, form$: VueformComponent) => {
   console.log('RegisterView: handleSuccessResponse', response, form$);
 
   form$.messageBag.clear();
-  debugger;
+  // debugger;
+
+  // TODO: Redirect to the dashboard
   form$.messageBag.append('Your account has been created successfully.');
 
 };
@@ -69,6 +55,7 @@ const handleErrorResponse = (err: AxiosError, details: object, form$: any) => {
   console.log('RegisterView: handleErrorResponse', err, form$);
   const response = err.response;
   form$.messageBag.clear();
+  // debugger;
 
   if (!response) {
     console.log('RegisterView: handleErrorResponse (no response)', err);
@@ -96,7 +83,7 @@ const handleErrorResponse = (err: AxiosError, details: object, form$: any) => {
     }
 
   }
-  // debugger;
+
 };
 
 
