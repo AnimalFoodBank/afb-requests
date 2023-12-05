@@ -1,6 +1,6 @@
 <!-- RegistrationVueform.vue -->
 <template>
-  <Vueform ref="form$" :ref="form$" :display-errors="true" :display-messages="true" :float-placeholders="false" endpoint="/api/accounts/register/" validate-on="change|step" @error="handleErrorResponse" @success="handleSuccessResponse">
+  <Vueform :ref="form$" :display-errors="true" :display-messages="true" :float-placeholders="false" endpoint="/api/accounts/register/" validate-on="change|step" @error="handleErrorResponse" @success="handleSuccessResponse">
     <template #empty>
       <FormErrors />
       <FormMessages />
