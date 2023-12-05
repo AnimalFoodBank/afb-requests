@@ -9,21 +9,24 @@ https://vitejs.dev/guide/cli.html
 ### Started
 
 ```bash
-yarn
+pnpm install --shamefully-hoist
+# or `yarn`
 # or `npm install`
 ```
 
 ### Develop
 
 ```bash
-yarn dev
+pnpm run dev
+# or `yarn dev`
 # or `npm run dev`
 ```
 
 ### Build
 
 ```bash
-yarn build
+pnpm run build
+# yarn build
 # or `npm run build`
 ```
 
