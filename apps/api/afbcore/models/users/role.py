@@ -1,7 +1,8 @@
 # Arbitrary change to test pre-commit hook
 from django.core.exceptions import ValidationError
-from ..base import BaseAbstractModel, BaseAbstractModelManager, BaseAbstractQuerySet
 from django.db import models
+
+from ..base import BaseAbstractModel, BaseAbstractModelManager, BaseAbstractQuerySet
 
 
 class RoleQuerySet(BaseAbstractQuerySet):
