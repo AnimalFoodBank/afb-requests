@@ -50,7 +50,7 @@ class UserManager(BaseUserManager):
             logger.info(f"UserManager.is_a_truly_unique - DoesNotExist")
             is_unique = True
 
-        return False
+        return is_unique
 
     def create_user(self, email, name, password=None):
         """

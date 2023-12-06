@@ -1,8 +1,6 @@
-# Arbitrary change to test pre-commit hook
 from django.core.exceptions import ValidationError
-from django.db import models
-
 from ..base import BaseAbstractModel, BaseAbstractModelManager, BaseAbstractQuerySet
+from django.db import models
 
 
 class RoleQuerySet(BaseAbstractQuerySet):
@@ -34,6 +32,7 @@ class Role(BaseAbstractModel):
     def save(self, *args, **kwargs):
         if not self.name:
             raise ValueError("Name cannot be empty")
+
         super().save(*args, **kwargs)
 
     def clean(self):
