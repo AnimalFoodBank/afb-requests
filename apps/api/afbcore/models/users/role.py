@@ -1,6 +1,6 @@
-from django.db import models
-from ..base import BaseAbstractModel, BaseAbstractQuerySet, BaseAbstractModelManager
 from django.core.exceptions import ValidationError
+from ..base import BaseAbstractModel, BaseAbstractModelManager, BaseAbstractQuerySet
+from django.db import models
 
 
 class RoleQuerySet(BaseAbstractQuerySet):
@@ -18,9 +18,9 @@ class Role(BaseAbstractModel):
     A model representing a user role.
 
     Attributes:
-        name (str): The name of the role.
+        name (str): A human-readable name for the role. e.g. "Volunteer".
         level (int): The level of the role between 0 and 100. 0 is the lowest
-        level and 99 is the highest level.
+        and 99 is the highest level.
     """
 
     objects = RoleManager.from_queryset(RoleQuerySet)()
@@ -37,9 +37,6 @@ class Role(BaseAbstractModel):
     def clean(self):
         if not self.name:
             raise ValidationError("Name cannot be empty")
-
-    def __str__(self):
-        return self.name
 
     def __str__(self):
         return self.name
