@@ -1,0 +1,17 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+devDependencies:
+  '@trunkio/launcher':
+    specifier: ^1.2.7
+    version: 1.2.7
+
+packages:
+
+  /@trunkio/launcher@1.2.7:
+    resolution: {integrity: sha512-FDRRc3PYIfrnLrjWdZ5JeB49tkSmoRdrm3940u1o5XK3Zn+EsIUFNC/k6aOHSfUgkIB0LrBwENX8hwfAeW4kzg==}
+    hasBin: true
+    dev: true

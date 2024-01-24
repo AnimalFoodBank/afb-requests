@@ -2,7 +2,7 @@
 # To learn more about the format of this file, see https://docs.trunk.io/reference/trunk-yaml
 version: 0.1
 cli:
-  version: 1.17.2
+  version: 1.18.0
 plugins:
   sources:
     - id: trunk
@@ -12,7 +12,7 @@ runtimes:
   enabled:
     - go@1.21.0
     - node@18.12.1
-    - python@3.10.8
+    - python@3.10.9
 lint:
   enabled:
     - shellcheck@0.9.0
@@ -21,17 +21,19 @@ lint:
     - oxipng@9.0.0
     - taplo@0.8.1
     - bandit@1.7.5
-    - black@23.9.1
     - checkov@3.1.9
     - git-diff-check
-    - isort@5.12.0
     - markdownlint@0.37.0
-    - osv-scanner@1.4.3
+    - osv-scanner@1.5.0
     - prettier@3.1.0
-    - ruff@0.1.6
-    - trivy@0.47.0
-    - trufflehog@3.63.2-rc0
+    - ruff@0.1.7
+    - trivy@0.48.0
+    - trufflehog@3.63.2
     - yamllint@1.33.0
+  disabled:
+    - black
+    - isort
+    - autoflake
 actions:
   disabled:
     - trunk-announce

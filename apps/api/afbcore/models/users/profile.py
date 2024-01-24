@@ -2,11 +2,12 @@ import uuid
 
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-import uuid
 from django.urls import reverse
 
-from .role import Role
-from .user import User  # Profile depends on User and not the other way around
+from .role import Role  # noqa: F401
+
+# Profile depends on User and not the other way around
+from .user import User  # noqa: F401
 
 from ..base import BaseAbstractModel
 
@@ -108,12 +109,18 @@ class Profile(BaseAbstractModel):
     # Via Client
     #
 
-    # Address - If address is duplicate to another clients, both accounts need to be placed on hold and manually reviewed/approved bc people are scammers.
-    # Has to be a validated address (google?) and not permitted to be overwritten. The last amount of free form text entry as possible.
-    # You'd be amazed how many clients don't know their postal code and we route by postal code sooooo
-
-    # Postal/Zip Code - Has to be a validated address (google?) and not permitted to be overwritten. The last amount of free form text entry as possible.
-    # You'd be amazed how many clients don't know their postal code and we route by postal code sooooo
+    # Address - If address is duplicate to another clients, both accounts
+    # need to be placed on hold and manually reviewed/approved bc people
+    # are scammers. Has to be a validated address (google?) and not
+    # permitted to be overwritten. The last amount of free form text
+    # entry as possible. You'd be amazed how many clients don't know
+    # their postal code and we route by postal code sooooo
+    #
+    # Postal/Zip Code - Has to be a validated address (google?) and not
+    # permitted to be overwritten. The last amount of free form text
+    # entry as possible. You'd be amazed how many clients don't know
+    # their postal code and we route by postal code sooooo
+    #
     validated_postal_code = models.CharField(max_length=20, null=True)
 
     # Country - I don't know if we need this but google addresses populate country too. It may be useful for analytics

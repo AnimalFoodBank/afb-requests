@@ -1,4 +1,3 @@
-
 # This is a basic GitHub Actions workflow for running CI tests on a Django project.
 # It runs on Ubuntu 22.04 with 4 parallel jobs, caches system packages and Python dependencies,
 # and checks out the repository with a fetch depth of 1. The build job sets the Python version to 3.10

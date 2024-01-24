@@ -1,9 +1,11 @@
 """
     AFB Core API User Model
 
-    NOTE: We don't need to define a custom manager for this model because
-    Django's built-in UserManager already provides the functionality we need.
-    It's also a bit of a pain to implement properly.
+    NOTE: We define a custom manager for this model in order to provide
+    create_user and create_superuser methods. We could have implemented
+    these methods in the model itself, but it's better to keep the model
+    as simple as possible. Otherwise, the rest of the functionality
+    comes from Django's built-in UserManager.
 
     NOTE 2: However, that means we need to be careful wuth regards to soft
     detletes. If we use the delete method provided by the default manager,
@@ -13,16 +15,11 @@
 """
 import logging
 
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-from model_utils.models import (
-    TimeStampedModel,
-    UUIDModel,
-)
-
-from django.contrib.auth.models import BaseUserManager
+from model_utils.models import TimeStampedModel, UUIDModel
 
 logger = logging.getLogger(__name__)
 
@@ -32,13 +29,18 @@ class UserManager(BaseUserManager):
         """
         Check the given value against the database.
 
-        Used by VueformUniqueValidatorView.
+        Used by VueformUniqueValidatorView for checking uniqueness
+        of email field.
         """
         logger.debug(f"UserManager.is_a_truly_unique - {field_name}: {value}")
 
+        # Fast fail on bad input.
         if value is None or value == "":
             logger.info(f"UserManager.is_a_truly_unique - value is None or empty")
             return False
+
+        # Assume pessimistically that the value is not unique.
+        is_unique = False
 
         try:
             record = User.objects.get(**{field_name: value})
@@ -46,9 +48,9 @@ class UserManager(BaseUserManager):
 
         except User.DoesNotExist:
             logger.info(f"UserManager.is_a_truly_unique - DoesNotExist")
-            return True
+            is_unique = True
 
-        return False
+        return is_unique
 
     def create_user(self, email, name, password=None):
         """
@@ -88,8 +90,6 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     A custom user model that extends Django's built-in AbstractUser model.
 
     Fields inherited from AbstractUser:
-    - name
-    - email
     - password
     - groups
     - user_permissions
@@ -118,8 +118,11 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
         "name",
     ]
 
+    # Override the email field from AbstractUser to make it unique.
     email = models.EmailField(_("email address"), unique=True)
 
+    # Add a single name field which we'll use instead of the default
+    # first_name and last_name fields.
     name = models.CharField(_("name"), max_length=255)
 
     terms_agreement = models.BooleanField(
