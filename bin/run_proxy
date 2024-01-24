@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#
+# Runs Man in the middle proxy & Web UI
+#
+# Used to debug network traffic from VSCode, including
+# telemetry and extensions.
+#
+
+mitmweb \
+--set anticache=true \
+--set block_global=true \
+--set ssl_insecure=true \
+--set upstream-cert=true \
+--set listen-host=0.0.0.0 \
+--set listen-port=8080 \
+--set mode=regular \
+--set ignore_hosts="(google\.com|apple\.com|gstatic\.com|slack\.com|icloud\.com|githubusercontent\.com|marketplace\.visualstudio\.com|vsassets\.io)" \
+--set ignore_hosts="(vscode-sync\.trafficmanager\.net|vo\.msecnd\.net)" \
+--set block_list="/launchdarkly\.com/444" \
+--set block_list="/mixpanel\.com/444" \
+--set block_list="/sentry\.io/404" \
+--set stream_large_bodies=5k
