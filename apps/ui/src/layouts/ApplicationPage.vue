@@ -354,7 +354,7 @@ const footerNavigation = {
     </a>
   </div>
   <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; 2023 Animal Food Bank / All Rights Reserved</p>
-</footer>a
+</footer>
 </div>
 </template>
 
