@@ -1,32 +1,42 @@
+##
+# Requirements file for afb-requests.
 #
-# Requirements file for afb-requests. Modify this file to
-# include the packages you want to install. Then, run:
+# NOTE: DO NOT EDIT requirements.txt DIRECTLY. Edit this file
+# instead, and use the pip-compile command to generate it.
 #
-#   pip-compile --output-file requirements.txt --strip-extras requirements.in
 #
-# This will generate a new requirements.txt file with the
-# latest versions of the packages listed here.
+# USAGE
 #
-# You can also run:
+# After modifying this file to include the packages you
+# want to install for this project, run the following to
+# generate the requirements.txt file:
 #
-#   pip-compile --upgrade --output-file requirements.txt requirements.in
+#   $ pip-compile --output-file requirements.txt --strip-extras requirements.in
 #
-# to upgrade all packages to their latest versions.
+# Using other flags:
 #
-# To install the packages in the requirements.txt file, run:
+#     `--upgrade` to upgrade all packages to their latest versions.
+#     `--skip-extras` to skip installing optional dependencies.
+#     `--generate-hashes` to generate hashes for all packages.
 #
-#   pip install -r requirements.txt
+# Install dependencies as you normally would:
 #
-# See: https://github.com/jazzband/pip-tools
+#   $ pip install -r requirements.txt
 #
+#
+# MORE INFO
+#
+# https://github.com/jazzband/pip-tools
 #
 # To resolve warnings in Django (important to do before upgrading):
 #
-#   python -Wa manage.py test
+#   $ python -Wa manage.py test
 #
 # See: https://docs.djangoproject.com/en/4.2/howto/upgrade-version/#upgrade-packages-individually
+#
 
-
+#
+#
 # Django 4.0 introduces several new features and improvements over
 # Django 3.x and 2.x. Here are some key differences:
 #
