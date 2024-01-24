@@ -11,7 +11,7 @@
 # want to install for this project, run the following to
 # generate the requirements.txt file:
 #
-#   $ pip-compile --output-file requirements.txt --strip-extras requirements.in
+#   $ pip-compile --output-file requirements.txt --upgrade --strip-extras requirements.in
 #
 # Using other flags:
 #
