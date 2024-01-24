@@ -26,7 +26,12 @@ repos:
       - id: black
         language_version: python3.11
 
-  - repo: https://gitlab.com/codementors/pre-commit/add-issue-number-to-conventional-commit
-    rev: v1.0.0 # Insert latest version from https://gitlab.com/codementors/pre-commit/add-issue-number-to-conventional-commit/-/tags
+  - repo: https://github.com/avilaton/add-msg-issue-prefix-hook
+    rev: v0.0.9
     hooks:
-      - id: add-issue-number
+      - id: add-msg-issue-prefix
+        name: add-msg-issue-prefix-test
+        args:
+          - "--default=[NOJIRA]"
+          - "--insert-after"
+          - "^feat.?:|^fix.?:"
