@@ -38,7 +38,6 @@ repos:
       - id: add-msg-issue-prefix
         name: add-msg-issue-prefix-test
         args:
-          - "--default=[NOJIRA2]"
-          - "--pattern='[0-9]{1,5}'"
+          - "--default=[NOJIRA3]"
           - "--insert-after"
           - "^feat.?:|^fix.?:"
