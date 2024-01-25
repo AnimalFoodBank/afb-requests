@@ -2,14 +2,15 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 #
-# To use pre-commit, install it using pip:
+# Install pre-commit:
 #
 #    pip install pre-commit
 #
-# Then, run it on all the files in this repo:
+# Run it on all the files in this repo:
 #
 #    pre-commit run --all-files
 #
+# Updating
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -27,7 +28,7 @@ repos:
       - id: forbid-submodules
 
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 23.12.1
     hooks:
       - id: black
         language_version: python3.11
