@@ -12,13 +12,19 @@
 #
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: detect-private-key
+      - id: mixed-line-ending
       - id: check-added-large-files
-        args: ['--maxkb=1000']
+        args: ["--maxkb=1000"]
+      - id: no-commit-to-branch
+        args: ["--branch", "main", "--branch", "release/.*"]
+      - id: check-merge-conflict
+      - id: forbid-submodules
 
   - repo: https://github.com/psf/black
     rev: 22.10.0
@@ -33,5 +39,6 @@ repos:
         name: add-msg-issue-prefix-test
         args:
           - "--default=[NOJIRA]"
+          - "--pattern='/?[a-zA-Z0-9\\-\\_]{1,10}-[0-9]{1,5}'"
           - "--insert-after"
           - "^feat.?:|^fix.?:"
