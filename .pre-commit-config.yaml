@@ -10,7 +10,10 @@
 #
 #    pre-commit run --all-files
 #
-# Updating
+# Updating plugin repositories:
+#
+#    pre-commit autoupdate
+#
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -40,6 +43,6 @@ repos:
         name: add-msg-issue-prefix-test
         args:
           - "--default=[NOJIRA4]"
-          - "--pattern='[a-zA-Z0-9]{1,10}-[0-9]{1,5}'"
+          - "--pattern=[a-zA-Z0-9]{1,10}-[0-9]{1,5}"
           - "--insert-after"
           - "^feat.?:|^fix.?:"
