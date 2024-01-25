@@ -124,23 +124,23 @@ const applicationRoutes: Route[] = [
 
 const routes: RouteRecordRaw[] = (
   publicRoutes.concat(applicationRoutes) as RouteRecordRaw[]
-  )
+)
 
-  const router = createRouter({
-    history: createWebHistory(),
-    routes
-  })
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
 
-  router.beforeEach(async (to) => {
-    // redirect to login page if not logged in and trying to access a restricted page
-    const authRequired = to.meta.requiresAuth;
-    const auth = useAuthStore();
+router.beforeEach(async (to) => {
+  // redirect to login page if not logged in and trying to access a restricted page
+  const authRequired = to.meta.requiresAuth;
+  const auth = useAuthStore();
 
-    if (authRequired && !auth.token) {
-      auth.returnUrl = to.fullPath;
-      return '/login';
-    }
-  });
+  if (authRequired && !auth.token) {
+    auth.returnUrl = to.fullPath;
+    return '/login';
+  }
+});
 
   // To ensure it is treated as a module,
   // add at least one `export` statement
