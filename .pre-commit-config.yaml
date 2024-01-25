@@ -40,5 +40,3 @@ repos:
         args:
           - "--default=[NOJIRA2]"
           - "--pattern='[0-9]{1,5}'"
-          - "--insert-after"
-          - "^feat.?:|^fix.?:"
