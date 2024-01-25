@@ -1,5 +1,6 @@
 
 <script setup lang="ts">
+// @see List of icons: https://unpkg.com/browse/@heroicons/vue@2.0.18/24/outline/
 import { HomeIcon } from '@heroicons/vue/20/solid';
 import { onMounted } from 'vue';
 import RegistrationVueform from '../components/forms/RegistrationVueform.vue';
@@ -8,7 +9,6 @@ onMounted(async () => {
   console.log('RegisterView: onMounted');
 });
 
-// @see List of icons: https://unpkg.com/browse/@heroicons/vue@2.0.18/24/outline/
 </script>
 
 

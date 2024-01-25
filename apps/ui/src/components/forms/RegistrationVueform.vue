@@ -92,5 +92,5 @@ interface Props {
   bar?: number
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 </script>
