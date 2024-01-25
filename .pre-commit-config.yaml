@@ -39,6 +39,6 @@ repos:
         name: add-msg-issue-prefix-test
         args:
           - "--default=[NOJIRA4]"
-          - "--pattern='[a-zA-Z0-9\\-\\_]{0,10}-[0-9]{1,5}'"
+          - "--pattern='[a-zA-Z0-9]{0,10}-[0-9]{1,5}'"
           - "--insert-after"
           - "^feat.?:|^fix.?:"
