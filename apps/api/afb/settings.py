@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-from supertokens_python import get_all_cors_headers
-from typing import List
-from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -94,86 +91,11 @@ if DEBUG:
     ]
 
 
-from supertokens_python import init, InputAppInfo, SupertokensConfig
-from supertokens_python.recipe import passwordless, session, dashboard
-from supertokens_python.recipe.passwordless import ContactEmailOrPhoneConfig
-
-
-"""
-#
-# The https://try.supertokens.com is for the core API is for demo purposes.
-#
-# Replace this with the address of your core instance (if you signed up on
-# supertokens.com), or self host a core (the app that runs on port 3567).
-#
-# Can run without appid and api_key if you are using the core on your own.
-# connection_uri="https://try.supertokens.com/appid-<APP_ID>",
-# api_key=<API_KEY(if configured)>
-#
-# NOTE: The paths added by supertoken are via the middleware. So,
-# if you run `./manage.py show_urls` you won't see the paths added
-# by supertokens.
-#
-# POST /supertokens/api/auth/signinup/code: For starting the
-#   passwordless login/sign up process
-# POST /supertokens/api/auth/signinup/code/resend: To generate and
-#   resend a code during an already started login/sign up process
-# POST /supertokens/api/auth/signinup/code/consume: For finishing
-#   the passwordless login/sign up process
-# GET /supertokens/api/auth/signup/email/exists: To check if an
-#   email is already signed up
-# GET /supertokens/api/auth/signup/phonenumber/exists: To check if
-#   a phonenumber is already signed up
-#
-# See: https://supertokens.com/docs/passwordless/pre-built-ui/setup/backend#4-add-the-supertokens-error-handler
-#
-#
-# Dashboard UI
-# http://127.0.0.1:8000/supertokens/api/auth/dashboard
-#
-# Create an admin user:
-curl --location --request POST 'http://localhost:3567/recipe/dashboard/user' \
---header 'rid: dashboard' \
---header 'api-key: <YOUR-API-KEY>' \
---header 'Content-Type: application/json' \
---data-raw '{"email": "delbo@solutious.com","password": "1234"}'
-
-"""
-init(
-    app_info=InputAppInfo(
-        app_name="AFB Requests",
-        api_domain="http://127.0.0.1:8000",
-        website_domain="http://127.0.0.1:8000",
-        api_base_path="/supertokens/api/auth",
-        website_base_path="/supertokens/auth",
-    ),
-    # Core API
-    supertokens_config=SupertokensConfig(
-        connection_uri="http://localhost:3567/",
-    ),
-    framework="django",
-    recipe_list=[
-        dashboard.init(
-            admins=[
-                "delbo@solutious.com",
-            ],
-        ),  # https://supertokens.com/docs/passwordless/pre-built-ui/setup/user-management-dashboard/setup
-        session.init(),  # initializes session features
-        passwordless.init(
-            flow_type="MAGIC_LINK", contact_config=ContactEmailOrPhoneConfig()
-        ),
-    ],
-    mode="asgi",  # use wsgi if you are running django server in sync mode
-)
-
 VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
 # CORS_ALLOW_ALL_ORIGINS = False
-
-CORS_ALLOW_HEADERS: List[str] = (
-    list(default_headers) + ["Content-Type"] + get_all_cors_headers()
-)
+# CORS_ALLOW_HEADERS = []
 
 # https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
 CORS_ALLOW_CREDENTIALS = True
