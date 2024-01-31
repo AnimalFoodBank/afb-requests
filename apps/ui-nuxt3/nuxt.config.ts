@@ -42,6 +42,20 @@ export default defineNuxtConfig({
     // https://devtools.nuxt.com/guide/getting-started
     enabled: true
   },
+  runtimeConfig: {
+    // Will be available in both server and client
+    mySecret: process.env.MY_SECRET,
+    // Private keys are only available on the server
+    apiSecret: '123',
+
+    // Public keys that are exposed to the client
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || ':8000/'
+    },
+    // public: {
+    //   baseURL: process.env.BASE_URL || ':8080/',
+    // },
+  },
   vite: {
     // Vite specific configuration
     // For example, to configure the server port:
