@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const config = useRuntimeConfig();
+
 definePageMeta({
   layout: 'auth'
 })
@@ -42,8 +44,39 @@ const providers = [{
   }
 }]
 
-function onSubmit (data: any) {
-  console.log('Submitted', data)
+async function onSubmit (formData: any) {
+  console.log('Submitted', formData);
+
+  // Prepare the payload
+  const payload = {
+    username: formData.email,
+    password: formData.password
+  }
+  console.log('Payload:', payload)
+
+  // Send post request to the API endpoint using Nuxt 3 useFetch
+  const { data, pending, error, refresh } = useFetch('/auth-token/', {
+    baseURL: config.public.apiBase,
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    mode: 'cors',
+    credentials: 'include',
+
+  })
+
+  if (error) {
+    debugger
+    console.error('An error occurred:', error)
+    console.log(error)
+    return
+  }
+
+  // The response should contain the token if the login was successful
+  const token = data.token
+  console.log('Token:', token)
 }
 </script>
 
