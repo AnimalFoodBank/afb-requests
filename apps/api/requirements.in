@@ -120,3 +120,5 @@ Werkzeug
 # Specific version to avoid python deprecation warning ("torchsde 0.2.5
 # has a non-standard dependency specifier numpy>=1.19.*").
 torchsde>=0.2.6
+
+supertokens-python
