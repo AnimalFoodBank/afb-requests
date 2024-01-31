@@ -1,6 +1,8 @@
 
-# AFB Request Manager
+# AFB Requests
 
+* `auth/` - Zitadel auth server
+  * See further instructions in the [Zitadel docs](https://docs.zitadel.ch/docs/installation/installation)
 * `api/` - A Django application running the REST API.
 * `ui/` - A Vite+Vue+Tailwind application for the frontend UI.
 * `vvs/` - A Vueform+Vite+Tailwind via [cloned starter repo](https://github.com/vueform/vite-starter#installation)

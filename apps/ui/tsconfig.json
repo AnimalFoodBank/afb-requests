@@ -1,45 +1,4 @@
-
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "lib": ["esnext", "dom"],
-    "types": ["node", "vue-i18n"],
-
-    // Support for Vue3 with TypeScript
-    // https://vuejs.org/guide/typescript/overview.html#configuring-tsconfig-json
-    // https://github.com/vueform/multiselect/issues/58#issuecomment-493615782
-    "isolatedModules": true,
-    "strict": true,
-    "noImplicitThis": true,
-    "skipLibCheck": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": ["node_modules"],
-
-  // Resolves the error: "Cannot find module 'postcss.config.ts'"
-  // https://github.com/postcss/postcss-load-config/issues/239
-  // https://github.com/TypeStrong/ts-node/tree/97f9afd0#module-type-overrides
-  "ts-node": {
-    "moduleTypes": {
-      "postcss.config.ts": "cjs"
-    }
-  }
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }

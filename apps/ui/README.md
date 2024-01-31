@@ -1,67 +1,121 @@
-# AFB UI
+# Nuxt UI Pro - SaaS template
 
-## Commands
-https://vitejs.dev/guide/cli.html
+[![Nuxt UI Pro](https://img.shields.io/badge/Made%20with-Nuxt%20UI%20Pro-00DC82?logo=nuxt.js&labelColor=020420)](https://ui.nuxt.com/pro)
 
-- **template of:** vite + vue + typescript
-- **tailwindcss:** v3.x
+- [Live demo](https://nuxt-ui-pro-template-saas.vercel.app)
+- [Play on Stackblitz](https://stackblitz.com/github/nuxt-ui-pro/saas)
+- [Documentation](https://ui.nuxt.com/pro/guide)
 
-### Started
+## Quick Start
 
-```bash
-pnpm install --shamefully-hoist
-# or `yarn`
-# or `npm install`
+```bash [Terminal]
+npx nuxi init -t github:nuxt-ui-pro/saas
 ```
 
-### Develop
+## Setup
+
+Make sure to install the dependencies:
 
 ```bash
+# npm
+npm install
+
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
+```
+
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
 pnpm run dev
-# or `yarn dev`
-# or `npm run dev`
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
 ```
 
-### Build
+## Production
+
+Build the application for production:
 
 ```bash
+# npm
+npm run build
+
+# pnpm
 pnpm run build
-# yarn build
-# or `npm run build`
+
+# yarn
+yarn build
+
+# bun
+bun run build
 ```
 
----
+Locally preview production build:
 
+```bash
+# npm
+npm run preview
 
-## About Vue apps
+# pnpm
+pnpm run preview
 
-In a Vite + Vue application, main.ts and index.ts have different roles:
+# yarn
+yarn preview
 
-main.ts: This is the entry point of your Vue application. It's where you create the Vue instance and mount it to a DOM element. It's also where you import your root component, any global styles, plugins, and other global configurations.
+# bun
+bun run preview
+```
 
-index.ts: This file is typically used for organizing exports from a directory. In the context of Vue Router, index.ts is often used to define and export the router instance, as shown in your code snippet.
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-Here's a simplified example of how these files might be used:
+## Nuxt Studio integration
+
+Add `@nuxthq/studio` dependency to your package.json:
+
+```bash
+# npm
+npm install --save-dev @nuxthq/studio
+
+# pnpm
+pnpm add -D @nuxthq/studio
+
+# yarn
+yarn add -D @nuxthq/studio
+
+# bun
+bun add -d @nuxthq/studio
+```
+
+Add this module to your `nuxt.config.ts`:
 
 ```ts
-// router/index.ts
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  }
-]
-
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+export default defineNuxtConfig({
+  ...
+  modules: [
+    ...
+    '@nuxthq/studio'
+  ]
 })
-
-export default router
 ```
 
-In the main.ts file, we import the router from router/index.ts and use it in our Vue application.
+Read more on [Nuxt Studio docs](https://nuxt.studio/docs/projects/setup).
+
+## Renovate integration
+
+Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.

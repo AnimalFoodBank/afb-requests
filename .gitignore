@@ -1,4 +1,6 @@
-# Created by https://www.gitignore.io
+# Originally created by https://www.gitignore.io
+
+apps/.examples
 
 ### OSX ###
 .DS_Store

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -55,10 +56,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
+    "supertokens_python",
     "django_extensions",  # add this for 'python manage.py runserver_plus'
-    "rest_framework",  # add DRF
-    "rest_framework.authtoken",
-    "drf_registration",
+    # "rest_framework",  # add DRF
+    # "rest_framework.authtoken",
+    # "drf_registration",
     "django_filters",  # add DRF filters
     "phonenumber_field",
     "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
@@ -69,6 +71,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "supertokens_python.framework.django.django_middleware.middleware",
     # 'afbcore.middleware.DebugCorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -91,8 +94,8 @@ if DEBUG:
 VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
-# CORS_ALLOW_HEADERS = "*"
 # CORS_ALLOW_ALL_ORIGINS = False
+# CORS_ALLOW_HEADERS = []
 
 # https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
 CORS_ALLOW_CREDENTIALS = True
@@ -100,6 +103,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",  # ViteJS dev server
     "http://127.0.0.1:3001",  # ViteJS dev server
+    "http://127.0.0.1:8000",  # Django dev server
 ]
 CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 
