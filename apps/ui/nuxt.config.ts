@@ -8,10 +8,10 @@ export default defineNuxtConfig({
     '@nuxthq/studio',
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
-    '@sidebase/nuxt-auth',
     '@vueuse/nuxt',
+    "@pinia/nuxt",
+    "@sidebase/nuxt-auth",
     'nuxt-og-image',
-    "@pinia/nuxt"
   ],
   hooks: {
     // Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
@@ -23,6 +23,15 @@ export default defineNuxtConfig({
   },
   ui: {
     icons: ['heroicons', 'simple-icons']
+  },
+  auth: {
+    // This value is used for the auth origin. When it's not set, it'll raise
+    // an AUTH_NO_ORIGIN error in production. In dev, it'll just log a warning.
+    // @see https://github.com/sidebase/nuxt-auth/issues/515
+    baseURL: process.env.NUXT_PUBLIC_APP_ORIGIN,
+
+    // TODO: Check if this is still the right way to enable global middleware in Nuxt3
+    enableGlobalAppMiddleware: true,
   },
   // Fonts
   fontMetrics: {
@@ -44,33 +53,15 @@ export default defineNuxtConfig({
     enabled: true
   },
   runtimeConfig: {
-    // Will be available in both server and client
-    mySecret: process.env.MY_SECRET,
-    // Private keys are only available on the server
-    apiSecret: '123',
+    AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
 
-    // Public keys that are exposed to the client
+    APP_ORIGIN: process.env.NUXT_PUBLIC_APP_ORIGIN,
+    AUTH_SECRET: process.env.AUTH_SECRET,  // TODO: Raise heck if not set
+
+    // Public keys are exposed to the client
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || ':8000/'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || ':8000/',
+      AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID
     },
-    // public: {
-    //   baseURL: process.env.BASE_URL || ':8080/',
-    // },
-  },
-  vite: {
-    // Vite specific configuration
-    // For example, to configure the server port:
-    server: {
-    },
-    // Or to configure Rollup plugins:
-    plugins: [
-      // your plugins here
-    ],
-    // Or to configure resolve alias:
-    resolve: {
-      alias: {
-        // your alias here
-      }
-    }
   }
 })
