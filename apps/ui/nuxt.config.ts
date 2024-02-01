@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxthq/studio',
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
+    '@sidebase/nuxt-auth',
     '@vueuse/nuxt',
     'nuxt-og-image',
     "@pinia/nuxt"
