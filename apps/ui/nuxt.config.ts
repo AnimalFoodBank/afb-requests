@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     baseURL: process.env.NUXT_PUBLIC_APP_ORIGIN,
 
     // TODO: Check if this is still the right way to enable global middleware in Nuxt3
-    enableGlobalAppMiddleware: true,
+    // enableGlobalAppMiddleware: true,
   },
   // Fonts
   fontMetrics: {
