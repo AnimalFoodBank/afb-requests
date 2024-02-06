@@ -115,8 +115,7 @@ pytest
 pytest-django
 coverage
 ipdb
-Werkzeug
+Werkzeug  # Required for ipdb
 
-# Specific version to avoid python deprecation warning ("torchsde 0.2.5
-# has a non-standard dependency specifier numpy>=1.19.*").
-torchsde>=0.2.6
+# Passwordless and social auth
+djoser
