@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  django:
+  api:
     build: ./api
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -9,7 +9,7 @@ services:
     ports:
       - 8000:8000
 
-  nuxt:
+  ui:
     build: ./ui-vue3
     command: npm run start
     volumes:
