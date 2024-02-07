@@ -57,10 +57,10 @@ class Profile(BaseAbstractModel):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # user = models.ForeignKey(
-    #     User, on_delete=models.DO_NOTHING, related_name="pro2files"
+    #     User, on_delete=models.DO_NOTHING, related_name="profiles"
     # )
     # role = models.ForeignKey(
-    #     Role, on_delete=models.DO_NOTHING, related_name="prof2iles"
+    #     Role, on_delete=models.DO_NOTHING, related_name="profiles"
     # )
 
     # Usually just one, but can be multiple

@@ -41,6 +41,9 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "127.0.0.1:8000",
     "127.0.0.1:3000",
+    "localhost",
+    "localhost:8000",
+    "localhost:3000",
 ]
 
 
@@ -56,11 +59,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    "supertokens_python",
     "django_extensions",  # add this for 'python manage.py runserver_plus'
-    # "rest_framework",  # add DRF
-    # "rest_framework.authtoken",
+    "rest_framework",  # add DRF
+    "rest_framework.authtoken",
     # "drf_registration",
+    # 'djoser',
+    "drfpasswordless",
     "django_filters",  # add DRF filters
     "phonenumber_field",
     "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
@@ -71,7 +75,6 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "supertokens_python.framework.django.django_middleware.middleware",
     # 'afbcore.middleware.DebugCorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -140,7 +143,7 @@ CSRF_COOKIE_HTTPONLY = False
 TOKEN_EXPIRED_AFTER_WEEKS = 2
 
 # correspond to your build.outDir in your ViteJS configuration.
-DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "dist"
+DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "public"
 
 # ViteJS webserver protocol (default : http).
 DJANGO_VITE_DEV_SERVER_PROTOCOL = "http"
@@ -186,8 +189,6 @@ STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    VITE_APP_DIR / "dist",
-    VITE_APP_DIR / "public",
     DJANGO_VITE_ASSETS_PATH,
 ]
 
@@ -200,43 +201,93 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 10,
+    "PAGE_SIZE": 25,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.SessionAuthentication",  # for admin
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
 
+# drfpasswordless
+#
 # For the default settings see:
-# https://drf-registration.readthedocs.io/en/latest/settings/index.html
-DRF_REGISTRATION = {
-    # General settings
-    "PROJECT_NAME": "AFB Requests",
-    "PROJECT_BASE_URL": "",
-    # User fields to register and respond to profile
-    "USER_FIELDS": (
-        "id",
-        "email",
-        # "password",
-        "name",
-        "is_active",
-    ),
-    "USER_READ_ONLY_FIELDS": (
-        "is_superuser",
-        "is_staff",
-        "is_active",
-    ),
-    "USER_SERIALIZER": "afbcore.serializers.UserSerializer",
-    "REGISTER_SERIALIZER": "afbcore.serializers.RegisterSerializer",
-    "USER_WRITE_ONLY_FIELDS": ("password",),
-    "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
-    # For custom login username fields
-    "LOGIN_USERNAME_FIELDS": [
-        "email",
-    ],
-    "LOGOUT_REMOVE_TOKEN": True,
+# https://github.com/aaronn/django-rest-framework-passwordless
+#
+# Test commands:
+# curl -X POST -d "email=delbo@solutious.com" localhost:8000/auth/email/
+# curl -X POST -d "email=delbo@solutious.com&token=858997" localhost:8000/auth/token/
+PASSWORDLESS_AUTH = {
+    "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
+    "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
+    "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
+    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "passwordless_token_email.html",
+    # A plaintext verification email message overridden by the html message. Takes one string.
+    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_MESSAGE": "Enter this verification code: %s",
+    # The verification email template name.
+    "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "passwordless_verification_email.html",
+    # Registers previously unseen aliases as new users.
+    "PASSWORDLESS_REGISTER_NEW_USERS": True,
+    # URL Prefix for Authentication Endpoints
+    "PASSWORDLESS_AUTH_PREFIX": "auth/",
+    # URL Prefix for Verification Endpoints
+    "PASSWORDLESS_VERIFY_PREFIX": "auth/verify/",
+    # Amount of time that tokens last, in seconds
+    "PASSWORDLESS_TOKEN_EXPIRE_TIME": 15 * 60,  # 15 min
+    # The user's email field name
+    "PASSWORDLESS_USER_EMAIL_FIELD_NAME": "email",
+    # Marks itself as verified the first time a user completes auth via token.
+    # Automatically unmarks itself if email is changed.
+    "PASSWORDLESS_USER_MARK_EMAIL_VERIFIED": False,
+    "PASSWORDLESS_USER_EMAIL_VERIFIED_FIELD_NAME": "email_verified",
+    # Automatically send verification email or sms when a user changes their alias.
+    "PASSWORDLESS_AUTO_SEND_VERIFICATION_TOKEN": False,
+    # What function is called to construct an authentication tokens when
+    # exchanging a passwordless token for a real user auth token. This function
+    # should take a user and return a tuple of two values. The first value is
+    # the token itself, the second is a boolean value representating whether
+    # the token was newly created.
+    "PASSWORDLESS_AUTH_TOKEN_CREATOR": "drfpasswordless.utils.create_authentication_token",
+    # What function is called to construct a serializer for drf tokens when
+    # exchanging a passwordless token for a real user auth token.
+    "PASSWORDLESS_AUTH_TOKEN_SERIALIZER": "drfpasswordless.serializers.TokenResponseSerializer",
+    # A dictionary of demo user's primary key mapped to their static pin
+    "PASSWORDLESS_DEMO_USERS": {},
+    # Configurable function for sending email
+    "PASSWORDLESS_EMAIL_CALLBACK": "drfpasswordless.utils.send_email_with_callback_token",
+    # Token Generation Retry Count
+    "PASSWORDLESS_TOKEN_GENERATION_ATTEMPTS": 3,
 }
+
+# # For the default settings see:
+# # https://drf-registration.readthedocs.io/en/latest/settings/index.html
+# DRF_REGISTRATION = {
+#     # General settings
+#     "PROJECT_NAME": "AFB Requests",
+#     "PROJECT_BASE_URL": "",
+#     # User fields to register and respond to profile
+#     "USER_FIELDS": (
+#         "id",
+#         "email",
+#         # "password",
+#         "name",
+#         "is_active",
+#     ),
+#     "USER_READ_ONLY_FIELDS": (
+#         "is_superuser",
+#         "is_staff",
+#         "is_active",
+#     ),
+#     "USER_SERIALIZER": "afbcore.serializers.UserSerializer",
+#     "REGISTER_SERIALIZER": "afbcore.serializers.RegisterSerializer",
+#     "USER_WRITE_ONLY_FIELDS": ("password",),
+#     "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
+#     # For custom login username fields
+#     "LOGIN_USERNAME_FIELDS": [
+#         "email",
+#     ],
+#     "LOGOUT_REMOVE_TOKEN": True,
+# }
 
 
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
@@ -286,15 +337,22 @@ TEMPLATES = [
 WSGI_APPLICATION = "afb.wsgi.application"
 
 
-# EMAIL
-# https://docs.djangoproject.com/en/4.2/ref/settings/#email-backend
+# Sending Email
+# https://docs.djangoproject.com/en/5.0/ref/settings/#email-backend
+# https://docs.djangoproject.com/en/5.0/topics/email/
+#
+# For development, you can use the console backend:
+# 'django.core.mail.backends.console.EmailBackend'
+#
+#   OR
+#
+# Run an instance of Mailpit (https://github.com/axllent/mailpit) and use the
+# SMTP backend:
+# 'django.core.mail.backends.smtp.EmailBackend'
 #
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-#
 EMAIL_TIMEOUT = 5
-#
 EMAIL_HOST = "localhost"
-#
 EMAIL_PORT = 1025
 
 

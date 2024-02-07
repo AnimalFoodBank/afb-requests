@@ -118,4 +118,4 @@ ipdb
 Werkzeug  # Required for ipdb
 
 # Passwordless and social auth
-djoser
+drfpasswordless

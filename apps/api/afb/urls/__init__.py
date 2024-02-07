@@ -41,15 +41,15 @@ router.register(r"users", users.UserViewSet, basename="user")
 # TODO: Prefix with /version
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
-    # path("api/", include(router.urls)),
-    path("auth-token/", obtain_auth_token, name="api_token_auth"),
+    path("api/", include(router.urls)),
     # Add DRF API registration endpoints. We need these for the browsable API.
     # path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Add drf_registration endpoints. These are used for login, registration,
     # etc from the frontend.
-    # path("api/accounts/", include("drf_registration.urls")),
+    path("api/accounts/", include("drf_registration.urls")),
     # An endpoint for Vueform specific validators.
     path("api/validators/unique/", public.VueformUniqueValidatorView.as_view()),
+    path("", include("drfpasswordless.urls")),
 ]
 urlpatterns.extend(
     [

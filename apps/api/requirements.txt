@@ -14,8 +14,6 @@ build==1.0.3
     # via pip-tools
 certifi==2024.2.2
     # via requests
-cffi==1.16.0
-    # via cryptography
 cfgv==3.4.0
     # via pre-commit
 charset-normalizer==3.3.2
@@ -24,16 +22,10 @@ click==8.1.7
     # via pip-tools
 coverage==7.4.1
     # via -r requirements.in
-cryptography==42.0.2
-    # via social-auth-core
 decorator==5.1.1
     # via
     #   ipdb
     #   ipython
-defusedxml==0.8.0rc2
-    # via
-    #   python3-openid
-    #   social-auth-core
 distlib==0.3.8
     # via virtualenv
 django==4.2.10
@@ -46,10 +38,8 @@ django==4.2.10
     #   django-unfold
     #   django-vite
     #   djangorestframework
-    #   djangorestframework-simplejwt
-    #   djoser
     #   drf-registration
-    #   social-auth-app-django
+    #   drfpasswordless
 django-extensions==3.2.3
     # via -r requirements.in
 django-filter==23.5
@@ -58,8 +48,6 @@ django-model-utils==4.3.1
     # via -r requirements.in
 django-phonenumber-field==7.3.0
     # via -r requirements.in
-django-templated-mail==1.1.1
-    # via djoser
 django-unfold==0.20.3
     # via -r requirements.in
 django-vite==3.0.3
@@ -67,11 +55,9 @@ django-vite==3.0.3
 djangorestframework==3.14.0
     # via
     #   -r requirements.in
-    #   djangorestframework-simplejwt
     #   drf-registration
-djangorestframework-simplejwt==5.3.1
-    # via djoser
-djoser==2.2.2
+    #   drfpasswordless
+drfpasswordless==1.5.9
     # via -r requirements.in
 executing==2.0.1
     # via stack-data
@@ -97,10 +83,6 @@ matplotlib-inline==0.1.6
     # via ipython
 nodeenv==1.8.0
     # via pre-commit
-oauthlib==3.2.2
-    # via
-    #   requests-oauthlib
-    #   social-auth-core
 packaging==23.2
     # via
     #   build
@@ -125,14 +107,8 @@ ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
     # via stack-data
-pycparser==2.21
-    # via cffi
 pygments==2.17.2
     # via ipython
-pyjwt==2.8.0
-    # via
-    #   djangorestframework-simplejwt
-    #   social-auth-core
 pyproject-hooks==1.0.0
     # via build
 pytest==8.0.0
@@ -141,27 +117,16 @@ pytest==8.0.0
     #   pytest-django
 pytest-django==4.8.0
     # via -r requirements.in
-python3-openid==3.2.0
-    # via social-auth-core
 pytz==2024.1
     # via djangorestframework
 pyyaml==6.0.1
     # via pre-commit
 requests==2.31.0
-    # via
-    #   drf-registration
-    #   requests-oauthlib
-    #   social-auth-core
-requests-oauthlib==1.3.1
-    # via social-auth-core
+    # via drf-registration
 six==1.16.0
     # via
     #   asttokens
     #   drf-registration
-social-auth-app-django==5.4.0
-    # via djoser
-social-auth-core==4.5.2
-    # via social-auth-app-django
 sqlparse==0.4.4
     # via django
 stack-data==0.6.3
