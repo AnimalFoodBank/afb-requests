@@ -97,16 +97,18 @@ if DEBUG:
 VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
-# CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = False
 # CORS_ALLOW_HEADERS = []
 
 # https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",  # ViteJS dev server
-    "http://127.0.0.1:3001",  # ViteJS dev server
-    "http://127.0.0.1:8000",  # Django dev server
+    "http://localhost:3000",  # ViteJS dev server
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",  # Django dev server
+    "http://127.0.0.1:8000",
+    # TODO: Add production URL
 ]
 CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 
