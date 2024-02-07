@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@sidebase/nuxt-auth",
     'nuxt-og-image',
+    'nuxt-snackbar',
   ],
   hooks: {
     // Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
@@ -43,6 +44,11 @@ export default defineNuxtConfig({
     families: {
       'DM+Sans': [300, 400, 500, 600, 700]
     }
+  },
+  snackbar: {
+    // bottom: true,
+    // right: true,
+    duration: 10000,
   },
   routeRules: {
     '/api/search.json': { prerender: true },

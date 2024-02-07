@@ -23,6 +23,7 @@
     "next-auth": "^4.21.1",
     "nuxt": "^3.9.3",
     "nuxt-og-image": "^2.2.4",
+    "nuxt-snackbar": "^1.0.4",
     "pinia": "^2.1.7"
   },
   "devDependencies": {
