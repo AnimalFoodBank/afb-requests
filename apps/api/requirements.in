@@ -119,3 +119,6 @@ Werkzeug  # Required for ipdb
 
 # Passwordless and social auth
 drfpasswordless
+
+# For the postgres database (default is SQLite)
+psycopg2-binary
