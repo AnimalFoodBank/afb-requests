@@ -11,6 +11,14 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+# Load dotenv file
+from dotenv import load_dotenv
+
+# After loading dotenv, you can use os.getenv() to access
+# environment variables. e.g. `os.getenv("DEBUG", "False")`
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,16 +34,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # after login, you can set LOGIN_REDIRECT_URL to any valid URL endpoint in
 # your Django project. This could be a DRF view that returns JSON data, or a
 # Django view that returns HTML.
-LOGIN_REDIRECT_URL = "/api/users/current_user/"
+LOGIN_REDIRECT_URL = os.getenv("LOGIN_REDIRECT_URL")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-k3nma!u)7oz(lt346n-=rx=rt%u_^j8-rdz3p(y3o$ot0%soqh"
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
+IN_PRODUCTION = not DEBUG
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -46,9 +56,6 @@ ALLOWED_HOSTS = [
     "localhost:3000",
 ]
 
-
-# Application definition
-# http://127.0.0.1:8000/static/src/assets/logo.png
 
 INSTALLED_APPS = [
     "unfold",  # https://github.com/unfoldadmin/django-unfold
@@ -82,16 +89,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-if DEBUG:
-    INSTALLED_APPS += [
-        "django.contrib.admindocs",
-        "debug_toolbar",
-    ]
-
-    MIDDLEWARE += [
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-    ]
 
 
 VITE_APP_DIR = BASE_DIR.parent / "ui"
@@ -127,9 +124,10 @@ CSRF_TRUSTED_ORIGINS = [
 
 CSRF_USE_SESSIONS = True
 
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False  # not DEBUG
-# SECURE_SSL_REDIRECT = False
+
+CSRF_COOKIE_SECURE = IN_PRODUCTION
+SESSION_COOKIE_SECURE = IN_PRODUCTION
+SECURE_SSL_REDIRECT = IN_PRODUCTION
 
 # This is needed for CSRF to work with CORS:
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-samesite
@@ -297,7 +295,6 @@ PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
 PHONENUMBER_DEFAULT_REGION = "CA"
 
-
 ROOT_URLCONF = "afb.urls"
 
 # Django-Tailwind
@@ -353,10 +350,22 @@ WSGI_APPLICATION = "afb.wsgi.application"
 # SMTP backend:
 # 'django.core.mail.backends.smtp.EmailBackend'
 #
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_TIMEOUT = 5
-EMAIL_HOST = "localhost"
-EMAIL_PORT = 1025
+
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+EMAIL_TIMEOUT = os.getenv("EMAIL_TIMEOUT", 5)
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "django.contrib.admindocs",
+        "debug_toolbar",
+    ]
+
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
 
 
 # Database
@@ -364,11 +373,14 @@ EMAIL_PORT = 1025
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": os.getenv("DB_ENGINE"),
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -412,6 +424,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
 # See https://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -422,10 +436,10 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "DEBUG",
+            "level": LOG_LEVEL,
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         }
     },
-    "root": {"level": "INFO", "handlers": ["console"]},
+    "root": {"level": LOG_LEVEL, "handlers": ["console"]},
 }
