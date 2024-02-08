@@ -3,6 +3,7 @@ import type { FormError, FormSubmitEvent } from '#ui/types';
 
 const state = reactive({
   email: undefined,
+  code: undefined,
 })
 
 const validate = (state: any): FormError[] => {
@@ -21,6 +22,7 @@ async function onSubmit (event: FormSubmitEvent<any>) {
   <UForm :validate="validate" :state="state" class="space-y-4" @submit="onSubmit">
     <UFormGroup label="Email" name="email">
       <UInput v-model="state.email" />
+      <UInput v-model="state.code" />
     </UFormGroup>
 
     <UButton type="submit">
