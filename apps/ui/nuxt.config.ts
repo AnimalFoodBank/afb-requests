@@ -56,7 +56,7 @@ export default defineNuxtConfig({
   },
   devtools: {
     // https://devtools.nuxt.com/guide/getting-started
-    enabled: true
+    enabled: process.env.NUXT_DEVTOOLS === 'true',
   },
   runtimeConfig: {
     AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
