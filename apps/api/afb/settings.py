@@ -239,7 +239,8 @@ PASSWORDLESS_AUTH = {
     # The user's email field name
     "PASSWORDLESS_USER_EMAIL_FIELD_NAME": "email",
     # Marks itself as verified the first time a user completes auth via token.
-    # Automatically unmarks itself if email is changed.
+    # Automatically unmarks itself if email is changed. Use /auth/verify/email
+    # for the address and /auth/verify for the token.
     "PASSWORDLESS_USER_MARK_EMAIL_VERIFIED": False,
     "PASSWORDLESS_USER_EMAIL_VERIFIED_FIELD_NAME": "email_verified",
     # Automatically send verification email or sms when a user changes their alias.
