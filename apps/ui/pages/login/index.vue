@@ -124,7 +124,7 @@ async function onSubmit (event: FormSubmitEvent<any>) {
         :validate="validate"
         :providers="providers"
         title="Sign in to AFB Requests"
-        description="Enter your w to access your account."
+        description="Enter your email to access your account."
         align="top"
         icon="i-heroicons-lock-closed"
         :ui="{ base: 'text-center', footer: 'text-center' }"
