@@ -2,6 +2,9 @@
 import type { FormError, FormSubmitEvent } from '#ui/types';
 import { useRoute } from 'vue-router';
 
+const config = useRuntimeConfig();
+const snackbar = useSnackbar();
+
 definePageMeta({
   layout: 'auth',
   auth: {
@@ -10,56 +13,17 @@ definePageMeta({
   },
 })
 
-
 const route = useRoute()
-// Create a computed property that returns the route parameter
-const routeParam = computed(() => route.query.email)
+const email = route.query.email as string
+const code = route.query.code as string
 
-const state = {
-  email: route.query.email as string,
-  code: route.query.code as string,
-}
-console.log('state', state)
+const state = reactive({
+  email,
+  code,
+})
 
-const fields = [{
-  name: 'email',
-  type: 'text',
-  value: state.email,
-  label: 'Email',
-}, {
-  name: 'code',
-  type: 'text',
-  value: state.code,
-  label: 'Code',
-}]
-
-const providers = [
-  {
-    label: 'Continue with Google',
-    icon: 'i-simple-icons-google',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Google')
-    }
-  },
-  {
-    label: 'Continue with Facebook',
-    icon: 'i-simple-icons-facebook',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Facebook')
-    }
-  },
-  {
-    label: 'Continue with Apple',
-    icon: 'i-simple-icons-apple',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Apple')
-    }
-  },
-]
-
+// re: issues with autopopulating values and Chrome not updating the DOM
+// see: https://github.com/vuejs/vue/issues/7058#issuecomment-1366489524
 const validate = (state: any): FormError[] => {
   console.log('statevalidate', state)
   const errors = []
@@ -71,7 +35,71 @@ const validate = (state: any): FormError[] => {
 async function onSubmit (event: FormSubmitEvent<any>) {
   // Do something with data
   console.log("event", event)
+
+  // Prepare the payload
+  const payload = {
+    email: state.email,
+    code: state.code,
+  }
+  console.log('Payload:', payload)
+
+  // Send post request to the API endpoint using Nuxt 3 useFetch
+  //
+  // data - RefImpl, the response data. The value is null until
+  //    the request is successful. “RefImpl is commonly a reference
+  //    implementation used by Vue.js.”
+  // pending - boolean, true if the request is still pending
+  // error - ObjectRefImpl, when error.value is called, returns the error
+  //    object or null. When null, the request was successful.
+  // refresh - function, to manually trigger a new request.
+  //
+  // https://medium.com/@enestalayy/data-fetching-with-nuxt-3-ede89fb0509f
+  //
+  const path = '/api/passwordless/auth/token/'
+  const { data, pending, error, refresh } = useFetch(path, {
+    baseURL: config.public.apiBase,
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    mode: 'cors',
+  })
+
+  // ObjectRefImpl is implemented by the Vue.js reactivity system.
+  // https://github.com/vuejs/core/blob/75e02b5099a0/packages/reactivity/src/ref.ts#L357
+  if (error.value) {
+    console.error('An error occurred:', error)
+    let response = event.value
+    if (response.statusCode === 400) {
+      const message = "Invalid email or code"
+      console.log('Message:', message)
+
+      snackbar.add({
+        type: 'error',
+        text: message,
+      })
+    }
+    return
+  }
+
+  // A successful repsonse returns a friendly message for the
+  // user. The next step is for the user to check their email
+  // for the magic link to sign in.
+  if (await data.value) {
+    const response = (data.value);
+    const message = "Thanks for that"
+    console.log('Message:', message)
+
+    snackbar.add({
+      type: 'success',
+      text: message,
+    })
+  }
+
 }
+
+
 </script>
 
 <template>
@@ -80,32 +108,32 @@ async function onSubmit (event: FormSubmitEvent<any>) {
 
     <!-- https://ui.nuxt.com/components/form -->
     <!-- https://ui.nuxt.com/pro/components/auth-form -->
-    <UAuthForm
-      :fields="fields"
+    <!-- UForm implementation is a workaround for UAuthForm autopopulate+validation issue. -->
+    <UForm
       :validate="validate"
-      :providers="providers"
       :state="state"
       title="Sign in to AFB Requests"
       description="Click 'Sign in' to complete process."
       align="top"
       icon="i-heroicons-lock-closed"
-      :ui="{ base: 'text-center', footer: 'text-center' }"
-      :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
-      :loading="false"
       @submit="onSubmit"
     >
-      <template #description>
-        Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.
-      </template>
+      <div class="w-full max-w-sm space-y-6">
+        <h2 class="text-2xl text-gray-900 dark:text-white font-bold text-center">Sign in to AFB Requests</h2>
+        <p class="text-gray-500 dark:text-gray-400 mt-1 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p>
 
-      <template #password-hint>
-        <NuxtLink to="/" class="text-primary font-medium">Forgot password?</NuxtLink>
-      </template>
+        <UInput v-model="email" name="email" type="hidden" label="Email" required />
+        <UInput v-model="code" name="code" type="hidden" label="Code" required />
 
-      <template #footer>
-        By signing in, you agree to our <NuxtLink to="/" class="text-primary font-medium">Terms of Service</NuxtLink>.
-      </template>
+        <UButton type="submit" class="focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 px-3 py-2 shadow-sm text-white dark:text-gray-900 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-500 dark:bg-primary-400 dark:hover:bg-primary-500 dark:disabled:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:focus-visible:outline-primary-400 w-full flex justify-center items-center">
+          <span class="">Continue</span>
+          <span class="i-heroicons-arrow-right-20-solid flex-shrink-0 h-5 w-5" aria-hidden="true"></span>
+        </UButton>
 
-    </UAuthForm>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
+          By signing in, you agree to our <NuxtLink to="/" class="text-primary font-medium">Terms of Service</NuxtLink>.
+        </p>
+      </div>
+    </UForm>
   </UCard>
 </template>
