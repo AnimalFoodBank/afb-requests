@@ -21,7 +21,9 @@ logs
 # Local env files
 .env
 .env.*
-!.env.example
+
+# Exclude specific example file
+!apps/api/.env.example
 
 # VSC
 .history
