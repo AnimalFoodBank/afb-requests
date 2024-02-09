@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # after login, you can set LOGIN_REDIRECT_URL to any valid URL endpoint in
 # your Django project. This could be a DRF view that returns JSON data, or a
 # Django view that returns HTML.
-LOGIN_REDIRECT_URL = os.getenv("LOGIN_REDIRECT_URL")
+LOGIN_REDIRECT_URL = os.getenv("LOGIN_REDIRECT_URL", "/foobar")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -47,6 +47,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 IN_PRODUCTION = not DEBUG
 
+USE_X_FORWARDED_HOST = True
+# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "127.0.0.1:8000",
@@ -54,8 +58,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "localhost:8000",
     "localhost:3000",
+    "dev.animalfoodbank.org",
 ]
-
 
 INSTALLED_APPS = [
     "unfold",  # https://github.com/unfoldadmin/django-unfold
@@ -105,6 +109,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:8000",  # Django dev server
     "http://127.0.0.1:8000",
+    "https://localhost",
+    "https://dev.animalfoodbank.org",
     # TODO: Add production URL
 ]
 CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
@@ -120,14 +126,16 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",  # ViteJS dev server
     "http://127.0.0.1:3001",  # ViteJS dev server
     "http://localhost:3000",
+    "https://localhost",
+    "https://dev.animalfoodbank.org",
 ]
 
-CSRF_USE_SESSIONS = True
+CSRF_USE_SESSIONS = False
 
 
 CSRF_COOKIE_SECURE = IN_PRODUCTION
 SESSION_COOKIE_SECURE = IN_PRODUCTION
-SECURE_SSL_REDIRECT = IN_PRODUCTION
+SECURE_SSL_REDIRECT = False  # The reverse proxy handles this.
 
 # This is needed for CSRF to work with CORS:
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-samesite
@@ -149,7 +157,7 @@ DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "public"
 DJANGO_VITE_DEV_SERVER_PROTOCOL = "http"
 
 # ViteJS webserver hostname (default : localhost).
-DJANGO_VITE_DEV_SERVER_HOST = "127.0.0.1"
+DJANGO_VITE_DEV_SERVER_HOST = "dev.animalfoodbank.org"
 
 # ViteJS webserver port (default : 3000)
 DJANGO_VITE_DEV_SERVER_PORT = "3000"
@@ -178,13 +186,22 @@ VITE_OUTPUT_CSS = "output.css"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-STATIC_ROOT
 # https://docs.djangoproject.com/en/4.2/howto/static-files/#deployment
-# This should be an initially empty destination directory. it is not a place
-# to store your static files permanently.
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# This should be an initially empty destination directory. It's populated with
+# the result of collectstatic during the deployment process. You should use
+# the collectstatic management command to collect your static files in that
+# directory. Then, your web server can serve the files in STATIC_ROOT.
+#
+# Add paths to STATICFILES_DIRS to include other directories and run:
+#
+#  $ python manage.py collectstatic
+#
+STATIC_ROOT = BASE_DIR / ".." / ".." / "public" / "static"
 
 # For prod:
 # https://docs.djangoproject.com/en/4.2/howto/static-files/deployment/#staticfiles-from-cdn
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-STORAGES
+#
+# This is ignored when using a CDN or reverse proxy for serving static files.
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [

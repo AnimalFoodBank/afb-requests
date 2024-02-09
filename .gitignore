@@ -90,6 +90,7 @@ local_settings.py
 .vscode/
 tmp/*
 node_modules/
+public/static/*
 
 # Vite/Vue
 .vite/

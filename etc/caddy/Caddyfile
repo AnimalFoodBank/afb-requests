@@ -1,0 +1,74 @@
+##
+# Caddy configuration file for Animal Food Bank
+#
+# To run Caddy with the following Caddyfile, use the following command:
+#
+#   $ caddy run --config ./etc/caddy/Caddyfile
+#
+# Reload the Caddyfile without restarting Caddy:
+#   $ caddy reload --config ./etc/caddy/Caddyfile
+#
+# Automatically reload the Caddyfile when it changes:
+#   $ caddy run --config ./etc/caddy/Caddyfile --watch
+#
+# Automatically reformats the Caddyfile after saving:
+#   $ caddy fmt --overwrite ./etc/caddy/Caddyfile
+
+# About the certs
+#
+# The certs are generated using the following command:
+#   $ mkcert localhost 127.0.0.1 ::1 dev.animalfoodbank.org
+#   $ mkcert -install
+#
+# And stored in the following directory: etc/caddy/.certs. The directory is created
+# manually and the certs are moved into it.
+#
+# For curl to work with the certs, the following environment variable needs to be set:
+#   $ export CURL_CA_BUNDLE="/Users/d/Library/Application Support/mkcert/rootCA.pem"
+#
+# See: https://curl.se/docs/sslcerts.html
+#
+# For node to work with the certs, the following environment variable needs to be set:
+#   $ export NODE_EXTRA_CA_CERTS="/Users/d/Library/Application Support/mkcert/rootCA.pem"
+{
+  # TODO: Disable this in production
+  debug
+}
+
+https://dev.animalfoodbank.org, https://localhost, https://127.0.0.1 {
+	tls etc/caddy/.certs/localhost+3.pem etc/caddy/.certs/localhost+3-key.pem
+
+	# root * /static/*
+	# encode zstd gzip
+	# @css {
+	#     path_regexp .css
+	# }
+	# @js {
+	#     path_regexp .js
+	# }
+	# header @css Content-Type text/css
+	# header @js Content-Type text/js
+	# @notStatic {
+	# 	not path /static/*
+	# }
+
+  # Static files are served from the public directory. Django is
+  # responsible for collecting static files into `public/static`. The
+  # Django setting is `STATIC_ROOT = "path" / "2" / "public" / "static"`
+  # and the command is simply `python manage.py collectstatic`.
+  #
+  # NOTE: The Django command needs to be run after every change
+  # any of the static files.
+  #
+	handle /static/* {
+		root * ./public
+		file_server
+	}
+
+	handle {
+		reverse_proxy /api* localhost:8000
+    reverse_proxy /admin* localhost:8000
+    reverse_proxy localhost:3000
+	}
+
+}
