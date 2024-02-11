@@ -24,12 +24,16 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BASE_HOST = os.getenv("BASE_HOST", "localhost")
+URI_SCHEMA = os.getenv("URI_SCHEMA", "https")
+BASE_URI = f"{URI_SCHEMA}://{BASE_HOST}"
+
 # When using Django Rest Framework (DRF), you typically don't use
 # LOGIN_REDIRECT_URL because DRF is designed to build APIs, which are
 # generally stateless. This means after a successful login, instead of
 # redirecting to a new page, you would return a response (often with a token
 # for authentication).
-
+#
 # However, if you're building a browsable API with DRF and want to redirect
 # after login, you can set LOGIN_REDIRECT_URL to any valid URL endpoint in
 # your Django project. This could be a DRF view that returns JSON data, or a
@@ -48,6 +52,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 IN_PRODUCTION = not DEBUG
 
 USE_X_FORWARDED_HOST = True
+
 # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
@@ -63,6 +68,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     "unfold",  # https://github.com/unfoldadmin/django-unfold
+    "django.contrib.sites",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -235,6 +241,7 @@ REST_FRAMEWORK = {
 # curl -X POST -d "email=delbo@solutious.com" localhost:8000/auth/email/
 # curl -X POST -d "email=delbo@solutious.com&token=858997" localhost:8000/auth/token/
 PASSWORDLESS_AUTH = {
+    "PASSWORDLESS_BASE_URI": BASE_URI,
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
     "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
@@ -369,7 +376,7 @@ WSGI_APPLICATION = "afb.wsgi.application"
 #
 
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
-EMAIL_TIMEOUT = os.getenv("EMAIL_TIMEOUT", 5)
+EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", 5))
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
 
