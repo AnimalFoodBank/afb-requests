@@ -51,12 +51,13 @@ export default defineNuxtConfig({
     duration: 10000,
   },
   routeRules: {
-    '/api/search.json': { prerender: true },
-    '/docs': { redirect: '/docs/getting-started', prerender: false }
+    // '/api/search.json': { prerender: true },
+    // '/docs': { redirect: '/docs/getting-started', prerender: false }
   },
   devtools: {
     // https://devtools.nuxt.com/guide/getting-started
-    enabled: process.env.NUXT_DEVTOOLS === 'true',
+    // enabled: process.env.NUXT_DEVTOOLS === 'true',
+    enabled: true,
   },
   runtimeConfig: {
     AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
