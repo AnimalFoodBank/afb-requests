@@ -99,6 +99,9 @@ django-phonenumber-field[phonenumbers]
 # DRF Registration package installed via git
 -e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
 
+# DRFPasswordless package installed via git
+-e git+ssh://git@github.com/delano/django-rest-framework-passwordless.git@delano/20240209-email-context#egg=drfpasswordless
+
 # This is used for the API docs
 markdown
 
@@ -116,9 +119,6 @@ pytest-django
 coverage
 ipdb
 Werkzeug  # Required for ipdb
-
-# Passwordless and social auth
-drfpasswordless
 
 # For the postgres database (default is SQLite)
 psycopg2-binary
