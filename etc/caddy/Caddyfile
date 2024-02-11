@@ -37,6 +37,7 @@
 
 https://dev.animalfoodbank.org, https://localhost, https://127.0.0.1 {
 	tls etc/caddy/.certs/localhost+3.pem etc/caddy/.certs/localhost+3-key.pem
+  header Permissions-Policy "geolocation=(), microphone=()"
 
 	# root * /static/*
 	# encode zstd gzip
@@ -66,9 +67,15 @@ https://dev.animalfoodbank.org, https://localhost, https://127.0.0.1 {
 	}
 
 	handle {
-		reverse_proxy /api* localhost:8000
-    reverse_proxy /admin* localhost:8000
-    reverse_proxy localhost:3000
+		reverse_proxy /api* localhost:8000 {
+      header_down Server "Proxied Server Name (django api)"
+    }
+    reverse_proxy /admin* localhost:8000 {
+      header_down Server "Proxied Server Name (django admin)"
+    }
+    reverse_proxy localhost:3000 {
+      header_down Server "Proxied Server Name (vue)"
+    }
 	}
 
 }
