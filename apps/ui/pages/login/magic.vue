@@ -11,6 +11,7 @@ definePageMeta({
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: '/protected',
   },
+  // colorMode: 'dark',
 })
 
 const route = useRoute()
@@ -32,73 +33,80 @@ const validate = (state: any): FormError[] => {
   return errors
 }
 
-async function onSubmit (event: FormSubmitEvent<any>) {
-  // Do something with data
-  console.log("event", event)
+async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
+  console.log('Submitted', event);
 
   // Prepare the payload
   const payload = {
     email: state.email,
-    code: state.code,
+    token: state.code,
   }
   console.log('Payload:', payload)
 
-  // Send post request to the API endpoint using Nuxt 3 useFetch
-  //
-  // data - RefImpl, the response data. The value is null until
-  //    the request is successful. “RefImpl is commonly a reference
-  //    implementation used by Vue.js.”
-  // pending - boolean, true if the request is still pending
-  // error - ObjectRefImpl, when error.value is called, returns the error
-  //    object or null. When null, the request was successful.
-  // refresh - function, to manually trigger a new request.
-  //
-  // https://medium.com/@enestalayy/data-fetching-with-nuxt-3-ede89fb0509f
-  //
-  const path = '/api/passwordless/auth/token/'
-  const { data, pending, error, refresh } = useFetch(path, {
-    baseURL: config.public.apiBase,
-    method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    mode: 'cors',
-  })
+  try {
+    // Send post request to the API endpoint using Nuxt 3 useFetch
+    const path = '/api/passwordless/auth/token/'
+    const { data, pending, error, refresh } = await useFetch(path, {
+      onRequest({ request, options }) {
+        console.log('Request:', request)
+        // Set the request headers
+        options.headers = options.headers || {}
+        // options.headers = options.headers || { any: '' }
+        options.headers['AFB'] = 'rules'
+        options.headers['Content-Type'] = 'application/json'
+      },
+      onRequestError({ request, options, error }) {
+        // Handle the request errors
+        console.error('A request error occurred:', error)
+      },
+      onResponse({ request, response, options }) {
+        console.log('Response:', response)
+        const data = response._data
 
-  // ObjectRefImpl is implemented by the Vue.js reactivity system.
-  // https://github.com/vuejs/core/blob/75e02b5099a0/packages/reactivity/src/ref.ts#L357
-  if (error.value) {
-    console.error('An error occurred:', error)
-    let response = event.value
-    if (response.statusCode === 400) {
-      const message = "Invalid email or code"
-      console.log('Message:', message)
+        // After a successful response the next step is for the
+        // user to be directed to their dashboard.
+        if (response.ok) {
+          const message = 'Your now signed in. Redirecting to your dashboard.'
+          console.log('Message:', message)
 
-      snackbar.add({
-        type: 'error',
-        text: message,
-      })
-    }
-    return
-  }
+          // Save the bearer token to local storage
+          const token = response.headers.get('Authorization')
+          if (token) {
+            window.localStorage.setItem('auth._token.local', token)
+          }
 
-  // A successful repsonse returns a friendly message for the
-  // user. The next step is for the user to check their email
-  // for the magic link to sign in.
-  if (await data.value) {
-    const response = (data.value);
-    const message = "Thanks for that"
-    console.log('Message:', message)
+          navigateTo('/dashboard')
 
-    snackbar.add({
-      type: 'success',
-      text: message,
+
+        } else {
+          // Handle the response errors
+          console.error('A response error occurred:', error)
+
+          snackbar.add({
+            type: 'error',
+            text: 'An error occurred. Please try again.',
+          })
+        }
+
+      },
+      onResponseError({ request, response, options }) {
+        // Handle the response errors
+        console.error('A response error occurred:', error)
+      },
+      baseURL: config.public.apiBase,
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      mode: 'cors',
+
     })
+
+  } catch (error) {
+    console.error('An unhandled error occurred:', error)
   }
-
 }
-
 
 </script>
 

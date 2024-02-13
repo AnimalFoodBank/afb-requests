@@ -3,6 +3,8 @@ import type { FormError, FormSubmitEvent } from '#ui/types';
 
 const config = useRuntimeConfig();
 
+const disabled = ref(false);
+
 // https://evomark.co.uk/open-source-software/vue3-snackbar/
 const snackbar = useSnackbar();
 
@@ -12,6 +14,7 @@ definePageMeta({
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: '/protected',
   },
+  // colorMode: 'dark',
 })
 
 useSeoMeta({
@@ -58,59 +61,105 @@ const providers = [
   },
 ]
 
-async function onSubmit (event: FormSubmitEvent<any>) {
+let timeoutId: number | undefined
+
+
+onUnmounted(() => {
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+  }
+});
+
+async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
   console.log('Submitted', event);
+
+  if (disabled.value) {
+    snackbar.add({
+      type: 'warning',
+      text: "If you haven't received an email, please wait a few minutes and try again.",
+    })
+    return;
+  } else {
+    disabled.value = true;
+    setTimeout(() => {
+      disabled.value = false;
+    }, 60000);
+
+  }
+
 
   // Prepare the payload
   const payload = {
-    email: event.email
+    email: event.email,
   }
   console.log('Payload:', payload)
 
-  // Send post request to the API endpoint using Nuxt 3 useFetch
-  //
-  // data - RefImpl, the response data. The value is null until
-  //    the request is successful. “RefImpl is commonly a reference
-  //    implementation used by Vue.js.”
-  // pending - boolean, true if the request is still pending
-  // error - ObjectRefImpl, when error.value is called, returns the error
-  //    object or null. When null, the request was successful.
-  // refresh - function, to manually trigger a new request.
-  //
-  // https://medium.com/@enestalayy/data-fetching-with-nuxt-3-ede89fb0509f
-  //
-  const path = '/api/passwordless/auth/email/'
-  const { data, pending, error, refresh } = useFetch(path, {
-    baseURL: config.public.apiBase,
-    method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    mode: 'cors',
-  })
+  try {
+    // Send post request to the API endpoint using Nuxt 3 useFetch
+    const path = '/api/passwordless/auth/email/'
+    const { data, pending, error, refresh } = await useFetch(path, {
+      onRequest({ request, options }) {
+        console.log('Request:', request)
+        // Set the request headers
+        options.headers = options.headers || {}
+        // options.headers = options.headers || { any: '' }
+        options.headers['AFB'] = 'rules'
+        options.headers['Content-Type'] = 'application/json'
 
-  // ObjectRefImpl is implemented by the Vue.js reactivity system.
-  // https://github.com/vuejs/core/blob/75e02b5099a0/packages/reactivity/src/ref.ts#L357
-  if (error.value) {
-    console.error('An error occurred:', error.value)
-    return
-  }
+      },
+      onRequestError({ request, options, error }) {
+        // Handle the request errors
+        console.error('A request error occurred:', error)
+      },
+      onResponse({ request, response, options }) {
+        const data = response._data
+        console.log('Response data:', data)
+        // Process the response data
 
-  // A successful repsonse returns a friendly message for the
-  // user. The next step is for the user to check their email
-  // for the magic link to sign in.
-  if (await data.value) {
-    const message = data.value.detail
-    console.log('Message:', message)
+        // A successful response returns a friendly message for the
+        // user. The next step is for the user to check their email
+        // for the magic link to sign in.
+        if (response.ok) {
+          // Ignore data.detail bc it's not a friendly message
+          // and comes straight from drfpasswordless.
+          const message = 'Check your email for a link to log in.'
+          console.log('Message:', message)
 
-    snackbar.add({
-        type: 'success',
-        text: message,
+          snackbar.add({
+            type: 'success',
+            text: message,
+          })
+        } else {
+          // Handle the response errors
+          console.error('A response error occurred:', error)
+
+          snackbar.add({
+            type: 'error',
+            text: 'An error occurred. Please try again.',
+          })
+        }
+
+      },
+      onResponseError({ request, response, options }) {
+        // Handle the response errors
+        console.error('A response error occurred:', error)
+      },
+      baseURL: config.public.apiBase,
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      mode: 'cors',
+
     })
+
+  } catch (error) {
+    console.error('An unhandled error occurred:', error)
   }
 
 }
+
 </script>
 
 <!-- eslint-disable vue/multiline-html-element-content-newline -->
