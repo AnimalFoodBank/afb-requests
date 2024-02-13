@@ -3,17 +3,29 @@ export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
   modules: [
     '@nuxt/content',
+    '@nuxtjs/color-mode',
     '@nuxt/image',
     '@nuxt/ui',
-    '@nuxthq/studio',
+    '@nuxthq/studio',  // https://nuxt.studio/docs/projects/setup#requirements-to-use-the-studio-editor
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
     '@vueuse/nuxt',
     "@pinia/nuxt",
-    "@sidebase/nuxt-auth",
+    // "@sidebase/nuxt-auth",
     'nuxt-og-image',
     'nuxt-snackbar',
   ],
+  // force module initialization on dev env
+  // https://nuxt.studio/docs/developers/local-debug
+  studio: {
+    enabled: true
+  },
+  colorMode: {
+    preference: 'dark', // default value of $colorMode.preference
+    fallback: 'dark', // fallback value if not system preference found
+    classSuffix: '',
+    storageKey: 'nuxt-color-mode',
+  },
   hooks: {
     // Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
     'components:extend': (components) => {
@@ -25,6 +37,7 @@ export default defineNuxtConfig({
   ui: {
     icons: ['heroicons', 'simple-icons']
   },
+  srcDir: '.', // This is the default, but it's good to be explicit
   auth: {
     // This value is used for the auth origin. When it's not set, it'll raise
     // an AUTH_NO_ORIGIN error in production. In dev, it'll just log a warning.
@@ -51,14 +64,29 @@ export default defineNuxtConfig({
     duration: 10000,
   },
   routeRules: {
-    // '/api/search.json': { prerender: true },
-    // '/docs': { redirect: '/docs/getting-started', prerender: false }
+    '/_api/search.json': { prerender: true },
+    '/docs': { redirect: '/docs/getting-started', prerender: false }
   },
   devtools: {
     // https://devtools.nuxt.com/guide/getting-started
     // enabled: process.env.NUXT_DEVTOOLS === 'true',
     enabled: true,
+
+    timeline: {
+      enabled: true
+    }
   },
+  /*
+  * runtimeConfig is a configuration option that allows you to pass
+  * environment variables from the server to the client. It has two
+  * properties: publicRuntimeConfig and privateRuntimeConfig.
+  *
+  * runtimeConfig.public is the Nuxt 3 syntax for publicRuntimeConfig
+  *
+  * NOTE: The from server to client part is important. This means that
+  * the client can access these variables, so be careful not to expose
+  * sensitive information.
+  */
   runtimeConfig: {
     AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
 
