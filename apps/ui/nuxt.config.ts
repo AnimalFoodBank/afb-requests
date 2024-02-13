@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     'nuxt-snackbar',
   ],
+  // ssr: false,
   // force module initialization on dev env
   // https://nuxt.studio/docs/developers/local-debug
   studio: {
