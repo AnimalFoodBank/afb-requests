@@ -19,8 +19,8 @@ useHead({
 })
 
 useSeoMeta({
-  titleTemplate: '%s - Nuxt UI Pro - SaaS template',
-  ogSiteName: 'Nuxt UI Pro - SaaS template',
+  titleTemplate: '%s - AFB - Animal Food Bank',
+  ogSiteName: 'AFB - Animal Food Bank',
   twitterCard: 'summary_large_image'
 })
 </script>

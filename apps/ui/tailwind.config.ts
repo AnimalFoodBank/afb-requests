@@ -7,6 +7,7 @@ export default <Partial<Config>>{
       fontFamily: {
         sans: ['DM Sans', 'DM Sans fallback', ...defaultTheme.fontFamily.sans]
       }
-    }
-  }
+    },
+    darkMode: 'class',
+  },
 }
