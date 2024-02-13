@@ -37,21 +37,24 @@ urlpatterns = [
 router = APIRouter(singleViews=EXTRA_API_VIEWS)
 router.register(r"users", users.UserViewSet, basename="user")
 
+# TODO: How to add to browsable API?
+passwordless = include("drfpasswordless.urls")
 
 # TODO: Prefix with /version
 urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
-    # path("api/", include(router.urls)),
-    path("auth-token/", obtain_auth_token, name="api_token_auth"),
+    path("api/", include(router.urls)),
+    path("api/passwordless/", passwordless),
     # Add DRF API registration endpoints. We need these for the browsable API.
-    # path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Add drf_registration endpoints. These are used for login, registration,
     # etc from the frontend.
-    # path("api/accounts/", include("drf_registration.urls")),
+    path("api/accounts/", include("drf_registration.urls")),
     # An endpoint for Vueform specific validators.
     path("api/validators/unique/", public.VueformUniqueValidatorView.as_view()),
 ]
-urlpatterns.extend(
+
+urlpatterns.extend(  # TODO: remove
     [
         path(route=endpoint["route"], view=endpoint["view"], name=endpoint["name"])
         for endpoint in EXTRA_API_VIEWS

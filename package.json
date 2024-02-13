@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@types/node": "^20.11.17",
+    "favicons": "^7.1.5"
+  }
+}

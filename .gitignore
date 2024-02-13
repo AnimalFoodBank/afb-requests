@@ -84,11 +84,13 @@ local_settings.py
 
 # Project
 .env*
+.certs/
 !.env.empty
 *.sqlite3
 .vscode/
 tmp/*
 node_modules/
+public/static/*
 
 # Vite/Vue
 .vite/

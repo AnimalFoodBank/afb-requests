@@ -3,15 +3,30 @@ export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
   modules: [
     '@nuxt/content',
+    '@nuxtjs/color-mode',
     '@nuxt/image',
     '@nuxt/ui',
-    '@nuxthq/studio',
+    '@nuxthq/studio',  // https://nuxt.studio/docs/projects/setup#requirements-to-use-the-studio-editor
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
     '@vueuse/nuxt',
+    "@pinia/nuxt",
+    // "@sidebase/nuxt-auth",
     'nuxt-og-image',
-    "@pinia/nuxt"
+    'nuxt-snackbar',
   ],
+  // ssr: false,
+  // force module initialization on dev env
+  // https://nuxt.studio/docs/developers/local-debug
+  studio: {
+    enabled: true
+  },
+  colorMode: {
+    preference: 'dark', // default value of $colorMode.preference
+    fallback: 'dark', // fallback value if not system preference found
+    classSuffix: '',
+    storageKey: 'nuxt-color-mode',
+  },
   hooks: {
     // Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
     'components:extend': (components) => {
@@ -22,6 +37,16 @@ export default defineNuxtConfig({
   },
   ui: {
     icons: ['heroicons', 'simple-icons']
+  },
+  srcDir: '.', // This is the default, but it's good to be explicit
+  auth: {
+    // This value is used for the auth origin. When it's not set, it'll raise
+    // an AUTH_NO_ORIGIN error in production. In dev, it'll just log a warning.
+    // @see https://github.com/sidebase/nuxt-auth/issues/515
+    baseURL: process.env.NUXT_PUBLIC_APP_ORIGIN,
+
+    // TODO: Check if this is still the right way to enable global middleware in Nuxt3
+    // enableGlobalAppMiddleware: true,
   },
   // Fonts
   fontMetrics: {
@@ -34,42 +59,45 @@ export default defineNuxtConfig({
       'DM+Sans': [300, 400, 500, 600, 700]
     }
   },
+  snackbar: {
+    // bottom: true,
+    // right: true,
+    duration: 10000,
+  },
   routeRules: {
-    '/api/search.json': { prerender: true },
+    '/_api/search.json': { prerender: true },
     '/docs': { redirect: '/docs/getting-started', prerender: false }
   },
   devtools: {
     // https://devtools.nuxt.com/guide/getting-started
-    enabled: true
-  },
-  runtimeConfig: {
-    // Will be available in both server and client
-    mySecret: process.env.MY_SECRET,
-    // Private keys are only available on the server
-    apiSecret: '123',
+    // enabled: process.env.NUXT_DEVTOOLS === 'true',
+    enabled: true,
 
-    // Public keys that are exposed to the client
-    public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || ':8000/'
-    },
-    // public: {
-    //   baseURL: process.env.BASE_URL || ':8080/',
-    // },
-  },
-  vite: {
-    // Vite specific configuration
-    // For example, to configure the server port:
-    server: {
-    },
-    // Or to configure Rollup plugins:
-    plugins: [
-      // your plugins here
-    ],
-    // Or to configure resolve alias:
-    resolve: {
-      alias: {
-        // your alias here
-      }
+    timeline: {
+      enabled: true
     }
+  },
+  /*
+  * runtimeConfig is a configuration option that allows you to pass
+  * environment variables from the server to the client. It has two
+  * properties: publicRuntimeConfig and privateRuntimeConfig.
+  *
+  * runtimeConfig.public is the Nuxt 3 syntax for publicRuntimeConfig
+  *
+  * NOTE: The from server to client part is important. This means that
+  * the client can access these variables, so be careful not to expose
+  * sensitive information.
+  */
+  runtimeConfig: {
+    AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
+
+    APP_ORIGIN: process.env.NUXT_PUBLIC_APP_ORIGIN,
+    AUTH_SECRET: process.env.AUTH_SECRET,  // TODO: Raise heck if not set
+
+    // Public keys are exposed to the client
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || ':8000/',
+      AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID
+    },
   }
 })

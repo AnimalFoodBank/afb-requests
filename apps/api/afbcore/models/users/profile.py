@@ -16,8 +16,8 @@ STATUS_CHOICES = [
     ("active", "Active"),
     ("on_hold", "On Hold"),
     ("banned", "Banned"),
+    # Add to the end of the list to avoid breaking existing code
 ]
-
 
 # Define default arguments for ManyToManyField
 MANY_TO_MANY_DEFAULTS = {
@@ -56,12 +56,8 @@ class Profile(BaseAbstractModel):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # user = models.ForeignKey(
-    #     User, on_delete=models.DO_NOTHING, related_name="pro2files"
-    # )
-    # role = models.ForeignKey(
-    #     Role, on_delete=models.DO_NOTHING, related_name="prof2iles"
-    # )
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="profiles")
+    role = models.ForeignKey(Role, on_delete=models.DO_NOTHING, related_name="profiles")
 
     # Usually just one, but can be multiple
     branches = models.ManyToManyField("Branch", **MANY_TO_MANY_DEFAULTS)
@@ -74,12 +70,7 @@ class Profile(BaseAbstractModel):
     email = models.EmailField(unique=True)
 
     # Phone - Validate format - numbers only
-    phone_number = PhoneNumberField(
-        blank=True,
-        null=True,
-        region="US",
-        max_length=20,
-    )
+    phone_number = PhoneNumberField(region="US")
 
     # We allow free form text entry but store the validated
     # address in the `address` field. These fields should
@@ -87,11 +78,11 @@ class Profile(BaseAbstractModel):
     #
     # e.g. A client may enter "123 Main St" and another
     # client may enter "123 Main Street"
-    address_verbatim = models.CharField(max_length=255, blank=True)
+    address_verbatim = models.CharField(max_length=255, blank=True, null=True)
 
     # Validated Address
     # i.e. An address from Canada Post or Google Maps
-    address = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
 
     #
     # Via Volunteer
