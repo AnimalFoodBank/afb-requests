@@ -32,12 +32,23 @@
 #   $ export NODE_EXTRA_CA_CERTS="/Users/d/Library/Application Support/mkcert/rootCA.pem"
 {
   # TODO: Disable this in production
-  debug
+  #debug
 }
 
-https://dev.animalfoodbank.org, https://localhost, https://127.0.0.1 {
+:80 {
+    log {
+        output stdout
+    }
+    redir https://dev.animalfoodbank.org{uri}
+}
+
+https://dev.animalfoodbank.org, https://localhost {
 	tls etc/caddy/.certs/localhost+3.pem etc/caddy/.certs/localhost+3-key.pem
   header Permissions-Policy "geolocation=(), microphone=()"
+
+log {
+        output stdout
+    }
 
 	# root * /static/*
 	# encode zstd gzip
@@ -65,6 +76,7 @@ https://dev.animalfoodbank.org, https://localhost, https://127.0.0.1 {
 		root * ./public
 		file_server
 	}
+ root * ./public
 
 	handle {
 		reverse_proxy /api* localhost:8000 {
