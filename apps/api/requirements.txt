@@ -4,9 +4,14 @@
 #
 #    pip-compile --output-file=requirements.txt --strip-extras requirements.in
 #
--e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
+-e git+file:///Users/d/Projects/opensource/django-rest-framework@dev#egg=djangorestframework
+    # via
+    #   -r requirements.in
+    #   drf-registration
+    #   drfpasswordless
+-e git+file:///Users/d/Projects/opensource/drf-registration@dev#egg=drf-registration
     # via -r requirements.in
--e git+ssh://git@github.com/delano/django-rest-framework-passwordless.git@delano/20240209-email-context#egg=drfpasswordless
+-e git+file:///Users/d/Projects/opensource/django-rest-framework-passwordless@dev#egg=drfpasswordless
     # via -r requirements.in
 asgiref==3.7.2
     # via django
@@ -46,7 +51,7 @@ django-extensions==3.2.3
     # via -r requirements.in
 django-filter==23.5
     # via -r requirements.in
-django-model-utils==4.3.1
+django-model-utils==4.4.0
     # via -r requirements.in
 django-phonenumber-field==7.3.0
     # via -r requirements.in
@@ -54,11 +59,6 @@ django-unfold==0.20.3
     # via -r requirements.in
 django-vite==3.0.3
     # via -r requirements.in
-djangorestframework==3.14.0
-    # via
-    #   -r requirements.in
-    #   drf-registration
-    #   drfpasswordless
 executing==2.0.1
     # via stack-data
 filelock==3.13.1
@@ -119,8 +119,6 @@ pytest==8.0.0
     #   pytest-django
 pytest-django==4.8.0
     # via -r requirements.in
-pytz==2024.1
-    # via djangorestframework
 pyyaml==6.0.1
     # via pre-commit
 requests==2.31.0

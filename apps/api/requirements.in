@@ -84,10 +84,6 @@ django-model-utils
 # Ties in with the build manager for the frontend
 django-vite
 
-# DRF dependencies
-# See: https://www.django-rest-framework.org/#installation
-djangorestframework
-
 # Dynamic query filtering
 django-filter
 
@@ -96,11 +92,29 @@ django-unfold
 
 django-phonenumber-field[phonenumbers]
 
+# DRF dependencies
+# See: https://www.django-rest-framework.org/#installation
+
+# Django REST framework
+# Remote
+#-e git+ssh://git@github.com/delano/django-rest-framework.git@main#egg=djangorestframework
+#
+# Local
+-e git+file:///Users/d/Projects/opensource/django-rest-framework@dev#egg=djangorestframework
+
 # DRF Registration package installed via git
--e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
+# Remote
+#-e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
+#
+# Local
+-e git+file:///Users/d/Projects/opensource/drf-registration@dev#egg=drf-registration
 
 # DRFPasswordless package installed via git
--e git+ssh://git@github.com/delano/django-rest-framework-passwordless.git@delano/20240209-email-context#egg=drfpasswordless
+# Remote
+# -e git+ssh://git@github.com/delano/django-rest-framework-passwordless.git@delano/20240209-email-context#egg=drfpasswordless
+#
+# Local
+-e git+file:///Users/d/Projects/opensource/django-rest-framework-passwordless@dev#egg=drfpasswordless
 
 # This is used for the API docs
 markdown
@@ -118,7 +132,7 @@ pytest
 pytest-django
 coverage
 ipdb
-Werkzeug  # Required for ipdb
+Werkzeug  # Required for ipdb`
 
 # For the postgres database (default is SQLite)
 psycopg2-binary
