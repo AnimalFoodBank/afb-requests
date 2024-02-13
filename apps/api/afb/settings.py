@@ -57,12 +57,13 @@ USE_X_FORWARDED_HOST = True
 
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "127.0.0.1:8000",
-    "127.0.0.1:3000",
+    # "127.0.0.1",
+    # "127.0.0.1:8000",
+    # "127.0.0.1:3000",
+    # "localhost:8000",
+    # "localhost:3000",
     "localhost",
-    "localhost:8000",
-    "localhost:3000",
+    "dev.afb.pet",
     "dev.animalfoodbank.org",
 ]
 
@@ -89,13 +90,13 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
+    # "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
     # 'afbcore.middleware.DebugCorsMiddleware',
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -111,13 +112,14 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # ViteJS dev server
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",  # Django dev server
-    "http://127.0.0.1:8000",
-    "https://localhost",
-    "https://dev.animalfoodbank.org",
+    # "http://localhost:3000",  # ViteJS dev server
+    # "http://127.0.0.1:3000",
+    # "http://localhost:8000",  # Django dev server
+    # "http://127.0.0.1:8000",
     # TODO: Add production URL
+    "https://localhost",
+    "https://dev.afb.pet",
+    "https://dev.animalfoodbank.org",
 ]
 CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 
@@ -129,10 +131,11 @@ CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 #   https://github.com/adamchainz/django-cors-headers
 #
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:3000",  # ViteJS dev server
-    "http://127.0.0.1:3001",  # ViteJS dev server
-    "http://localhost:3000",
+    # "http://127.0.0.1:3000",  # ViteJS dev server
+    # "http://127.0.0.1:3001",  # ViteJS dev server
+    # "http://localhost:3000",
     "https://localhost",
+    "https://dev.afb.pet",
     "https://dev.animalfoodbank.org",
 ]
 
@@ -145,7 +148,7 @@ SECURE_SSL_REDIRECT = False  # The reverse proxy handles this.
 
 # This is needed for CSRF to work with CORS:
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-samesite
-CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SAMESITE = "Lax"
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = False
@@ -163,7 +166,7 @@ DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "public"
 DJANGO_VITE_DEV_SERVER_PROTOCOL = "http"
 
 # ViteJS webserver hostname (default : localhost).
-DJANGO_VITE_DEV_SERVER_HOST = "dev.animalfoodbank.org"
+DJANGO_VITE_DEV_SERVER_HOST = "localhost"
 
 # ViteJS webserver port (default : 3000)
 DJANGO_VITE_DEV_SERVER_PORT = "3000"
