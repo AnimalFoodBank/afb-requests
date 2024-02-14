@@ -19,9 +19,8 @@ const links = [{
   <UHeader :links="links">
     <template #logo>
       <!-- AFB <UBadge label="Registered Non-Profit" variant="subtle" class="mb-0.5" /> -->
-      <NuxtLink to="/">
-        <nuxt-img src="/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank Logo" class="max-w-32 min-16"/>
-      </NuxtLink>
+
+      <a><nuxt-img src="/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank Logo" class="max-w-32 min-16"/></a>
     </template>
 
     <template #right>
