@@ -9,13 +9,15 @@ const links = computed(() => navigation.value.find((item) => item._path === '/do
 <template>
   <UContainer>
     <UPage>
+      <h1 class="text-3xl font-bold">Make a request</h1>
+      <p class="mt-4">We are a company that does things.</p>
+
       <template #left>
         <UAside>
           <template #top>
-            <UDocsSearchButton class="rounded-md" size="sm" />
+
           </template>
 
-          <UNavigationTree :links="mapContentNavigation(links)" />
         </UAside>
       </template>
 

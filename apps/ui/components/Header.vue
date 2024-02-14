@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { NavItem } from '@nuxt/content/dist/runtime/types';
 
-const navigation = inject<Ref<NavItem[]>>('navigation', ref([]))
 
 const links = [{
   label: 'Request',
@@ -16,20 +14,19 @@ const links = [{
 </script>
 
 <template>
+  <!-- For larger screens (desktop included) the top nav is the main nav (i.e. no hamburger menu) -->
   <UHeader :links="links">
     <template #logo>
-      <!-- AFB <UBadge label="Registered Non-Profit" variant="subtle" class="mb-0.5" /> -->
-
       <a><nuxt-img src="/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank Logo" class="max-w-32 min-16"/></a>
     </template>
 
     <template #right>
-      <!-- <UButton label="Sign in" color="gray" to="/login" /> -->
-      <UButton label="Sign in" icon="i-heroicons-arrow-right-20-solid" trailing color="black" to="/login" class="hidden lg:flex" />
+      <UButton label="Sign in" icon="i-heroicons-arrow-right-20-solid" trailing color="black" to="/login" class="lg:flex" />
     </template>
 
+    <!-- On smaller screens, the top nav moves to this hamburger menu. -->
     <template #panel>
-      <UNavigationTree :links="mapContentNavigation(navigation)" default-open />
+      <UNavigationTree :links="links" default-open />
     </template>
   </UHeader>
 </template>

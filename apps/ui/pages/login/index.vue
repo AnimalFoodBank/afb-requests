@@ -11,8 +11,7 @@ const snackbar = useSnackbar();
 definePageMeta({
   layout: 'auth',
   auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/protected',
+    unauthenticatedOnly: false,
   },
   // colorMode: 'dark',
 })
@@ -97,7 +96,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
   try {
     // Send post request to the API endpoint using Nuxt 3 useFetch
     const path = '/api/passwordless/auth/email/'
-    const { data, pending, error, refresh } = await useFetch(path, {
+    await $fetch(path, {
       onRequest({ request, options }) {
         console.log('Request:', request)
         // Set the request headers
