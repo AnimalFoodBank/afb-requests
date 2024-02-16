@@ -82,10 +82,9 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
     disabled.value = true;
     setTimeout(() => {
       disabled.value = false;
-    }, 60000);
+    }, 1000);  // TODO: Increase to 60000 (1 minute)
 
   }
-
 
   // Prepare the payload
   const payload = {
@@ -130,7 +129,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
           })
         } else {
           // Handle the response errors
-          console.error('A response error occurred:', error)
+          console.error('A response error occurred (1):', 'Status code:', response.status, 'Status message:', data.detail)
 
           snackbar.add({
             type: 'error',
@@ -141,7 +140,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
       },
       onResponseError({ request, response, options }) {
         // Handle the response errors
-        console.error('A response error occurred:', error)
+        console.error('A response error occurred (1):', 'Status code:', response.status, 'Status message:', response._data.detail)
       },
       baseURL: config.public.apiBase,
       method: 'POST',

@@ -154,7 +154,7 @@ SECURE_SSL_REDIRECT = False  # The reverse proxy handles this.
 
 # This is needed for CSRF to work with CORS:
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-samesite
-CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Strict"  # Or "Lax" or None
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = False
