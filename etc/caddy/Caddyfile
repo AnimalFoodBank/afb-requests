@@ -30,6 +30,12 @@
 #
 # For node to work with the certs, the following environment variable needs to be set:
 #   $ export NODE_EXTRA_CA_CERTS="/Users/d/Library/Application Support/mkcert/rootCA.pem"
+
+{
+  # TODO: The email address to use for ACME (Let's Encrypt) contacts
+  # email "delano@animalfoodbank.org"
+}
+
 {
   # TODO: Disable this in production
   #debug
@@ -39,30 +45,34 @@
     log {
         output stdout
     }
+    # Leave as the .org address for now. Lower risk of accidentally
+    # exposing the .pet domain unnecessarily.
     redir https://dev.animalfoodbank.org{uri}
 }
 
-https://dev.animalfoodbank.org, https://localhost {
-	tls etc/caddy/.certs/localhost+3.pem etc/caddy/.certs/localhost+3-key.pem
+https://dev.afb.pet https://dev.animalfoodbank.org, https://localhost {
+	tls etc/caddy/.certs/dev.afb.pet+2.pem etc/caddy/.certs/dev.afb.pet+2-key.pem
   header Permissions-Policy "geolocation=(), microphone=()"
 
-log {
-        output stdout
-    }
+  log {
+    output stdout
+  }
 
-	# root * /static/*
-	# encode zstd gzip
-	# @css {
-	#     path_regexp .css
-	# }
-	# @js {
-	#     path_regexp .js
-	# }
-	# header @css Content-Type text/css
-	# header @js Content-Type text/js
-	# @notStatic {
-	# 	not path /static/*
-	# }
+  # header Content-Security-Policy "default-src 'self'; connect-src 'self' ws://localhost:4000 dev.afb.pet dev.animalfoodbank.org localhost; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self';"
+
+  # header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';"
+
+  # header Content-Security-Policy "default-src 'self' dev.afb.pet dev.animalfoodbank.org localhost; connect-src 'self' ws://localhost:4000 dev.afb.pet dev.animalfoodbank.org localhost; script-src 'self' 'unsafe-inline' dev.afb.pet dev.animalfoodbank.org localhost; style-src 'self' 'unsafe-inline' dev.afb.pet dev.animalfoodbank.org localhost; img-src 'self' data: dev.afb.pet dev.animalfoodbank.org localhost; font-src 'self' dev.afb.pet dev.animalfoodbank.org localhost;"
+
+  # header X-Frame-Options "SAMEORIGIN"
+  # header X-Content-Type-Options "nosniff"
+  # header Referrer-Policy "same-origin"
+
+  # TODO: Re-enable this in production. It's disabled for development bc
+  # it's difficult to work around if there are any cert issues (browsers cache
+  # the HSTS policy and it's difficult to clear).
+  #
+  # header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
   # Static files are served from the public directory. Django is
   # responsible for collecting static files into `public/static`. The
@@ -76,16 +86,16 @@ log {
 		root * ./public
 		file_server
 	}
- root * ./public
+  root * ./public
 
 	handle {
-		reverse_proxy /api* localhost:8000 {
+		reverse_proxy /api* 127.0.0.1:8000 {
       header_down Server "Proxied Server Name (django api)"
     }
-    reverse_proxy /admin* localhost:8000 {
+    reverse_proxy /admin* 127.0.0.1:8000 {
       header_down Server "Proxied Server Name (django admin)"
     }
-    reverse_proxy localhost:3000 {
+    reverse_proxy 127.0.0.1:3000 {
       header_down Server "Proxied Server Name (vue)"
     }
 	}
