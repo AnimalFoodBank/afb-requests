@@ -120,7 +120,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",  # ViteJS dev server (Nitro)
+    "http://127.0.0.1:3000",  # Nitro dev server
     "http://127.0.0.1:8000",  # Django dev server
     # TODO: Add production URL(s)
     "https://localhost",
