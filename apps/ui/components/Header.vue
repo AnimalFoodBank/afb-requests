@@ -17,7 +17,7 @@ const links = [{
   <!-- For larger screens (desktop included) the top nav is the main nav (i.e. no hamburger menu) -->
   <UHeader :links="links">
     <template #logo>
-      <a><nuxt-img src="/img/afb_logo_horizontal_colour.png" alt="Animal Food Bank Logo" class="max-w-32 min-16"/></a>
+      <Logo />
     </template>
 
     <template #right>

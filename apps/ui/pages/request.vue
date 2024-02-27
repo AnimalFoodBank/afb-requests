@@ -1,27 +1,43 @@
 <script setup lang="ts">
-import type { NavItem } from '@nuxt/content/dist/runtime/types';
+import { sub } from 'date-fns';
+import type { Period, Range } from '~/types';
 
-const navigation = inject<Ref<NavItem[]>>('navigation', ref([]))
+definePageMeta({
+  layout: 'dashboard',
+  auth: {
+    unauthenticatedOnly: false,
+  },
+  // colorMode: 'dark',
+})
 
-const links = computed(() => navigation.value.find((item) => item._path === '/docs')?.children ?? [])
+const { isNotificationsSlideoverOpen } = useDashboard()
+
+const items = [[{
+  label: 'New mail',
+  icon: 'i-heroicons-paper-airplane',
+  to: '/inbox'
+}, {
+  label: 'New user',
+  icon: 'i-heroicons-user-plus',
+  to: '/users'
+}]]
+
+const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
+const period = ref<Period>('daily')
 </script>
 
 <template>
-  <UContainer>
-    <UPage>
-      <h1 class="text-3xl font-bold">Make a request</h1>
-      <p class="mt-4">We are a company that does things.</p>
+  <UDashboardPage>
+    <UDashboardPanel grow>
+      <UDashboardNavbar title="Dashboard">
 
-      <template #left>
-        <UAside>
-          <template #top>
+      </UDashboardNavbar>
 
-          </template>
+      <UDashboardToolbar>
+      </UDashboardToolbar>
 
-        </UAside>
-      </template>
-
-      <NuxtPage />
-    </UPage>
-  </UContainer>
+      <UDashboardPanelContent>
+      </UDashboardPanelContent>
+    </UDashboardPanel>
+  </UDashboardPage>
 </template>
