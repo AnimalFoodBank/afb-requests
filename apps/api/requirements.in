@@ -35,10 +35,21 @@
 # See: https://docs.djangoproject.com/en/4.2/howto/upgrade-version/#upgrade-packages-individually
 #
 
+
+# Django 5.0: Enhanced features and improvements.
+#
+# ASGI Support: Django 5.0 prioritizes asynchronous servers, eliminating
+# bundled WSGI support for streamlined async deployments.
+#
+# Model Mixins: The new TimeStampedModel and UUIDModel mixins in Django 5.0
+# automatically populate timestamp fields and UUID primary keys, replacing
+# the need for django-model-utils.
+#
+# Serialization: Django 5.0 introduces APIs for serializing to streams/files
+# and deserializing from strings, enhancing data interchange capabilities.
 #
 #
-# Django 4.0 introduces several new features and improvements over
-# Django 3.x and 2.x. Here are some key differences:
+# Django 4.0: new features and improvements.
 #
 # ASGI Support: Django 4.0 has built-in support for ASGI
 # (Asynchronous Server Gateway Interface), which allows for
@@ -55,17 +66,6 @@
 #
 # New URL Pattern Syntax: Django 4.0 introduces a new, simpler
 # syntax for URL patterns, using Python's type hinting.
-#
-# Removal of Deprecated Features: Django 4.0 removes a number of
-# features that were deprecated in Django 2.x and 3.x.
-#
-# Security Enhancements: Django 4.0 includes several security
-# enhancements, such as stricter host header validation and the
-# ability to set permissions on session cookies.
-#
-# Performance Improvements: Django 4.0 includes various
-# performance improvements, such as optimized SQL queries and
-# faster deserialization of objects.
 #
 Django~=4.2
 
