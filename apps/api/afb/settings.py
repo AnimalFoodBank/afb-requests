@@ -236,7 +236,6 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 25,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",  # for admin
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
@@ -254,10 +253,9 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
     "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
+    "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "passwordless_token_email.txt",
     "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "passwordless_token_email.html",
-    # A plaintext verification email message overridden by the html message. Takes one string.
-    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_MESSAGE": "Enter this verification code: %s",
-    # The verification email template name.
+    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "passwordless_verification_email.txt",
     "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "passwordless_verification_email.html",
     # Registers previously unseen aliases as new users.
     "PASSWORDLESS_REGISTER_NEW_USERS": True,

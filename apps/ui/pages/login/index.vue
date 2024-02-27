@@ -82,7 +82,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
     disabled.value = true;
     setTimeout(() => {
       disabled.value = false;
-    }, 1000);  // TODO: Increase to 60000 (1 minute)
+    }, 5000);  // TODO: Increase to?
 
   }
 
