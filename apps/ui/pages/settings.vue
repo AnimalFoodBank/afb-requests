@@ -7,7 +7,6 @@ definePageMeta({
   },
 })
 
-
 const links = [[{
     label: 'General',
     icon: 'i-heroicons-user-circle',
