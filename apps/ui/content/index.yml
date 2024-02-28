@@ -1,0 +1,23 @@
+title: 'Welcome - Animal Food Bank'
+description: A non-profit organization dedicated to providing food supplies for animals in need.
+navigation: false
+hero:
+  title: 'Animal Food Bank'
+  description: 'A food bank for pets.'
+  orientation: horizontal
+  headline:
+    label: ""
+    to: https://animalfoodbank.org/#headline
+    icon: i-heroicons-arrow-top-right-on-square-20-solid
+  links:
+    - label: Make a request
+      icon: i-heroicons-arrow-right-20-solid
+      trailing: true
+      to: '/requests/new'
+      size: lg
+    - label: Learn more about AFB
+      icon: i-heroicons-building-storefront
+      size: lg
+      color: gray
+      to: https://animalfoodbank.org/#learn-more
+      target: _blank

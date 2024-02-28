@@ -3,7 +3,7 @@
 
 const links = [{
   label: 'Request',
-  to: '/request'
+  to: '/requests/new'
 }, {
   label: 'Dashboard',
   to: '/dashboard'
