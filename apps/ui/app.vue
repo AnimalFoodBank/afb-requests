@@ -20,9 +20,11 @@ useHead({
 
 useSeoMeta({
   titleTemplate: '%s - AFB - Animal Food Bank',
-  ogSiteName: 'AFB - Animal Food Bank',
-  twitterCard: 'summary_large_image'
+  ogImage: '..',
+  twitterImage: '..',
+  twitterCard: 'summary_large_image',
 })
+
 </script>
 
 <template>

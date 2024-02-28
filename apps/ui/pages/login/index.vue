@@ -11,8 +11,7 @@ const snackbar = useSnackbar();
 definePageMeta({
   layout: 'auth',
   auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/protected',
+    unauthenticatedOnly: false,
   },
   // colorMode: 'dark',
 })
@@ -34,32 +33,33 @@ const validate = (state: any): FormError[] => {
   return errors
 }
 
-const providers = [
-  {
-    label: 'Continue with Google',
-    icon: 'i-simple-icons-google',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Google')
-    }
-  },
-  {
-    label: 'Continue with Facebook',
-    icon: 'i-simple-icons-facebook',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Facebook')
-    }
-  },
-  {
-    label: 'Continue with Apple',
-    icon: 'i-simple-icons-apple',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Apple')
-    }
-  },
-]
+// const providers = [
+//   {
+//     label: 'Continue with Google',
+//     icon: 'i-simple-icons-google',
+//     color: 'white' as const,
+//     click: () => {
+//       console.log('Redirect to Google')
+//     }
+//   },
+//   {
+//     label: 'Continue with Facebook',
+//     icon: 'i-simple-icons-facebook',
+//     color: 'white' as const,
+//     click: () => {
+//       console.log('Redirect to Facebook')
+//     }
+//   },
+//   {
+//     label: 'Continue with Apple',
+//     icon: 'i-simple-icons-apple',
+//     color: 'white' as const,
+//     click: () => {
+//       console.log('Redirect to Apple')
+//     }
+//   },
+// ]
+const providers = []
 
 let timeoutId: number | undefined
 
@@ -83,10 +83,9 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
     disabled.value = true;
     setTimeout(() => {
       disabled.value = false;
-    }, 60000);
+    }, 10000);  // TODO: Increase to?
 
   }
-
 
   // Prepare the payload
   const payload = {
@@ -97,7 +96,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
   try {
     // Send post request to the API endpoint using Nuxt 3 useFetch
     const path = '/api/passwordless/auth/email/'
-    const { data, pending, error, refresh } = await useFetch(path, {
+    await $fetch(path, {
       onRequest({ request, options }) {
         console.log('Request:', request)
         // Set the request headers
@@ -131,7 +130,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
           })
         } else {
           // Handle the response errors
-          console.error('A response error occurred:', error)
+          console.error('A response error occurred (1):', 'Status code:', response.status, 'Status message:', data.detail)
 
           snackbar.add({
             type: 'error',
@@ -142,7 +141,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
       },
       onResponseError({ request, response, options }) {
         // Handle the response errors
-        console.error('A response error occurred:', error)
+        console.error('A response error occurred (1):', 'Status code:', response.status, 'Status message:', response._data.detail)
       },
       baseURL: config.public.apiBase,
       method: 'POST',

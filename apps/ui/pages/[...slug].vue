@@ -1,37 +1,44 @@
 <script setup lang="ts">
-import { withoutTrailingSlash } from 'ufo'
+import { withoutTrailingSlash } from 'ufo';
+
+definePageMeta({
+  layout: 'default'
+})
 
 const route = useRoute()
+const { seo } = useAppConfig()
 
 const { data: page } = await useAsyncData(route.path, () => queryContent(route.path).findOne())
-if (!page.value) {
+console.log(`${route.path}: `, page)
+if (!page.value || page === undefined) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }
 
-const { data: surround } = await useAsyncData(`${route.path}-surround`, () => queryContent('/docs')
+const { data: surround } = await useAsyncData(`${route.path}-surround`, () => queryContent()
   .where({ _extension: 'md', navigation: { $ne: false } })
   .only(['title', 'description', '_path'])
   .findSurround(withoutTrailingSlash(route.path))
-, { default: () => [] })
+)
 
 useSeoMeta({
   title: page.value.title,
-  ogTitle: page.value.title,
+  ogTitle: `${page.value.title} - ${seo?.siteName}`,
   description: page.value.description,
   ogDescription: page.value.description
 })
 
 defineOgImage({
-  component: 'Saas',
+  component: 'Docs',
   title: page.value.title,
   description: page.value.description
 })
 
-const headline = computed(() => findPageHeadline(page.value!))
+const headline = computed(() => findPageHeadline(page.value))
+
 </script>
 
 <template>
-  <UPage v-if="page">
+  <UPage>
     <UPageHeader :title="page.title" :description="page.description" :links="page.links" :headline="headline" />
 
     <UPageBody prose>
@@ -39,11 +46,9 @@ const headline = computed(() => findPageHeadline(page.value!))
 
       <hr v-if="surround?.length">
 
-      <UDocsSurround :surround="surround" />
+      <UContentSurround :surround="surround" />
     </UPageBody>
 
-    <template v-if="page.toc !== false" #right>
-      <UDocsToc :links="page.body?.toc?.links" />
-    </template>
+
   </UPage>
 </template>

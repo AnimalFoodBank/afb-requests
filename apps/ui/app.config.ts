@@ -30,5 +30,8 @@ export default defineAppConfig({
         wrapper: 'lg:py-24'
       }
     }
-  }
+  },
+  seo: {
+    siteName: 'AFB - Welcome',
+  },
 })

@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 
 # Load dotenv file
+from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
 # After loading dotenv, you can use os.getenv() to access
@@ -27,6 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_HOST = os.getenv("BASE_HOST", "localhost")
 URI_SCHEMA = os.getenv("URI_SCHEMA", "https")
 BASE_URI = f"{URI_SCHEMA}://{BASE_HOST}"
+
+UI_BASE_HOST = os.getenv("UI_BASE_HOST", "localhost")
+UI_URI_SCHEMA = os.getenv("UI_URI_SCHEMA", "https")
+UI_BASE_URI = f"{URI_SCHEMA}://{UI_BASE_HOST}"
+
 
 # When using Django Rest Framework (DRF), you typically don't use
 # LOGIN_REDIRECT_URL because DRF is designed to build APIs, which are
@@ -57,11 +63,9 @@ USE_X_FORWARDED_HOST = True
 
 
 ALLOWED_HOSTS = [
-    # "127.0.0.1",
-    # "127.0.0.1:8000",
-    # "127.0.0.1:3000",
-    # "localhost:8000",
-    # "localhost:3000",
+    "127.0.0.1",
+    "127.0.0.1:8000",
+    "127.0.0.1:3000",
     "localhost",
     "dev.afb.pet",
     "dev.animalfoodbank.org",
@@ -90,10 +94,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     # "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    # "corsheaders.middleware.CorsMiddleware",
     # 'afbcore.middleware.DebugCorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     # "django.middleware.csrf.CsrfViewMiddleware",
@@ -106,17 +110,19 @@ VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
 CORS_ALLOW_ALL_ORIGINS = False
-# CORS_ALLOW_HEADERS = []
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "x-csrftoken",
+    "afb",
+]
+
 
 # https://github.com/adamchainz/django-cors-headers#cors_allow_credentials
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    # "http://localhost:3000",  # ViteJS dev server
-    # "http://127.0.0.1:3000",
-    # "http://localhost:8000",  # Django dev server
-    # "http://127.0.0.1:8000",
-    # TODO: Add production URL
+    "http://127.0.0.1:3000",  # Nitro dev server
+    "http://127.0.0.1:8000",  # Django dev server
+    # TODO: Add production URL(s)
     "https://localhost",
     "https://dev.afb.pet",
     "https://dev.animalfoodbank.org",
@@ -131,9 +137,9 @@ CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 #   https://github.com/adamchainz/django-cors-headers
 #
 CSRF_TRUSTED_ORIGINS = [
-    # "http://127.0.0.1:3000",  # ViteJS dev server
-    # "http://127.0.0.1:3001",  # ViteJS dev server
-    # "http://localhost:3000",
+    "http://127.0.0.1:3000",  # ViteJS dev server
+    "http://127.0.0.1:3001",  # ViteJS dev server (alt)
+    "http://127.0.0.1:8000",  # Django dev server
     "https://localhost",
     "https://dev.afb.pet",
     "https://dev.animalfoodbank.org",
@@ -148,7 +154,7 @@ SECURE_SSL_REDIRECT = False  # The reverse proxy handles this.
 
 # This is needed for CSRF to work with CORS:
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-samesite
-CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Strict"  # Or "Lax" or None
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = False
@@ -166,7 +172,7 @@ DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "public"
 DJANGO_VITE_DEV_SERVER_PROTOCOL = "http"
 
 # ViteJS webserver hostname (default : localhost).
-DJANGO_VITE_DEV_SERVER_HOST = "localhost"
+DJANGO_VITE_DEV_SERVER_HOST = "127.0.0.1"
 
 # ViteJS webserver port (default : 3000)
 DJANGO_VITE_DEV_SERVER_PORT = "3000"
@@ -230,7 +236,6 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 25,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication",  # for admin
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
@@ -244,14 +249,13 @@ REST_FRAMEWORK = {
 # curl -X POST -d "email=delbo@solutious.com" localhost:8000/auth/email/
 # curl -X POST -d "email=delbo@solutious.com&token=858997" localhost:8000/auth/token/
 PASSWORDLESS_AUTH = {
-    "PASSWORDLESS_BASE_URI": BASE_URI,
+    "PASSWORDLESS_BASE_URI": UI_BASE_URI,
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
     "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
+    "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "passwordless_token_email.txt",
     "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "passwordless_token_email.html",
-    # A plaintext verification email message overridden by the html message. Takes one string.
-    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_MESSAGE": "Enter this verification code: %s",
-    # The verification email template name.
+    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "passwordless_verification_email.txt",
     "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "passwordless_verification_email.html",
     # Registers previously unseen aliases as new users.
     "PASSWORDLESS_REGISTER_NEW_USERS": True,

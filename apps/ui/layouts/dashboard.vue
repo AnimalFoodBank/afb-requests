@@ -1,0 +1,94 @@
+<script setup lang="ts">
+const route = useRoute()
+const appConfig = useAppConfig()
+const { isHelpSlideoverOpen } = useDashboard()
+
+const links = [{
+  id: 'home',
+  label: 'Home',
+  icon: 'i-heroicons-home',
+  to: '/dashboard',
+  tooltip: {
+    text: 'Home',
+  }
+}, {
+  id: 'requests',
+  label: 'Requests',
+  icon: 'i-heroicons-clipboard-document',
+  to: '/requests',
+  badge: '',
+  tooltip: {
+    text: 'Requests',
+  }
+}, {
+  id: 'clients',
+  label: 'Clients',
+  icon: 'i-heroicons-user-group',
+  to: '/clients',
+  tooltip: {
+    text: 'Clients',
+  }
+}, {
+  id: 'settings',
+  label: 'Settings',
+  to: '/settings',
+  icon: 'i-heroicons-cog-8-tooth',
+  children: [{
+    label: 'General',
+    to: '/settings',
+    exact: true
+  }],
+  tooltip: {
+    text: 'Settings',
+  }
+}]
+
+const footerLinks = [{
+  label: 'Help & Support',
+  icon: 'i-heroicons-question-mark-circle',
+  to: 'https://animalfoodbank.org/#help',
+  target: '_blank',
+}]
+
+
+const defaultColors = ref(['green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet'].map(color => ({ label: color, chip: color, click: () => appConfig.ui.primary = color })))
+const colors = computed(() => defaultColors.value.map(color => ({ ...color, active: appConfig.ui.primary === color.label })))
+</script>
+
+<template>
+  <UDashboardLayout>
+    <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
+      <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
+        <template #left>
+          <Logo />
+        </template>
+      </UDashboardNavbar>
+
+      <UDashboardSidebar>
+        <UDashboardSidebarLinks :links="links" />
+
+        <div class="flex-1" />
+
+        <UDashboardSidebarLinks :links="footerLinks" />
+
+        <UDivider class="sticky bottom-0" />
+
+        <template #footer>
+          <!-- ~/components/UserDropdown.vue -->
+          <UserDropdown />
+        </template>
+      </UDashboardSidebar>
+    </UDashboardPanel>
+
+    <slot />
+
+    <!-- ~/components/HelpSlideover.vue -->
+    <HelpSlideover />
+    <!-- ~/components/NotificationsSlideover.vue -->
+    <NotificationsSlideover />
+
+    <ClientOnly>
+
+    </ClientOnly>
+  </UDashboardLayout>
+</template>
