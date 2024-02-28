@@ -36,7 +36,7 @@ export default defineNuxtConfig({
     }
   },
   ui: {
-    icons: ['heroicons', 'simple-icons'],  # 'phosphor', 'streamline'
+    icons: ['heroicons', 'simple-icons'],  // 'phosphor', 'streamline'
   },
   srcDir: '.', // This is the default, but it's good to be explicit
   auth: {

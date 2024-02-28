@@ -1,33 +1,43 @@
 <script setup lang="ts">
+import { sub } from 'date-fns';
+import type { Period, Range } from '~/types';
 
 definePageMeta({
-  layout: 'default',
+  layout: 'dashboard',
   auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/login',
+    unauthenticatedOnly: false,
   },
   // colorMode: 'dark',
 })
 
+const { isNotificationsSlideoverOpen } = useDashboard()
+
+const items = [[{
+  label: 'New mail',
+  icon: 'i-heroicons-paper-airplane',
+  to: '/inbox'
+}, {
+  label: 'New user',
+  icon: 'i-heroicons-user-plus',
+  to: '/users'
+}]]
+
+const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
+const period = ref<Period>('daily')
 </script>
 
-
 <template>
-  <UContainer>
-    <UPage>
-      <h1 class="text-3xl font-bold">Your Dashboard</h1>
-      <p class="mt-4">We are a company that does things.</p>
+  <UDashboardPage>
+    <UDashboardPanel>
+      <UDashboardNavbar title="Dashboard">
 
-      <template #left>
-        <UAside>
-          <template #top>
+      </UDashboardNavbar>
 
+      <UDashboardToolbar>
+      </UDashboardToolbar>
 
-          </template>
-        </UAside>
-      </template>
-
-      <NuxtPage />
-    </UPage>
-  </UContainer>
+      <UDashboardPanelContent>
+      </UDashboardPanelContent>
+    </UDashboardPanel>
+  </UDashboardPage>
 </template>
