@@ -33,32 +33,33 @@ const validate = (state: any): FormError[] => {
   return errors
 }
 
-const providers = [
-  {
-    label: 'Continue with Google',
-    icon: 'i-simple-icons-google',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Google')
-    }
-  },
-  {
-    label: 'Continue with Facebook',
-    icon: 'i-simple-icons-facebook',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Facebook')
-    }
-  },
-  {
-    label: 'Continue with Apple',
-    icon: 'i-simple-icons-apple',
-    color: 'white' as const,
-    click: () => {
-      console.log('Redirect to Apple')
-    }
-  },
-]
+// const providers = [
+//   {
+//     label: 'Continue with Google',
+//     icon: 'i-simple-icons-google',
+//     color: 'white' as const,
+//     click: () => {
+//       console.log('Redirect to Google')
+//     }
+//   },
+//   {
+//     label: 'Continue with Facebook',
+//     icon: 'i-simple-icons-facebook',
+//     color: 'white' as const,
+//     click: () => {
+//       console.log('Redirect to Facebook')
+//     }
+//   },
+//   {
+//     label: 'Continue with Apple',
+//     icon: 'i-simple-icons-apple',
+//     color: 'white' as const,
+//     click: () => {
+//       console.log('Redirect to Apple')
+//     }
+//   },
+// ]
+const providers = []
 
 let timeoutId: number | undefined
 
@@ -82,7 +83,7 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
     disabled.value = true;
     setTimeout(() => {
       disabled.value = false;
-    }, 5000);  // TODO: Increase to?
+    }, 10000);  // TODO: Increase to?
 
   }
 
