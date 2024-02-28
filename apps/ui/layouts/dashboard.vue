@@ -14,19 +14,19 @@ const links = [{
 }, {
   id: 'requests',
   label: 'Requests',
-  icon: 'i-heroicons-paws',
+  icon: 'i-heroicons-clipboard-document',
   to: '/requests',
   badge: '',
   tooltip: {
-    text: 'Inbox',
+    text: 'Requests',
   }
 }, {
-  id: 'users',
-  label: 'Users',
+  id: 'clients',
+  label: 'Clients',
   icon: 'i-heroicons-user-group',
-  to: '/users',
+  to: '/clients',
   tooltip: {
-    text: 'Users',
+    text: 'Clients',
   }
 }, {
   id: 'settings',
@@ -37,9 +37,6 @@ const links = [{
     label: 'General',
     to: '/settings',
     exact: true
-  }, {
-    label: 'Members',
-    to: '/settings/members'
   }],
   tooltip: {
     text: 'Settings',

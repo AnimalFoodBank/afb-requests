@@ -15,9 +15,27 @@ hero:
       trailing: true
       to: '/requests/new'
       size: lg
-    - label: Learn more about AFB
+    - label: Learn about AFB
       icon: i-heroicons-building-storefront
       size: lg
       color: gray
       to: https://animalfoodbank.org/#learn-more
       target: _blank
+about:
+  title: 'About Us'
+  description: 'We are a non-profit organization dedicated to providing food supplies for animals in need.'
+  image: /images/hero.jpg
+  orientation: horizontal
+  links:
+    - label: Learn more
+      to: https://animalfoodbank.org/#about
+      target: _blank
+      icon: i-heroicons-arrow-right-20-solid
+      size: lg
+      color: gray
+    - label: Make a request
+      to: '/requests/new'
+      icon: i-heroicons-arrow-right-20-solid
+      size: lg
+      color: gray
+      trailing: true
