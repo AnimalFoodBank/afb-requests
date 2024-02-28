@@ -8,13 +8,20 @@ const links = [{
   label: 'About Us',
   to: '/about'
 }]
+
+const { header } = useAppConfig()
 </script>
 
 <template>
   <!-- For larger screens (desktop included) the top nav is the main nav (i.e. no hamburger menu) -->
   <UHeader :links="links">
     <template #logo>
-      <Logo />
+      <template v-if="header?.logo?.dark || header?.logo?.light">
+        <UColorModeImage v-bind="{ class: 'h-6 w-auto', ...header?.logo }" />
+      </template>
+      <template v-else>
+        Nuxt UI Pro <UBadge label="Docs" variant="subtle" class="mb-0.5" />
+      </template>
     </template>
 
     <template #right>

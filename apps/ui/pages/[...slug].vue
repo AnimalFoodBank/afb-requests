@@ -35,7 +35,6 @@ defineOgImage({
 
 const headline = computed(() => findPageHeadline(page.value))
 
-
 </script>
 
 <template>

@@ -7,7 +7,7 @@ const links = [{
   id: 'home',
   label: 'Home',
   icon: 'i-heroicons-home',
-  to: '/',
+  to: '/dashboard',
   tooltip: {
     text: 'Home',
   }
@@ -65,10 +65,6 @@ const colors = computed(() => defaultColors.value.map(color => ({ ...color, acti
       </UDashboardNavbar>
 
       <UDashboardSidebar>
-        <template #header>
-          <!-- <UDashboardSearchButton /> -->
-        </template>
-
         <UDashboardSidebarLinks :links="links" />
 
         <div class="flex-1" />
