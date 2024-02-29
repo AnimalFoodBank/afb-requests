@@ -39,6 +39,16 @@ export default defineNuxtConfig({
     icons: ['heroicons', 'simple-icons'],  // 'phosphor', 'streamline'
   },
   srcDir: '.', // This is the default, but it's good to be explicit
+  // 2024-02-28
+  //
+  // re: "Cannot find module ... vue/server-renderer/index.mjs" when running nuxi
+  // build and then "node .output/server/index.mjs"
+  //
+  // https://github.com/nuxt/nuxt/issues/14820#issuecomment-1890360196
+  //
+  experimental: {
+    externalVue: false,
+  },
   auth: {
     // This value is used for the auth origin. When it's not set, it'll raise
     // an AUTH_NO_ORIGIN error in production. In dev, it'll just log a warning.
@@ -65,8 +75,8 @@ export default defineNuxtConfig({
     duration: 10000,
   },
   routeRules: {
-    '/_api/search.json': { prerender: true },
-    '/docs': { redirect: '/docs/getting-started', prerender: false }
+    // '/_api/search.json': { prerender: true },
+    // '/docs': { redirect: '/docs/getting-started', prerender: false }
   },
   devtools: {
     // https://devtools.nuxt.com/guide/getting-started

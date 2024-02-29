@@ -26,7 +26,8 @@ const items = computed(() => [
     click: () => isHelpSlideoverOpen.value = true
   }], [{
     label: 'Sign out',
-    icon: 'i-heroicons-arrow-left-on-rectangle'
+    icon: 'i-heroicons-arrow-left-on-rectangle',
+    'to': '/logout'
   }]
 ])
 </script>

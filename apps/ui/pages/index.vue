@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 
 const { data: page } = await useAsyncData('index', () => queryContent('/').findOne())
-console.log(`${route.path}: `, page.value)
 if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }
