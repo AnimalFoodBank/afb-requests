@@ -381,11 +381,19 @@ WSGI_APPLICATION = "afb.wsgi.application"
 # SMTP backend:
 # 'django.core.mail.backends.smtp.EmailBackend'
 #
-
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
 EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", 5))
+
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+# EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive, so only
+# one of these settings should appear in your .env file.
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", False)
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", False)
 
 
 if DEBUG:
