@@ -92,6 +92,10 @@ django-unfold
 
 django-phonenumber-field[phonenumbers]
 
+django-cors-headers
+python-dotenv
+
+
 # DRF dependencies
 # See: https://www.django-rest-framework.org/#installation
 
