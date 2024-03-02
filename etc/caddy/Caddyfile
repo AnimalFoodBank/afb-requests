@@ -101,13 +101,14 @@ https://dev.afb.pet https://dev.animalfoodbank.org, https://localhost {
 	}
 
   # TODO: Revisit websockets config in Caddy.
-  # handle {
-  #     reverse_proxy /ws/* http://127.0.0.1:4000 {
-  #         header_up Upgrade {http.upgrade}
-  #         header_up Connection {http.connection}
-  #         header_down Server "Proxied Server Name (websocket)"
-  #         header_down Upgrade {upstream.upgrade}
-  #     }
-  # }
+  # TODO: How to tell Nuxt/Vue to use wss:// instead of ws://? Also the hostname. 127.0.0.1:4000 is not going to work in production.
+  handle {
+      reverse_proxy /ws/* http://127.0.0.1:4000 {
+          header_up Upgrade {http.upgrade}
+          header_up Connection {http.connection}
+          header_down Server "Proxied Server Name (websocket)"
+          header_down Upgrade {upstream.upgrade}
+      }
+  }
 
 }
