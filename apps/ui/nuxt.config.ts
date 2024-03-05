@@ -6,19 +6,31 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     'nuxt-snackbar',
   ],
+
   /*
-    Client-side Rendering:
-    Out of the box, a traditional Vue.js application is rendered in the
-    browser (or client). Then, Vue.js generates HTML elements after the
-    browser downloads and parses all the JavaScript code containing the
-    instructions to create the current interface. See:
-    https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
+  *  Client-side Rendering:
+  *  Out of the box, a traditional Vue.js application is rendered in the
+  *  browser (or client). Then, Vue.js generates HTML elements after the
+  *  browser downloads and parses all the JavaScript code containing the
+  *  instructions to create the current interface. See:
+  *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
   */
-  // ssr: false,
+  ssr: false,
+
   ui: {
     icons: ['heroicons', 'simple-icons'],  // 'phosphor', 'streamline'
   },
-  srcDir: '.', // This is the default, but it's good to be explicit
+
+  // 2024-02-02
+  //
+  // Used for success and error messages (e.g. after submitting
+  // login form).
+  snackbar: {
+    // bottom: true,
+    // right: true,
+    duration: 10000,
+  },
+
   // 2024-02-28
   //
   // re: "Cannot find module ... vue/server-renderer/index.mjs" when running nuxi
@@ -29,19 +41,16 @@ export default defineNuxtConfig({
   experimental: {
     externalVue: false,
   },
-  snackbar: {
-    // bottom: true,
-    // right: true,
-    duration: 10000,
-  },
+
+  // https://devtools.nuxt.com/guide/getting-started
+  // enabled: process.env.NUXT_DEVTOOLS === 'true',
   devtools: {
-    // https://devtools.nuxt.com/guide/getting-started
-    // enabled: process.env.NUXT_DEVTOOLS === 'true',
     enabled: true,
     timeline: {
       enabled: true
     }
   },
+
   /*
   * runtimeConfig is a configuration option that allows you to pass
   * environment variables from the server to the client. It has two
