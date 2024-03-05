@@ -9,7 +9,7 @@ definePageMeta({
   },
 })
 
-const { data: members } = await useFetch<Member[]>('/api/members', { default: () => [] })
+const { data: members } = await useFetch<Member[]>('/app/members', { default: () => [] })
 
 const q = ref('')
 const isInviteModalOpen = ref(false)

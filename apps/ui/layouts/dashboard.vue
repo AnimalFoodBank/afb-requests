@@ -60,7 +60,9 @@ const colors = computed(() => defaultColors.value.map(color => ({ ...color, acti
     <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
       <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
         <template #left>
-          <Logo />
+          <NuxtLink to="/">
+            <Logo />
+          </NuxtLink>
         </template>
       </UDashboardNavbar>
 
@@ -83,9 +85,9 @@ const colors = computed(() => defaultColors.value.map(color => ({ ...color, acti
     <slot />
 
     <!-- ~/components/HelpSlideover.vue -->
-    <HelpSlideover />
+    <!-- <HelpSlideover /> -->
     <!-- ~/components/NotificationsSlideover.vue -->
-    <NotificationsSlideover />
+    <!-- <NotificationsSlideover /> -->
 
     <ClientOnly>
 
