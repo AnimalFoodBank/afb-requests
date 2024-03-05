@@ -2,7 +2,6 @@
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
   modules: [
-    '@nuxt/content',
     '@nuxtjs/color-mode',
     '@nuxt/image',
     '@nuxt/ui',
@@ -15,7 +14,16 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     'nuxt-snackbar',
   ],
+  /*
+    Client-side Rendering:
+    Out of the box, a traditional Vue.js application is rendered in the
+    browser (or client). Then, Vue.js generates HTML elements after the
+    browser downloads and parses all the JavaScript code containing the
+    instructions to create the current interface. See:
+    https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
+  */
   // ssr: false,
+
   // force module initialization on dev env
   // https://nuxt.studio/docs/developers/local-debug
   studio: {
