@@ -6,8 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxthq/studio',  // https://nuxt.studio/docs/projects/setup#requirements-to-use-the-studio-editor
-    '@nuxtjs/fontaine',
-    '@nuxtjs/google-fonts',
+    '@nuxt/fonts',
     '@vueuse/nuxt',
     "@pinia/nuxt",
     // "@sidebase/nuxt-auth",
@@ -65,17 +64,6 @@ export default defineNuxtConfig({
 
     // TODO: Check if this is still the right way to enable global middleware in Nuxt3
     // enableGlobalAppMiddleware: true,
-  },
-  // Fonts
-  fontMetrics: {
-    fonts: ['DM Sans']
-  },
-  googleFonts: {
-    display: 'swap',
-    download: true,
-    families: {
-      'DM+Sans': [300, 400, 500, 600, 700]
-    }
   },
   snackbar: {
     // bottom: true,
