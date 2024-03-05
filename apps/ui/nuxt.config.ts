@@ -2,15 +2,8 @@
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
   modules: [
-    '@nuxtjs/color-mode',
-    '@nuxt/image',
     '@nuxt/ui',
-    '@nuxthq/studio',  // https://nuxt.studio/docs/projects/setup#requirements-to-use-the-studio-editor
     '@nuxt/fonts',
-    '@vueuse/nuxt',
-    "@pinia/nuxt",
-    // "@sidebase/nuxt-auth",
-    'nuxt-og-image',
     'nuxt-snackbar',
   ],
   /*
@@ -22,26 +15,6 @@ export default defineNuxtConfig({
     https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
   */
   // ssr: false,
-
-  // force module initialization on dev env
-  // https://nuxt.studio/docs/developers/local-debug
-  studio: {
-    enabled: true
-  },
-  colorMode: {
-    preference: 'dark', // default value of $colorMode.preference
-    fallback: 'dark', // fallback value if not system preference found
-    classSuffix: '',
-    storageKey: 'nuxt-color-mode',
-  },
-  hooks: {
-    // Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
-    'components:extend': (components) => {
-      const globals = components.filter((c) => ['UButton'].includes(c.pascalName))
-
-      globals.forEach((c) => c.global = true)
-    }
-  },
   ui: {
     icons: ['heroicons', 'simple-icons'],  // 'phosphor', 'streamline'
   },
@@ -56,29 +29,15 @@ export default defineNuxtConfig({
   experimental: {
     externalVue: false,
   },
-  auth: {
-    // This value is used for the auth origin. When it's not set, it'll raise
-    // an AUTH_NO_ORIGIN error in production. In dev, it'll just log a warning.
-    // @see https://github.com/sidebase/nuxt-auth/issues/515
-    baseURL: process.env.NUXT_PUBLIC_APP_ORIGIN,
-
-    // TODO: Check if this is still the right way to enable global middleware in Nuxt3
-    // enableGlobalAppMiddleware: true,
-  },
   snackbar: {
     // bottom: true,
     // right: true,
     duration: 10000,
   },
-  routeRules: {
-    // '/_api/search.json': { prerender: true },
-    // '/docs': { redirect: '/docs/getting-started', prerender: false }
-  },
   devtools: {
     // https://devtools.nuxt.com/guide/getting-started
     // enabled: process.env.NUXT_DEVTOOLS === 'true',
     enabled: true,
-
     timeline: {
       enabled: true
     }
