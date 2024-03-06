@@ -4,7 +4,7 @@ import type { Notification } from '~/types';
 
 const { isNotificationsSlideoverOpen } = useDashboard()
 
-const { data: notifications } = await useFetch<Notification[]>('/api/notifications')
+const { data: notifications } = await useFetch<Notification[]>('/app/notifications')
 </script>
 
 <template>

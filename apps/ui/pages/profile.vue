@@ -8,28 +8,28 @@ definePageMeta({
 })
 
 const links = [[{
-    label: 'General',
+    label: 'My Delivery Info',
     icon: 'i-heroicons-user-circle',
-    to: '/settings',
+    to: '/profile',
     exact: true
-  }, [{
-    label: 'Documentation',
-    icon: 'i-heroicons-book-open',
-    to: 'https://ui.nuxt.com/pro',
-    target: '_blank'
   }, {
-    label: 'Buy now',
-    icon: 'i-heroicons-credit-card',
-    to: 'https://ui.nuxt.com/pro/purchase',
-    target: '_blank'
-  }]]
+    label: 'My Pets',
+    icon: 'i-heroicons-home',
+    to: '/profile/pets',
+  }, {
+    label: 'Contact us',
+    icon: 'i-heroicons-house',
+    to: 'https://animalfoodbank.org/#contact',
+    target: '_blank',
+    exact: true
+  }]
 ]
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Settings" />
+      <UDashboardNavbar title="Profile" />
 
       <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto">
         <UHorizontalNavigation :links="links" />

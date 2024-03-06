@@ -3,36 +3,71 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute()
 
-const { data: page } = await useAsyncData('index', () => queryContent('/').findOne())
-console.log(`${route.path}: `, page.value)
-if (!page.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
-}
+// const { data: page } = await useAsyncData('index', () => queryContent('/').findOne())
+// if (!page.value) {
+//   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
+// }
 
-useSeoMeta({
-  titleTemplate: '',
-  title: page.value.title,
-  ogTitle: page.value.title,
-  description: page.value.description,
-  ogDescription: page.value.description
-})
+// useSeoMeta({
+//   titleTemplate: '',
+//   title: page.value.title,
+//   ogTitle: page.value.title,
+//   description: page.value.description,
+//   ogDescription: page.value.description
+// })
 </script>
 
 <template>
   <div>
-    <ULandingHero v-if="page.hero" v-bind="page.hero">
 
-      <template #links>
-        <UButton v-for="(link, index) in page.links" :key="index" v-bind="link" @click="link.click" />
-      </template>
-
-    </ULandingHero>
-
-    <!-- Renders nothing by default -->
-    <ULandingSection v-if="page.features" :title="page.features.title" :links="page.features.links">
-      <UPageGrid>
-        <ULandingCard v-for="(item, index) of page.features.items" :key="index" v-bind="item" />
-      </UPageGrid>
-    </ULandingSection>
   </div>
 </template>
+
+
+
+<!--
+
+title: 'Welcome - Animal Food Bank'
+description: A non-profit organization dedicated to providing food supplies for animals in need.
+navigation: false
+hero:
+  title: 'Animal Food Bank'
+  description: 'A food bank for pets.'
+  orientation: horizontal
+  headline:
+    label: ""
+    to: https://animalfoodbank.org/#headline
+    icon: i-heroicons-arrow-top-right-on-square-20-solid
+  links:
+    - label: Make a request
+      icon: i-heroicons-arrow-right-20-solid
+      trailing: true
+      to: '/requests/new'
+      size: lg
+    - label: Learn about AFB
+      icon: i-heroicons-building-storefront
+      size: lg
+      color: gray
+      to: https://animalfoodbank.org/#learn-more
+      target: _blank
+about:
+  title: 'About Us'
+  description: 'We are a non-profit organization dedicated to providing food supplies for animals in need.'
+  image: /images/hero.jpg
+  orientation: horizontal
+  links:
+    - label: Learn more
+      to: https://animalfoodbank.org/#about
+      target: _blank
+      icon: i-heroicons-arrow-right-20-solid
+      size: lg
+      color: gray
+    - label: Make a request
+      to: '/requests/new'
+      icon: i-heroicons-arrow-right-20-solid
+      size: lg
+      color: gray
+      trailing: true
+
+
+ -->
