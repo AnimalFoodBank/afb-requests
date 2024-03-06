@@ -32,7 +32,6 @@ const state = reactive({
       <UDashboardToolbar>
       </UDashboardToolbar>
 
-
       <UDashboardPanelContent class="pb-24">
         <UDashboardSection title="Theme" description="Customize the look and feel of your dashboard.">
           <template #links>

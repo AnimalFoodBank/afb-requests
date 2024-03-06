@@ -2,6 +2,9 @@
 
 
 const links = [{
+  label: 'Dashboard',
+  to: '/dashboard'
+}, {
   label: 'New Request',
   to: '/requests/new'
 }, {
