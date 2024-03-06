@@ -13,33 +13,32 @@ const links = [{
   }
 }, {
   id: 'requests',
-  label: 'Requests',
+  label: 'Request history',
   icon: 'i-heroicons-clipboard-document',
   to: '/requests',
   badge: '',
   tooltip: {
-    text: 'Requests',
+    text: 'Your history of requests',
   }
 }, {
-  id: 'clients',
-  label: 'Clients',
-  icon: 'i-heroicons-user-group',
-  to: '/clients',
-  tooltip: {
-    text: 'Clients',
-  }
-}, {
-  id: 'settings',
-  label: 'Settings',
-  to: '/settings',
+  id: 'profile',
+  label: 'Profile',
+  to: '/profile',
   icon: 'i-heroicons-cog-8-tooth',
-  children: [{
-    label: 'General',
-    to: '/settings',
-    exact: true
-  }],
+  children: [
+    {
+      label: 'My Delivery Info',
+      to: '/profile',
+      exact: true
+    },
+    {
+      label: 'My Pets',
+      to: '/profile/pets',
+      exact: true
+    },
+  ],
   tooltip: {
-    text: 'Settings',
+    text: 'Your profile details',
   }
 }]
 
