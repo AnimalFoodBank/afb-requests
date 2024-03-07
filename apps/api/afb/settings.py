@@ -68,6 +68,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1:3000",
     "localhost",
     "dev.afb.pet",
+    "staging.afb.pet",
     "dev.animalfoodbank.org",
 ]
 
@@ -125,6 +126,7 @@ CORS_ALLOWED_ORIGINS = [
     # TODO: Add production URL(s)
     "https://localhost",
     "https://dev.afb.pet",
+    "https://staging.afb.pet",
     "https://dev.animalfoodbank.org",
 ]
 CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
@@ -142,6 +144,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",  # Django dev server
     "https://localhost",
     "https://dev.afb.pet",
+    "https://staging.afb.pet",
     "https://dev.animalfoodbank.org",
 ]
 
