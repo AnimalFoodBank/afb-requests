@@ -5,7 +5,8 @@
   "scripts": {
     "build": "nuxt build",
     "build_debug": "NODE_OPTIONS='--trace-deprecation' nuxt build",
-    "dev": "nuxt dev --host",
+    "dev": "nuxt dev",
+    "host": "nuxt dev --host",
     "_docs:dev": "nuxt dev --spa --tunnel --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
