@@ -28,7 +28,7 @@ const { header } = useAppConfig()
     </template>
 
     <template #right>
-      <UButton label="Sign in" icon="i-heroicons-arrow-right-20-solid" trailing color="black" to="/login" class="lg:flex" />
+      <UButton label="Sign in" icon="i-heroicons-arrow-right-20-solid" trailing color="primary" to="/login" class="lg:flex" />
     </template>
 
     <!-- On smaller screens, the top nav moves to this hamburger menu. -->

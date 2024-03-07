@@ -27,7 +27,7 @@ const toast = useToast()
 <template>
   <UFooter>
     <template #top>
-      <UFooterColumns :links="links">
+      <UFooterColumns :links="links" ui="">
       </UFooterColumns>
     </template>
 
