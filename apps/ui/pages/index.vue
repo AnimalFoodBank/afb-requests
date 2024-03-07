@@ -1,7 +1,6 @@
 
 <script setup>
-import { ref } from 'vue'
-import { Dialog, DialogPanel } from '@headlessui/vue'
+import { ref } from 'vue';
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -14,7 +13,7 @@ const mobileMenuOpen = ref(false)
 </script>
 
 <template>
-  <div class="relative bg-white">
+  <div class="relative bg-white dark:bg-slate-800">
     <div class="mx-auto max-w-7xl lg:grid lg:grid-cols-12 lg:gap-x-8 lg:px-8">
       <div class="px-6 pb-24 pt-10 sm:pb-32 lg:col-span-7 lg:px-0 lg:pb-56 lg:pt-48 xl:col-span-6">
         <div class="mx-auto max-w-2xl lg:mx-0">
@@ -24,15 +23,15 @@ const mobileMenuOpen = ref(false)
               Anim aute id magna aliqua ad ad non deserunt sunt. <a href="#" class="whitespace-nowrap font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true" />Read more <span aria-hidden="true">&rarr;</span></a>
             </div> -->
           </div>
-          <h1 class="mt-24 text-4xl font-bold tracking-tight text-gray-900 sm:mt-10 sm:text-6xl">Animal Food Bank</h1>
-          <p class="mt-6 text-lg leading-8 text-gray-600">
+          <h1 class="mt-24 text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:mt-10 sm:text-6xl">Animal Food Bank</h1>
+          <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-200">
             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
           </p>
           <div class="mt-10 flex items-center gap-x-6">
-            <a href="/requests/new" class="rounded-md bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm">
+            <a href="/requests/new" class="rounded-md bg-black text-white dark:bg-white dark:text-black px-3.5 py-2.5 text-sm font-semibold shadow-sm">
               Request Pet Food
             </a>
-            <a href="#" class="rounded-md text-sm font-semibold leading-6 text-gray-900 px-3.5 py-2.5 bg-slate-100">Learn more <span aria-hidden="true">→</span></a>
+            <a href="#" class="rounded-md text-sm font-semibold leading-6 bg-slate-100 text-gray-900 dark:bg-gray-900 dark:text-slate-100 px-3.5 py-2.5 ">Learn more <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>

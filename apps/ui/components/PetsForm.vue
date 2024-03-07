@@ -32,7 +32,6 @@ async function onSubmit (event: FormSubmitEvent<any>) {
 
 </script>
 
-
 <template>
     <div>
       <UForm :state="state" :validate="validate" :validate-on="['submit']" @submit="onSubmit">
@@ -44,18 +43,18 @@ async function onSubmit (event: FormSubmitEvent<any>) {
           <UFormGroup
             name="pets"
             label="Pets"
-            description="."
+            description="The pets in your household"
 
             class="grid grid-cols-2 gap-2"
             :ui="{ container: '' }"
           >
-            <ul role="list" class="divide-y divide-gray-100">
+            <ul role="list" class="divide-y divide-gray-100 dark:divide-gray-700">
               <li v-for="petDetails in state.pets" :key="petDetails" class="flex justify-between gap-x-6 py-5">
                 <div class="flex">
                   <div class="flex-auto">
-                    <p class="text-sm font-semibold leading-6 text-gray-900">{{ petDetails.name }}</p>
-                    <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ petDetails.type }}</p>
-                    <UTextarea class="" :rows="5" autoresize size="lg" :placeholder="petDetails.details" />
+                    <p class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">{{ petDetails.name }}</p>
+                    <p class="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-200">{{ petDetails.type }}</p>
+                    <UTextarea :rows="5" autoresize size="lg" :placeholder="petDetails.details" />
                   </div>
                 </div>
               </li>
