@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const links = [
   {
-    label: 'Resources',
+    label: 'Company',
     children: [
       { label: 'About Us', to: 'https://animalfoodbank.org/about-us/' },
       { label: 'Pet Food Recovery Program', to: 'https://animalfoodbank.org/afb-national-pet-food-recovery-program/' },
@@ -11,7 +11,7 @@ const links = [
     ]
   },
   {
-    label: 'Company',
+    label: 'Resources',
     children: [
       { label: 'Donate Now', to: 'https://animalfoodbank.org/donate-now/' },
       { label: 'Drop Off Locations', to: 'https://animalfoodbank.org/wishlist/' },
