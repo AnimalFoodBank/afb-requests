@@ -18,7 +18,7 @@ const state = reactive({
 <template>
   <UDashboardPanelContent class="pb-24">
 
-    <PetsForm title="My Pets" description="View your pet information." :cta="true" :state="state" />
+    <PetsForm title="My Pets" description="View your pet information." :cta="false" :state="state" />
 
 
     <UDivider class="mb-4" />

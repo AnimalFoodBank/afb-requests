@@ -65,11 +65,5 @@ async function onSubmit (event: FormSubmitEvent<any>) {
         </UDashboardSection>
       </UForm>
 
-      <UDivider class="mb-4" />
-
-      <UDashboardSection class="italic">
-        Pet information cannot be updated/changed without contacting us at admin@animalfoodbank.org
-      </UDashboardSection>
-
     </div>
   </template>
