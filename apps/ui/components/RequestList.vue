@@ -51,7 +51,7 @@ const props = defineProps<{
             <td class="max-w-xs hidden px-3 py-4 text-sm text-gray-500 dark:text-gray-200 lg:table-cell">{{ request.payload }}</td>
             <td class="max-w-xs hidden px-3 py-4 text-sm text-gray-500 dark:text-gray-200 lg:table-cell">{{ request.address_full }}</td>
             <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-              <a href="#" class="text-indigo-600 hover:text-indigo-900 dark:text-blue-400">View<span class="sr-only">, {{ request.name
+            <a :href="`/requests/${request.id}/details`" class="text-indigo-600 hover:text-indigo-900 dark:text-blue-400">View<span class="sr-only">, {{ request.name
                   }}</span></a>
             </td>
           </tr>

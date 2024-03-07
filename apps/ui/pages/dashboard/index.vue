@@ -1,5 +1,10 @@
 <script setup lang="ts">
 
+useSeoMeta({
+  title: "Dashboard",
+})
+
+
 definePageMeta({
   layout: 'dashboard',
   auth: {
@@ -8,21 +13,21 @@ definePageMeta({
 })
 
 const requests = [{
-  id: 1,
+  id: '8a36e9c2-966b-4573-ad8a-ce3c01e98e26',
   date: '2024-01-01',
   address_full: '123 Maple Street, Toronto, Ontario, M5V 2T6, Canada',
   payload: '2 bags of dog food and 1 bag of cat food.',
   imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }, {
-  id: 2,
+  id: '9d4c52f7-1e9d-430f-b6dd-1c0a3377f290',
   date: '2024-02-02',
   address_full: '456 Oak Avenue, Vancouver, British Columbia, V5Z 0B3, Canada',
   payload: '3 bags of cat food.',
   imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }, {
-  id: 3,
+  id: '62d77fa2-4f6e-427d-8744-258d12ceae49',
   date: '2024-03-03',
   address_full: '789 Pine Road, Calgary, Alberta, T2P 2M5, Canada',
   payload: '1 bag of dog food and 2 cans of cat food.',
@@ -36,7 +41,6 @@ const requests = [{
   <UDashboardPage>
     <UDashboardPanel>
       <UDashboardNavbar title="Dashboard">
-
 
       </UDashboardNavbar>
 
