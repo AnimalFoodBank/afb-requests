@@ -7,27 +7,6 @@ definePageMeta({
   },
 })
 
-const columns = [{
-  key: 'id',
-  label: 'ID'
-}, {
-  key: 'name',
-  label: 'Name',
-  sortable: true
-}, {
-  key: 'title',
-  label: 'Title',
-  sortable: true
-}, {
-  key: 'email',
-  label: 'Email',
-  sortable: true,
-  direction: 'desc' as const
-}, {
-  key: 'role',
-  label: 'Role'
-}]
-
 const requests = [{
   id: 1,
   date: '2024-01-01',
@@ -58,19 +37,32 @@ const requests = [{
     <UDashboardPanel>
       <UDashboardNavbar title="Dashboard">
 
+
       </UDashboardNavbar>
 
       <!-- <UDashboardToolbar>
       </UDashboardToolbar> -->
 
       <UDashboardPanelContent>
-        <h2 class="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight">Request History</h2>
 
+        <UDashboardSection
+          icon="i-heroicons-user"
+          title="Client Portal"
+          description="Your delivery address, pet info, requests history and more. "
+          />
 
-        <RequestList title="" description="" :cta="true" :requests="requests" />
+        <UDashboardCard class="mx-9 mb-9 max-w-prose">
+          <UDashboardSection class="mb-2 text-md italic">
+            Please note that creating an account does not automaticaly create a request for food for you.
+            If you've just created your account, please click the "Request Pet Food" button. You will need to complete this form each time you need food.
+          </UDashboardSection>
+        </UDashboardCard>
+
+        <!-- <h2 class="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight"></h2> -->
+
+        <RequestList title="Request History" description="" :cta="true" :requests="requests" />
 
       </UDashboardPanelContent>
-
 
 
     </UDashboardPanel>

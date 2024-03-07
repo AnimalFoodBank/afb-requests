@@ -4,7 +4,7 @@
 const props = defineProps<{
   title?: String
   description?: String
-  requests?: Array
+  requests?: Array<Object>
   cta?: Boolean
 }>()
 
@@ -12,6 +12,7 @@ const props = defineProps<{
 </script>
 
 <template>
+
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
@@ -20,8 +21,8 @@ const props = defineProps<{
       </div>
       <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
         <button v-if="cta" type="button"
-                class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                New Request
+                class="block rounded-md bg-primary px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ">
+                Request Pet Food
         </button>
       </div>
     </div>
