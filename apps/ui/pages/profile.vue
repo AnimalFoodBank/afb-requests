@@ -1,5 +1,9 @@
 <script setup lang="ts">
 
+useSeoMeta({
+  title: "Profile",
+})
+
 definePageMeta({
   layout: 'dashboard',
   auth: {

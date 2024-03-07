@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types';
 
+useSeoMeta({
+  title: "Sign In",
+})
+
 const config = useRuntimeConfig();
 
 const disabled = ref(false);
@@ -16,9 +20,6 @@ definePageMeta({
   // colorMode: 'dark',
 })
 
-useSeoMeta({
-  title: 'Login'
-})
 
 const fields = [{
   name: 'email',

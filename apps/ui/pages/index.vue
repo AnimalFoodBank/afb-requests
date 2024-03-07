@@ -2,6 +2,12 @@
 <script setup>
 import { ref } from 'vue';
 
+useSeoMeta({
+  title: "AFB - Animal Food Bank",
+  titleTemplate: '',
+})
+
+
 const navigation = [
   { name: 'Product', href: '#' },
   { name: 'Features', href: '#' },

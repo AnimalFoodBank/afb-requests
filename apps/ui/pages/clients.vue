@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { Member } from '~/types';
 
+useSeoMeta({
+  title: "Clients",
+})
+
 definePageMeta({
   layout: 'dashboard',
   auth: {
