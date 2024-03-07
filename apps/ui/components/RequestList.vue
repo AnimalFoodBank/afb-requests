@@ -20,10 +20,10 @@ const props = defineProps<{
         <p class="mt-2 text-sm text-gray-700">{{ description }}</p>
       </div>
       <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <button v-if="cta" type="button"
+        <a v-if="cta" type="button" href="/requests/new"
                 class="block rounded-md bg-primary px-3 py-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ">
                 Request Pet Food
-        </button>
+        </a>
       </div>
     </div>
 
