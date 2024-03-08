@@ -32,7 +32,7 @@ const toast = useToast()
       <UFooterColumns :links="links">
         <template #right>
           <UFormGroup name="email" label="Subscribe to our newsletter" size="md">
-            <UInput type="email" icon="i-heroicons-envelope">
+            <UInput type="email" icon="i-ph-paw-print-light">
               <template #trailing>
                 <UButton type="submit" size="2xs" color="black" label="Subscribe" />
               </template>

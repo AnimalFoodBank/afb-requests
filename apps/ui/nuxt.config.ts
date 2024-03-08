@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   ssr: false,
 
   ui: {
-    icons: ['heroicons', 'simple-icons'],  // 'phosphor', 'streamline'
+    icons: ['heroicons', 'simple-icons', 'ph'],  // 'phosphor', 'streamline'
   },
 
   // 2024-02-02
