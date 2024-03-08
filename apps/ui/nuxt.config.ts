@@ -46,6 +46,17 @@ export default defineNuxtConfig({
   // enabled: process.env.NUXT_DEVTOOLS === 'true',
   devtools: {
     enabled: true,
+    vscode: {
+      startOnBoot: false,
+      enabled: false,
+      reuseExistingServer: true,
+      port: 8118,  // code-server --port 8118
+      mode: 'local-serve',  // 'tunnel' or 'local-serve',
+      tunnel: {
+        name: 'tundra',
+        password: 'tundra',
+      },
+    },
     timeline: {
       enabled: true
     }
