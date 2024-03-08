@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/fonts',
     'nuxt-snackbar',
+    // '@storybook-vue/nuxt-storybook',
   ],
 
   /*
@@ -19,6 +20,12 @@ export default defineNuxtConfig({
 
   ui: {
     icons: ['heroicons', 'streamline', 'ph', 'game-icons'], //
+  },
+
+  storybook: {
+    url: 'http://localhost:6006',
+    storybookRoute: '/__storybook__',
+    port: 6006,
   },
 
   // 2024-02-02

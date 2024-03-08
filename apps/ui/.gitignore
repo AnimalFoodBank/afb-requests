@@ -27,3 +27,5 @@ logs
 
 # VSC
 .history
+
+*storybook.log
