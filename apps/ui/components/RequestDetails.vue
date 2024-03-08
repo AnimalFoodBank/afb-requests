@@ -1,7 +1,12 @@
 <!-- https://tailwindui.com/components/application-ui/data-display/description-lists -->
 
 <script setup lang="ts">
-import { PaperClipIcon } from '@heroicons/vue/20/solid'
+
+const props = defineProps({
+  requestDetails: { type: Object, required: true },
+  // model: { type: Object, required: true }
+})
+
 </script>
 
 <template>
@@ -30,7 +35,9 @@ import { PaperClipIcon } from '@heroicons/vue/20/solid'
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">About</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.</dd>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-wrap">
+            Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt.
+          </dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Attachments</dt>
@@ -38,7 +45,7 @@ import { PaperClipIcon } from '@heroicons/vue/20/solid'
             <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
               <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                 <div class="flex w-0 flex-1 items-center">
-                  <PaperClipIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                  <UIcon name="i-heroicons-paper-clip-solid" class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
                   <div class="ml-4 flex min-w-0 flex-1 gap-2">
                     <span class="truncate font-medium">resume_back_end_developer.pdf</span>
                     <span class="flex-shrink-0 text-gray-400">2.4mb</span>
@@ -50,7 +57,7 @@ import { PaperClipIcon } from '@heroicons/vue/20/solid'
               </li>
               <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                 <div class="flex w-0 flex-1 items-center">
-                  <PaperClipIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                  <UIcon name="i-ph-paw-print-fill" aria-hidden="true" />
                   <div class="ml-4 flex min-w-0 flex-1 gap-2">
                     <span class="truncate font-medium">coverletter_back_end_developer.pdf</span>
                     <span class="flex-shrink-0 text-gray-400">4.5mb</span>
