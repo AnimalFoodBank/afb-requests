@@ -35,7 +35,7 @@ async function onSubmit (event: FormSubmitEvent<any>) {
 <template>
     <div>
       <UForm :state="state" :validate="validate" :validate-on="['submit']" @submit="onSubmit">
-        <UDashboardSection :title="title" :description="description">
+        <UDashboardSection :title="title" :description="description" icon="i-ph-paw-print">
           <template #links v-if="cta">
             <UButton type="submit" label="Save changes" color="black" />
           </template>
@@ -44,7 +44,6 @@ async function onSubmit (event: FormSubmitEvent<any>) {
             name="pets"
             label="Pets"
             description="The pets in your household"
-
             class="grid grid-cols-2 gap-2"
             :ui="{ container: '' }"
           >

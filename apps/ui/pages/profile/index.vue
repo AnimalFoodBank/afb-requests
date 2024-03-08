@@ -2,7 +2,7 @@
 
 const state = reactive({
   name: 'Delbo Baggins',
-  branch: 'Waldorf',
+  branch_selection: 'Xanadu',
   email: 'delbo@solutious.com',
   address: '123 Main St, Toronto, ON, Canada',
   pets: [
@@ -18,8 +18,7 @@ const state = reactive({
 <template>
   <UDashboardPanelContent class="pb-24">
 
-    <DeliveryInfoForm title="My Delivery Info" description="Update your delivery information." :cta="true" :state="state" />
-
+    <DeliveryInfoForm title="My Delivery Info" description="Update your delivery information." icon="i-game-icons-cardboard-box-closed" :cta="true" :state="state" />
 
     <UDivider class="mb-4" />
 

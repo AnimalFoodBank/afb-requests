@@ -13,16 +13,16 @@ const links = [
       text: 'Home',
     }
   },
-  // {
-  //   id: 'requests',
-  //   label: 'Request history',
-  //   icon: 'i-heroicons-clipboard-document',
-  //   to: '/requests',
-  //   badge: '',
-  //   tooltip: {
-  //     text: 'Your history of requests',
-  //   }
-  // },
+  {
+    id: 'requests',
+    label: 'Requests',
+    icon: 'i-ph-phone',
+    to: '/requests',
+    badge: '3',
+    tooltip: {
+      text: 'Your history of requests',
+    }
+  },
   {
     id: 'profile',
     label: 'Profile',

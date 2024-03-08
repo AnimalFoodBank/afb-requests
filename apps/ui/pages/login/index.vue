@@ -41,9 +41,9 @@ const fields = [{
   inputClass: 'hidden',
   options: [
     { value: '', text: '-- Select --' }, // add a default option with an empty value to display in the dropdown
-    { value: 'a', text: 'Option A' },
-    { value: 'b', text: 'Option B' },
-    { value: 'c', text: 'Option C' },
+    { value: 'x', text: 'Xanadu' },
+    { value: 'y', text: 'Yale' },
+    { value: 'z', text: 'Zulu' },
   ]
 }]
 
