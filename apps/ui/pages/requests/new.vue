@@ -6,10 +6,8 @@ definePageMeta({
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: '/login',
   },
-  // colorMode: 'dark',
 })
 
-const isDeleteAccountModalOpen = ref(false)
 const state = reactive({
   name: 'Poo Bear',
   email: 'poop@solutious.com',
@@ -20,6 +18,16 @@ const state = reactive({
   password_new: ''
 })
 
+const validate = (state: any) => {
+  const errors = []
+  if (!state.email) errors.push({ path: 'email', message: 'Email is required' })
+  if (!state.password) errors.push({ path: 'password', message: 'Password is required' })
+  return errors
+}
+
+function onSubmit (data: any) {
+  console.log('Submitted', data)
+}
 
 </script>
 
@@ -42,9 +50,7 @@ const state = reactive({
 
         <UDivider class="mb-4" />
 
-
-
-
+        <RequestsFoodRequestForm :state="state" :validate="validate" :onSubmit="onSubmit"/>
 
       </UDashboardPanelContent>
 

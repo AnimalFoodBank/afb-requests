@@ -1,6 +1,18 @@
 <script setup lang="ts">
 
-
+const props = defineProps<{
+  validate: (state: any) => { path: string; message: string }[]
+  onSubmit: (state: any) => void
+  state: {
+    name: string
+    email: string
+    username: string
+    avatar: string
+    bio: string
+    password_current: string
+    password_new: string
+  }
+}>()
 
 
 </script>
@@ -48,14 +60,6 @@
             <span class="text-gray-500 dark:text-gray-400 text-sm">nuxt.com/</span>
           </template>
         </UInput>
-      </UFormGroup>
-
-      <UFormGroup name="avatar" label="Avatar" class="grid grid-cols-2 gap-2" help="JPG, GIF or PNG. 1MB Max." :ui="{ container: 'flex flex-wrap items-center gap-3', help: 'mt-0' }">
-        <UAvatar :src="state.avatar" :alt="state.name" size="lg" />
-
-        <UButton label="Choose" color="white" size="md" @click="onFileClick" />
-
-        <UInput ref="fileRef" type="file" class="hidden" accept=".jpg, .jpeg, .png, .gif" @change="onFileChange" />
       </UFormGroup>
 
       <UFormGroup

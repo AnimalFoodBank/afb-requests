@@ -15,7 +15,6 @@ definePageMeta({
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: '/protected',
   },
-  // colorMode: 'dark',
 })
 
 const route = useRoute()

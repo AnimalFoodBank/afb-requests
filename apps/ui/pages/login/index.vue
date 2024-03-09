@@ -17,7 +17,6 @@ definePageMeta({
   auth: {
     unauthenticatedOnly: false,
   },
-  // colorMode: 'dark',
 })
 
 
