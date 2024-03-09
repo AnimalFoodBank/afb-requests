@@ -120,6 +120,10 @@ python-dotenv
 # Local
 -e git+file:///Users/d/Projects/opensource/django-rest-framework-passwordless@dev#egg=drfpasswordless
 
+# OpenAPI 3 support for Django REST framework
+drf-spectacular
+drf-spectacular[sidecar]  # Optional, but adds Swagger UI and Redoc rather than CDN
+
 # This is used for the API docs
 markdown
 
