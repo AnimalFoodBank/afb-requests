@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+const isDeleteAccountModalOpen = ref(false)
 const state = reactive({
   name: 'Delbo Baggins',
   branch_selection: 'Xanadu',
@@ -20,10 +21,12 @@ const state = reactive({
 
     <DeliveryInfoForm title="My Delivery Info" description="Update your delivery information." icon="i-game-icons-cardboard-box-closed" :cta="true" :state="state" />
 
-    <UDivider class="mb-4" />
+    <UDivider class="mb-16" />
 
-    <UDashboardSection class="italic">
-
+    <UDashboardSection title="Account Changes" description="These actions are not reversible.">
+      <div>
+        <UButton color="red" label="Deworm account (example)" size="md" @click="isDeleteAccountModalOpen = true" />
+      </div>
     </UDashboardSection>
 
   </UDashboardPanelContent>
