@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@types/node": "^20.11.17",
+    "@vueform/builder": "^1.2.0",
+    "@vueform/vueform": "^1.9.1",
     "favicons": "^7.1.5"
   }
 }
