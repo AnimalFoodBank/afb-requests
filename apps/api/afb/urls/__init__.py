@@ -50,8 +50,6 @@ urlpatterns = [
     # Add drf_registration endpoints. These are used for login, registration,
     # etc from the frontend.
     path("api/accounts/", include("drf_registration.urls")),
-    # An endpoint for Vueform specific validators.
-    path("api/validators/unique/", public.VueformUniqueValidatorView.as_view()),
 ]
 
 urlpatterns.extend(  # TODO: remove

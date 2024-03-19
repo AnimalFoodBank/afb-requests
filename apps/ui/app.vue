@@ -19,10 +19,9 @@ useHead({
 })
 
 useSeoMeta({
-  titleTemplate: '%s - AFB - Animal Food Bank',
-  ogImage: '..',
-  twitterImage: '..',
-  twitterCard: 'summary_large_image',
+  title: "Welcome",
+  titleTemplate: '%s | AFB - Animal Food Bank',
+  ogImage: '/img/afb_logo_vertical_colour.png',
 })
 
 </script>

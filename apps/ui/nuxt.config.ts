@@ -2,9 +2,9 @@
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
   modules: [
-    "@nuxt/ui",
-    "@nuxt/fonts",
-    "nuxt-snackbar",
+    '@nuxt/ui',
+    '@nuxt/fonts',
+    'nuxt-snackbar',
     "@vueform/nuxt",
   ],
 
@@ -34,7 +34,13 @@ export default defineNuxtConfig({
   },
 
   ui: {
-    icons: ["heroicons", "simple-icons"], // 'phosphor', 'streamline'
+    icons: ['heroicons', 'streamline', 'ph', 'game-icons'], // simple-icons
+  },
+
+  storybook: {
+    url: 'http://localhost:6006',
+    storybookRoute: '/__storybook__',
+    port: 6006,
   },
 
   // 2024-02-02
@@ -62,6 +68,17 @@ export default defineNuxtConfig({
   // enabled: process.env.NUXT_DEVTOOLS === 'true',
   devtools: {
     enabled: true,
+    vscode: {
+      startOnBoot: false,
+      enabled: false,
+      reuseExistingServer: true,
+      port: 8118,  // code-server --port 8118
+      mode: 'local-serve',  // 'tunnel' or 'local-serve',
+      tunnel: {
+        name: 'tundra',
+        password: 'tundra',
+      },
+    },
     timeline: {
       enabled: true,
     },

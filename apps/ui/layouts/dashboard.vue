@@ -3,44 +3,48 @@ const route = useRoute()
 const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
 
-const links = [{
-  id: 'home',
-  label: 'Home',
-  icon: 'i-heroicons-home',
-  to: '/dashboard',
-  tooltip: {
-    text: 'Home',
+const links = [
+  {
+    id: 'home',
+    label: 'Home',
+    icon: 'i-heroicons-home',
+    to: '/dashboard',
+    tooltip: {
+      text: 'Home',
+    }
+  },
+  {
+    id: 'requests',
+    label: 'Requests',
+    icon: 'i-ph-phone',
+    to: '/requests',
+    badge: '3',
+    tooltip: {
+      text: 'Your history of requests',
+    }
+  },
+  {
+    id: 'profile',
+    label: 'Profile',
+    to: '/profile',
+    icon: 'i-heroicons-cog-8-tooth',
+    children: [
+      {
+        label: 'My Delivery Info',
+        to: '/profile',
+        exact: true
+      },
+      {
+        label: 'My Pets',
+        to: '/profile/pets',
+        exact: true
+      },
+    ],
+    tooltip: {
+      text: 'Your profile details',
+    }
   }
-}, {
-  id: 'requests',
-  label: 'Request history',
-  icon: 'i-heroicons-clipboard-document',
-  to: '/requests',
-  badge: '',
-  tooltip: {
-    text: 'Your history of requests',
-  }
-}, {
-  id: 'profile',
-  label: 'Profile',
-  to: '/profile',
-  icon: 'i-heroicons-cog-8-tooth',
-  children: [
-    {
-      label: 'My Delivery Info',
-      to: '/profile',
-      exact: true
-    },
-    {
-      label: 'My Pets',
-      to: '/profile/pets',
-      exact: true
-    },
-  ],
-  tooltip: {
-    text: 'Your profile details',
-  }
-}]
+]
 
 const footerLinks = [{
   label: 'Help & Support',

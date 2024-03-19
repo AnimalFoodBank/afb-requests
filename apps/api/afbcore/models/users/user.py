@@ -97,6 +97,8 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     - is_active
     - date_joined
     - last_login
+    - first_name
+    - last_name
 
     Fields inherited from UUIDModel, TimeStampedModel:
     - id: UUIDField, primary key
@@ -122,7 +124,8 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
 
     # Add a single name field which we'll use instead of the default
-    # first_name and last_name fields.
+    # first_name and last_name fields. We leave those fields in place
+    # for compatibility with other apps that expect them to be present.
     name = models.CharField(_("name"), max_length=255)
 
     terms_agreement = models.BooleanField(
@@ -135,7 +138,3 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     username = models.CharField(
         _("username"), max_length=255, unique=True, null=True, blank=True
     )
-
-    # Remove the first_name and last_name fields from AbstractUser.
-    first_name = None
-    last_name = None

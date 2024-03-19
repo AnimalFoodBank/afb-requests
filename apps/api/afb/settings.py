@@ -68,6 +68,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1:3000",
     "localhost",
     "dev.afb.pet",
+    "staging.afb.pet",
     "dev.animalfoodbank.org",
 ]
 
@@ -84,6 +85,8 @@ INSTALLED_APPS = [
     "django_extensions",  # add this for 'python manage.py runserver_plus'
     "rest_framework",  # add DRF
     "rest_framework.authtoken",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     # "drf_registration",
     # 'djoser',
     "drfpasswordless",
@@ -125,6 +128,7 @@ CORS_ALLOWED_ORIGINS = [
     # TODO: Add production URL(s)
     "https://localhost",
     "https://dev.afb.pet",
+    "https://staging.afb.pet",
     "https://dev.animalfoodbank.org",
 ]
 CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
@@ -142,6 +146,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",  # Django dev server
     "https://localhost",
     "https://dev.afb.pet",
+    "https://staging.afb.pet",
     "https://dev.animalfoodbank.org",
 ]
 
@@ -233,11 +238,25 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "PAGE_SIZE": 25,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Your Project API",
+    "DESCRIPTION": "Your project description",
+    "VERSION": "1.0.0",
+    # https://drf-spectacular.readthedocs.io/en/latest/client_generation.html
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
+    # OTHER SETTINGS
 }
 
 # drfpasswordless
