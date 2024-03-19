@@ -2,6 +2,10 @@
 import type { FormError, FormSubmitEvent } from '#ui/types';
 import { useRoute } from 'vue-router';
 
+useSeoMeta({
+  title: "Sign In",
+})
+
 const config = useRuntimeConfig();
 const snackbar = useSnackbar();
 
@@ -11,7 +15,6 @@ definePageMeta({
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: '/protected',
   },
-  // colorMode: 'dark',
 })
 
 const route = useRoute()

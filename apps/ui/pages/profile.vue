@@ -1,5 +1,9 @@
 <script setup lang="ts">
 
+useSeoMeta({
+  title: "Profile",
+})
+
 definePageMeta({
   layout: 'dashboard',
   auth: {
@@ -31,8 +35,8 @@ const links = [[{
     <UDashboardPanel grow>
       <UDashboardNavbar title="Profile" />
 
-      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto">
-        <UHorizontalNavigation :links="links" />
+      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block lg:hidden">
+        <UHorizontalNavigation :links="links" class="" />
       </UDashboardToolbar>
 
       <NuxtPage />

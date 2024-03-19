@@ -36,8 +36,7 @@ class Profile(BaseAbstractModel):
     - user: ForeignKey to User model
     - role: OneToOneField to Role model
     - branches: ManyToManyField to Branch model
-    - first_name: CharField, max length 64
-    - last_name: CharField, max length 64
+    - preferred_name: CharField, max length 64
     - email: EmailField, unique
     - phone_number: PhoneNumberField, max length 20, region US
     - address_verbatim: CharField, max length 255, blank
@@ -63,8 +62,7 @@ class Profile(BaseAbstractModel):
     branches = models.ManyToManyField("Branch", **MANY_TO_MANY_DEFAULTS)
 
     # Name fields
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
+    preferred_name = models.CharField(max_length=64)
 
     # Email - Unique - don't allow duplicates.
     email = models.EmailField(unique=True)
@@ -102,7 +100,7 @@ class Profile(BaseAbstractModel):
 
     # Address - If address is duplicate to another clients, both accounts
     # need to be placed on hold and manually reviewed/approved bc people
-    # are scammers. Has to be a validated address (google?) and not
+    # are scammers. Has to be a validated address (google?) and notWHich modela
     # permitted to be overwritten. The last amount of free form text
     # entry as possible. You'd be amazed how many clients don't know
     # their postal code and we route by postal code sooooo
@@ -120,7 +118,7 @@ class Profile(BaseAbstractModel):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="active")
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.preferred_name}"
 
     def get_absolute_url(self):
         return reverse("client-create", kwargs={"pk": self.pk})

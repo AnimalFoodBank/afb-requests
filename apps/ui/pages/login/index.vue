@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types';
 
+useSeoMeta({
+  title: "Sign In",
+})
+
 const config = useRuntimeConfig();
 
 const disabled = ref(false);
@@ -13,27 +17,47 @@ definePageMeta({
   auth: {
     unauthenticatedOnly: false,
   },
-  // colorMode: 'dark',
 })
 
-useSeoMeta({
-  title: 'Login'
-})
 
 const fields = [{
+  name: 'name',
+  type: 'text',
+  label: 'Your name',
+  placeholder: 'e.g. Rita K',
+  inputClass: '',
+  icon: 'i-heroicons-user-circle',
+},{
   name: 'email',
   type: 'text',
   label: 'Email',
   placeholder: 'Enter your email',
+  icon: 'i-heroicons-envelope',
+},{
+  name: 'branch',
+  type:  'select', // set the type to select
+  label: 'AFB Branch',
+  inputClass: 'hidden',
+  options: [
+    { value: '', text: '-- Select --' }, // add a default option with an empty value to display in the dropdown
+    { value: 'x', text: 'Xanadu' },
+    { value: 'y', text: 'Yale' },
+    { value: 'z', text: 'Zulu' },
+  ]
 }]
+
 
 const validate = (state: any): FormError[] => {
   const errors = []
+  if (!state.name) errors.push({ path: 'name', message: 'Name is required' })
   if (!state.email) errors.push({ path: 'email', message: 'Email is required' })
+  if (!state.branch) errors.push({ path: 'branch', message: 'Branch is required' })
+  console.log('Errors:', errors)
+  console.log('State:', state)
   return errors
 }
 
-// const providers = [
+const providers = [
 //   {
 //     label: 'Continue with Google',
 //     icon: 'i-simple-icons-google',
@@ -58,8 +82,7 @@ const validate = (state: any): FormError[] => {
 //       console.log('Redirect to Apple')
 //     }
 //   },
-// ]
-const providers = []
+]
 
 let timeoutId: number | undefined
 
@@ -70,7 +93,7 @@ onUnmounted(() => {
   }
 });
 
-async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
+async function onSubmit (event: FormSubmitEvent<{ email: string, name: string, branch_selection: string }>) {
   console.log('Submitted', event);
 
   if (disabled.value) {
@@ -90,6 +113,8 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
   // Prepare the payload
   const payload = {
     email: event.email,
+    name: event.name,
+    branch: event.branch_selection,
   }
   console.log('Payload:', payload)
 
@@ -159,6 +184,23 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
 
 }
 
+const branchLocations = [{
+  name: '',
+  value: '',
+  // disabled: true
+},{
+  name: 'Xanadu Branch',
+  value: 'x',
+},{
+  name: 'Yale Branch',
+  value: 'y'
+}, {
+  name: 'Zulu Branch',
+  value: 'z'
+}]
+
+const defaultBranch = ref('none')
+
 </script>
 
 <!-- eslint-disable vue/multiline-html-element-content-newline -->
@@ -174,12 +216,16 @@ async function onSubmit (event: FormSubmitEvent<{ email: string }>) {
         title="Sign in to AFB Requests"
         description="Enter your email to access your account."
         align="top"
-        icon="i-heroicons-lock-closed"
+        icon="i-ph-paw-print-fill"
         :ui="{ base: 'text-center', footer: 'text-center' }"
         :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
         :loading="false"
         @submit="onSubmit"
       >
+      <!-- Note: this is a hack to shoehorn a select box into Nuxt UI Pro AuthForm -->
+      <template #branch-description>
+        <USelect v-model="defaultBranch" name="branch_selection" icon="i-heroicons-map-pin" :options="branchLocations" option-attribute="name" class=""/>
+      </template>
 
       <template #description>
         Submit the form to get a magic link sent to your email.
