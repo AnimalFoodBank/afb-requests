@@ -21,7 +21,7 @@ definePageMeta({
       <!-- <UDashboardToolbar>
       </UDashboardToolbar> -->
 
-      <UDashboardPanelContent>
+      <UDashboardPanelContent class="max-w-full">
 
         <UDashboardSection
           icon="i-heroicons-cog"
