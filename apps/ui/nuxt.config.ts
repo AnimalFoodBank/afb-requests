@@ -1,25 +1,41 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
+  extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
   modules: [
     '@nuxt/ui',
     '@nuxt/fonts',
     'nuxt-snackbar',
-    // '@storybook-vue/nuxt-storybook',
+    "@vueform/nuxt",
+    '@vueform/builder-nuxt',
   ],
 
   /*
-  *  Client-side Rendering:
-  *  Out of the box, a traditional Vue.js application is rendered in the
-  *  browser (or client). Then, Vue.js generates HTML elements after the
-  *  browser downloads and parses all the JavaScript code containing the
-  *  instructions to create the current interface. See:
-  *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
-  */
+   *  Client-side Rendering:
+   *  Out of the box, a traditional Vue.js application is rendered in the
+   *  browser (or client). Then, Vue.js generates HTML elements after the
+   *  browser downloads and parses all the JavaScript code containing the
+   *  instructions to create the current interface. See:
+   *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
+   */
   ssr: false,
 
+  nitro: {
+    routeRules: {
+      "/**/*.ts": {
+        headers: {
+          "content-type": "application/typescript",
+        },
+      },
+      "/**/*.vue": {
+        headers: {
+          "content-type": "text/vue",
+        },
+      },
+    },
+  },
+
   ui: {
-    icons: ['heroicons', 'streamline', 'ph', 'game-icons'], //
+    icons: ['heroicons', 'streamline', 'ph', 'game-icons'], // simple-icons
   },
 
   storybook: {
@@ -65,31 +81,31 @@ export default defineNuxtConfig({
       },
     },
     timeline: {
-      enabled: true
-    }
+      enabled: true,
+    },
   },
 
   /*
-  * runtimeConfig is a configuration option that allows you to pass
-  * environment variables from the server to the client. It has two
-  * properties: publicRuntimeConfig and privateRuntimeConfig.
-  *
-  * runtimeConfig.public is the Nuxt 3 syntax for publicRuntimeConfig
-  *
-  * NOTE: The from server to client part is important. This means that
-  * the client can access these variables, so be careful not to expose
-  * sensitive information.
-  */
+   * runtimeConfig is a configuration option that allows you to pass
+   * environment variables from the server to the client. It has two
+   * properties: publicRuntimeConfig and privateRuntimeConfig.
+   *
+   * runtimeConfig.public is the Nuxt 3 syntax for publicRuntimeConfig
+   *
+   * NOTE: The from server to client part is important. This means that
+   * the client can access these variables, so be careful not to expose
+   * sensitive information.
+   */
   runtimeConfig: {
     AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
 
     APP_ORIGIN: process.env.NUXT_PUBLIC_APP_ORIGIN,
-    AUTH_SECRET: process.env.AUTH_SECRET,  // TODO: Raise heck if not set
+    AUTH_SECRET: process.env.AUTH_SECRET, // TODO: Raise heck if not set
 
     // Public keys are exposed to the client
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || ':8000/',
-      AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || ":8000/",
+      AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
     },
-  }
-})
+  },
+});

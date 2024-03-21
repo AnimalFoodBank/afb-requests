@@ -17,8 +17,21 @@ const links = [
     id: 'requests',
     label: 'Requests',
     icon: 'i-ph-phone',
+    defaultOpen: route.path.startsWith('/requests'),
     to: '/requests',
-    badge: '3',
+    children: [
+      {
+        label: 'Request History',
+        to: '/requests',
+        exact: true
+      },
+      {
+        label: 'New Request',
+        to: '/requests/new',
+        exact: true
+      },
+    ],
+
     tooltip: {
       text: 'Your history of requests',
     }

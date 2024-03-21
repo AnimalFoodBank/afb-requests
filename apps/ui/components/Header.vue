@@ -5,7 +5,7 @@ const links = [{
   label: 'Dashboard',
   to: '/dashboard'
 }, {
-  label: 'New Request',
+  label: 'Request Food',
   to: '/requests/new'
 }, {
   label: 'About Us',

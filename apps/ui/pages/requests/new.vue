@@ -1,61 +1,47 @@
+
 <script setup lang="ts">
 
-definePageMeta({
-  layout: 'dashboard',
-  auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/login',
-  },
-})
+  definePageMeta({
+    layout: 'dashboard',
+    auth: {
+      unauthenticatedOnly: true,
+    },
+  })
 
-const state = reactive({
-  name: 'Poo Bear',
-  email: 'poop@solutious.com',
-  username: 'poobear',
-  avatar: '',
-  bio: '',
-  password_current: '',
-  password_new: ''
-})
-
-const validate = (state: any) => {
-  const errors = []
-  if (!state.email) errors.push({ path: 'email', message: 'Email is required' })
-  if (!state.password) errors.push({ path: 'password', message: 'Password is required' })
-  return errors
-}
-
-function onSubmit (data: any) {
-  console.log('Submitted', data)
-}
-
+  const links = [[{
+      label: 'My Delivery Info',
+      icon: 'i-heroicons-user-circle',
+      to: '/profile',
+      exact: true
+    }, {
+      label: 'My Pets',
+      icon: 'i-heroicons-home',
+      to: '/profile/pets',
+    }, {
+      label: 'Contact us',
+      icon: 'i-heroicons-house',
+      to: 'https://animalfoodbank.org/#contact',
+      target: '_blank',
+      exact: true
+    }]
+  ]
 </script>
 
 <template>
   <UDashboardPage>
-    <UDashboardPanel>
-      <UDashboardNavbar title="Dashboard">
+    <UDashboardPanel grow>
+      <UDashboardNavbar title="Profile" />
 
-      </UDashboardNavbar>
-
-      <UDashboardToolbar>
+      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block lg:hidden">
+        <UHorizontalNavigation :links="links" class="" />
       </UDashboardToolbar>
 
       <UDashboardPanelContent class="pb-24">
-        <UDashboardSection title="Theme" description="Customize the look and feel of your dashboard.">
-          <template #links>
-            <UColorModeSelect color="gray" />
-          </template>
-        </UDashboardSection>
 
-        <UDivider class="mb-4" />
-
-        <RequestsFoodRequestForm :state="state" :validate="validate" :onSubmit="onSubmit"/>
+        <RequestForm />
 
       </UDashboardPanelContent>
 
-
     </UDashboardPanel>
   </UDashboardPage>
-
 </template>
