@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     'nuxt-snackbar',
     "@vueform/nuxt",
+    '@vueform/builder-nuxt',
   ],
 
   /*
