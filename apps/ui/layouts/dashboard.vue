@@ -52,6 +52,11 @@ const links = [
         to: '/profile/pets',
         exact: true
       },
+      {
+        label: 'Update info',
+        to: '/profile/feedback',
+        exact: true
+      },
     ],
     tooltip: {
       text: 'Your profile details',

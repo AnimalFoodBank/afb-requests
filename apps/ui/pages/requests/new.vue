@@ -9,20 +9,14 @@
   })
 
   const links = [[{
-      label: 'My Delivery Info',
-      icon: 'i-heroicons-user-circle',
-      to: '/profile',
+      label: 'Request History',
+      icon: 'i-heroicons-calendar',
+      to: '/requests',
       exact: true
     }, {
-      label: 'My Pets',
-      icon: 'i-heroicons-home',
-      to: '/profile/pets',
-    }, {
-      label: 'Contact us',
-      icon: 'i-heroicons-house',
-      to: 'https://animalfoodbank.org/#contact',
-      target: '_blank',
-      exact: true
+      label: 'New Request',
+      icon: 'i-ph-plus-square-light',
+      to: '/requests/new',
     }]
   ]
 </script>

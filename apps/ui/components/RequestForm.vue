@@ -1,6 +1,6 @@
 
 <template>
-  <Vueform v-bind="vueform" add-class="vf-request-form" />
+  <Vueform v-bind="vueform" add-class="vf-request-form" endpoint="/requests/new" method="post" />
 </template>
 
 <script setup lang="ts">
@@ -14,6 +14,7 @@
       size: 'md',
       displayErrors: false,
       displaySuccess: true,
+
 
       /**
        * ***************************************************
@@ -35,13 +36,24 @@
           buttons: {
             previous: false,
           },
+          labels: {
+            next: 'Next: Contact',
+          },
         },
         step1: {
+          active: true,
           label: 'Contact',
           elements: [
             'step1_title',
-            'step1_intro',
+            'delivery_contact',
           ],
+          buttons: {
+            previous: true,
+          },
+          labels: {
+            previous: 'Address',
+            next: 'Next: Your Pets',
+          },
         },
         step2: {
           label: 'Your Pets',
@@ -56,6 +68,10 @@
             'rooms',
             'divider_6',
           ],
+          labels: {
+            previous: 'Contact',
+            next: 'Next: Safe Drop',
+          },
         },
         step3: {
           label: 'Safe Drop',
@@ -65,6 +81,10 @@
             'equipment',
             'divider_8',
           ],
+          labels: {
+            previous: 'Your Pets',
+            next: 'Next: Confirmation',
+          },
         },
         step4: {
           label: 'Confirmation',
@@ -77,6 +97,12 @@
             'breakfast_types',
             'divider_10',
           ],
+          buttons: {
+            previous: true,
+          },
+          labels: {
+            previous: 'Safe Drop',
+          },
         },
 
       },
@@ -95,14 +121,12 @@
           tag: 'h3',
           top: '1',
         },
-
         step1_title: {
           type: 'static',
           content: 'Delivery Contact',
           tag: 'h3',
           top: '1',
         },
-
         step2_title: {
           type:  'static',
           content: 'Your Pets',
@@ -124,7 +148,7 @@
 
 
         //
-        // === PAGE 0: Delivery Address ====
+        // === STEP 0: Delivery Address ====
         //
         building_type: {
           type: 'radiogroup',
@@ -141,7 +165,7 @@
             // 'required',
           ],
           fieldName: 'Building type',
-          default: '',
+          default: 'Other',
           label: 'Building type <i>(optional)</i>',
         },
         location: {
@@ -235,7 +259,6 @@
             }
           },
         },
-
         branch_locations: {
           type: 'select',
           // search: true,
@@ -247,6 +270,7 @@
             'required',
           ],
           label: 'Your local branch',
+          default: 'Vernon',
           conditions: [
             [
               'location.country',
@@ -255,10 +279,54 @@
                 'CA',
               ],
             ],
-            // ['location.divisions_level1', 'in', []]
-            // ],
           ]
         },
+
+        //
+        // STEP 1 - Delivery Contact
+        //
+        delivery_contact: {
+          type: 'object',
+          schema: {
+            step1_intro: {
+              type: 'static',
+              tag: 'p',
+              content: 'Please provide a contact person for the delivery.',
+            },
+            contact_phone: {
+              type: 'text',
+              rules: [
+                'required',
+                'max:16',
+              ],
+              label: 'Contact phone',
+              placeholder: '(123) 456-7890',
+              mask: '(000) 000-0000',
+              columns: {
+                container: 6,
+                label: 12,
+                wrapper: 6,
+              },
+            },
+            contact_name: {
+              type: 'text',
+              rules: [
+                'max:32',
+              ],
+              label: 'Contact name <em>(optional)</em>',
+              placeholder: 'e.g. Jean Mance',
+              columns: {
+                container: 12,
+                label: 12,
+                wrapper: 3,
+              },
+            },
+          },
+        },
+
+
+
+
 
         confirm_correct: {
           type: 'checkbox',
