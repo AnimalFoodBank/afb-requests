@@ -47,6 +47,9 @@ dependencies:
   '@vueform/nuxt':
     specifier: ^1.4.0
     version: 1.4.0
+  '@vueform/plugin-mask':
+    specifier: ^1.0.3
+    version: 1.0.3(typescript@5.4.2)
   '@vueform/vueform':
     specifier: ^1.9.1
     version: 1.9.2
@@ -443,6 +446,14 @@ packages:
       '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.24.0)
       '@babel/plugin-transform-modules-commonjs': 7.23.3(@babel/core@7.24.0)
       '@babel/plugin-transform-typescript': 7.23.6(@babel/core@7.24.0)
+    dev: false
+
+  /@babel/runtime-corejs3@7.24.1:
+    resolution: {integrity: sha512-T9ko/35G+Bkl+win48GduaPlhSlOjjE5s1TeiEcD+QpxlLQnoEfb/nO/T+TQqkm+ipFwORn+rB8w14iJ/uD0bg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      core-js-pure: 3.36.1
+      regenerator-runtime: 0.14.1
     dev: false
 
   /@babel/runtime@7.24.0:
@@ -4073,6 +4084,17 @@ packages:
       - supports-color
     dev: false
 
+  /@vueform/plugin-mask@1.0.3(typescript@5.4.2):
+    resolution: {integrity: sha512-+Qk7XT96E1/54DwgEB6Izxo/CGAnKbRVLbRxSnxwrNco5orTZixs5o1TXAZ3kN/YkRlV2zNOhpaXDVeowQWj8w==}
+    dependencies:
+      '@vueform/vueform': 1.9.2
+      imask: 7.5.0
+      vue: 3.4.21(typescript@5.4.2)
+    transitivePeerDependencies:
+      - debug
+      - typescript
+    dev: false
+
   /@vueform/slider@2.1.10:
     resolution: {integrity: sha512-L2G3Ju51Yq6yWF2wzYYsicUUaH56kL1QKGVtimUVHT1K1ADcRT94xVyIeJpS0klliVEeF6iMZFbdXtHq8AsDHw==}
     dev: false
@@ -5173,6 +5195,11 @@ packages:
     dependencies:
       depd: 2.0.0
       keygrip: 1.1.0
+    dev: false
+
+  /core-js-pure@3.36.1:
+    resolution: {integrity: sha512-NXCvHvSVYSrewP0L5OhltzXeWFJLo2AL2TYnj6iLV3Bw8mM62wAQMNgUCRI6EBu6hVVpbCxmOPlxh1Ikw2PfUA==}
+    requiresBuild: true
     dev: false
 
   /core-util-is@1.0.3:
@@ -6642,6 +6669,13 @@ packages:
     hasBin: true
     dependencies:
       queue: 6.0.2
+    dev: false
+
+  /imask@7.5.0:
+    resolution: {integrity: sha512-eoTEnw67KAamB1zsiYtU35s0Fj1XYZ8mN2q3ZDGO4ot4FtPmBpw9S6kOTj0kaOILdsEA6ZhNtH2TAMXe/NChmQ==}
+    engines: {npm: '>=4.0.0'}
+    dependencies:
+      '@babel/runtime-corejs3': 7.24.1
     dev: false
 
   /immutable-json-patch@6.0.1:
