@@ -311,7 +311,7 @@ onMounted(() => {
           },
           preferred_method: {
             type: "radiogroup",
-            view: "tabs",
+            view: "default",
             items: ["Call", "Text", "Email"],
             rules: ["required"],
             fieldName: "Preferred method",

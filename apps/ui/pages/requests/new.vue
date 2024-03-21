@@ -25,7 +25,7 @@
     delivery_contact:{
       contact_number: '250-777-2171',
       contact_name: 'Pearl',
-      preferred_method: "Call",
+      preferred_method: "Email",
     },
     your_pets: {
       pet_name: 'Buddy',
