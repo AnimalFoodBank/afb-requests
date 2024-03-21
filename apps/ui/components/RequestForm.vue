@@ -1,36 +1,22 @@
-
 <template>
-  <Vueform ref="vueform" v-bind="vueform" />
+  <Vueform v-bind="vueform" />
 </template>
 
-
 <script setup lang="ts">
-import { useVueform } from '@vueform/vueform';
-import { reactive } from 'vue';
 
-interface VueformProps {
-  value: any
-}
+  const vueform = ref<any>(null);
 
-let vueform: VueformProps | null = null;
-const vueformProps: VueformProps = reactive({
-  value: {
-    // Your value object
-  },
-});
+  onMounted(() => {
+    console.log('Component has been mounted');
 
-
-
-onMounted(() => {
-
-  vueformProps.value = {
+    vueform.value = {
     size: 'md',
     displayErrors: false,
     steps: {
       page0: {
-        label: 'Details',
+        label: 'Delivery Address Verification',
         elements: [
-          'h2',
+          'h3',
           'divider',
           'accommodation_type',
           'advert_elsewhere',
@@ -206,7 +192,6 @@ onMounted(() => {
         ],
       },
     },
-    addClass: 'vf-create-listing',
     schema: {
       h2: {
         type: 'static',
@@ -223,8 +208,9 @@ onMounted(() => {
         view: 'tabs',
         items: [
           'Apartment',
-          'Private',
-          'Hotel',
+          'Detached house',
+          'Townhome',
+          'Condo',
           'Other',
         ],
         rules: [
@@ -264,7 +250,7 @@ onMounted(() => {
               label: 12,
               wrapper: 12,
             },
-            description: 'Ex.: https://airbnb.com/rooms/xxxxxxxxxx or\nhttps://vrbo.com/xxxxxx',
+            description: 'Ex.: https://airbnb.com/rooms/xxxxxxxxxx orhttps://vrbo.com/xxxxxx',
           },
           import_button: {
             type: 'button',
@@ -627,7 +613,7 @@ onMounted(() => {
       h2_4: {
         type: 'static',
         tag: 'h2',
-        content: 'Equipment &amp; facilities',
+        content: 'Equipment & facilities',
         top: '1',
       },
       divider_7: {
@@ -1234,7 +1220,7 @@ onMounted(() => {
         view: 'gallery',
         accept: 'image/*,image/jpeg,image/png,image/gif,image/svg+xml',
         drop: true,
-        description: 'First uploaded photo will be shown in search results\nMax size is 2MB/file, accepted formats are: JPG, PNG, GIF, SVG. You’re 29% more likely to get bookings if you upload at least 5 photos.',
+        description: 'First uploaded photo will be shown in search resultsMax size is 2MB/file, accepted formats are: JPG, PNG, GIF, SVG. You’re 29% more likely to get bookings if you upload at least 5 photos.',
         file: {
           rules: [
             'mimetypes:image/jpeg,image/png,image/gif,image/svg+xml',
@@ -1616,12 +1602,6 @@ onMounted(() => {
       },
     },
   }
-
-  console.log("------")
-  console.log(vueformProps.value)
-
-  useVueform(vueformProps)
-
-})
+  });
 
 </script>
