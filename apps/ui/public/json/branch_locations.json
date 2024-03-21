@@ -1,11 +1,41 @@
 {
+  "": {},
+  "Medicine Hat": {
+    "name": "Medicine Hat",
+    "value": "medhat",
+    "lat": 50.0417,
+    "lon": -110.6766
+  },
 
-    "CA": [
-      "Medicine Hat",
-      "Vernon",
-      "Winnipeg NW",
-      "Winnipeg NE",
-      "Winnipeg SW",
-      "Winnipeg SE"
-    ]
+  "Vernon": {
+    "name": "Vernon",
+    "value": "vernon",
+    "lat": 50.267,
+    "lon": -119.272
+  },
+  "Winnipeg NW": {
+    "name": "Winnipeg NW",
+    "value": "winnipeg_nw",
+    "lat": 49.8951,
+    "lon": -97.1384
+  },
+  "Winnipeg NE": {
+    "name": "Winnipeg NE",
+    "value": "winnipeg_ne",
+    "lat": 49.8951,
+    "lon": -97.1384
+  },
+  "Winnipeg SW": {
+    "name": "Winnipeg SW",
+    "value": "winnipeg_sw",
+    "lat": 49.8951,
+    "lon": -97.1384
+  },
+  "Winnipeg SE": {
+    "name": "Winnipeg SE",
+    "value": "winnipeg_se",
+    "lat": 49.8951,
+    "lon": -97.1384
+  }
+
 }

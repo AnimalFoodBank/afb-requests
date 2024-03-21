@@ -24,29 +24,26 @@
        *
        **/
       steps: {
-        page0: {
-          label: 'Delivery Address',
+        step0: {
+          label: 'Address',
           elements: [
-            'page0_title',
-            // 'page0_intro',
+            'step0_title',
             'branch_locations',
-            'divider',
-            'building_type',
             'location',
-            'divider',
-
+            'building_type',
           ],
           buttons: {
             previous: false,
           },
         },
-        page1: {
-          label: 'Delivery Contact',
+        step1: {
+          label: 'Contact',
           elements: [
-            'poop'
+            'step1_title',
+            'step1_intro',
           ],
         },
-        page2: {
+        step2: {
           label: 'Your Pets',
           elements: [
             'h2_2',
@@ -60,7 +57,7 @@
             'divider_6',
           ],
         },
-        page3: {
+        step3: {
           label: 'Safe Drop',
           elements: [
             'h2_4',
@@ -69,8 +66,8 @@
             'divider_8',
           ],
         },
-        page4: {
-          label: 'Please Confirm',
+        step4: {
+          label: 'Confirmation',
           elements: [
             'h2_5',
             'divider_9',
@@ -92,15 +89,42 @@
        *
        **/
       schema: {
-        page0_title: {
+        step0_title: {
           type: 'static',
-          content: 'Address Details',
+          content: 'Delivery Address',
           tag: 'h3',
           top: '1',
         },
 
+        step1_title: {
+          type: 'static',
+          content: 'Delivery Contact',
+          tag: 'h3',
+          top: '1',
+        },
+
+        step2_title: {
+          type:  'static',
+          content: 'Your Pets',
+          tag:    'h3',
+          top:    1,
+        },
+        step3_title: {
+          type:   'static',
+          content: 'Safe Drop',
+          tag:     'h3',
+          top:   1,
+         },
+        step4_title: {
+          type:  'static',
+          content: "Confirmation",
+          tag:      'h3',
+          top:      2,
+        },
+
+
         //
-        // === SHARE ELEMENTS ===
+        // === PAGE 0: Delivery Address ====
         //
         building_type: {
           type: 'radiogroup',
@@ -109,58 +133,26 @@
             'Apartment',
             'Townhome',
             'Condo',
-            'Laneway house',
-            'Detached home',
+            'Laneway',
+            'Detached house',
             'Other',
           ],
           rules: [
-            'required',
+            // 'required',
           ],
           fieldName: 'Building type',
           default: '',
-          label: 'Building type',
+          label: 'Building type <i>(optional)</i>',
         },
-
-        //
-        // === PAGE 0: Address Details ====
-        //
-
         location: {
           type: 'object',
           schema: {
-            '0_intro': {
+            step0_intro: {
               type: 'static',
               tag: 'p',
               content: 'Please make sure your address is correct. <b>Later it can only be modified by support staff.</b>',
             },
 
-            divisions_level1: {
-              type: 'select',
-              // search: true,
-              // native: false,
-              inputType: 'search',
-              autocomplete: 'off',
-              items: '/json/divisions_level1.json',
-              rules: [
-                'required',
-              ],
-              label: 'Province/Territory',
-
-              columns: {
-                container: 8,
-                label: 12,
-                wrapper: 12,
-              },
-              conditions: [
-                [
-                  'location.country',
-                  'in',
-                  [
-                    'CA',
-                  ],
-                ],
-              ],
-            },
             address_line1: {
               type: 'text',
               placeholder: 'e.g. 1200 Main St',
@@ -190,6 +182,33 @@
                 wrapper: 12,
               },
             },
+            divisions_level1: {
+              type: 'select',
+              // search: true,
+              native: true,
+              inputType: 'search',
+              autocomplete: 'off',
+              items: '/json/divisions_level1.json',
+              rules: [
+                'required',
+              ],
+              label: 'Province/Territory',
+
+              columns: {
+                container: 4,
+                label: 12,
+                wrapper: 12,
+              },
+              conditions: [
+                [
+                  'location.country',
+                  'in',
+                  [
+                    'CA',
+                  ],
+                ],
+              ],
+            },
             postcode: {
               type: 'text',
               rules: [
@@ -205,12 +224,21 @@
               placeholder: 'e.g. M1V 1F1',
               default: '',
             },
+            country: {
+              type:  'select',
+              hidden: true,
+              rules: [
+                 'required',
+               ],
+              items: '/json/countries.json',
+              default: 'CA',
+            }
           },
         },
 
         branch_locations: {
           type: 'select',
-          search: true,
+          // search: true,
           native: true,
           inputType: 'search',
           autocomplete: 'off',
@@ -219,15 +247,14 @@
             'required',
           ],
           label: 'Your local branch',
-          default: '',
           conditions: [
-            // [
-            //   'location.country',
-            //   'in',
-            //   [
-            //     'CA',
-            //   ],
-            // ],
+            [
+              'location.country',
+              'in',
+              [
+                'CA',
+              ],
+            ],
             // ['location.divisions_level1', 'in', []]
             // ],
           ]
@@ -249,211 +276,6 @@
           rules: [
             'accepted',
           ],
-        },
-        guests_count: {
-          type: 'text',
-          inputType: 'number',
-          rules: [
-            'required',
-            'integer',
-          ],
-          autocomplete: 'off',
-          label: 'How many guests can stay?',
-          columns: {
-            wrapper: 2,
-          },
-          default: '4',
-        },
-
-
-        rooms: {
-          type: 'list',
-          element: {
-            type: 'object',
-            schema: {
-              h4: {
-                type: 'static',
-                tag: 'h4',
-                content: 'Room',
-              },
-              room_type: {
-                type: 'select',
-                search: true,
-                native: false,
-                label: 'Room type',
-                inputType: 'search',
-                autocomplete: 'off',
-                items: [
-                  'Bedroom',
-                  'Living room',
-                  'Other',
-                ],
-                rules: [
-                  'required',
-                ],
-                default: 'Bedroom',
-              },
-              html: {
-                type: 'static',
-                columns: {
-                  container: 1,
-                },
-              },
-              container: {
-                type: 'group',
-                schema: {
-                  h4: {
-                    type: 'static',
-                    tag: 'h4',
-                    content: 'Beds',
-                  },
-                  container: {
-                    type: 'group',
-                    schema: {
-                      html: {
-                        type: 'static',
-                        content: 'Bed type',
-                        columns: {
-                          container: 10,
-                        },
-                      },
-                      html_copy: {
-                        type: 'static',
-                        content: 'Count',
-                        columns: {
-                          container: 2,
-                        },
-                      },
-                    },
-                    conditions: [
-                      [
-                        'rooms.*.container.beds',
-                        'not_empty',
-                      ],
-                    ],
-                  },
-                  beds: {
-                    type: 'list',
-                    element: {
-                      type: 'object',
-                      schema: {
-                        bed_type: {
-                          type: 'select',
-                          search: true,
-                          native: false,
-                          inputType: 'search',
-                          autocomplete: 'off',
-                          columns: {
-                            container: 10,
-                          },
-                          items: [
-                            'Single bed (90 cm - 130 cm)',
-                            'Big single bed (131 cm - 150 cm)',
-                            'Double bed (151 cm - 180 cm)',
-                            'Big double bed (181 cm - 210 cm)',
-                            'Bunk-bed (variable size)',
-                            'Sofa-bed (variable size)',
-                            'Futon (variable size)',
-                          ],
-                          default: 'Single bed (90 cm - 130 cm)',
-                        },
-                        bed_count: {
-                          type: 'text',
-                          inputType: 'number',
-                          rules: [
-                            'required',
-                            'integer',
-                          ],
-                          autocomplete: 'off',
-                          columns: {
-                            container: 2,
-                          },
-                          default: '1',
-                        },
-                      },
-                    },
-                    addText: '+ Add bed',
-                  },
-                },
-                columns: {
-                  container: 11,
-                },
-              },
-              divider: {
-                type: 'static',
-                tag: 'hr',
-              },
-            },
-          },
-          addText: '+ Add room',
-        },
-
-        equipment: {
-          type: 'object',
-          schema: {
-            general: {
-              type: 'checkboxgroup',
-              label: 'General',
-              items: [
-                'AC',
-                'Heating',
-                'Free Wifi',
-                'Electric car charger',
-              ],
-              columns: {
-                container: 6,
-                label: 12,
-                wrapper: 12,
-              },
-            },
-            kitchen: {
-              type: 'checkboxgroup',
-              label: 'Kitchen and cleaning',
-              columns: {
-                container: 6,
-                label: 12,
-                wrapper: 12,
-              },
-              items: [
-                'Electric kettle',
-                'Tea/coffee maker',
-                'Towels',
-                'Washing machine',
-                'Dishwasher',
-              ],
-            },
-            entertainment: {
-              type: 'checkboxgroup',
-              label: 'Entertainment',
-              columns: {
-                container: 6,
-                label: 12,
-                wrapper: 12,
-              },
-              items: [
-                'Flat screen tv',
-                'Bar',
-                'Hot tub',
-                'Sauna',
-                'Swimming pool',
-              ],
-            },
-            outside: {
-              type: 'checkboxgroup',
-              label: 'Outside',
-              columns: {
-                container: 6,
-                label: 12,
-                wrapper: 12,
-              },
-              items: [
-                'BBQ',
-                'Balcony',
-                'Garden',
-                'Beach',
-              ],
-            },
-          },
         },
 
         //
@@ -477,113 +299,6 @@
         },
 
       },
-
-      //
-      // === BREAKFAST CONDITIONS EXAMPLE  ===
-      //
-      serve_breakfast: {
-        type: 'radiogroup',
-        view: 'tabs',
-        items: [
-          'Yes',
-          'No',
-        ],
-        default: 'No',
-        rules: [
-          'required',
-        ],
-        label: 'Do you serve breakfast?',
-        fieldName: 'Breakfast',
-      },
-      breakfast_in_price: {
-        type: 'radiogroup',
-        view: 'tabs',
-        items: [
-          'Yes',
-          'No',
-        ],
-        default: 'Yes',
-        rules: [
-          'required',
-        ],
-        label: 'Is it included in the price?',
-        conditions: [
-          [
-            'serve_breakfast',
-            'in',
-            [
-              'Yes',
-            ],
-          ],
-        ],
-      },
-      breakfast_price: {
-        type: 'text',
-        inputType: 'number',
-        rules: [
-          'required',
-          'numeric',
-        ],
-        autocomplete: 'off',
-        label: 'Breakfast cost per person, per day',
-        addons: {
-          before: '$',
-        },
-        description: 'Including taxes and fees.',
-        conditions: [
-          [
-            'breakfast_in_price',
-            'in',
-            [
-              'No',
-            ],
-          ],
-          [
-            'serve_breakfast',
-            'in',
-            [
-              'Yes',
-            ],
-          ],
-        ],
-      },
-      breakfast_types: {
-        type: 'tags',
-        closeOnSelect: false,
-        label: 'What types of breakfasts do you offer?',
-        items: [
-          'Á la carte',
-          'American',
-          'Asian',
-          'Breakfast togo',
-          'Buffet',
-          'Continental',
-          'Full English/Irish',
-          'Gluten-free',
-          'Halal',
-          'Italian',
-          'Kosher',
-          'Vegan',
-          'Vegetarian',
-        ],
-        rules: [
-          'required',
-        ],
-        search: true,
-        inputType: 'search',
-        autocomplete: 'off',
-        conditions: [
-          [
-            'serve_breakfast',
-            'in',
-            [
-              'Yes',
-            ],
-          ],
-        ],
-        description: 'Select all that applies.',
-      },
-
     }
 
   });
