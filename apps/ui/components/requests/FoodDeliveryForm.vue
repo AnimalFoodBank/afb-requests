@@ -8,26 +8,22 @@
   />
 </template>
 
+
 <script setup lang="ts">
+import type { FoodDeliveryFormState } from '@/types/index';
 
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
-  state: {
-    name: string;
-    email: string;
-    username: string;
-    avatar: string;
-    bio: string;
-    password_current: string;
-    password_new: string;
-  };
+  state: FoodDeliveryFormState;
 }>();
 
 const vueform = ref<any>(null);
 
 onMounted(() => {
   console.log("RequestForm has been mounted");
+
+  const state = props.state;
 
   vueform.value = {
     size: "md",
@@ -43,6 +39,7 @@ onMounted(() => {
      *
      **/
     steps: {
+
       step0: {
         label: "Address",
         elements: [
