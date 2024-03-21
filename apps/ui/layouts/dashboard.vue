@@ -40,7 +40,7 @@ const links = [
     id: 'profile',
     label: 'Profile',
     to: '/profile',
-    icon: 'i-heroicons-cog-8-tooth',
+    icon: 'i-heroicons-user',
     children: [
       {
         label: 'My Delivery Info',
@@ -109,9 +109,5 @@ const colors = computed(() => defaultColors.value.map(color => ({ ...color, acti
     <!-- <HelpSlideover /> -->
     <!-- ~/components/NotificationsSlideover.vue -->
     <!-- <NotificationsSlideover /> -->
-
-    <ClientOnly>
-
-    </ClientOnly>
   </UDashboardLayout>
 </template>
