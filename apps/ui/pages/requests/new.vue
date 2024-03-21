@@ -30,13 +30,13 @@
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Profile" />
+      <UDashboardNavbar title="New Food Request" />
 
       <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block lg:hidden">
         <UHorizontalNavigation :links="links" class="" />
       </UDashboardToolbar>
 
-      <UDashboardPanelContent class="pb-24">
+      <UDashboardPanelContent class="pb-12 pr-16 mr-16">
 
         <RequestForm />
 
