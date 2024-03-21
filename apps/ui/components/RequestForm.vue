@@ -374,6 +374,16 @@
 </script>
 
 <style>
+  .dark:vf-request-form *,
+  .dark:vf-request-form *:before,
+  .dark:vf-request-form *:after,
+  .dark:vf-request-form:root {
+    /**
+     * Creating this namespace is enough to allow the existing
+     * CSS variables to be used in the dark mode.
+     **/
+    --vf-bg-input: #ffffff;
+  };
   .vf-request-form *,
   .vf-request-form *:before,
   .vf-request-form *:after,
