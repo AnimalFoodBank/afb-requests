@@ -18,4 +18,11 @@ export default defineConfig({
     // builder,
     PluginMask,
   ],
+  // services: {
+  //   google2: {
+  //     app_id: '338793354229-r38ovlt05ltulgdf2ar6kcg5fhcg2ut3.apps.googleusercontent.com',
+  //     project_id: '338793354229-r38ovlt05ltulgdf2ar6kcg5fhcg2ut3.apps.googleusercontent.com',
+  //     api_key: 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg',
+  //   }
+  // }
 })

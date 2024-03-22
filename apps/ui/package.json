@@ -16,6 +16,7 @@
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "vue3-google-map": "^0.20.0",
     "@iconify-json/game-icons": "^1.1.7",
     "@iconify-json/heroicons": "^1.1.20",
     "@iconify-json/ph": "^1.1.11",

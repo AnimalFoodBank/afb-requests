@@ -23,6 +23,7 @@ export interface FoodDeliveryFormState {
         divisions_level1: string;
         postcode: string;
         country: string;
+        provider_location?: string;
       };
       building_type: string;
     },

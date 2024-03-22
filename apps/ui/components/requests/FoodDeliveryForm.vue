@@ -23,405 +23,415 @@ const vueform = ref<any>(null);
 onMounted(() => {
   console.log("RequestForm has been mounted");
 
-  const state = props.state;
+  // const state = props.state;
 
-  vueform.value = {
-    size: "md",
-    displayErrors: false,
-    displaySuccess: true,
+  // vueform.value = {
+  //   size: "md",
+  //   displayErrors: false,
+  //   displaySuccess: true,
 
-    /**
-     * ***************************************************
-     *  FORM STEPS
-     * ***************************************************
-     *
-     *
-     *
-     **/
-    steps: {
+  //   /**
+  //    * ***************************************************
+  //    *  FORM STEPS
+  //    * ***************************************************
+  //    *
+  //    *
+  //    *
+  //    **/
+  //   steps: {
 
-      step0: {
-        label: "Address",
-        elements: [
-          "step0_title",
-          "branch_locations",
-          "location",
-          "building_type",
-        ],
-        buttons: {
-          previous: false,
-        },
-        labels: {
-          next: "Next: Contact",
-        },
-        default: {
-          branch_locations: "Medicine Hat",
-          location: {
-            address_line1: "1123 Main St",
-            city: "S1hrumsville",
-            divisions_level1: "BC",
-            postcode: "N1V 1F1",
-            country: "CA",
-          },
-        },
-      },
+  //     step0: {
+  //       label: "Address",
+  //       elements: [
+  //         "step0_title",
+  //         "branch_locations",
+  //         "location",
+  //         "building_type",
+  //         // "provider_location",
+  //       ],
+  //       buttons: {
+  //         previous: false,
+  //       },
+  //       labels: {
+  //         next: "Next: Contact",
+  //       },
+  //       default: {
+  //         branch_locations: "Medicine Hat",
+  //         location: {
+  //           address_line1: "1123 Main St",
+  //           city: "S1hrumsville",
+  //           divisions_level1: "BC",
+  //           postcode: "N1V 1F1",
+  //           country: "CA",
+  //         },
+  //       },
+  //     },
 
-      step1: {
-        active: true,
-        label: "Contact",
-        elements: ["step1_title", "delivery_contact"],
-        labels: {
-          previous: "← Address",
-          next: "Next: Your Pets",
-        },
-      },
+  //     step1: {
+  //       active: true,
+  //       label: "Contact",
+  //       elements: ["step1_title", "delivery_contact"],
+  //       labels: {
+  //         previous: "← Address",
+  //         next: "Next: Your Pets",
+  //       },
+  //     },
 
-      step2: {
-        label: "Your Pets",
-        elements: [
-          "step2_title",
-          "pet_name",
-          "pet_breed",
-          "pet_age",
-          "pet_weight",
-        ],
-        labels: {
-          previous: "← Contact",
-          next: "Next: Safe Drop",
-        },
-      },
+  //     step2: {
+  //       label: "Your Pets",
+  //       elements: [
+  //         "step2_title",
+  //         "pet_name",
+  //         "pet_breed",
+  //         "pet_age",
+  //         "pet_weight",
+  //       ],
+  //       labels: {
+  //         previous: "← Contact",
+  //         next: "Next: Safe Drop",
+  //       },
+  //     },
 
-      step3: {
-        label: "Safe Drop",
-        elements: [
-          "step3_title",
-          "safe_drop_policy",
-          "safe_drop",
-          "divider",
-          "safe_drop_instructions",
-        ],
-        labels: {
-          previous: "← Your Pets",
-          next: "Next: Confirmation",
-        },
-      },
+  //     step3: {
+  //       label: "Safe Drop",
+  //       elements: [
+  //         "step3_title",
+  //         "safe_drop_policy",
+  //         "safe_drop",
+  //         "divider",
+  //         "safe_drop_instructions",
+  //       ],
+  //       labels: {
+  //         previous: "← Your Pets",
+  //         next: "Next: Confirmation",
+  //       },
+  //     },
 
-      step4: {
-        label: "Confirmation",
-        elements: [
-          "step4_title",
-          "confirm_correct",
-          "accept_terms",
-          "divider_2",
-        ],
-        buttons: {
-          previous: true,
-        },
-        labels: {
-          previous: "← Safe Drop",
-          next: "Submit Request",
-        },
-      },
-    },
+  //     step4: {
+  //       label: "Confirmation",
+  //       elements: [
+  //         "step4_title",
+  //         "confirm_correct",
+  //         "accept_terms",
+  //         "divider_2",
+  //       ],
+  //       buttons: {
+  //         previous: true,
+  //       },
+  //       labels: {
+  //         previous: "← Safe Drop",
+  //         next: "Submit Request",
+  //       },
+  //     },
+  //   },
 
-    /**
-     * ***************************************************
-     *  SCHEMA
-     * ***************************************************
-     *
-     *
-     **/
-    schema: {
-      step0_title: {
-        type: "static",
-        content: "Delivery Address",
-        tag: "h3",
-        top: "1",
-      },
-      step1_title: {
-        type: "static",
-        content: "Delivery Contact",
-        tag: "h3",
-        top: "1",
-      },
-      step2_title: {
-        type: "static",
-        content: "Your Pets",
-        tag: "h3",
-        top: 1,
-      },
-      step3_title: {
-        type: "static",
-        content: "Safe Drop",
-        tag: "h3",
-        top: 1,
-      },
-      step4_title: {
-        type: "static",
-        content: "Confirmation",
-        tag: "h3",
-        top: 2,
-      },
+  //   /**
+  //    * ***************************************************
+  //    *  SCHEMA
+  //    * ***************************************************
+  //    *
+  //    *
+  //    **/
+  //   schema: {
+  //     step0_title: {
+  //       type: "static",
+  //       content: "Delivery Address",
+  //       tag: "h3",
+  //       top: "1",
+  //     },
+  //     step1_title: {
+  //       type: "static",
+  //       content: "Delivery Contact",
+  //       tag: "h3",
+  //       top: "1",
+  //     },
+  //     step2_title: {
+  //       type: "static",
+  //       content: "Your Pets",
+  //       tag: "h3",
+  //       top: 1,
+  //     },
+  //     step3_title: {
+  //       type: "static",
+  //       content: "Safe Drop",
+  //       tag: "h3",
+  //       top: 1,
+  //     },
+  //     step4_title: {
+  //       type: "static",
+  //       content: "Confirmation",
+  //       tag: "h3",
+  //       top: 2,
+  //     },
 
-      //
-      // === STEP 0: Delivery Address ====
-      //
-      branch_locations: {
-        type: "select",
-        // search: true,
-        native: true,
-        inputType: "search",
-        autocomplete: "off",
-        items: "/json/branch_locations.json",
-        rules: ["required"],
-        label: "Your local branch",
-        conditions: [["location.country", "in", ["CA"]]],
-        default: state.delivery_address.branch_location,
-      },
+  //     //
+  //     // === STEP 0: Delivery Address ====
+  //     //
+  //     branch_locations: {
+  //       type: "select",
+  //       // search: true,
+  //       native: true,
+  //       inputType: "search",
+  //       autocomplete: "off",
+  //       items: "/json/branch_locations.json",
+  //       rules: ["required"],
+  //       label: "Your local branch",
+  //       conditions: [["location.country", "in", ["CA"]]],
+  //       default: state.delivery_address.branch_location,
+  //     },
 
-      location: {
-        type: "object",
-        schema: {
-          step0_intro: {
-            type: "static",
-            tag: "p",
-            content:
-              "Please make sure your address is correct. <b>Later it can only be modified by support staff.</b>",
-          },
+  //     location: {
+  //       type: "object",
+  //       schema: {
+  //         step0_intro: {
+  //           type: "static",
+  //           tag: "p",
+  //           content:
+  //             "Please make sure your address is correct. <b>Later it can only be modified by support staff.</b>",
+  //         },
 
-          address_line1: {
-            type: "text",
-            placeholder: "e.g. 1200 Main St",
-            floating: false,
-            rules: ["required", "max:255"],
-            columns: {
-              container: 8,
-              label: 12,
-              wrapper: 12,
-            },
-            label: "Address",
-            default: state.delivery_address.location.address_line1,
-          },
-          city: {
-            type: "text",
-            label: "City",
-            placeholder: "e.g. Shrumsville",
-            floating: false,
-            rules: ["required", "max:255"],
-            columns: {
-              container: 8,
-              label: 12,
-              wrapper: 12,
-            },
-            default: state.delivery_address.location.city,
-          },
-          divisions_level1: {
-            type: "select",
-            native: true,
-            inputType: "search",
-            autocomplete: "off",
-            items: "/json/divisions_level1.json",
-            rules: ["required"],
-            label: "Province/Territory",
-            columns: {
-              container: 4,
-              label: 12,
-              wrapper: 12,
-            },
-            conditions: [["location.country", "in", ["CA"]]],
-            default: state.delivery_address.location.divisions_level1,
-          },
-          postcode: {
-            type: "text",
-            rules: ["required", "max:255"],
-            columns: {
-              container: 4,
-              label: 12,
-              wrapper: 12,
-            },
-            label: "Postal code",
-            placeholder: "e.g. M1V 1F1",
-            floating: false,
-            default: state.delivery_address.location.postcode,
-          },
+  //         address_line1: {
+  //           type: "text",
+  //           placeholder: "e.g. 1200 Main St",
+  //           floating: false,
+  //           rules: ["required", "max:255"],
+  //           columns: {
+  //             container: 8,
+  //             label: 12,
+  //             wrapper: 12,
+  //           },
+  //           label: "Address",
+  //           default: state.delivery_address.location.address_line1,
+  //         },
+  //         city: {
+  //           type: "text",
+  //           label: "City",
+  //           placeholder: "e.g. Shrumsville",
+  //           floating: false,
+  //           rules: ["required", "max:255"],
+  //           columns: {
+  //             container: 8,
+  //             label: 12,
+  //             wrapper: 12,
+  //           },
+  //           default: state.delivery_address.location.city,
+  //         },
+  //         divisions_level1: {
+  //           type: "select",
+  //           native: true,
+  //           inputType: "search",
+  //           autocomplete: "off",
+  //           items: "/json/divisions_level1.json",
+  //           rules: ["required"],
+  //           label: "Province/Territory",
+  //           columns: {
+  //             container: 4,
+  //             label: 12,
+  //             wrapper: 12,
+  //           },
+  //           conditions: [["location.country", "in", ["CA"]]],
+  //           default: state.delivery_address.location.divisions_level1,
+  //         },
+  //         postcode: {
+  //           type: "text",
+  //           rules: ["required", "max:255"],
+  //           columns: {
+  //             container: 4,
+  //             label: 12,
+  //             wrapper: 12,
+  //           },
+  //           label: "Postal code",
+  //           placeholder: "e.g. M1V 1F1",
+  //           floating: false,
+  //           default: state.delivery_address.location.postcode,
+  //         },
+  //         // loc_autocom: {
+  //         //   provider: "google",
+  //         //   type: "location",
+  //         //   // rules: ["required"],
+  //         //   label: "Provider location",
+  //         //   rules: ["required"],
+  //         //   conditions: [
+  //         //     ['location_wrapper.default_location', false]
+  //         //   ],
+  //         // },
+  //         country: {
+  //           type: "select",
+  //           hidden: true,
+  //           rules: ["required"],
+  //           items: "/json/countries.json",
+  //           default: "CA",
+  //         },
+  //       },
+  //     },
+  //     building_type: {
+  //       type: "radiogroup",
+  //       view: "tabs",
+  //       items: [
+  //         "Apartment",
+  //         "Townhouse",
+  //         "Condo",
+  //         "Laneway",
+  //         "Detached house",
+  //         "Other",
+  //       ],
+  //       rules: [],
+  //       fieldName: "Building type",
+  //       label: "Building type <i>(optional)</i>",
+  //       default: state.delivery_address.building_type,
+  //     },
 
-          country: {
-            type: "select",
-            hidden: true,
-            rules: ["required"],
-            items: "/json/countries.json",
-            default: "CA",
-          },
-        },
-      },
-      building_type: {
-        type: "radiogroup",
-        view: "tabs",
-        items: [
-          "Apartment",
-          "Townhouse",
-          "Condo",
-          "Laneway",
-          "Detached house",
-          "Other",
-        ],
-        rules: [],
-        fieldName: "Building type",
-        label: "Building type <i>(optional)</i>",
-        default: state.delivery_address.building_type,
-      },
+  //     //
+  //     // STEP 1 - Delivery Contact
+  //     //
+  //     delivery_contact: {
+  //       type: "object",
+  //       schema: {
+  //         step1_intro: {
+  //           type: "static",
+  //           tag: "p",
+  //           content: "Please provide a contact person for the delivery.",
+  //         },
+  //         contact_phone: {
+  //           type: "text",
+  //           rules: ["required", "max:16"],
+  //           label: "Contact phone",
+  //           placeholder: "(123) 456-7890",
+  //           floating: false,
+  //           mask: "(000) 000-0000",
+  //           columns: {
+  //             container: 6,
+  //             label: 12,
+  //             wrapper: 6,
+  //           },
+  //           default: state.delivery_contact.contact_number,
+  //         },
+  //         contact_name: {
+  //           type: "text",
+  //           rules: ["max:32"],
+  //           label: "Contact name <em>(optional)</em>",
+  //           placeholder: "e.g. Jean",
+  //           floating: false,
+  //           columns: {
+  //             container: 12,
+  //             label: 12,
+  //             wrapper: 3,
+  //           },
+  //           default: state.delivery_contact.contact_name,
+  //         },
+  //         preferred_method: {
+  //           type: "radiogroup",
+  //           view: "default",
+  //           items: ["Call", "Text", "Email"],
+  //           rules: ["required"],
+  //           fieldName: "Preferred method",
+  //           label: "Preferred method",
+  //           default: state.delivery_contact.preferred_method || "Text",
+  //         },
+  //       },
+  //     },
 
-      //
-      // STEP 1 - Delivery Contact
-      //
-      delivery_contact: {
-        type: "object",
-        schema: {
-          step1_intro: {
-            type: "static",
-            tag: "p",
-            content: "Please provide a contact person for the delivery.",
-          },
-          contact_phone: {
-            type: "text",
-            rules: ["required", "max:16"],
-            label: "Contact phone",
-            placeholder: "(123) 456-7890",
-            floating: false,
-            mask: "(000) 000-0000",
-            columns: {
-              container: 6,
-              label: 12,
-              wrapper: 6,
-            },
-            default: state.delivery_contact.contact_number,
-          },
-          contact_name: {
-            type: "text",
-            rules: ["max:32"],
-            label: "Contact name <em>(optional)</em>",
-            placeholder: "e.g. Jean",
-            floating: false,
-            columns: {
-              container: 12,
-              label: 12,
-              wrapper: 3,
-            },
-            default: state.delivery_contact.contact_name,
-          },
-          preferred_method: {
-            type: "radiogroup",
-            view: "default",
-            items: ["Call", "Text", "Email"],
-            rules: ["required"],
-            fieldName: "Preferred method",
-            label: "Preferred method",
-            default: state.delivery_contact.preferred_method || "Text",
-          },
-        },
-      },
+  //     //
+  //     // STEP 2 - Your Pets
+  //     //
+  //     pet_name: {
+  //       type: "text",
+  //       rules: ["required", "max:32"],
+  //       label: "Pet name",
+  //       placeholder: "e.g. Fluffy",
+  //       floating: false,
+  //       default: state.your_pets.pet_name,
+  //     },
+  //     pet_breed: {
+  //       type: "text",
+  //       rules: ["required", "max:32"],
+  //       label: "Breed",
+  //       placeholder: "e.g. Poodle",
+  //       floating: false,
+  //       default: state.your_pets.pet_breed,
+  //     },
+  //     pet_age: {
+  //       type: "text",
+  //       rules: ["required", "max:32"],
+  //       label: "Age",
+  //       placeholder: "e.g. 3",
+  //       floating: false,
+  //       default: state.your_pets.pet_age,
+  //     },
+  //     pet_weight: {
+  //       type: "text",
+  //       rules: ["required", "max:32"],
+  //       label: "Weight",
+  //       placeholder: "e.g. 12",
+  //       floating: false,
+  //       default: state.your_pets.pet_weight,
+  //     },
 
-      //
-      // STEP 2 - Your Pets
-      //
-      pet_name: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Pet name",
-        placeholder: "e.g. Fluffy",
-        floating: false,
-        default: state.your_pets.pet_name,
-      },
-      pet_breed: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Breed",
-        placeholder: "e.g. Poodle",
-        floating: false,
-        default: state.your_pets.pet_breed,
-      },
-      pet_age: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Age",
-        placeholder: "e.g. 3",
-        floating: false,
-        default: state.your_pets.pet_age,
-      },
-      pet_weight: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Weight",
-        placeholder: "e.g. 12",
-        floating: false,
-        default: state.your_pets.pet_weight,
-      },
+  //     //
+  //     // STEP 3 - Safe Drop
+  //     //
+  //     safe_drop_policy: {
+  //       type: "static",
+  //       tag: "p",
+  //       content:
+  //         "Our Safe Drop policy allows our drivers to leave your order at your door, lobby, or another safe location. By checking the box below, you agree to the Safe Drop policy.",
+  //     },
+  //     safe_drop: {
+  //       type: "checkbox",
+  //       text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
+  //       fieldName: "Safe Drop Policy",
+  //       rules: ["accepted"],
+  //     },
+  //     safe_drop_instructions: {
+  //       type: "textarea",
+  //       rules: ["max:255"],
+  //       label: "Safe Drop Instructions (optional)",
+  //       placeholder: "e.g. Leave at the front door.",
+  //       columns: {
+  //         container: 6,
+  //         label: 12,
+  //         wrapper: 12,
+  //       },
+  //     },
 
-      //
-      // STEP 3 - Safe Drop
-      //
-      safe_drop_policy: {
-        type: "static",
-        tag: "p",
-        content:
-          "Our Safe Drop policy allows our drivers to leave your order at your door, lobby, or another safe location. By checking the box below, you agree to the Safe Drop policy.",
-      },
-      safe_drop: {
-        type: "checkbox",
-        text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
-        fieldName: "Safe Drop Policy",
-        rules: ["accepted"],
-      },
-      safe_drop_instructions: {
-        type: "textarea",
-        rules: ["max:255"],
-        label: "Safe Drop Instructions (optional)",
-        placeholder: "e.g. Leave at the front door.",
-        columns: {
-          container: 6,
-          label: 12,
-          wrapper: 12,
-        },
-      },
+  //     //
+  //     // STEP 4 - Confirmation
+  //     //
+  //     confirm_correct: {
+  //       type: "checkbox",
+  //       text: "I confirm that the information provided is correct.",
+  //       fieldName: "Confirmation",
+  //       rules: ["accepted"],
+  //     },
 
-      //
-      // STEP 4 - Confirmation
-      //
-      confirm_correct: {
-        type: "checkbox",
-        text: "I confirm that the information provided is correct.",
-        fieldName: "Confirmation",
-        rules: ["accepted"],
-      },
+  //     accept_terms: {
+  //       type: "checkbox",
+  //       text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Policy.",
+  //       fieldName: "Terms",
+  //       rules: ["accepted"],
+  //     },
 
-      accept_terms: {
-        type: "checkbox",
-        text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Policy.",
-        fieldName: "Terms",
-        rules: ["accepted"],
-      },
-
-      //
-      // === SHARE ELEMENTS ===
-      //
-      divider: {
-        type: "static",
-        tag: "hr",
-      },
-      divider_1: {
-        type: "static",
-        tag: "hr",
-        top: "1",
-        bottom: "1",
-      },
-      divider_2: {
-        type: "static",
-        tag: "hr",
-        top: "2",
-        bottom: "2",
-      },
-    },
-  };
+  //     //
+  //     // === SHARE ELEMENTS ===
+  //     //
+  //     divider: {
+  //       type: "static",
+  //       tag: "hr",
+  //     },
+  //     divider_1: {
+  //       type: "static",
+  //       tag: "hr",
+  //       top: "1",
+  //       bottom: "1",
+  //     },
+  //     divider_2: {
+  //       type: "static",
+  //       tag: "hr",
+  //       top: "2",
+  //       bottom: "2",
+  //     },
+  //   },
+  // };
 });
 </script>
 

@@ -9,38 +9,7 @@
     },
   })
 
-  const state = reactive<FoodDeliveryFormState>({
-    delivery_address: {
-      branch_location: 'Medicine Hat',
-      location: {
-        address_line1: 'Addr line 1',
-        city: 'Cccityy',
-        divisions_level1: 'BC',
-        postcode: 'M4C 1B5',
-        country: 'CA',
-      },
-      building_type: 'Townhouse',
-    },
-    delivery_contact:{
-      contact_number: '250-777-2171',
-      contact_name: 'Pearl',
-      preferred_method: "Email",
-    },
-    your_pets: {
-      pet_name: 'Buddy',
-      pet_breed: 'Labrador Retriever',
-      pet_age: '3 years',
-      pet_weight: '50 lbs',
-    },
-    safe_drop: {
-      safe_drop: true,
-      safe_drop_instructions: 'Leave at the door',
-    },
-    confirmation: {
-      confirm_correct: false,
-      accept_terms: false,
-    },
-  })
+  const state = reactive<FoodDeliveryFormState>(undefined as any)
 
   const links = [[{
       label: 'Request History',
@@ -53,6 +22,47 @@
       to: '/requests/new',
     }]
   ]
+
+  onMounted(() => {
+    console.log('requests/new.vue onMounted')
+
+    state.value = {
+        delivery_address: {
+          branch_location: 'Medicine Hat',
+          location: {
+            address_line1: 'Addr line 1',
+            city: 'Cccityy',
+            divisions_level1: 'BC',
+            postcode: 'M4C 1B5',
+            country: 'CA',
+            // provider_location: ''
+          },
+          building_type: 'Townhouse',
+        },
+        delivery_contact:{
+          contact_number: '250-777-2171',
+          contact_name: 'Pearl',
+          preferred_method: "Email",
+        },
+        your_pets: {
+          pet_name: 'Buddy',
+          pet_breed: 'Labrador Retriever',
+          pet_age: '3 years',
+          pet_weight: '50 lbs',
+        },
+        safe_drop: {
+          safe_drop: true,
+          safe_drop_instructions: 'Leave at the door',
+        },
+        confirmation: {
+          confirm_correct: false,
+          accept_terms: false,
+        },
+      }
+
+
+  })
+
 </script>
 
 <template>
