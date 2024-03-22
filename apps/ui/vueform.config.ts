@@ -4,7 +4,7 @@ import en from '@vueform/vueform/locales/en'
 import vueform from '@vueform/vueform/themes/vueform'
 import tailwind from '@vueform/vueform/dist/tailwind'
 import { defineConfig } from '@vueform/vueform'
-import builder from '@vueform/builder/plugin'
+// import builder from '@vueform/builder/plugin'
 import PluginMask from '@vueform/plugin-mask'
 
 export default defineConfig({
@@ -15,7 +15,7 @@ export default defineConfig({
   endpoints: {
   },
   plugins: [
-    builder,
+    // builder,
     PluginMask,
   ],
 })

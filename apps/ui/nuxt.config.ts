@@ -6,8 +6,12 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     'nuxt-snackbar',
     "@vueform/nuxt",
-    '@vueform/builder-nuxt',
+    // '@vueform/builder-nuxt',
   ],
+
+  build: {
+    // transpile: ["@fawmi/vue-google-maps"],
+  },
 
   /*
    *  Client-side Rendering:

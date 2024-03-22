@@ -2,7 +2,6 @@
 <script setup lang="ts">
   import type { FoodDeliveryFormState } from '@/types/index';
 
-
   definePageMeta({
     layout: 'dashboard',
     auth: {
