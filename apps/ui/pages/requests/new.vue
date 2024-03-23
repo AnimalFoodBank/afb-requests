@@ -29,21 +29,35 @@ const state: Ref<FoodDeliveryFormState | null> = ref(null)
 let autocomplete: google.maps.places.Autocomplete | null = null;
 const googleMapsIsReady = ref(false)
 
-import { Loader } from '@googlemaps/js-api-loader';
+import { Loader } from "@googlemaps/js-api-loader";
+
+const centerV = { lat: 49.282, lng: -123.12 };
+const centerMH = { lat: 50.04, lng: -110.667, zoom: 12};
+// const center = centerMH;
+
+const loader = new Loader({
+  apiKey: googleAPIKey,
+  version: 'weekly',
+  libraries: ['places'],
+});
+
+const apiPromise = loader.load();
 
 
 onMounted(() => {
   console.log('requests/new.vue onMounted')
 
-  const loader = new Loader({
-    apiKey: googleAPIKey,
-    version: 'weekly',
-    libraries: ['places'],
-  });
+  // const loader = new Loader({
+  //   apiKey: googleAPIKey,
+  //   version: 'weekly',
+  //   libraries: ['places'],
+  // });
 
   if (window.google) {
+    console.log('requests/new.vue onMounted - window.google exists')
     googleMapsIsReady.value = true;
   } else {
+    console.log('requests/new.vue onMounted - window.google does not exist')
     loader.load().then(() => {
       initAutocomplete();
       googleMapsIsReady.value = true;

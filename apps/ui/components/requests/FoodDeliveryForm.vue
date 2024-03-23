@@ -256,15 +256,15 @@ onMounted(() => {
         },
       },
 
-      provider_location: {
-        // provider: "google",
-        type: "location",
-        label: "Provider location",
-        rules: ["required"],
-        conditions: [
+      // provider_location: {
+      //   // provider: "google",
+      //   type: "location",
+      //   label: "Provider location",
+      //   rules: ["required"],
+      //   conditions: [
 
-        ],
-      },
+      //   ],
+      // },
 
 
       building_type: {
