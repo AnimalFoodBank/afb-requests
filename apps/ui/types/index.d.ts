@@ -34,7 +34,7 @@ export interface FoodDeliveryFormState {
         country: string;
       };
       building_type: string;
-      provider_location?: string;
+      interactive_address?: string;
     },
     delivery_contact:{
       contact_number: string;

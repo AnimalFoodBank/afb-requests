@@ -15,8 +15,8 @@ import type { FoodDeliveryFormState } from '@/types/index';
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
-  state: FoodDeliveryFormState;
-  // googleMapsIsReady: boolean;
+  state?: FoodDeliveryFormState;
+  googleMapsIsReady?: boolean;
 }>();
 
 const vueform = ref<any>(null);
@@ -27,7 +27,7 @@ onMounted(() => {
   const state = props.state;
   console.log("state", state);
   vueform.value = {
-    size: "md",
+    size: "lg",
     displayErrors: false,
     displaySuccess: true,
 
@@ -48,7 +48,7 @@ onMounted(() => {
           // "branch_locations",
           // "location",
           // "building_type",
-          // "provider_location",
+          "interactive_address",
         ],
         buttons: {
           previous: false,
@@ -65,7 +65,7 @@ onMounted(() => {
             postcode: "N1V 1F1",
             country: "CA",
           },
-          provider_location: "",
+          // interactive_address: "",
         },
       },
 
@@ -226,12 +226,10 @@ onMounted(() => {
       //   },
       // },
 
-      provider_location: {
+      interactive_address: {
+        type: "text",
         // provider: "google",
-        // type: "location",
-        // // schema:{
-        // //   autocomplete: "one-time-code",
-        // // },
+        // autocomplete: "one-time-code",
         // placeholder: "Enter your address",
         // label: "Provider location",
         // rules: ["required"],

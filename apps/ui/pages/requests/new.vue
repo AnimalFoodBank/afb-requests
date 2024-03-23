@@ -46,20 +46,18 @@ const loader = new Loader({
 loader.load().then(async () => {
     // const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
     // const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+    googleMapsIsReady.value = true
 
     // Request needed libraries.
     //@ts-ignore
     console.log('awaiting Map')
-    const [{ Map }] = await Promise.all([
-
+    await Promise.all([
       google.maps.importLibrary("places"),
-      console.log('awaited Map')
     ]);
+    console.log('awaited Map')
     // Create the input HTML element, and append it.
     //@ts-ignore
-    const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
-    //@ts-ignore
-    document.body.appendChild(placeAutocomplete);
+    // const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
 
     const center = { lat: 50.064192, lng: -130.605469 };
     // Create a bounding box with sides ~10km away from the center point
@@ -69,7 +67,7 @@ loader.load().then(async () => {
       east: center.lng + 0.1,
       west: center.lng - 0.1,
     };
-    const input = document.getElementsByName("location")[0] as HTMLInputElement;
+    const input = document.getElementById("interactive_address") as HTMLInputElement;
     const options = {
       bounds: defaultBounds,
       componentRestrictions: { country: "ca" },
@@ -84,7 +82,6 @@ loader.load().then(async () => {
 onMounted(() => {
   console.log('requests/new.vue onMounted')
 
-
   state.value = {
     delivery_address: {
       branch_location: 'Medicine Hat',
@@ -95,7 +92,7 @@ onMounted(() => {
         postcode: 'M4C 1B5',
         country: 'CA',
       },
-      // provider_location: '',
+      interactive_address: '',
       building_type: 'Townhouse',
     },
     delivery_contact: {
@@ -135,27 +132,8 @@ onMounted(() => {
 
       <UDashboardPanelContent class="pb-12 pr-16 mr-16">
 
-        <!-- <RequestsFoodDeliveryForm v-if="state" :state="state" /> -->
+        <RequestsFoodDeliveryForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" />
 
-
-        <Vueform
-          size="md"
-          :display-errors="true"
-        >
-          <StaticElement
-            name="h1"
-            tag="h1"
-            content="Find your dream destination"
-            bottom="1"
-          />
-          <LocationElement
-            name="location"
-            size="lg"
-            autocomplete="one-time-code"
-            placeholder="Enter your location2"
-            type="search"
-          />
-        </Vueform>
       </UDashboardPanelContent>
 
     </UDashboardPanel>
