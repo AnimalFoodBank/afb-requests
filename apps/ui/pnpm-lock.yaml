@@ -100,6 +100,9 @@ devDependencies:
   '@pinia/nuxt':
     specifier: ^0.5.1
     version: 0.5.1(typescript@5.4.3)(vue@3.4.21)
+  '@types/google.maps':
+    specifier: ^3.55.5
+    version: 3.55.5
   '@types/jest':
     specifier: ^29.5.12
     version: 29.5.12
@@ -2723,6 +2726,10 @@ packages:
     resolution: {integrity: sha512-aB4X92oi5D2nIGI8/kolnJ47btRM2MQjQS4eJgA/VnCD12x0+kP5v7b5beVQWKHLOcquwUXvv6aMt8PmMy9uug==}
     dependencies:
       '@types/webpack': 4.41.38
+    dev: true
+
+  /@types/google.maps@3.55.5:
+    resolution: {integrity: sha512-U1QwCo1GeeLm0YI/GoHvfd1VfwgnoUSBcKCMXXFAM+2izSSuqqwZUJ9XNO6NxZxmYKjBNI+NF5eGF6uUSb1aSg==}
     dev: true
 
   /@types/html-minifier@4.0.5:

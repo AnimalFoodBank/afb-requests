@@ -1,3 +1,4 @@
+
 import type { ParsedContent } from '@nuxt/content/dist/runtime/types'
 
 export interface BlogPost extends ParsedContent {
@@ -13,6 +14,14 @@ export interface BlogPost extends ParsedContent {
   } & Link)[]
 }
 
+import '@types/google.maps';
+
+declare global {
+  interface Window {
+    google: typeof google;
+  }
+}
+
 export interface FoodDeliveryFormState {
   // Define your state properties here
   delivery_address: {
@@ -23,9 +32,9 @@ export interface FoodDeliveryFormState {
         divisions_level1: string;
         postcode: string;
         country: string;
-        provider_location?: string;
       };
       building_type: string;
+      provider_location?: string;
     },
     delivery_contact:{
       contact_number: string;

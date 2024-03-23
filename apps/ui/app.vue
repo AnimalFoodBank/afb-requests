@@ -3,33 +3,49 @@
 // https://www.npmjs.com/package/@googlemaps/js-api-loader
 
 const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
+const autocompleteInput = ref<HTMLInputElement | null>(null);
 
+
+let autocomplete: google.maps.places.Autocomplete | null = null;
 const googleMapsIsReady = ref(false)
 
 import { Loader } from '@googlemaps/js-api-loader';
 // import { GoogleMap, Marker } from 'vue3-google-map';
 
-const loader = new Loader({
-  apiKey: googleAPIKey,
-  version: 'weekly',
-  libraries: ['places'],
-});
+// const loader = new Loader({
+//   apiKey: googleAPIKey,
+//   version: 'weekly',
+//   libraries: ['places'],
+// });
+
+// if (window.google) {
+//   googleMapsIsReady.value = true;
+// } else {
+
+//   loader.load().then(() => {
+//     initAutocomplete();
+//   });
+// }
 
 
 
-// Using importLibrary method to load the places library
-// returns a promise that resolves to the specific
-// google.maps.Library object instead of simply
-// the google.maps object.
-//
-// In short, leaving it as-is with loader.load()
-// while waiting for vue3-google-map to update.
-//
 onMounted(() => {
   console.log('app.vue onMounted')
-  loader.load().then(() => {
-  console.log('google maps loaded')
-})
+
+  // re: deprecation warning for loader.load()
+  //
+  // Using importLibrary method to load the places library
+  // returns a promise that resolves to the specific
+  // google.maps.Library object instead of simply
+  // the google.maps object.
+  //
+  // In short, leaving it as-is with loader.load() while
+  // waiting for vue3-google-map to update. The warning
+  // suggests that google will give a headsup at last
+  // 12 months before the method is removed.
+  //
+
+
   // console.log('app.vue onMounted')
   // console.log('BEFORE window.google', window.google)
   // if (window.google) {
@@ -60,46 +76,24 @@ onMounted(() => {
   //     console.error(e)
   //   });
 })
+const initAutocomplete = () => {
+  console.log('initAutocomplete')
+  if (autocompleteInput.value) {
+    console.log('initAutocomplete - input exists')
 
+    autocomplete = new google.maps.places.Autocomplete(autocompleteInput.value, {});
+    autocomplete.addListener('place_changed', handlePlaceChanged);
+  }
+};
 
-
-// declare global {
-//   interface Window {
-//     google: any;
-//   }
-// }
-
-// onMounted(() => {
-//   console.log('app.vue onMounted')
-
-
-//   window.google = {
-//       maps: { Map: function() {} }
-//   }
-// })
-
-// onMounted(() => {
-//   console.log('app.vue onMounted')
-//   initMap()
-// })
-// const initMap = () => {
-
-//   const loader = new Loader({
-//     apiKey: 'AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg',
-//     version: 'weekly'
-//   })
-
-//   loader
-//     .importLibrary('places')
-//     .then((google) => {
-//       window.google = google;
-//     })
-//     .catch(e => {
-//       // do something
-//     });
-
-//   console.log(window.google)
-// }
+const handlePlaceChanged = () => {
+  if (autocomplete) {
+    console.log('handlePlaceChanged')
+    const place = autocomplete.getPlace();
+    // Handle the selected place here
+    console.log(place);
+  }
+};
 
 // TODO: Revisit this earl dark mode cruft. May not be needed anymore.
 const colorMode = useColorMode()

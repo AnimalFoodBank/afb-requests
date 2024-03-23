@@ -16,7 +16,6 @@
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "vue3-google-map": "^0.20.0",
     "@iconify-json/game-icons": "^1.1.7",
     "@iconify-json/heroicons": "^1.1.20",
     "@iconify-json/ph": "^1.1.11",
@@ -38,7 +37,8 @@
     "nuxt-snackbar": "^1.0.4",
     "pinia": "^2.1.7",
     "prettier": "^3.2.5",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue3-google-map": "^0.20.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.0.8",
@@ -48,7 +48,7 @@
     "@nuxthq/studio": "^1.0.13",
     "@nuxtjs/color-mode": "^3.3.2",
     "@pinia/nuxt": "^0.5.1",
-
+    "@types/google.maps": "^3.55.5",
     "@types/jest": "^29.5.12",
     "@vue/test-utils": "^2.4.5",
     "eslint": "^8.57.0",
