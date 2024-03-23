@@ -22,47 +22,67 @@ const links = [[
   }
 ]]
 
-const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
-const autocompleteInput = ref<HTMLInputElement | null>(null);
-
-const state: Ref<FoodDeliveryFormState | null> = ref(null)
-let autocomplete: google.maps.places.Autocomplete | null = null;
-const googleMapsIsReady = ref(false)
+/**
+ *
+ *
+ * const {Place} = await google.maps.importLibrary("places");
+ *
+ */
 
 import { Loader } from "@googlemaps/js-api-loader";
 
-const centerV = { lat: 49.282, lng: -123.12 };
-const centerMH = { lat: 50.04, lng: -110.667, zoom: 12};
-// const center = centerMH;
+const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
+const googleMapsIsReady = ref(false)
+
+const state: Ref<FoodDeliveryFormState | null> = ref(null)
 
 const loader = new Loader({
   apiKey: googleAPIKey,
-  version: 'weekly',
+  version: 'beta',
   libraries: ['places'],
 });
 
-const apiPromise = loader.load();
 
+loader.load().then(async () => {
+    // const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+    // const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+
+    // Request needed libraries.
+    //@ts-ignore
+    console.log('awaiting Map')
+    const [{ Map }] = await Promise.all([
+
+      google.maps.importLibrary("places"),
+      console.log('awaited Map')
+    ]);
+    // Create the input HTML element, and append it.
+    //@ts-ignore
+    const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
+    //@ts-ignore
+    document.body.appendChild(placeAutocomplete);
+
+    const center = { lat: 50.064192, lng: -130.605469 };
+    // Create a bounding box with sides ~10km away from the center point
+    const defaultBounds = {
+      north: center.lat + 0.1,
+      south: center.lat - 0.1,
+      east: center.lng + 0.1,
+      west: center.lng - 0.1,
+    };
+    const input = document.getElementsByName("location")[0] as HTMLInputElement;
+    const options = {
+      bounds: defaultBounds,
+      componentRestrictions: { country: "ca" },
+      fields: ["address_components", "geometry", "icon", "name"],
+      strictBounds: false,
+    };
+
+    const autocomplete = new google.maps.places.Autocomplete(input, options);
+    console.log('autocomplete', autocomplete)
+  });
 
 onMounted(() => {
   console.log('requests/new.vue onMounted')
-
-  // const loader = new Loader({
-  //   apiKey: googleAPIKey,
-  //   version: 'weekly',
-  //   libraries: ['places'],
-  // });
-
-  if (window.google) {
-    console.log('requests/new.vue onMounted - window.google exists')
-    googleMapsIsReady.value = true;
-  } else {
-    console.log('requests/new.vue onMounted - window.google does not exist')
-    loader.load().then(() => {
-      initAutocomplete();
-      googleMapsIsReady.value = true;
-    });
-  }
 
 
   state.value = {
@@ -101,23 +121,6 @@ onMounted(() => {
 
 })
 
-const initAutocomplete = () => {
-  console.log('initAutocomplete')
-  if (autocompleteInput.value) {
-    console.log('initAutocomplete - input exists')
-    autocomplete = new google.maps.places.Autocomplete(autocompleteInput.value, {});
-    autocomplete.addListener('place_changed', handlePlaceChanged);
-  }
-};
-
-const handlePlaceChanged = () => {
-  if (autocomplete) {
-    console.log('handlePlaceChanged')
-    const place = autocomplete.getPlace();
-    // Handle the selected place here
-    console.log(place);
-  }
-};
 
 </script>
 
@@ -132,8 +135,27 @@ const handlePlaceChanged = () => {
 
       <UDashboardPanelContent class="pb-12 pr-16 mr-16">
 
-        <RequestsFoodDeliveryForm v-if="state" :state="state" />
+        <!-- <RequestsFoodDeliveryForm v-if="state" :state="state" /> -->
 
+
+        <Vueform
+          size="md"
+          :display-errors="true"
+        >
+          <StaticElement
+            name="h1"
+            tag="h1"
+            content="Find your dream destination"
+            bottom="1"
+          />
+          <LocationElement
+            name="location"
+            size="lg"
+            autocomplete="one-time-code"
+            placeholder="Enter your location2"
+            type="search"
+          />
+        </Vueform>
       </UDashboardPanelContent>
 
     </UDashboardPanel>
