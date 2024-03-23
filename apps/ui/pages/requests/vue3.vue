@@ -3,25 +3,15 @@
  -->
 
 <script setup lang="ts">
-import { Loader } from '@googlemaps/js-api-loader';
 import { Circle, GoogleMap } from "vue3-google-map";
 
 const googleAPIKey = "AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg";
-const loader = new Loader({
-  apiKey: googleAPIKey,
-  version: 'weekly',
-  libraries: ['places'],
-});
-
-const apiPromise = loader.load();
-
-
 
 const centerV = { lat: 49.282, lng: -123.12 };
 const centerMH = { lat: 50.04, lng: -110.667, zoom: 12};
 // const center = centerMH;
 
-// let apiPromise: Promise<typeof window.google> | undefined = undefined;
+let apiPromise: Promise<typeof window.google> | undefined = undefined;
 
 
 const center = { lat: 37.09, lng: -95.712 }
@@ -68,6 +58,7 @@ onMounted(() => {
 <template>
   <GoogleMap
     :api-promise="apiPromise"
+    :api-key="googleAPIKey"
     mapTypeId="terrain"
     style="width: 100%; height: 500px"
     :center="center"
