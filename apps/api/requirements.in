@@ -115,7 +115,7 @@ python-dotenv
 
 # DRFPasswordless package installed via git
 # Remote
--e git+https://github.com/delano/django-rest-framework-passwordless.git@delano/dev#egg=drfpasswordless
+-e git+https://github.com/delano/django-rest-framework-passwordless.git@dev#egg=drfpasswordless
 #
 # Local
 # -e git+file:///Users/d/Projects/opensource/django-rest-framework-passwordless@dev#egg=drfpasswordless

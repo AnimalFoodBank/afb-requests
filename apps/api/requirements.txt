@@ -12,7 +12,7 @@
     #   drfpasswordless
 -e git+https://github.com/delano/drf-registration.git@dev#egg=drf-registration
     # via -r requirements.in
--e git+https://github.com/delano/django-rest-framework-passwordless.git@delano/dev#egg=drfpasswordless
+-e git+https://github.com/delano/django-rest-framework-passwordless.git@dev#egg=drfpasswordless
     # via -r requirements.in
 asgiref==3.8.1
     # via
