@@ -16,17 +16,18 @@ const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
   state: FoodDeliveryFormState;
+  googleMapsIsReady?: boolean;
 }>();
 
 const vueform = ref<any>(null);
 
 onMounted(() => {
-  console.log("RequestForm has been mounted");
+  console.log("FoodDeliveryFormState has been mounted");
 
   const state = props.state;
-
+  console.log("state", state);
   vueform.value = {
-    size: "md",
+    size: "lg",
     displayErrors: false,
     displaySuccess: true,
 
@@ -53,16 +54,6 @@ onMounted(() => {
         },
         labels: {
           next: "Next: Contact",
-        },
-        default: {
-          branch_locations: "Medicine Hat",
-          location: {
-            address_line1: "1123 Main St",
-            city: "S1hrumsville",
-            divisions_level1: "BC",
-            postcode: "N1V 1F1",
-            country: "CA",
-          },
         },
       },
 
@@ -132,131 +123,66 @@ onMounted(() => {
      *
      **/
     schema: {
-      step0_title: {
-        type: "static",
-        content: "Delivery Address",
-        tag: "h3",
-        top: "1",
-      },
-      step1_title: {
-        type: "static",
-        content: "Delivery Contact",
-        tag: "h3",
-        top: "1",
-      },
-      step2_title: {
-        type: "static",
-        content: "Your Pets",
-        tag: "h3",
-        top: 1,
-      },
-      step3_title: {
-        type: "static",
-        content: "Safe Drop",
-        tag: "h3",
-        top: 1,
-      },
-      step4_title: {
-        type: "static",
-        content: "Confirmation",
-        tag: "h3",
-        top: 2,
-      },
 
       //
       // === STEP 0: Delivery Address ====
       //
       branch_locations: {
         type: "select",
-        // search: true,
-        native: true,
+        search: true,
+        native: false,
         inputType: "search",
         autocomplete: "off",
         items: "/json/branch_locations.json",
         rules: ["required"],
         label: "Your local branch",
-        conditions: [["location.country", "in", ["CA"]]],
+        placeholder: "Available branches",
+        conditions: [
+          ["location.country", "in", ["CA"]]  // element disappears if doesn't pass
+        ],
+        columns: {
+          container: 6,
+          label: 6,
+          wrapper: 12,
+        },
         default: state.delivery_address.branch_location,
       },
 
       location: {
         type: "object",
         schema: {
-          step0_intro: {
+          interactive_address: {
+            type: "text",
+            autocomplete: "one-time-code",
+            placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
+            label: "Your address",
+            rules: ["required"],
+            attrs: {
+              autofocus: true,
+            },
+            columns: {
+              container: 6,
+              label: 12,
+              wrapper: 12,
+            },
+          },
+          country: {
+            type: "hidden",
+            hidden: true,
+            default: "CA",
+          },
+          attention: {
             type: "static",
             tag: "p",
             content:
-              "Please make sure your address is correct. <b>Later it can only be modified by support staff.</b>",
+              "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
           },
-
-          address_line1: {
-            type: "text",
-            placeholder: "e.g. 1200 Main St",
-            floating: false,
-            rules: ["required", "max:255"],
-            columns: {
-              container: 8,
-              label: 12,
-              wrapper: 12,
-            },
-            label: "Address",
-            default: state.delivery_address.location.address_line1,
-          },
-          city: {
-            type: "text",
-            label: "City",
-            placeholder: "e.g. Shrumsville",
-            floating: false,
-            rules: ["required", "max:255"],
-            columns: {
-              container: 8,
-              label: 12,
-              wrapper: 12,
-            },
-            default: state.delivery_address.location.city,
-          },
-          divisions_level1: {
-            type: "select",
-            native: true,
-            inputType: "search",
-            autocomplete: "off",
-            items: "/json/divisions_level1.json",
-            rules: ["required"],
-            label: "Province/Territory",
-            columns: {
-              container: 4,
-              label: 12,
-              wrapper: 12,
-            },
-            conditions: [["location.country", "in", ["CA"]]],
-            default: state.delivery_address.location.divisions_level1,
-          },
-          postcode: {
-            type: "text",
-            rules: ["required", "max:255"],
-            columns: {
-              container: 4,
-              label: 12,
-              wrapper: 12,
-            },
-            label: "Postal code",
-            placeholder: "e.g. M1V 1F1",
-            floating: false,
-            default: state.delivery_address.location.postcode,
-          },
-
-          country: {
-            type: "select",
-            hidden: true,
-            rules: ["required"],
-            items: "/json/countries.json",
-            default: "CA",
-          },
-        },
+        }
       },
+
       building_type: {
         type: "radiogroup",
-        view: "tabs",
+        view: "default",
         items: [
           "Apartment",
           "Townhouse",
@@ -268,6 +194,12 @@ onMounted(() => {
         rules: [],
         fieldName: "Building type",
         label: "Building type <i>(optional)</i>",
+
+        columns: {
+          container: 12,
+          label: 4,
+          wrapper: 8,
+        },
         default: state.delivery_address.building_type,
       },
 
@@ -311,7 +243,7 @@ onMounted(() => {
           },
           preferred_method: {
             type: "radiogroup",
-            view: "tabs",
+            view: "default",
             items: ["Call", "Text", "Email"],
             rules: ["required"],
             fieldName: "Preferred method",
@@ -402,7 +334,7 @@ onMounted(() => {
       },
 
       //
-      // === SHARE ELEMENTS ===
+      // === SHARED ELEMENTS ===
       //
       divider: {
         type: "static",
@@ -420,6 +352,41 @@ onMounted(() => {
         top: "2",
         bottom: "2",
       },
+
+      //
+      // === STATIC ELEMENTS ===
+      //
+      step0_title: {
+        type: "static",
+        content: "Delivery Address",
+        tag: "h3",
+        top: "1",
+      },
+      step1_title: {
+        type: "static",
+        content: "Delivery Contact",
+        tag: "h3",
+        top: "1",
+      },
+      step2_title: {
+        type: "static",
+        content: "Your Pets",
+        tag: "h3",
+        top: 1,
+      },
+      step3_title: {
+        type: "static",
+        content: "Safe Drop",
+        tag: "h3",
+        top: 1,
+      },
+      step4_title: {
+        type: "static",
+        content: "Confirmation",
+        tag: "h3",
+        top: 2,
+      },
+
     },
   };
 });

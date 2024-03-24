@@ -1,7 +1,18 @@
 <script setup lang="ts">
 
-const colorMode = useColorMode()
+// https://www.npmjs.com/package/@googlemaps/js-api-loader
 
+const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
+let autocomplete: google.maps.places.Autocomplete | null = null;
+const googleMapsIsReady = ref(false)
+
+
+onMounted(() => {
+  console.log('app.vue onMounted')
+})
+
+// TODO: Revisit this earl dark mode cruft. May not be needed anymore.
+const colorMode = useColorMode()
 const color = computed(() => colorMode.value === 'dark' ? '#111827' : 'white')
 
 useHead({
@@ -12,6 +23,13 @@ useHead({
   ],
   link: [
     { rel: 'icon', href: '/favicon.ico' }
+  ],
+  script: [
+    {
+      // src: `https://maps.googleapis.com/maps/api/js?key=${ googleAPIKey }&libraries=places&callback=initMap`,
+      // async: true,
+      // defer: true,
+    },
   ],
   htmlAttrs: {
     lang: 'en'

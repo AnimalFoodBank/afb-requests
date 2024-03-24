@@ -101,24 +101,24 @@ python-dotenv
 
 # Django REST framework
 # Remote
-#-e git+ssh://git@github.com/delano/django-rest-framework.git@main#egg=djangorestframework
+-e git+ssh://git@github.com/delano/django-rest-framework.git@main#egg=djangorestframework
 #
 # Local
--e git+file:///Users/d/Projects/opensource/django-rest-framework@dev#egg=djangorestframework
+# -e git+file:///Users/d/Projects/opensource/django-rest-framework@dev#egg=djangorestframework
 
 # DRF Registration package installed via git
 # Remote
-#-e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
+-e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
 #
 # Local
--e git+file:///Users/d/Projects/opensource/drf-registration@dev#egg=drf-registration
+# -e git+file:///Users/d/Projects/opensource/drf-registration@dev#egg=drf-registration
 
 # DRFPasswordless package installed via git
 # Remote
-# -e git+ssh://git@github.com/delano/django-rest-framework-passwordless.git@delano/20240209-email-context#egg=drfpasswordless
+-e git+ssh://git@github.com/delano/django-rest-framework-passwordless.git@delano/20240209-email-context#egg=drfpasswordless
 #
 # Local
--e git+file:///Users/d/Projects/opensource/django-rest-framework-passwordless@dev#egg=drfpasswordless
+# -e git+file:///Users/d/Projects/opensource/django-rest-framework-passwordless@dev#egg=drfpasswordless
 
 # OpenAPI 3 support for Django REST framework
 drf-spectacular

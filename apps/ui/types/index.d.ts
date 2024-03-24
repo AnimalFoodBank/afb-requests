@@ -1,3 +1,4 @@
+
 import type { ParsedContent } from '@nuxt/content/dist/runtime/types'
 
 export interface BlogPost extends ParsedContent {
@@ -13,6 +14,14 @@ export interface BlogPost extends ParsedContent {
   } & Link)[]
 }
 
+import '@types/google.maps';
+
+declare global {
+  interface Window {
+    google: typeof google;
+  }
+}
+
 export interface FoodDeliveryFormState {
   // Define your state properties here
   delivery_address: {
@@ -25,6 +34,7 @@ export interface FoodDeliveryFormState {
         country: string;
       };
       building_type: string;
+      interactive_address?: string;
     },
     delivery_contact:{
       contact_number: string;
@@ -38,7 +48,10 @@ export interface FoodDeliveryFormState {
       pet_weight: string;
     },
     safe_drop: {
-      safe_drop_policy: string;
+      // Policy is expected to be not set since it's a text
+      // paragraph defined within the form component. It's not
+      // a form field in that sense, but a feature of Vueform.
+      safe_drop_policy?: string;
       safe_drop: boolean;
       safe_drop_instructions: string;
     },
@@ -46,5 +59,4 @@ export interface FoodDeliveryFormState {
       confirm_correct: boolean;
       accept_terms: boolean;
     };
-  // Add more properties as needed
 }

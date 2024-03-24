@@ -1,0 +1,16 @@
+node_modules/
+node_modules/*
+**/node_modules/*
+apps/ui/node_modules/*
+apps/ui/node_modules/
+.nuxt/*
+.git/*
+!.git/config
+.DS_Store
+.git/
+.history/
+.pytest_cache/
+.ruff_cache/
+.trunk/
+.vite/
+.vscode/
