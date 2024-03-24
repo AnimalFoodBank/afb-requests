@@ -40,6 +40,10 @@ jobs:
       working-directory: apps/ui
       run: pnpm install
 
+    - name: Build Nuxt3 app
+      working-directory: apps/ui
+      run: pnpm run build
+
     - name: Run tests
       working-directory: apps/ui
       run: pnpm test
