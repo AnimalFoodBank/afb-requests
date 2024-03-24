@@ -1,0 +1,1 @@
+If this directory is empty, run: ./manage.py collectstatic. That tells Django to collect all static files into ./public/static directory which is where Caddy is configured to serve the files from in production.

@@ -1,0 +1,9 @@
+{
+  "customCommands": [
+    {
+      "name": "randocommit",
+      "prompt": "Select a random commit message after carefully reviewing the code for novelty. Print out the commit hash, date, and message, followed a short explanation of the changes.",
+      "description": "This is an example custom command. Use /config to edit it and create more"
+    }
+  ]
+}

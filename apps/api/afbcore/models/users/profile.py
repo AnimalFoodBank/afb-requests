@@ -16,8 +16,8 @@ STATUS_CHOICES = [
     ("active", "Active"),
     ("on_hold", "On Hold"),
     ("banned", "Banned"),
+    # Add to the end of the list to avoid breaking existing code
 ]
-
 
 # Define default arguments for ManyToManyField
 MANY_TO_MANY_DEFAULTS = {
@@ -36,8 +36,7 @@ class Profile(BaseAbstractModel):
     - user: ForeignKey to User model
     - role: OneToOneField to Role model
     - branches: ManyToManyField to Branch model
-    - first_name: CharField, max length 64
-    - last_name: CharField, max length 64
+    - preferred_name: CharField, max length 64
     - email: EmailField, unique
     - phone_number: PhoneNumberField, max length 20, region US
     - address_verbatim: CharField, max length 255, blank
@@ -56,30 +55,20 @@ class Profile(BaseAbstractModel):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # user = models.ForeignKey(
-    #     User, on_delete=models.DO_NOTHING, related_name="pro2files"
-    # )
-    # role = models.ForeignKey(
-    #     Role, on_delete=models.DO_NOTHING, related_name="prof2iles"
-    # )
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="profiles")
+    role = models.ForeignKey(Role, on_delete=models.DO_NOTHING, related_name="profiles")
 
     # Usually just one, but can be multiple
     branches = models.ManyToManyField("Branch", **MANY_TO_MANY_DEFAULTS)
 
     # Name fields
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
+    preferred_name = models.CharField(max_length=64)
 
     # Email - Unique - don't allow duplicates.
     email = models.EmailField(unique=True)
 
     # Phone - Validate format - numbers only
-    phone_number = PhoneNumberField(
-        blank=True,
-        null=True,
-        region="US",
-        max_length=20,
-    )
+    phone_number = PhoneNumberField(region="US")
 
     # We allow free form text entry but store the validated
     # address in the `address` field. These fields should
@@ -87,11 +76,11 @@ class Profile(BaseAbstractModel):
     #
     # e.g. A client may enter "123 Main St" and another
     # client may enter "123 Main Street"
-    address_verbatim = models.CharField(max_length=255, blank=True)
+    address_verbatim = models.CharField(max_length=255, blank=True, null=True)
 
     # Validated Address
     # i.e. An address from Canada Post or Google Maps
-    address = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
 
     #
     # Via Volunteer
@@ -111,7 +100,7 @@ class Profile(BaseAbstractModel):
 
     # Address - If address is duplicate to another clients, both accounts
     # need to be placed on hold and manually reviewed/approved bc people
-    # are scammers. Has to be a validated address (google?) and not
+    # are scammers. Has to be a validated address (google?) and notWHich modela
     # permitted to be overwritten. The last amount of free form text
     # entry as possible. You'd be amazed how many clients don't know
     # their postal code and we route by postal code sooooo
@@ -129,7 +118,7 @@ class Profile(BaseAbstractModel):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="active")
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.preferred_name}"
 
     def get_absolute_url(self):
         return reverse("client-create", kwargs={"pk": self.pk})

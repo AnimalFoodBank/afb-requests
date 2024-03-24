@@ -1,4 +1,6 @@
-# Created by https://www.gitignore.io
+# Originally created by https://www.gitignore.io
+
+apps/.examples
 
 ### OSX ###
 .DS_Store
@@ -82,11 +84,13 @@ local_settings.py
 
 # Project
 .env*
+.certs/
 !.env.empty
 *.sqlite3
 .vscode/
 tmp/*
 node_modules/
+public/static/*
 
 # Vite/Vue
 .vite/

@@ -1,0 +1,6 @@
+# Hello there, wonderful Web Crawlers! This is a site for development
+# and testing. We're still working on this one. If you're looking for
+# the real deal, head over to https://animalfoodbank.org/.
+
+User-agent: *
+Disallow: /

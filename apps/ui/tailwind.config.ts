@@ -1,52 +1,27 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from 'tailwindcss'
+import defaultTheme from 'tailwindcss/defaultTheme'
 
-const config: Config = {
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/aspect-ratio'),
-    require('@vueform/vueform/tailwind'),
+export default <Partial<Config>>{
+  content: [
+    // ... your project files, eg.:
+    // './index.html',
+    // './src/**/*.{vue,js,ts,jsx,tsx}',
+    './vueform.config.ts', // or where `vueform.config.js` is located. Change `.js` to `.ts` if required.
+    './node_modules/.pnpm/@vueform+vueform@*/node_modules/@vueform/vueform/themes/tailwind/**/*.vue',
+    './node_modules/.pnpm/@vueform+vueform@*/node_modules/@vueform/vueform/themes/tailwind/**/*.js',
+    // './node_modules/.pnpm/@vueform+vueform@*/node_modules/@vueform/builder/**/*.js',
+    // './node_modules/.pnpm/@vueform+vueform@*/node_modules/@vueform/builder/**/*.css',
   ],
   theme: {
-    //
-    // re: Font settings
-    //
-    // See:
-    // https://tailwindcss.com/docs/font-family#font-families
-    // https://stackoverflow.com/questions/60692794/can-you-change-the-base-font-family-in-tailwind-config/70714843#70714843
-    //
-    fontFamily: {
-      sans: [
-        'Avenir',
-        'Helvetica',
-        'Arial',
-        'sans-serif'
-      ],
-      serif: [
-        'Lora',
-        'Georgia',
-        'Cambria',
-        'Times New Roman',
-        'Times',
-        'serif',
-      ],
-      mono: [
-        'Menlo',
-        'Monaco',
-        'Consolas',
-        'Liberation Mono',
-        'Courier New',
-        'monospace',
-      ],
+    extend: {
+      fontFamily: {
+        sans: ['DM Sans', ...defaultTheme.fontFamily.sans]
+      }
     },
+    darkMode: 'class',
   },
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,html,js,ts,jsx,tsx}",
-    "../afbcore/templates/**/*.html",
-    './vueform.config.ts', // or where `vueform.config.js` is located
-    './node_modules/@vueform/vueform/themes/tailwind/**/*.vue',
-    './node_modules/@vueform/vueform/themes/tailwind/**/*.{ts,js,tsx,jsx}',
+  plugins: [
+    require('@vueform/vueform/tailwind'),
+    // require('@vueform/builder/tailwind'),
   ],
-};
-
-export default config;
+}

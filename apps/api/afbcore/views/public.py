@@ -12,11 +12,20 @@ logger = logging.getLogger(__name__)
 
 
 class VueformUniqueValidatorView(APIView):
+    """
+    This class is used to validate the uniqueness of a user field.
+
+    @config Add the following to your `urls.py` file:
+        path("api/validators/unique/", public.VueformUniqueValidatorView.as_view()),
+
+    @see https://vueform.com/docs/validating-elements#rule-unique
+    """
+
     permission_classes = (AllowAny,)
 
     def post(self, request, formate=None):
         """
-        Confirm the given user fields is unique.
+        This method is used to validate the uniqueness of a user field.
 
         @see https://vueform.com/docs/validating-elements#rule-unique
 
@@ -46,7 +55,8 @@ class VueformUniqueValidatorView(APIView):
 
     def is_a_truly_unique(self, field_name, value):
         """
-        Check the given email address against the database.
+        This method is used to check the given email address against the database.
+
         """
         logger.info("VueformValidatorsView.is_a_truly_unique")
 

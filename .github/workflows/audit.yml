@@ -4,7 +4,7 @@
 #
 # The workflow runs on an Ubuntu 22.04 virtual machine with 2 parallel jobs and
 # checks out the repository with a fetch depth of 1.  The build job sets the
-# Python version to 3.10 and runs the tests using the specified matrix.
+# Python version to 3.11 and runs the tests using the specified matrix.
 #
 # The `django-test-action` action is used to run the tests and requires a
 # requirements file and a settings directory path.
@@ -36,7 +36,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.11"]
 
     steps:
     - name: Checkout

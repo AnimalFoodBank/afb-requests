@@ -1,63 +1,28 @@
-// vueform.config.js
+// vueform.config.(js|ts)
 
-/**
- *
- * The csrfRequest option is an endpoint object that is used to submit
- * an intermediate request to the server if an initial request returns
- * 401 or 419. The original request will be retried once after receiving
- * a response from csrfRequest endpoint.
- *
- * The onUnauthenticated option is a function that is called if the
- * request still returns 401 or 419 after calling csrfRequest and
- * repeating the original request.
- *
- * See: https://vueform.com/reference/configuration#axios
- */
+import en from '@vueform/vueform/locales/en'
+import vueform from '@vueform/vueform/themes/vueform'
+import tailwind from '@vueform/vueform/dist/tailwind'
+import { defineConfig } from '@vueform/vueform'
+// import builder from '@vueform/builder/plugin'
+import PluginMask from '@vueform/plugin-mask'
 
-import en from "@vueform/vueform/locales/en";
-import tailwind from "@vueform/vueform/themes/tailwind";
-import axios from "axios";
-const base_url = import.meta.env.VITE_BASE_URL;
-
-export default {
+export default defineConfig({
   theme: tailwind,
   locales: { en },
-  locale: "en",
-
-  // axios,
-
-  axios: {
-    withCredentials: true,
-    xsrfCookieName: 'csrftoken',
-    xsrfHeaderName: 'x-csrftoken',
-    baseURL: base_url,
-    csrfRequest: {
-      method: 'get',
-      url: '/csrf-cookie',
-    },
-    onUnauthenticated() {
-      location.href = '/login'
-    },
-  },
-
+  locale: 'en',
+  apiKey: 'sppy-spc3-valx-p0vf-sej6',
   endpoints: {
-    // unique: {
-    //   url: "/api/validators/unique/",
-    //   method: "POST",
-    // },
-    unique: async (value, name, params, el$, form$) => {
-
-        // form$.messageBag.clear();
-        // form$.messageBag.append('unique', 'Checking...')
-
-      const res = await axios.post('/api/validators/unique/', {
-        value,
-        name,
-        params,
-      });
-
-      return "false"; //res.data // should be `true` or `false`
-    }
   },
-
-};
+  plugins: [
+    // builder,
+    PluginMask,
+  ],
+  // services: {
+  //   google2: {
+  //     app_id: '338793354229-r38ovlt05ltulgdf2ar6kcg5fhcg2ut3.apps.googleusercontent.com',
+  //     project_id: '338793354229-r38ovlt05ltulgdf2ar6kcg5fhcg2ut3.apps.googleusercontent.com',
+  //     api_key: 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg',
+  //   }
+  // }
+})
