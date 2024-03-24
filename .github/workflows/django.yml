@@ -1,6 +1,6 @@
 # This is a basic GitHub Actions workflow for running CI tests on a Django project.
 # It runs on Ubuntu 22.04 with 4 parallel jobs, caches system packages and Python dependencies,
-# and checks out the repository with a fetch depth of 1. The build job sets the Python version to 3.10
+# and checks out the repository with a fetch depth of 1. The build job sets the Python version to 3.11
 # and runs the tests using the specified matrix. It is triggered on push or pull request events on the main branch,
 # as well as manually using the workflow_dispatch event.
 # For more information, see https://docs.github.com/en/actions/guides/building-and-testing-python#building-and-testing-python-with-multiple-versions
@@ -23,7 +23,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.11"]
 
     steps:
 
