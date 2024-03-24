@@ -17,6 +17,10 @@ jobs:
   build:
 
     runs-on: ubuntu-22.04
+    env:
+      DATABASE_NAME: afbrequests
+      DATABASE_USER: user
+      DATABASE_PASSWORD: pass
     defaults:
       run:
         working-directory: ./apps/api
