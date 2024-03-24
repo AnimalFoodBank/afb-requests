@@ -4,15 +4,15 @@
 #
 #    pip-compile --output-file=requirements.txt --strip-extras requirements.in
 #
--e git+ssh://git@github.com/delano/django-rest-framework.git@main#egg=djangorestframework
+-e git+https://github.com/delano/django-rest-framework.git@dev#egg=djangorestframework
     # via
     #   -r requirements.in
     #   drf-registration
     #   drf-spectacular
     #   drfpasswordless
--e git+ssh://git@github.com/delano/drf-registration.git@b6b50ef151473385b2fdc1b3800773545d689e3c#egg=drf-registration
+-e git+https://github.com/delano/drf-registration.git@dev#egg=drf-registration
     # via -r requirements.in
--e git+ssh://git@github.com/delano/django-rest-framework-passwordless.git@delano/20240209-email-context#egg=drfpasswordless
+-e git+https://github.com/delano/django-rest-framework-passwordless.git@delano/dev#egg=drfpasswordless
     # via -r requirements.in
 asgiref==3.8.1
     # via
