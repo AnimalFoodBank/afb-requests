@@ -15,7 +15,7 @@ import type { FoodDeliveryFormState } from '@/types/index';
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
-  state?: FoodDeliveryFormState;
+  state: FoodDeliveryFormState;
   googleMapsIsReady?: boolean;
 }>();
 
@@ -45,27 +45,15 @@ onMounted(() => {
         label: "Address",
         elements: [
           "step0_title",
-          // "branch_locations",
-          // "location",
-          // "building_type",
-          "interactive_address",
+          "branch_locations",
+          "location",
+          "building_type",
         ],
         buttons: {
           previous: false,
         },
         labels: {
           next: "Next: Contact",
-        },
-        default: {
-          branch_locations: "Medicine Hat",
-          location: {
-            address_line1: "1123 Main St",
-            city: "S1hrumsville",
-            divisions_level1: "BC",
-            postcode: "N1V 1F1",
-            country: "CA",
-          },
-          // interactive_address: "",
         },
       },
 
@@ -139,121 +127,81 @@ onMounted(() => {
       //
       // === STEP 0: Delivery Address ====
       //
-      // branch_locations: {
-      //   type: "select",
-      //   // search: true,
-      //   native: true,
-      //   inputType: "search",
-      //   autocomplete: "off",
-      //   items: "/json/branch_locations.json",
-      //   rules: ["required"],
-      //   label: "Your local branch",
-      //   conditions: [["location.country", "in", ["CA"]]],
-      //   default: state.delivery_address.branch_location,
-      // },
-
-      // location: {
-      //   type: "object",
-      //   schema: {
-      //     step0_intro: {
-      //       type: "static",
-      //       tag: "p",
-      //       content:
-      //         "Please make sure your address is correct. <b>Later it can only be modified by support staff.</b>",
-      //     },
-      //     address_line1: {
-      //       type: "text",
-      //       placeholder: "e.g. 1200 Main St",
-      //       floating: false,
-      //       rules: ["required", "max:255"],
-      //       columns: {
-      //         container: 8,
-      //         label: 12,
-      //         wrapper: 12,
-      //       },
-      //       label: "Address",
-      //       default: state.delivery_address.location.address_line1,
-      //     },
-      //     city: {
-      //       type: "text",
-      //       label: "City",
-      //       placeholder: "e.g. Shrumsville",
-      //       floating: false,
-      //       rules: ["required", "max:255"],
-      //       columns: {
-      //         container: 8,
-      //         label: 12,
-      //         wrapper: 12,
-      //       },
-      //       default: state.delivery_address.location.city,
-      //     },
-      //     divisions_level1: {
-      //       type: "select",
-      //       native: true,
-      //       inputType: "search",
-      //       autocomplete: "off",
-      //       items: "/json/divisions_level1.json",
-      //       rules: ["required"],
-      //       label: "Province/Territory",
-      //       columns: {
-      //         container: 4,
-      //         label: 12,
-      //         wrapper: 12,
-      //       },
-      //       conditions: [["location.country", "in", ["CA"]]],
-      //       default: state.delivery_address.location.divisions_level1,
-      //     },
-      //     postcode: {
-      //       type: "text",
-      //       rules: ["required", "max:255"],
-      //       columns: {
-      //         container: 4,
-      //         label: 12,
-      //         wrapper: 12,
-      //       },
-      //       label: "Postal code",
-      //       placeholder: "e.g. M1V 1F1",
-      //       floating: false,
-      //       default: state.delivery_address.location.postcode,
-      //     },
-      //     country: {
-      //       type: "select",
-      //       hidden: true,
-      //       rules: ["required"],
-      //       items: "/json/countries.json",
-      //       default: "CA",
-      //     },
-      //   },
-      // },
-
-      interactive_address: {
-        type: "text",
-        // provider: "google",
-        // autocomplete: "one-time-code",
-        // placeholder: "Enter your address",
-        // label: "Provider location",
-        // rules: ["required"],
-        // conditions: [
-        // ],
+      branch_locations: {
+        type: "select",
+        search: true,
+        native: false,
+        inputType: "search",
+        autocomplete: "off",
+        items: "/json/branch_locations.json",
+        rules: ["required"],
+        label: "Your local branch",
+        placeholder: "Available branches",
+        conditions: [
+          ["location.country", "in", ["CA"]]  // element disappears if doesn't pass
+        ],
+        columns: {
+          container: 6,
+          label: 6,
+          wrapper: 12,
+        },
+        default: state.delivery_address.branch_location,
       },
 
+      location: {
+        type: "object",
+        schema: {
+          interactive_address: {
+            type: "text",
+            autocomplete: "one-time-code",
+            placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
+            label: "Your address",
+            rules: ["required"],
+            attrs: {
+              autofocus: true,
+            },
+            columns: {
+              container: 6,
+              label: 12,
+              wrapper: 12,
+            },
+          },
+          country: {
+            type: "hidden",
+            hidden: true,
+            default: "CA",
+          },
+          attention: {
+            type: "static",
+            tag: "p",
+            content:
+              "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
+          },
+        }
+      },
 
-      // building_type: {
-      //   type: "radiogroup",
-      //   view: "tabs",
-      //   items: [
-      //     "Apartment",
-      //     "Townhouse",
-      //     "Condo",
-      //     "Laneway",
-      //     "Detached house",
-      //     "Other",
-      //   ],
-      //   rules: [],
-      //   fieldName: "Building type",
-      //   label: "Building type <i>(optional)</i>",
-      //   default: state.delivery_address.building_type,
-      // },
+      building_type: {
+        type: "radiogroup",
+        view: "default",
+        items: [
+          "Apartment",
+          "Townhouse",
+          "Condo",
+          "Laneway",
+          "Detached house",
+          "Other",
+        ],
+        rules: [],
+        fieldName: "Building type",
+        label: "Building type <i>(optional)</i>",
+
+        columns: {
+          container: 12,
+          label: 4,
+          wrapper: 8,
+        },
+        default: state.delivery_address.building_type,
+      },
 
       //
       // STEP 1 - Delivery Contact

@@ -48,35 +48,34 @@ loader.load().then(async () => {
     // const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
     googleMapsIsReady.value = true
 
-    // Request needed libraries.
-    //@ts-ignore
-    console.log('awaiting Map')
+    // Request needed libraries. Currently only Places API is used for selecting address.
     await Promise.all([
       google.maps.importLibrary("places"),
     ]);
-    console.log('awaited Map')
-    // Create the input HTML element, and append it.
-    //@ts-ignore
-    // const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
 
-    const center = { lat: 50.064192, lng: -130.605469 };
-    // Create a bounding box with sides ~10km away from the center point
+    const center = { lat: 50.064192, lng: -110.605469 };
+    // Create a bounding box with sides ~20km away from the center point
+    const bounds = new google.maps.LatLngBounds(center);
+    const boundaryDistance = 0.2;
     const defaultBounds = {
-      north: center.lat + 0.1,
-      south: center.lat - 0.1,
-      east: center.lng + 0.1,
-      west: center.lng - 0.1,
+      north: center.lat + 0.2,
+      south: center.lat - 0.2,
+      east: center.lng + 0.2,
+      west: center.lng - 0.2,
     };
-    const input = document.getElementById("interactive_address") as HTMLInputElement;
+    const input = document.getElementById("location.interactive_address") as HTMLInputElement;
     const options = {
+      location: center,
       bounds: defaultBounds,
       componentRestrictions: { country: "ca" },
-      fields: ["address_components", "geometry", "icon", "name"],
-      strictBounds: false,
+      fields: ["formatted_address", "geometry", "place_id", "plus_code"], // address_components, place_id
+      // This is an option for the Google Maps Places Autocomplete API
+      // It sets whether the Autocomplete predictions should be strictly biased to the bounds set via the bounds option.
+      strictBounds: true
     };
 
     const autocomplete = new google.maps.places.Autocomplete(input, options);
-    console.log('autocomplete', autocomplete)
+
   });
 
 onMounted(() => {
