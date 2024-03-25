@@ -1,4 +1,12 @@
-# Following source doesn't work in most setups
+# Configuration for Hadolint, a Dockerfile linter.
 ignored:
-  - SC1090
-  - SC1091
+# SC1090: Can't follow non-constant source. This warning occurs when
+# ShellCheck can't find a file that is sourced in the script. This is
+# common in Dockerfiles where the sourced file is added in a different
+# layer.
+- SC1090
+# SC1091: Not following: (file mentioned in source command). This warning
+# occurs when ShellCheck can't read a file that is sourced in the script.
+# This can happen even if the file exists, for example, due to
+# permissions.
+- SC1091
