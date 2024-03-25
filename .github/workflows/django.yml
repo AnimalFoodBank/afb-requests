@@ -9,9 +9,12 @@
 name: Django CI (basic)
 on:
   push:
-    branches: [main]
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/django.yml'
   pull_request:
-    branches: [main]
+    paths:
+      - 'apps/api/**'
   workflow_dispatch:
 
 jobs:
@@ -74,20 +77,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Cache system packages
-      uses: actions/cache@v3.3.2
-      with:
-        path: /var/cache/apt/archives
-        key: ${{ runner.os }}-apt-${{ hashFiles('apt.txt') }}
-        restore-keys: ${{ runner.os }}-apt-
+    # - name: Cache system packages
+    #   uses: actions/cache@v3.3.2
+    #   with:
+    #     path: /var/cache/apt/archives
+    #     key: ${{ runner.os }}-apt-${{ hashFiles('apt.txt') }}
+    #     restore-keys: ${{ runner.os }}-apt-
 
-    - name: Cache python dependencies
-      uses: actions/cache@v3.3.2
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+    # - name: Cache python dependencies
+    #   uses: actions/cache@v3.3.2
+    #   with:
+    #     path: ~/.cache/pip
+    #     key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-pip-
 
     - name: Run migrations
       run: |
