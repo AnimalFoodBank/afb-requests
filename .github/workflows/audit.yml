@@ -60,3 +60,24 @@ jobs:
         inputs: apps/api/requirements.txt
         summary: true
         require-hashes: false
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      working-directory: apps/ui
+      run: pnpm install
+
+    - name: Build Nuxt3 app
+      working-directory: apps/ui
+      run: pnpm run build
+
+    - name: Run tests
+      working-directory: apps/ui
+      run: pnpm test
+
+    - name: Audit dependencies
+      working-directory: apps/ui
+      run: pnpm audit
