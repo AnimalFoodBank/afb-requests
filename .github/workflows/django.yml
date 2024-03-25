@@ -18,6 +18,21 @@ jobs:
   build:
 
     runs-on: ubuntu-22.04
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: afbrequests
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       DB_NAME: afbrequests
       DB_USER: user
