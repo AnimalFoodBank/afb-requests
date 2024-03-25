@@ -21,6 +21,7 @@ jobs:
       DB_NAME: afbrequests
       DB_USER: user
       DB_PASSWORD: pass
+      DB_ENGINE: django.db.backends.postgresql
     defaults:
       run:
         working-directory: ./apps/api
