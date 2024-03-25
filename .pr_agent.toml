@@ -1,3 +1,7 @@
+# Global configuration for the Codium PR Agent.
+#
+# Change only what's needed to ease upstream merges. Be concise.
+
 
 [config]
 
