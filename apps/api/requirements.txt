@@ -42,7 +42,7 @@ decorator==5.1.1
     #   ipython
 distlib==0.3.8
     # via virtualenv
-django==4.2.11
+django==5.0.3
     # via
     #   -r requirements.in
     #   django-cors-headers

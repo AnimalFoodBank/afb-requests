@@ -67,7 +67,7 @@
 # New URL Pattern Syntax: Django 4.0 introduces a new, simpler
 # syntax for URL patterns, using Python's type hinting.
 #
-Django~=4.2
+Django~=5.0.0
 
 # A collection of custom extensions for the Django
 # Framework. These include management commands,
@@ -122,7 +122,7 @@ python-dotenv
 
 # OpenAPI 3 support for Django REST framework
 drf-spectacular
-drf-spectacular[sidecar]  # Optional, but adds Swagger UI and Redoc rather than CDN
+drf-spectacular[sidecar]  # Optional, but adds Swagger UI and Redoc local rather than CDN
 
 # This is used for the API docs
 markdown

@@ -54,9 +54,32 @@ jobs:
     #   run: |
     #     pip install --upgrade pip
 
-    - name: gh-action-pip-audit
+    - name: gh-action-pip-audit0
       uses: pypa/gh-action-pip-audit@v1.0.8
       with:
         inputs: apps/api/requirements.txt
         summary: true
         require-hashes: false
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      working-directory: apps/ui
+      run: |
+        npm install -g pnpm
+        pnpm install
+
+    - name: Build Nuxt3 app
+      working-directory: apps/ui
+      run: pnpm run build
+
+    - name: Run tests
+      working-directory: apps/ui
+      run: pnpm test
+
+    - name: Audit dependencies
+      working-directory: apps/ui
+      run: pnpm audit
