@@ -1,7 +1,4 @@
 
--e git+https://github.com/delano/django-rest-framework.git@dev#egg=djangorestframework
--e git+https://github.com/delano/drf-registration.git@dev#egg=drf-registration
--e git+https://github.com/delano/django-rest-framework-passwordless.git@dev#egg=drfpasswordless
 asgiref==3.8.1
 asttokens==2.4.1
 attrs==23.2.0
