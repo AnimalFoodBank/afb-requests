@@ -1,10 +1,11 @@
 [tool.poetry]
-name = "afbrequests"
+name = "AFB Requests"
 version = "0.1.0"
 description = "allows people to both request and donate pet food to help feed animals."
 authors = ["Delano"]
 license = "MIT"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
