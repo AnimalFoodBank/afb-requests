@@ -1,3 +1,8 @@
+/**
+ * Defines the default configuration for this app.
+ *
+ * @returns The default app configuration object.
+ */
 export default defineAppConfig({
   ui: {
     primary: 'sky',
@@ -34,4 +39,4 @@ export default defineAppConfig({
   seo: {
     siteName: 'AFB - Welcome',
   },
-})
+});
