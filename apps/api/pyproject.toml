@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "afbrequests"
+version = "0.1.0"
+description = "allows people to both request and donate pet food to help feed animals."
+authors = ["Delano"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^5.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
