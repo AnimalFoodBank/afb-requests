@@ -1,6 +1,6 @@
 # Originally created by https://www.gitignore.io
 
-apps/.examples
+.examples
 
 ### OSX ###
 .DS_Store

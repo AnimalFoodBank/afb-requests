@@ -433,17 +433,42 @@ dev = ["black"]
 
 [[package]]
 name = "djangorestframework"
-version = "3.15.1"
+version = "3.14.0"
 description = "Web APIs for Django, made easy."
 optional = false
 python-versions = ">=3.6"
-files = [
-    {file = "djangorestframework-3.15.1-py3-none-any.whl", hash = "sha256:3ccc0475bce968608cf30d07fb17d8e52d1d7fc8bfe779c905463200750cbca6"},
-    {file = "djangorestframework-3.15.1.tar.gz", hash = "sha256:f88fad74183dfc7144b2756d0d2ac716ea5b4c7c9840995ac3bfd8ec034333c1"},
-]
+files = []
+develop = false
 
 [package.dependencies]
 django = ">=3.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/delano/django-rest-framework.git"
+reference = "dev"
+resolved_reference = "5ad467aa2c76a7cfb6218f6dbe22e314131bde3c"
+
+[[package]]
+name = "drf-registration"
+version = "0.2.0"
+description = "Simple user registration package based on Django Rest Framework. DRF Registration - The easy way to generate registration RESTful APIs."
+optional = false
+python-versions = ">=3.6"
+files = []
+develop = false
+
+[package.dependencies]
+Django = ">=2.0"
+djangorestframework = ">=3.8.2"
+requests = "*"
+six = "*"
+
+[package.source]
+type = "git"
+url = "https://github.com/delano/drf-registration.git"
+reference = "dev"
+resolved_reference = "b99c88e1f87b5cd943185ebce83e6925f4d66e84"
 
 [[package]]
 name = "drf-spectacular"
@@ -481,6 +506,25 @@ files = [
 
 [package.dependencies]
 Django = ">=2.2"
+
+[[package]]
+name = "drfpasswordless"
+version = "1.5.9"
+description = "Passwordless auth for Django Rest Framework Token Authentication."
+optional = false
+python-versions = ">=3"
+files = []
+develop = false
+
+[package.dependencies]
+Django = "*"
+djangorestframework = "*"
+
+[package.source]
+type = "git"
+url = "https://github.com/delano/django-rest-framework-passwordless.git"
+reference = "dev"
+resolved_reference = "1901df232d155299c8bfe53aa5751e886491f488"
 
 [[package]]
 name = "executing"
@@ -1491,4 +1535,4 @@ test = ["pytest (>=6.0.0)", "setuptools (>=65)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "258e3af310621bfeb5c7014154e6002d9c619f4f052922a1824d2e5da48dfa1c"
+content-hash = "64fdcfffedaf373150ce8bd61fb9db1e60df92aeea2c58ce20c83845cbf59e99"
