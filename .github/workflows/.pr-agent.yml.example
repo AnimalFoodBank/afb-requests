@@ -1,4 +1,4 @@
-#
+
 # This code snippet is a GitHub Actions workflow configuration
 # file. It defines a workflow that runs on pull requests and
 # issue comments events. The workflow consists of a single job
