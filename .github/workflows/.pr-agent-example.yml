@@ -1,0 +1,36 @@
+#
+# This code snippet is a GitHub Actions workflow configuration
+# file. It defines a workflow that runs on pull requests and
+# issue comments events. The workflow consists of a single job
+# called "pr_agent_job" that runs on the latest version of
+# Ubuntu. The job has permissions to write to issues, pull
+# requests, and contents.
+#
+# The job includes a step called "PR Agent action step" that
+# uses the "Codium-ai/pr-agent" action. This action is
+# responsible for running the PR Agent on every pull request
+# and responding to user comments. It requires the
+# "OPENAI_KEY" environment variable to be set, which is
+# retrieved from the "secrets.OPENAI_KEY" secret.
+#
+# Please note that this is just a code snippet and should be
+# integrated into a complete GitHub Actions workflow file.
+
+on:
+  pull_request:
+  issue_comment:
+
+jobs:
+  pr_agent_job:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
+    name: Run pr agent on every pull request, respond to user comments
+    steps:
+      - name: PR Agent action step
+        id: pragent
+        uses: Codium-ai/pr-agent@main
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
