@@ -5,6 +5,10 @@ useSeoMeta({
   title: "About Us",
 })
 
+definePageMeta({
+  auth: false,
+});
+
 const route = useRoute()
 
 </script>

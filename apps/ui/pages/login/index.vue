@@ -12,11 +12,18 @@ const coolOfCTA = ref(false);
 // https://evomark.co.uk/open-source-software/vue3-snackbar/
 const snackbar = useSnackbar();
 
+// Auth
+//
+// Note: You cannot use local protection when you turned on the global
+// middleware by setting globalAppMiddleware: true in the nuxt-auth
+// configuration. You will get an error along the lines of "Error: Unknown
+// route middleware: 'auth'". This is because the auth middleware is then
+// added globally and not available to use as a local, page-specific
+// middleware.
+
 definePageMeta({
   layout: "auth",
-  auth: {
-    unauthenticatedOnly: false,
-  },
+  auth: false,
 });
 
 const fields = [

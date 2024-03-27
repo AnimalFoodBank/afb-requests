@@ -3,9 +3,6 @@ import type { FoodDeliveryFormState } from '@/types/index';
 
 definePageMeta({
   layout: 'dashboard',
-  auth: {
-    unauthenticatedOnly: true,
-  },
 })
 
 const links = [[
