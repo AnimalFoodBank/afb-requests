@@ -23,7 +23,7 @@ on:
   workflow_dispatch:  # yamllint disable-line
 
 jobs:
-  build:
+  install-and-cache:
     strategy:
       fail-fast: true
       max-parallel: 4
@@ -36,7 +36,6 @@ jobs:
 
     # Service containers to run with `build` job
     services:
-
       # Label used to access the service container which is
       # running a postgres image from Docker Hub.
       postgres:
@@ -116,6 +115,7 @@ jobs:
         run: |
           source .venv/bin/activate
           pip install "Django==${{ matrix.django-version }}"
+
       - name: Run tests
         run: |
           source .venv/bin/activate

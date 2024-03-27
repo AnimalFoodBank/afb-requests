@@ -26,7 +26,7 @@ on:
 jobs:
 
   test:
-    needs: cache-and-install
+    needs: install-and-cache
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -39,7 +39,7 @@ jobs:
 
   # Cache dependencies to speed up workflow execution.
   # Note: Includes installation of pnpm
-  cache-and-install:
+  install-and-cache:
     runs-on: ubuntu-latest
 
     defaults:
