@@ -12,7 +12,7 @@ package-mode = false
 # build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
-python = "^3.8 || ^3.9 || ^3.10 || ^3.11 || ^3.12"
+python = ">=3.10,<4.0"
 Django = "5.0.3"
 asgiref = "3.8.1"
 asttokens = "2.4.1"
