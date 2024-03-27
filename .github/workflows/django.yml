@@ -1,47 +1,57 @@
-# This is a basic GitHub Actions workflow for running CI tests on a Django
-# project. It runs on Ubuntu 22.04 with 4 parallel jobs, caches system
-# packages and Python dependencies, and checks out the repository with a
-# fetch depth of 1. The build job sets the Python version to 3.11 and runs
-# the tests using the specified matrix. It is triggered on push or pull
-# request events on the main branch, as well as manually using the
-# workflow_dispatch event. For more information, see
-# https://docs.github.com/en/actions/guides/building-and-testing-python#building-and-testing-python-with-multiple-versions
-name: Django CI (basic)
+
+# This is a matrix GitHub Action workflow for running CI tests on a Django
+# project.
+#
+# Based on https://github.com/snok/install-poetry?tab=readme-ov-file
+#
+# See:
+#   https://docs.github.com/en/actions/guides/building-and-testing-python#building-and-testing-python-with-multiple-versions
+#   https://devguide.python.org/versions/
+#
+
+
+name: Django CI - Matrix
 on:
-  push:
-    paths:
-      - 'apps/api/**'
-      - '.github/workflows/django.yml'
   pull_request:
     paths:
-      - 'apps/api/**'
-  workflow_dispatch:
+      - apps/api/**
+  push:
+    paths:
+      - .github/workflows/django.yml
+
+  # Allow running the workflow manually
+  workflow_dispatch:  # yamllint disable-line
 
 jobs:
+  install-and-cache:
+    strategy:
+      fail-fast: true
+      max-parallel: 4
+      matrix:
+        os: [ ubuntu-latest ]  # ubuntu-latest, macos-latest
+        python-version: [ "3.11" ]  # "3.10", "3.11", "3.12" or simply ">=3.9,<4.0"
+        django-version: [ "5" ]  # "4", "5"
 
-  build:
-    runs-on: ubuntu-22.04
-    container: python:3.11
+    runs-on: ${{ matrix.os }}
 
     # Service containers to run with `build` job
     services:
-      # Label used to access the service container
+      # Label used to access the service container which is
+      # running a postgres image from Docker Hub.
       postgres:
-        # Docker Hub image
         image: postgres:16.2-bookworm
-        # Provide the password for postgres
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: bronco
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
-
     env:
       DB_NAME: postgres
       DB_USER: postgres
@@ -50,56 +60,66 @@ jobs:
       DB_PORT: 5432
       DB_ENGINE: django.db.backends.postgresql
 
+    # All steps should run in the Django app
+    # subdirectory by default.
     defaults:
       run:
         working-directory: ./apps/api
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: ["3.11"]
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-        submodules: true
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: true
+      - name: Set up python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      #----------------------------------------------
+      #  -----  install & configure poetry  -----
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      #----------------------------------------------
+      #       load cached venv if cache exists
+      #----------------------------------------------
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      #----------------------------------------------
+      # install dependencies if cache does not exist
+      #----------------------------------------------
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+      #----------------------------------------------
+      # install your root project, if required
+      #----------------------------------------------
+      - name: Install library
+        run: poetry install --no-interaction
+      #----------------------------------------------
+      #    add matrix specifics and run test suite
+      #----------------------------------------------
+      - name: Install django ${{ matrix.django-version }}
+        run: |
+          ls -la
+          source .venv/bin/activate
+          pip install "Django==${{ matrix.django-version }}"
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4.7.0
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Install Pillow
-      run: python -m pip install Pillow
-
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install -r requirements.txt
-
-    # - name: Cache system packages
-    #   uses: actions/cache@v3.3.2
-    #   with:
-    #     path: /var/cache/apt/archives
-    #     key: ${{ runner.os }}-apt-${{ hashFiles('apt.txt') }}
-    #     restore-keys: ${{ runner.os }}-apt-
-
-    # - name: Cache python dependencies
-    #   uses: actions/cache@v3.3.2
-    #   with:
-    #     path: ~/.cache/pip
-    #     key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-pip-
-
-    - name: Run migrations
-      run: |
-        python manage.py migrate
-
-    - name: Run collectstatic
-      run: |
-        python manage.py collectstatic --noinput
-
-    - name: Run Tests
-      run: |
-        python manage.py test afbcore.tests
+      - name: Run tests
+        run: |
+          ls -la
+          source .venv/bin/activate
+          pytest tests/
+          coverage report

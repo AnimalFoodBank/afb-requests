@@ -18,7 +18,7 @@
 # - https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
 
-name: Audit
+name: Audit (Both apps)
 on:
   push:
     branches: [main]
@@ -30,37 +30,46 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     # https://stackoverflow.com/questions/58139175/running-actions-in-another-directory
-    defaults:
-      run:
-        working-directory: ./apps/api
+
     strategy:
       max-parallel: 2
       matrix:
         python-version: ["3.11"]
 
     steps:
-    - name: Checkout
+
+    #----------------------------------------------
+    #       check-out repo and set-up python
+    #----------------------------------------------
+    - name: Check out repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
         submodules: true
-
-    # - name: Install packages
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y cargo
-
-    # - name: Update PIP
-    #   run: |
-    #     pip install --upgrade pip
-
-    - name: gh-action-pip-audit0
-      uses: pypa/gh-action-pip-audit@v1.0.8
+    - name: Set up python ${{ matrix.python-version }}
+      id: setup-python
+      uses: actions/setup-python@v5
       with:
-        inputs: apps/api/requirements.txt
-        summary: true
-        require-hashes: false
+        python-version: ${{ matrix.python-version }}
 
+    #----------------------------------------------
+    #       install & configure poetry
+    #----------------------------------------------
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    #----------------------------------------------
+    #         install dependencies
+    #----------------------------------------------
+    - name: Install dependencies
+      run: poetry install --no-interaction
+
+    #----------------------------------------------
+    #         install node & pnpm
+    #----------------------------------------------
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
