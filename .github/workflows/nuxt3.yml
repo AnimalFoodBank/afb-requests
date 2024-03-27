@@ -13,15 +13,15 @@
 #
 # Note: Make sure to have pnpm installed in the environment where this workflow will run.
 
-name: Nuxt3 UI Tests
+name: Nuxt3 CI - Tests
 
 on:
-  push:
-    paths:
-      - apps/ui/**
   pull_request:
     paths:
       - apps/ui/**
+  push:
+    paths:
+      - .github/workflows/ui.yml
 
 jobs:
 
