@@ -7,7 +7,7 @@ useSeoMeta({
 
 const config = useRuntimeConfig();
 
-const coolOfCTA = ref(false);
+const coolOffCTA = ref(false);
 
 // https://evomark.co.uk/open-source-software/vue3-snackbar/
 const snackbar = useSnackbar();
@@ -62,17 +62,12 @@ async function onSubmit(
 ) {
   console.log("Submitted", event);
 
-  if (coolOfCTA.value) {
+  if (coolOffCTA.value) {
     snackbar.add({
       type: "warning",
       text: "If you haven't received an email, please wait a few minutes and try again.",
     });
     return;
-  } else {
-    coolOfCTA.value = true;
-    setTimeout(() => {
-      coolOfCTA.value = false;
-    }, 10000); // TODO: Increase to?
   }
 
   // Prepare the payload
@@ -118,6 +113,12 @@ async function onSubmit(
             type: "success",
             text: message,
           });
+
+          coolOffCTA.value = true;
+          setTimeout(() => {
+            coolOffCTA.value = false;
+          }, 10000); // TODO: Increase to?
+
         } else {
           // Handle the response errors
           console.error(
@@ -161,7 +162,7 @@ const branchLocations = [
   {
     name: "",
     value: "",
-    // coolOfCTA: true
+    // coolOffCTA: true
   },
   {
     name: "Xanadu Branch",
