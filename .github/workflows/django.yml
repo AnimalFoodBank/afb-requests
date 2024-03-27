@@ -113,11 +113,13 @@ jobs:
       #----------------------------------------------
       - name: Install django ${{ matrix.django-version }}
         run: |
+          ls -la
           source .venv/bin/activate
           pip install "Django==${{ matrix.django-version }}"
 
       - name: Run tests
         run: |
+          ls -la
           source .venv/bin/activate
           pytest tests/
           coverage report
