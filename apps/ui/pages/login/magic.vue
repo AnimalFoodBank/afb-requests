@@ -1,6 +1,17 @@
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from '#ui/types';
+import type { FormError } from '#ui/types';
 import { useRoute } from 'vue-router';
+
+const {
+  status,
+  data,
+  token,
+  lastRefreshedAt,
+  getSession,
+  signUp,
+  signIn,
+  signOut,
+} = useAuth()
 
 useSeoMeta({
   title: "Sign In",
@@ -11,10 +22,7 @@ const snackbar = useSnackbar();
 
 definePageMeta({
   layout: 'auth',
-  auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/protected',
-  },
+  auth: false,
 })
 
 const route = useRoute()
@@ -29,85 +37,39 @@ const state = reactive({
 // re: issues with autopopulating values and Chrome not updating the DOM
 // see: https://github.com/vuejs/vue/issues/7058#issuecomment-1366489524
 const validate = (state: any): FormError[] => {
-  console.log('statevalidate', state)
   const errors = []
   if (!state.email) errors.push({ path: 'email', message: 'Required' })
   if (!state.code) errors.push({ path: 'code', message: 'Required' })
   return errors
 }
 
-async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
-  console.log('Submitted', event);
+async function authHandler() {
 
-  // Prepare the payload
-  const payload = {
+  // Prepare the credentials expected by the DRF Passwordless view:
+  // drfpasswordless.views.ObtainAuthTokenFromCallbackToken. Annoyingly
+  // the code is referred to as 'token' here in the request payload.
+  // The term "token" is used in the response payload to refer to
+  // the widely-recognized Authentication/Bearer token that is used
+  // to authenticate requests to the API.
+  //
+  const credentials = {
     email: state.email,
     token: state.code,
   }
-  console.log('Payload:', payload)
 
   try {
-    // Send post request to the API endpoint using Nuxt 3 useFetch
-    const path = '/api/passwordless/auth/token/'
-    const { data, pending, error, refresh } = await useFetch(path, {
-      onRequest({ request, options }) {
-        console.log('Request:', request)
-        // Set the request headers
-        options.headers = options.headers || {}
-        // options.headers = options.headers || { any: '' }
-        options.headers['AFB'] = 'rules'
-        options.headers['Content-Type'] = 'application/json'
-      },
-      onRequestError({ request, options, error }) {
-        // Handle the request errors
-        console.error('A request error occurred:', error)
-      },
-      onResponse({ request, response, options }) {
-        console.log('Response:', response)
-        const data = response._data
-
-        // After a successful response the next step is for the
-        // user to be directed to their dashboard.
-        if (response.ok) {
-          const message = 'Your now signed in. Redirecting to your dashboard.'
-          console.log('Message:', message)
-
-          // Save the bearer token to local storage
-          const token = response.headers.get('Authorization')
-          if (token) {
-            window.localStorage.setItem('auth._token.local', token)
-          }
-
-          navigateTo('/dashboard')
-
-
-        } else {
-          // Handle the response errors
-          console.error('A response error occurred:', error)
-
-          snackbar.add({
-            type: 'error',
-            text: 'An error occurred. Please try again.',
-          })
-        }
-
-      },
-      onResponseError({ request, response, options }) {
-        // Handle the response errors
-        console.error('A response error occurred:', error)
-      },
-      baseURL: config.public.apiBase,
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      mode: 'cors',
-
-    })
+    const response = await signIn(credentials, { callbackUrl: '/dashboard' })
 
   } catch (error) {
-    console.error('An unhandled error occurred:', error)
+    console.error('An unhandled error occurred:', error);
+
+    const toast = useToast()
+    toast.add({
+      title: 'Login Error',
+      description: 'An error occurred on our. Please try logging in again.',
+    })
+
+    return navigateTo('/login')
   }
 }
 
@@ -127,10 +89,10 @@ async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
       description="Click 'Sign in' to complete process."
       align="top"
       icon="i-heroicons-lock-closed"
-      @submit="onSubmit"
+      @submit="authHandler"
     >
       <div class="w-full max-w-sm space-y-6">
-        <h2 class="text-2xl text-gray-900 dark:text-white font-bold text-center">Sign in to AFB Requests</h2>
+        <h2 class="text-2xl text-gray-900 dark:text-white font-bold text-center">Welcome to AFB Requests</h2>
         <!-- <p class="text-gray-500 dark:text-gray-400 mt-1 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p> -->
 
         <UInput v-model="email" name="email" type="hidden" label="Email" required />

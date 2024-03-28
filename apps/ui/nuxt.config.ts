@@ -65,16 +65,22 @@ export default defineNuxtConfig({
   auth: {
     isEnabled: true,
     globalAppMiddleware: true,
-    baseURL: '/api/auth',
+    baseURL: '/api',
     provider: {
       type: 'local',
       endpoints: {
-        signIn: { path: '/login', method: 'post' },
+        signIn: { path: '/passwordless/auth/token/', method: 'post' },
         signOut: { path: '/logout', method: 'post' },
+        // Can also be set to false to disable
+        // TODO: Look into this
         signUp: { path: '/register', method: 'post' },
-        getSession: { path: '/session', method: 'get' }  // can also be set to false
+        getSession: { path: '/users/current_user/', method: 'get' }
       },
-      token: { signInResponseTokenPointer: '/token/accessToken' },
+      token: {
+        signInResponseTokenPointer: '/token',  // json path in response
+        // type - one of 'Bearer' or 'Token'. The former is JWT, latter is TokenAuthentication)
+        type: 'Token',
+      },
     }
   },
 
