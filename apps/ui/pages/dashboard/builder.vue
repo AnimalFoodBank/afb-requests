@@ -3,9 +3,6 @@
 
 definePageMeta({
   layout: 'dashboard',
-  auth: {
-    unauthenticatedOnly: true,
-  },
 })
 </script>
 

@@ -7,6 +7,9 @@ useSeoMeta({
   titleTemplate: '',
 })
 
+definePageMeta({
+  auth: false,
+});
 
 const navigation = [
   { name: 'Product', href: '#' },

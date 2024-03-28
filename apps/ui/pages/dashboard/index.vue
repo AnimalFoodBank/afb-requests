@@ -36,12 +36,8 @@ useSeoMeta({
   title: "Dashboard",
 })
 
-
 definePageMeta({
   layout: 'dashboard',
-  auth: {
-    unauthenticatedOnly: false,
-  },
 })
 
 const requests = [

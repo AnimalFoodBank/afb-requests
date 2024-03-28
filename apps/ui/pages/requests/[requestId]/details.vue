@@ -7,10 +7,6 @@ let requestDetail = ref(null)
 
 definePageMeta({
   layout: 'dashboard',
-  auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/login',
-  },
 })
 
 const q = ref('')

@@ -37,6 +37,7 @@ lint:
     - trivy@0.50.0
     - trufflehog@3.71.0
     - yamllint@1.35.1
+    - djlint
 actions:
   disabled:
     - trunk-announce
@@ -47,7 +48,7 @@ actions:
 repo:
   # main is the branch that everyone's work is merged into
   # (this is usually inferred and not required to be set)
-  trunk_branch: main
+  trunk_branch: dev
   # By default, trunk will auto-detect all changed files relative to your main
   # branch. If you would instead like it to compare against the upstream of your
   # current git branch, you can enable this feature by setting

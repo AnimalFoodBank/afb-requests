@@ -21,6 +21,16 @@ const props = defineProps<{
 
 const vueform = ref<any>(null);
 
+/**
+ *  WARNING! ATTENTION! ACHTUNG! ATENCIÓN!
+ *
+ * Never define const state = ref() outside of <script setup> or setup() function.
+ * Such state will be shared across all users visiting your website and
+ * can lead to memory leaks!
+ * Instead use const useX = () => useState('x')
+ *    -- https://nuxt.com/docs/getting-started/state-management#best-practices
+ *
+ **/
 onMounted(() => {
   console.log("FoodDeliveryFormState has been mounted");
 

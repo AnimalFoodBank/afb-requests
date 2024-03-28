@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/fonts',
     'nuxt-snackbar',
+    '@sidebase/nuxt-auth',
     "@vueform/nuxt",
     // '@vueform/builder-nuxt',
   ],
@@ -15,6 +16,8 @@ export default defineNuxtConfig({
 
   /*
    *  Client-side Rendering:
+   *  Set to false to disable client-side rendering.
+   *
    *  Out of the box, a traditional Vue.js application is rendered in the
    *  browser (or client). Then, Vue.js generates HTML elements after the
    *  browser downloads and parses all the JavaScript code containing the
@@ -40,6 +43,45 @@ export default defineNuxtConfig({
 
   ui: {
     icons: ['heroicons', 'streamline', 'ph', 'game-icons'], // simple-icons
+  },
+
+  //
+  // https://sidebase.io/nuxt-auth/getting-started/quick-start#provider-refresh
+  //
+  // https://sidebase.io/nuxt-auth/application-side/session-access-and-management
+  //
+  //  - Local provider: Note that you will have to manually call getSession from
+  //  useAuth composable in order to refresh the new user state when using
+  //  setToken, clearToken or manually updating rawToken.value:
+  //
+  // https://sidebase.io/nuxt-auth/application-side/protecting-pages
+  // https://sidebase.io/nuxt-auth/application-side/guest-mode
+  //
+  //
+  // JS API Docs
+  // https://github.com/sidebase/nuxt-auth/blob/5d713aa419/src/runtime/composables/authjs/useAuth.ts#L222
+  // https://github.com/sidebase/nuxt-auth/blob/5d713aa419/docs/content/2.configuration/2.nuxt-config.md?plain=1#L176
+  //
+  auth: {
+    isEnabled: true,
+    globalAppMiddleware: true,
+    baseURL: '/api',
+    provider: {
+      type: 'local',
+      endpoints: {
+        signIn: { path: '/passwordless/auth/token/', method: 'post' },
+        signOut: { path: '/logout', method: 'post' },
+        // Can also be set to false to disable
+        // TODO: Look into this
+        signUp: { path: '/register', method: 'post' },
+        getSession: { path: '/users/current_user/', method: 'get' }
+      },
+      token: {
+        signInResponseTokenPointer: '/token',  // json path in response
+        // type - one of 'Bearer' or 'Token'. The former is JWT, latter is TokenAuthentication)
+        type: 'Token',
+      },
+    }
   },
 
   storybook: {

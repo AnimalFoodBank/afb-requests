@@ -1,10 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "dashboard",
-  auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: "/login",
-  },
 });
 
 const q = ref("");
