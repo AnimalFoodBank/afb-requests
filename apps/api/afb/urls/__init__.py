@@ -46,10 +46,10 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/passwordless/", passwordless),
     # Add DRF API registration endpoints. We need these for the browsable API.
-    path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
-    # Add drf_registration endpoints. These are used for login, registration,
+    # path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # Add drf_registration (package) endpoints. These are used for login, registration,
     # etc from the frontend.
-    path("api/accounts/", include("drf_registration.urls")),
+    # path("api/accounts/", include("drf_registration.urls")),
 ]
 
 urlpatterns.extend(  # TODO: remove

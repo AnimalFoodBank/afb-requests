@@ -7,16 +7,23 @@ useSeoMeta({
 
 const config = useRuntimeConfig();
 
-const coolOfCTA = ref(false);
+const coolOffCTA = ref(false);
 
 // https://evomark.co.uk/open-source-software/vue3-snackbar/
 const snackbar = useSnackbar();
 
+// Auth
+//
+// Note: You cannot use local protection when you turned on the global
+// middleware by setting globalAppMiddleware: true in the nuxt-auth
+// configuration. You will get an error along the lines of "Error: Unknown
+// route middleware: 'auth'". This is because the auth middleware is then
+// added globally and not available to use as a local, page-specific
+// middleware.
+
 definePageMeta({
   layout: "auth",
-  auth: {
-    unauthenticatedOnly: false,
-  },
+  auth: false,
 });
 
 const fields = [
@@ -55,17 +62,12 @@ async function onSubmit(
 ) {
   console.log("Submitted", event);
 
-  if (coolOfCTA.value) {
+  if (coolOffCTA.value) {
     snackbar.add({
       type: "warning",
       text: "If you haven't received an email, please wait a few minutes and try again.",
     });
     return;
-  } else {
-    coolOfCTA.value = true;
-    setTimeout(() => {
-      coolOfCTA.value = false;
-    }, 10000); // TODO: Increase to?
   }
 
   // Prepare the payload
@@ -77,7 +79,7 @@ async function onSubmit(
   try {
     // Send post request to the API endpoint using Nuxt 3 useFetch
     const path = "/api/passwordless/auth/email/";
-    await $fetch(path, {
+    const { data, pending, error, refresh } = await useFetch(path, {
       onRequest({ request, options }) {
         console.log("Request:", request);
         // Set the request headers
@@ -111,6 +113,12 @@ async function onSubmit(
             type: "success",
             text: message,
           });
+
+          coolOffCTA.value = true;
+          setTimeout(() => {
+            coolOffCTA.value = false;
+          }, 10000); // TODO: Increase to?
+
         } else {
           // Handle the response errors
           console.error(
@@ -154,7 +162,7 @@ const branchLocations = [
   {
     name: "",
     value: "",
-    // coolOfCTA: true
+    // coolOffCTA: true
   },
   {
     name: "Xanadu Branch",

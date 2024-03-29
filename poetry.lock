@@ -452,7 +452,7 @@ django = ">=3.0"
 type = "git"
 url = "https://github.com/delano/django-rest-framework.git"
 reference = "dev"
-resolved_reference = "5ad467aa2c76a7cfb6218f6dbe22e314131bde3c"
+resolved_reference = "085b7e166ba80aa973645e5249b441f2dbdc0c96"
 
 [[package]]
 name = "drf-registration"
