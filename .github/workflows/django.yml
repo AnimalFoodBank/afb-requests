@@ -20,7 +20,13 @@ on:
       - .github/workflows/django.yml
 
   # Allow running the workflow manually
-  workflow_dispatch:  # yamllint disable-line
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: Enable tmate debugging (see mxschmitt/action-tmate@v3)
+        required: false
+        default: false
 
 jobs:
   install-and-cache:
@@ -93,6 +99,11 @@ jobs:
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
+
+      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       #----------------------------------------------
       #       load cached venv if cache exists
