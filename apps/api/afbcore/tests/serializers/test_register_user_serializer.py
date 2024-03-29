@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 from rest_framework import status
-from afbcore.serializers.register_user_serializer import RegisterUserSerializer
 
 """
     To run this test, run the following command:

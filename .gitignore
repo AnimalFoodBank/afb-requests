@@ -92,6 +92,7 @@ local_settings.py
 tmp/*
 node_modules/
 public/static/*
+mailpit.db*
 
 # Vite/Vue
 .vite/
