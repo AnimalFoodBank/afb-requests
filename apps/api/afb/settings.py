@@ -87,8 +87,6 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "drf_spectacular",
     "drf_spectacular_sidecar",
-    # "drf_registration",
-    # 'djoser',
     "drfpasswordless",
     "django_filters",  # add DRF filters
     "phonenumber_field",
@@ -310,53 +308,13 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_TOKEN_GENERATION_ATTEMPTS": 3,
 }
 
-# # For the default settings see:
-# # https://drf-registration.readthedocs.io/en/latest/settings/index.html
-# DRF_REGISTRATION = {
-#     # General settings
-#     "PROJECT_NAME": "AFB Requests",
-#     "PROJECT_BASE_URL": "",
-#     # User fields to register and respond to profile
-#     "USER_FIELDS": (
-#         "id",
-#         "email",
-#         # "password",
-#         "name",
-#         "is_active",
-#     ),
-#     "USER_READ_ONLY_FIELDS": (
-#         "is_superuser",
-#         "is_staff",
-#         "is_active",
-#     ),
-#     "USER_SERIALIZER": "afbcore.serializers.UserSerializer",
-#     "REGISTER_SERIALIZER": "afbcore.serializers.RegisterSerializer",
-#     "USER_WRITE_ONLY_FIELDS": ("password",),
-#     "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
-#     # For custom login username fields
-#     "LOGIN_USERNAME_FIELDS": [
-#         "email",
-#     ],
-#     "LOGOUT_REMOVE_TOKEN": True,
-# }
-
-
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
 PHONENUMBER_DEFAULT_REGION = "CA"
 
 ROOT_URLCONF = "afb.urls"
 
-# Django-Tailwind
-# https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
-
-# TAILWIND_APP_NAME = "theme"
-
 AUTH_USER_MODEL = "afbcore.User"
-
-AUTHENTICATION_BACKENDS = [
-    "drf_registration.auth.MultiFieldsModelBackend",
-]
 
 INTERNAL_IPS = [
     # Add local IP addresses here for tailwind to work, then run:

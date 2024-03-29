@@ -4,14 +4,13 @@ URL configuration for afb project.
 """
 
 from django.conf import settings
-from django.contrib import admin
+from django.contrib import admin as afbcore_admin
 from django.urls import include, path
 from django.views import defaults as default_views
-from rest_framework.authtoken.views import obtain_auth_token
+from drfpasswordless import admin as passwordless_admin
 
-from afbcore.views import users, public
+from afbcore.views import users
 from afbcore.contrib.api_router import APIRouter
-from .extra_api_views import EXTRA_API_VIEWS
 
 """
 
@@ -34,7 +33,7 @@ urlpatterns = [
 ]
 
 """
-router = APIRouter(singleViews=EXTRA_API_VIEWS)
+router = APIRouter(singleViews=[])
 router.register(r"users", users.UserViewSet, basename="user")
 
 # TODO: How to add to browsable API?
@@ -42,22 +41,11 @@ passwordless = include("drfpasswordless.urls")
 
 # TODO: Prefix with /version
 urlpatterns = [
-    path("admin/", admin.site.urls, name="admin"),
+    path("admin/", afbcore_admin.site.urls, name="admin"),
     path("api/", include(router.urls)),
     path("api/passwordless/", passwordless),
-    # Add DRF API registration endpoints. We need these for the browsable API.
-    # path("api/auth/", include("rest_framework.urls", namespace="rest_framework")),
-    # Add drf_registration (package) endpoints. These are used for login, registration,
-    # etc from the frontend.
-    # path("api/accounts/", include("drf_registration.urls")),
 ]
 
-urlpatterns.extend(  # TODO: remove
-    [
-        path(route=endpoint["route"], view=endpoint["view"], name=endpoint["name"])
-        for endpoint in EXTRA_API_VIEWS
-    ]
-)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
