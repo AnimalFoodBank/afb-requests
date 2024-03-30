@@ -1,8 +1,10 @@
 # Originally created by https://www.gitignore.io
 
-.examples
+#
+# NOTE: App-specific ignores are in their respective .gitignore files
+#
 
-### OSX ###
+### macos ###
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -24,6 +26,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -83,18 +86,15 @@ target/
 __pycache__/
 local_settings.py
 
-# Project
-.env*
+### Project-wide ###
 .certs/
-!.env.empty
-*.sqlite3
+.local
 .vscode/
-tmp/*
+!env/*.example
 node_modules/
 public/static/*
+tmp/*
+*.sqlite3
+.env*
+!.env.empty
 mailpit.db*
-
-# Vite/Vue
-.vite/
-
-**/tmp
