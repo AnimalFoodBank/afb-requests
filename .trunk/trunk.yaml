@@ -39,14 +39,25 @@ lint:
     - yamllint@1.35.1
     - djlint
 actions:
+  output_level: short
   disabled:
     - trunk-announce
     - trunk-check-pre-push
     - trunk-fmt-pre-commit
-  enabled:
     - trunk-upgrade-available
+    - trunk-share-with-everyone
+    - trunk-single-player-auto-on-upgrade
+    - trunk-single-player-auto-upgrade
+  enabled:
+    - npm-check
+  definitions:
+    - id: npm-check
+      triggers:
+        - schedule:
+          interval: 1d
+          delay: 1h
 repo:
-  # main is the branch that everyone's work is merged into
+  # Default branch that everyone's work is merged into
   # (this is usually inferred and not required to be set)
   trunk_branch: dev
   # By default, trunk will auto-detect all changed files relative to your main
