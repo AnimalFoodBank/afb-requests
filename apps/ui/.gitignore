@@ -1,9 +1,10 @@
 # Nuxt dev/build outputs
-.output
-.data
-.nuxt
-.nitro
 .cache
+.data
+.nitro
+.nuxt
+.output
+.vite
 dist
 
 # Node dependencies
@@ -18,14 +19,11 @@ logs
 .fleet
 .idea
 
-# Local env files
-.env
-.env.*
-
 # Exclude specific example file
 !apps/api/.env.example
 
 # VSC
 .history
 
+# Storybook 7/8
 *storybook.log
