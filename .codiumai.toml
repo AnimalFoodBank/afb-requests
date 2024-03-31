@@ -34,6 +34,10 @@
 
 [tests]
 
+use_mocks = false
+num_desired_tests = 3
+is_add_test_to_suite = true
+
 # A multiline string, delimited with triple-quotes (""")
 # serving as an extra instruction that the AI model will
 # consider. This will appear as "General instructions" in
