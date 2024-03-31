@@ -39,7 +39,7 @@ class UserViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
 
     @action(detail=False, methods=["get"])
-    def current_user(self, request):
+    def current_user(self, request, version=None, *args, **kwargs):
         """
         Retrieve the current authenticated user.
         """

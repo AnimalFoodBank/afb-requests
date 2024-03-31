@@ -65,7 +65,7 @@ export default defineNuxtConfig({
   auth: {
     isEnabled: true,
     globalAppMiddleware: true,
-    baseURL: '/api',
+    baseURL: '/api/v1',
     provider: {
       type: 'local',
       endpoints: {
