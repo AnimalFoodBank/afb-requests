@@ -43,6 +43,7 @@ class UserViewSet(viewsets.ModelViewSet):
         """
         Retrieve the current authenticated user.
         """
+        logger.debug("API Version: #{version}")
         serializer = self.get_serializer(request.user, context={"request": request})
         return Response(serializer.data)
 
