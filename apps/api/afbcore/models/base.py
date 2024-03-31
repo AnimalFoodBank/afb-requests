@@ -23,15 +23,15 @@ from model_utils.models import (
 class BaseAbstractModelManager(
     SoftDeletableManagerMixin, QueryManagerMixin, models.Manager
 ):
-    """A common base class for all major core managers"""
+    """A common base class for core model managers"""
 
 
 class BaseAbstractQuerySet(models.QuerySet):
-    """A common base class for all major core querysets"""
+    """A common base class for core model querysets"""
 
 
 class BaseAbstractModel(UUIDModel, SoftDeletableModel, TimeStampedModel):
-    """A common base class for all major core models
+    """A common base class for core models
 
     Fields inherited from BaseAbstractModel:
         - id: UUIDField, primary key

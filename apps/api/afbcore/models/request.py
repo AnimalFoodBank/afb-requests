@@ -3,7 +3,10 @@
 import uuid
 
 from django.db import models
+from model_utils import Choices
+from phonenumber_field.modelfields import PhoneNumberField
 
+from .base import BaseAbstractModel
 
 STATUS_CHOICES = [
     ("received", "Request Received"),
@@ -17,20 +20,60 @@ STATUS_CHOICES = [
     ("undeliverable", "Undeliverable"),
 ]
 
+BUILDING_TYPE_CHOICES = Choices(
+    ("HOUSE", "House"),
+    ("APARTMENT", "Apartment"),
+    ("TOWNHOUSE", "Townhouse"),
+    ("CONDO", "Condo"),
+    ("LANEWAY", "Laneway"),
+    ("DETACHED_HOUSE", "Detached house"),
+    ("OTHER", "Other"),
+)
 
-class Request(models.Model):
+
+class Request(BaseAbstractModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # TODO: Should this be a foreign key to the user model? A user can have
     # multiple profiles, so we need to think about this.
-    profile = models.ForeignKey("Profile", on_delete=models.DO_NOTHING)
+    user = models.ForeignKey("User", on_delete=models.DO_NOTHING)
 
     # A food request can belong to only one Branch
     branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING)
 
+    address_text = models.TextField()
+    address_google_place_id = models.CharField(max_length=255)
+    address_canadapost_id = models.CharField(max_length=255)
+    address_latitude = models.FloatField()
+    address_longitude = models.FloatField()
+    address_buildingtype = models.CharField(
+        max_length=100,
+        choices=BUILDING_TYPE_CHOICES,
+        default=BUILDING_TYPE_CHOICES.OTHER,
+    )
+    address_details = models.JSONField(default=dict)
+
+    # A PhoneNumberField, which is a custom field provided by the 'phonenumber_field' library. It stores a phone number in a standardized format and includes region-specific validation. The 'region' parameter is set to "CA" to indicate that the phone number should be formatted according to Canadian standards.
+    contact_phone = models.PhoneNumberField(region="CA", blank=True)
+
+    # An EmailField, which is a built-in field provided by Django. It stores an email address and performs basic email validation.
+    contact_email = models.EmailField(blank=True)
+
+    # Someone else may be there for the food delivery, or they may prefer a different name.
+    contact_name = models.CharField(max_length=100)
+
+    # Preferred way for us to contact them about the request Email, Text or Phone
+    method_of_contact = models.CharField(max_length=100)
+
+    # TODO: Pet
     # One or more.
     # ** We will want them to see and confirm/edit their address and phone number on the request, and be able to see pets, and edit some fields of their pets info
     pets = models.ManyToManyField("Pet")
+
+    # Safe drop - if they are not home, can we leave the food at the door?
+    # Yes/No
+    safe_drop_agree = models.BooleanField(null=True, blank=True)
+    safe_drop_instructions = models.TextField(max_length=255, null=True, blank=True)
 
     # Yes/No -
     # No requires them to edit address in the UI so in theory this should
@@ -41,34 +84,17 @@ class Request(models.Model):
     # Yes/No - No requires them to update phone number (validate format)
     confirm_phone_number = models.BooleanField()
 
-    # Text or Phone
-    method_of_contact = models.CharField(max_length=100)
-
-    # Drop down list with an "other" option that is free form text.  Select all that apply.
-    food_types_available = models.ManyToManyField("FoodAvailable")
+    # Not sure what to call this one, but if the volunteer has an issue with the client - they are rude or aggressive for example, can we allow the driver to mark the client as suspended and admin to review? (was "needs review"). Maybe an enum would be more appropriate here? Although that would dilute status a bit.
+    highlighted = models.BooleanField()
 
     # Use system date - do not let clients input/edit.  We like to have deliveries made within the branches delivery window so would be great if we could send notifications when requests are "aging"
     date_requested = models.DateField(auto_now_add=True)
 
-    # Yes/No
-    safe_drop = models.BooleanField()
-
-    # Free form comments from client - set max character limit
-    request_notes = models.TextField(max_length=255)
-
     # Request Received, Request Approved & in Queue, Request Denied, Volunteer Assigned, Request Ready For Volunteer Pickup, Delivery Scheduled, Out For Delivery, Delivered, Undeliverable
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="received")
 
-    # Driver comments
-    driver_comments = models.TextField(max_length=255, null=True, blank=True)
-
-    # Picture of delivery
-    picture_of_delivery = models.ImageField(
-        upload_to="delivery_pictures/", null=True, blank=True
-    )
-
-    # Not sure what to call this one, but if the volunteer has an issue with the client - they are rude or aggressive for example, can we allow the driver to mark the client as suspended and admin to review?
-    needs_review = models.BooleanField()
+    # Free form comments from driver, client, volunteer, etc.
+    comments = models.JSONField(default=dict)
 
     def __str__(self):
         return f"Pet Request {self.id}"
