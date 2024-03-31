@@ -8,9 +8,25 @@ from django.contrib import admin as afbcore_admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from drfpasswordless import admin as passwordless_admin
+from rest_framework.routers import DefaultRouter
 
-from afbcore.views import users
+from afbcore.views import users, RequestViewSet
 from afbcore.contrib.api_router import APIRouter
+
+router = DefaultRouter()
+router.register("request", RequestViewSet, basename="request")
+router.register(r"users", users.UserViewSet, basename="user")
+
+# TODO: How to add to browsable API?
+passwordless = include("drfpasswordless.urls")
+
+# TODO: Prefix with /version
+urlpatterns = [
+    path("admin/", afbcore_admin.site.urls, name="admin"),
+    path("api/", include(router.urls)),
+    path("api/passwordless/", passwordless),
+]
+
 
 """
 
@@ -33,18 +49,6 @@ urlpatterns = [
 ]
 
 """
-router = APIRouter(singleViews=[])
-router.register(r"users", users.UserViewSet, basename="user")
-
-# TODO: How to add to browsable API?
-passwordless = include("drfpasswordless.urls")
-
-# TODO: Prefix with /version
-urlpatterns = [
-    path("admin/", afbcore_admin.site.urls, name="admin"),
-    path("api/", include(router.urls)),
-    path("api/passwordless/", passwordless),
-]
 
 
 if settings.DEBUG:
