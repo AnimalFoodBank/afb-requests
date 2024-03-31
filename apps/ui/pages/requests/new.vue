@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FoodDeliveryFormState } from '@/types/index';
+import type { FoodRequestFormState } from '@/types/index';
 
 definePageMeta({
   layout: 'dashboard',
@@ -31,7 +31,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
 const googleMapsIsReady = ref(false)
 
-const state: Ref<FoodDeliveryFormState | null> = ref(null)
+const state: Ref<FoodRequestFormState | null> = ref(null)
 
 const loader = new Loader({
   apiKey: googleAPIKey,
@@ -128,7 +128,7 @@ onMounted(() => {
 
       <UDashboardPanelContent class="pb-12 pr-16 mr-16">
 
-        <RequestsFoodDeliveryForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" />
+        <RequestsFoodRequestForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" />
 
       </UDashboardPanelContent>
 

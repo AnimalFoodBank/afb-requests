@@ -31,7 +31,7 @@ export interface SessionData {
 }
 
 
-export interface FoodDeliveryFormState {
+export interface FoodRequestFormState {
   // Define your state properties here
   delivery_address: {
       branch_location: string;
