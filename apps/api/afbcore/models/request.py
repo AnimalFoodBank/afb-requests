@@ -54,7 +54,7 @@ class Request(BaseAbstractModel):
     address_details = models.JSONField(default=dict)
 
     # A PhoneNumberField, which is a custom field provided by the 'phonenumber_field' library. It stores a phone number in a standardized format and includes region-specific validation. The 'region' parameter is set to "CA" to indicate that the phone number should be formatted according to Canadian standards.
-    contact_phone = models.PhoneNumberField(region="CA", blank=True)
+    contact_phone = PhoneNumberField(region="CA", blank=True)
 
     # An EmailField, which is a built-in field provided by Django. It stores an email address and performs basic email validation.
     contact_email = models.EmailField(blank=True)
