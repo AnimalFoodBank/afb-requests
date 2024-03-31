@@ -10,12 +10,12 @@
 
 
 <script setup lang="ts">
-import type { FoodDeliveryFormState } from '@/types/index';
+import type { FoodRequestFormState } from '@/types/index';
 
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
-  state: FoodDeliveryFormState;
+  state: FoodRequestFormState;
   googleMapsIsReady?: boolean;
 }>();
 
@@ -32,7 +32,7 @@ const vueform = ref<any>(null);
  *
  **/
 onMounted(() => {
-  console.log("FoodDeliveryFormState has been mounted");
+  console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
   console.log("state", state);
