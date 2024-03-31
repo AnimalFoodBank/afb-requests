@@ -39,10 +39,11 @@ class UserViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
 
     @action(detail=False, methods=["get"])
-    def current_user(self, request):
+    def current_user(self, request, version=None, *args, **kwargs):
         """
         Retrieve the current authenticated user.
         """
+        logger.debug("API Version: #{version}")
         serializer = self.get_serializer(request.user, context={"request": request})
         return Response(serializer.data)
 
