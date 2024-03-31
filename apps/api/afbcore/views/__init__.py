@@ -11,5 +11,18 @@ This module also includes any helper functions or classes that are used exclusiv
 by the views in this module.
 """
 
-# Standard library imports
+from rest_framework import viewsets, exceptions
+
+from ..models import Request
+from ..serializers import RequestSerializer
+
 from .users import UserViewSet  # noqa: F401
+
+
+class RequestViewSet(viewsets.ModelViewSet):
+    queryset = Request.objects.all()  # TODO: Limit scope
+    serializer_class = RequestSerializer
+    lookup_field = "id"
+
+    def destroy(self, request, *args, **kwargs):
+        raise exceptions.MethodNotAllowed("DELETE")
