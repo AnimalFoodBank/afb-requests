@@ -31,7 +31,7 @@ BUILDING_TYPE_CHOICES = Choices(
 )
 
 
-class Request(BaseAbstractModel):
+class FoodRequest(BaseAbstractModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # TODO: Should this be a foreign key to the user model? A user can have

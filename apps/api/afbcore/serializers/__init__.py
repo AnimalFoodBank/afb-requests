@@ -2,12 +2,12 @@ from .user_serializer import UserSerializer  # noqa
 
 
 from rest_framework import serializers
-from ..models import Request
+from ..models import FoodRequest
 
 
 class RequestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Request
+        model = FoodRequest
         fields = [
             "id",
             "user",

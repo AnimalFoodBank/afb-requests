@@ -58,7 +58,7 @@ class RequestViewSetTestCase(TestCase):
         cls.user = User.objects.create(
             email="testuser@example.com", password="testpassword"
         )
-        cls.request = Request.objects.create(
+        cls.food_request = Request.objects.create(
             title="Test Request", description="Test Description", user=cls.user
         )
 

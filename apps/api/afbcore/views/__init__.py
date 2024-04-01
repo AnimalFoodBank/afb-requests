@@ -13,14 +13,14 @@ by the views in this module.
 
 from rest_framework import viewsets, exceptions
 
-from ..models import Request
+from ..models import FoodRequest
 from ..serializers import RequestSerializer
 
 from .users import UserViewSet  # noqa: F401
 
 
 class RequestViewSet(viewsets.ModelViewSet):
-    queryset = Request.objects.all()  # TODO: Limit scope
+    queryset = FoodRequest.objects.all()  # TODO: Limit scope
     serializer_class = RequestSerializer
     lookup_field = "id"
 

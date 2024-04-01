@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import force_authenticate
 from afbcore.views import RequestViewSet
-from afbcore.models import Request
+from afbcore.models import FoodRequest
 from afbcore.serializers import RequestSerializer
 from django.contrib.auth import get_user_model
 
@@ -20,7 +20,7 @@ class RequestViewSetTestCase(TestCase):
         cls.user = User.objects.create(
             email="testuser@example.com", password="testpassword"
         )
-        cls.request = Request.objects.create(
+        cls.food_request = FoodRequest.objects.create(
             title="Test Request", description="Test Description", user=cls.user
         )
 
@@ -51,27 +51,27 @@ class RequestViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_retrieve_request(self):
-        request = self.factory.get(f"{self.url}{self.request.id}/")
+        request = self.factory.get(f"{self.url}{self.food_request.id}/")
         force_authenticate(request, user=self.user)
-        response = self.view(request, pk=self.request.id)
+        response = self.view(request, pk=self.food_request.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_request(self):
         data = {"title": "Updated Request", "description": "Updated Description"}
-        request = self.factory.put(f"{self.url}{self.request.id}/", data)
+        request = self.factory.put(f"{self.url}{self.food_request.id}/", data)
         force_authenticate(request, user=self.user)
-        response = self.view(request, pk=self.request.id)
+        response = self.view(request, pk=self.food_request.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_partial_update_request(self):
         data = {"description": "Updated Description"}
-        request = self.factory.patch(f"{self.url}{self.request.id}/", data)
+        request = self.factory.patch(f"{self.url}{self.food_request.id}/", data)
         force_authenticate(request, user=self.user)
-        response = self.view(request, pk=self.request.id)
+        response = self.view(request, pk=self.food_request.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_request(self):
-        request = self.factory.delete(f"{self.url}{self.request.id}/")
+        request = self.factory.delete(f"{self.url}{self.food_request.id}/")
         force_authenticate(request, user=self.user)
-        response = self.view(request, pk=self.request.id)
+        response = self.view(request, pk=self.food_request.id)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

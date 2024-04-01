@@ -613,7 +613,7 @@ class Migration(migrations.Migration):
                     "pet_request",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.DO_NOTHING,
-                        to="afbcore.request",
+                        to="afbcore.food_request",
                     ),
                 ),
             ],
