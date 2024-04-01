@@ -19,7 +19,7 @@ from ..serializers import RequestSerializer
 from .users import UserViewSet  # noqa: F401
 
 
-class RequestViewSet(viewsets.ModelViewSet):
+class FoodRequestViewSet(viewsets.ModelViewSet):
     queryset = FoodRequest.objects.all()  # TODO: Limit scope
     serializer_class = RequestSerializer
     lookup_field = "id"
