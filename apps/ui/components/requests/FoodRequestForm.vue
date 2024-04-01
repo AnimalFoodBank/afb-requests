@@ -2,9 +2,10 @@
   <Vueform
     v-bind="vueform"
     :state="state"
-    endpoint="/api/v1/request/"
-    method="post"
+    :endpoint="false"
+    @submit="submitFoodRequest"
     add-class="vf-request-form"
+    ref="form$"
     sync
   />
 </template>
@@ -21,6 +22,23 @@ const props = defineProps<{
 }>();
 
 const vueform = ref<any>(null);
+
+const { token } = useAuth()
+
+const submitFoodRequest = async (form$: any, FormData: any) => {
+  // Using form$.data will INCLUDE conditional elements and it
+  // will submit the form as "Content-Type: application/json".
+  console.log("submitFoodRequest data", form$)
+  const data = form$.data
+  return await form$.$vueform.services.axios.post('/api/v1/request/',
+    data,
+    {
+      headers: {
+        'Authorization': token.value,
+      },
+    }
+  )
+};
 
 /**
  *  WARNING! ATTENTION! ACHTUNG! ATENCIÓN!
@@ -189,8 +207,6 @@ onMounted(() => {
             content:
               "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
           },
-        }
-      },
 
       building_type: {
         type: "radiogroup",
@@ -214,6 +230,9 @@ onMounted(() => {
         },
         default: state.delivery_address.building_type,
       },
+        }
+      },
+
 
       //
       // STEP 1 - Delivery Contact
@@ -338,12 +357,14 @@ onMounted(() => {
         text: "I confirm that the information provided is correct.",
         fieldName: "Confirmation",
         rules: ["accepted"],
+        default: state.confirmation.confirm_correct,
       },
       accept_terms: {
         type: "checkbox",
         text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Policy.",
         fieldName: "Terms",
         rules: ["accepted"],
+        default: state.confirmation.accept_terms,
       },
 
       //
