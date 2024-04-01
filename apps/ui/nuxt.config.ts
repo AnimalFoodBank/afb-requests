@@ -84,7 +84,7 @@ export default defineNuxtConfig({
         id: "string",
         email: "string",
         name: "string",
-        role: "admin | guest | account",
+        role: "admin | guest | client | volunteer | branchmanager",
         subscriptions: "{ id: number, status: 'ACTIVE' | 'INACTIVE' }[]",
       },
       token: {
