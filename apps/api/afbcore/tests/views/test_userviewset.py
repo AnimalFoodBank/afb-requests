@@ -1,10 +1,10 @@
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIRequestFactory
+from rest_framework.test import APIFoodRequestFactory
 from rest_framework.test import force_authenticate
 from afbcore.views import UserViewSet
-from afbcore.models import FoodRequest
-from afbcore.serializers import RequestSerializer
+from afbcore.models import FoodFoodRequest
+from afbcore.serializers import FoodRequestSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -16,12 +16,12 @@ class UsersViewSetTestCase(TestCase):
         cls.user = User.objects.create(
             email="testuser@example.com", password="testpassword"
         )
-        cls.food_request = FoodRequest.objects.create(
-            title="Test Request", description="Test Description", user=cls.user
+        cls.food_request = FoodFoodRequest.objects.create(
+            title="Test FoodRequest", description="Test Description", user=cls.user
         )
 
     def setUp(self):
-        self.factory = APIRequestFactory()
+        self.factory = APIFoodRequestFactory()
         self.view = UserViewSet.as_view(
             {
                 "get": "list",
@@ -48,12 +48,12 @@ class UsersViewSetTestCase(TestCase):
     # Returns a response with status code 200 and the correct serialized data
     def test_returns_response_with_status_code_200_and_correct_data(self):
         # Create a request object
-        request = FoodRequest.objects.create(
-            title="Test Request", description="Test Description", user=self.user
+        request = FoodFoodRequest.objects.create(
+            title="Test FoodRequest", description="Test Description", user=self.user
         )
 
-        # Initialize the RequestViewSet object
-        viewset = RequestViewSet()
+        # Initialize the FoodFoodRequestViewSet object
+        viewset = FoodFoodRequestViewSet()
 
         # Invoke the retrieve method
         response = viewset.retrieve(None, pk=request.id)
@@ -62,7 +62,7 @@ class UsersViewSetTestCase(TestCase):
         assert response.status_code == status.HTTP_200_OK
         assert response.data == {
             "id": str(request.id),
-            "title": "Test Request",
+            "title": "Test FoodRequest",
             "description": "Test Description",
             "user": str(self.user.id),
         }
