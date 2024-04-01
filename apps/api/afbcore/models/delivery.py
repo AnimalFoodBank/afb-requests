@@ -3,7 +3,6 @@ from django.db import models
 
 
 class Delivery(models.Model):
-    client = models.ForeignKey("User", on_delete=models.DO_NOTHING)
     food_request = models.ForeignKey("FoodRequest", on_delete=models.DO_NOTHING)
 
     food_available = models.ForeignKey("FoodAvailable", on_delete=models.DO_NOTHING)
