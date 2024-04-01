@@ -88,7 +88,7 @@ onMounted(() => {
         postcode: 'M4C 1B5',
         country: 'CA',
       },
-      interactive_address: '',
+      interactive_address: '1201 Kingsway, Med Hat',
       building_type: 'Townhouse',
     },
     delivery_contact: {
@@ -107,8 +107,8 @@ onMounted(() => {
       safe_drop_instructions: 'Leave at the door',
     },
     confirmation: {
-      confirm_correct: false,
-      accept_terms: false,
+      confirm_correct: true,
+      accept_terms: true,
     },
   }
 

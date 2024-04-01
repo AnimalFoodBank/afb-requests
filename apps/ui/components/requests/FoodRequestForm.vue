@@ -2,9 +2,10 @@
   <Vueform
     v-bind="vueform"
     :state="state"
-    endpoint="/requests/new"
+    endpoint="/api/v1/request/"
     method="post"
     add-class="vf-request-form"
+    sync
   />
 </template>
 
@@ -120,7 +121,7 @@ onMounted(() => {
         },
         labels: {
           previous: "← Safe Drop",
-          next: "Submit Request",
+          finish: "Submit Request",
         },
       },
     },
@@ -175,6 +176,7 @@ onMounted(() => {
               label: 12,
               wrapper: 12,
             },
+            default: state.delivery_address.interactive_address,
           },
           country: {
             type: "hidden",
@@ -313,12 +315,14 @@ onMounted(() => {
         text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
         fieldName: "Safe Drop Policy",
         rules: ["accepted"],
+        default: state.safe_drop.safe_drop,
       },
       safe_drop_instructions: {
         type: "textarea",
         rules: ["max:255"],
         label: "Safe Drop Instructions (optional)",
         placeholder: "e.g. Leave at the front door.",
+        default: state.safe_drop.safe_drop_instructions,
         columns: {
           container: 6,
           label: 12,
@@ -335,7 +339,6 @@ onMounted(() => {
         fieldName: "Confirmation",
         rules: ["accepted"],
       },
-
       accept_terms: {
         type: "checkbox",
         text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Policy.",
