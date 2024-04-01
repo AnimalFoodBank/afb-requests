@@ -1,11 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+// https://nuxt.com/docs/api/configuration/nuxt-config
+import type { SessionData } from "./types/index.d";
+
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
   modules: [
-    '@nuxt/ui',
-    '@nuxt/fonts',
-    'nuxt-snackbar',
-    '@sidebase/nuxt-auth',
+    "@nuxt/ui",
+    "@nuxt/fonts",
+    "nuxt-snackbar",
+    "@sidebase/nuxt-auth",
     "@vueform/nuxt",
     // '@vueform/builder-nuxt',
   ],
@@ -42,7 +46,7 @@ export default defineNuxtConfig({
   },
 
   ui: {
-    icons: ['heroicons', 'streamline', 'ph', 'game-icons'], // simple-icons
+    icons: ["heroicons", "streamline", "ph", "game-icons"], // simple-icons
   },
 
   //
@@ -65,19 +69,19 @@ export default defineNuxtConfig({
   auth: {
     isEnabled: true,
     globalAppMiddleware: true,
-    baseURL: '/api/v1',
+    baseURL: "/api/v1",
     provider: {
-      type: 'local',
+      type: "local",
       endpoints: {
-        signIn: { path: '/passwordless/auth/token/', method: 'post' },
-        signOut: { path: '/logout', method: 'post' },
+        signIn: { path: "/passwordless/auth/token/", method: "post" },
+        signOut: { path: "/logout", method: "post" },
         // Can also be set to false to disable
         // TODO: Look into this
         signUp: { path: '/register', method: 'post' },
         getSession: { path: '/users/current_user/', method: 'get' }
       },
       token: {
-        signInResponseTokenPointer: '/token',  // json path in response
+        signInResponseTokenPointer: "/token", // json path in response
         // type - one of 'Bearer' or 'Token'. The former is JWT, latter is TokenAuthentication)
         type: 'Token',
       },
@@ -85,8 +89,8 @@ export default defineNuxtConfig({
   },
 
   storybook: {
-    url: 'http://localhost:6006',
-    storybookRoute: '/__storybook__',
+    url: "http://localhost:6006",
+    storybookRoute: "/__storybook__",
     port: 6006,
   },
 
@@ -119,11 +123,11 @@ export default defineNuxtConfig({
       startOnBoot: false,
       enabled: false,
       reuseExistingServer: true,
-      port: 8118,  // code-server --port 8118
-      mode: 'local-serve',  // 'tunnel' or 'local-serve',
+      port: 8118, // code-server --port 8118
+      mode: "local-serve", // 'tunnel' or 'local-serve',
       tunnel: {
-        name: 'tundra',
-        password: 'tundra',
+        name: "tundra",
+        password: "tundra",
       },
     },
     timeline: {
@@ -143,14 +147,9 @@ export default defineNuxtConfig({
    * sensitive information.
    */
   runtimeConfig: {
-    AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
-
-    APP_ORIGIN: process.env.NUXT_PUBLIC_APP_ORIGIN,
-    AUTH_SECRET: process.env.AUTH_SECRET, // TODO: Raise heck if not set
-
     // Public keys are exposed to the client
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || ":8000/",
+      apiBase: process.env.NUXT_PUBLIC_API_BASE,
       AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
     },
   },
