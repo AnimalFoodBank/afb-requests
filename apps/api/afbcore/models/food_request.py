@@ -28,6 +28,7 @@ BUILDING_TYPE_CHOICES = Choices(
     ("LANEWAY", "Laneway"),
     ("DETACHED_HOUSE", "Detached house"),
     ("OTHER", "Other"),
+    ("NOT_SPECIFIED", "Not specified"),
 )
 
 
@@ -39,17 +40,17 @@ class FoodRequest(BaseAbstractModel):
     user = models.ForeignKey("User", on_delete=models.DO_NOTHING)
 
     # A food request can belong to only one Branch
-    branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING)
+    branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING, null=True)
 
-    address_text = models.TextField()
-    address_google_place_id = models.CharField(max_length=255)
-    address_canadapost_id = models.CharField(max_length=255)
-    address_latitude = models.FloatField()
-    address_longitude = models.FloatField()
+    address_text = models.TextField(null=True, blank=True)
+    address_google_place_id = models.CharField(max_length=255, blank=True, null=True)
+    address_canadapost_id = models.CharField(max_length=255, blank=True, null=True)
+    address_latitude = models.FloatField(blank=True, null=True, default=0)
+    address_longitude = models.FloatField(blank=True, null=True, default=0)
     address_buildingtype = models.CharField(
         max_length=100,
         choices=BUILDING_TYPE_CHOICES,
-        default=BUILDING_TYPE_CHOICES.OTHER,
+        default=BUILDING_TYPE_CHOICES.NOT_SPECIFIED,
     )
     address_details = models.JSONField(default=dict)
 
@@ -68,7 +69,7 @@ class FoodRequest(BaseAbstractModel):
     # TODO: Pet
     # One or more.
     # ** We will want them to see and confirm/edit their address and phone number on the request, and be able to see pets, and edit some fields of their pets info
-    pets = models.ManyToManyField("Pet")
+    pets = models.ManyToManyField("Pet", default=list, null=True)  # uuid expected
 
     # Safe drop - if they are not home, can we leave the food at the door?
     # Yes/No

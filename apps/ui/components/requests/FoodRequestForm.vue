@@ -23,20 +23,52 @@ const props = defineProps<{
 
 const vueform = ref<any>(null);
 
-const { token } = useAuth()
+const {
+  status: authStatus,
+  data: authData,
+  token: authToken,
+} = useAuth();
+
 
 const submitFoodRequest = async (form$: any, FormData: any) => {
   // Using form$.data will INCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
-  console.log("submitFoodRequest data", form$)
-  const data = form$.data
+  // console.log("submitFoodRequest data", form$)
+  const foodRequestFormData = form$.data
+  const userId = authData.value.id
+  const foodRequestAPIData = {
+    user: userId,
+    branch: null,
+    address_text: foodRequestFormData.location.interactive_address,
+    address_google_place_id: null,
+    address_canadapost_id: null,
+    address_latitude: null,
+    address_longitude: null,
+    contact_name: foodRequestFormData.delivery_contact.contact_name,
+    contact_phone: foodRequestFormData.delivery_contact.contact_phone,
+    method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
+    pets: [
+      // {
+      //   name: foodRequestFormData.pet_name,
+      //   breed: foodRequestFormData.pet_breed,
+      //   age: foodRequestFormData.pet_age,
+      //   weight: foodRequestFormData.pet_weight,
+      // }
+    ],
+    confirm_correct: foodRequestFormData.confirm_correct,
+    accept_terms: foodRequestFormData.accept_terms,
+
+    safe_drop: foodRequestFormData.safe_drop.safe_drop,
+    safe_drop_instructions: foodRequestFormData.safe_drop.safe_drop_instructions,
+  };
+
+  const options = {
+    headers: {
+      'Authorization': authToken.value,
+    },
+  }
   return await form$.$vueform.services.axios.post('/api/v1/request/',
-    data,
-    {
-      headers: {
-        'Authorization': token.value,
-      },
-    }
+    foodRequestAPIData, options
   )
 };
 
@@ -51,10 +83,10 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
  *
  **/
 onMounted(() => {
-  console.log("FoodRequestFormState has been mounted");
+  // console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
-  console.log("state", state);
+
   vueform.value = {
     size: "lg",
     displayErrors: false,
