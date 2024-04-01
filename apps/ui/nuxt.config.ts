@@ -77,15 +77,33 @@ export default defineNuxtConfig({
         signOut: { path: "/logout", method: "post" },
         // Can also be set to false to disable
         // TODO: Look into this
-        signUp: { path: '/register', method: 'post' },
-        getSession: { path: '/users/current_user/', method: 'get' }
+        signUp: { path: "/register", method: "post" },
+        getSession: { path: "/users/current_user/", method: "get" },
+      },
+      sessionDataType: {
+        id: "string",
+        email: "string",
+        name: "string",
+        role: "admin | guest | account",
+        subscriptions: "{ id: number, status: 'ACTIVE' | 'INACTIVE' }[]",
       },
       token: {
         signInResponseTokenPointer: "/token", // json path in response
         // type - one of 'Bearer' or 'Token'. The former is JWT, latter is TokenAuthentication)
-        type: 'Token',
+        type: "Token",
+        cookieName: 'auth.token',
+        headerName: 'Authorization',
+        maxAgeInSeconds: 3600 * 24 * 30,
+        sameSiteAttribute: 'lax'
       },
-    }
+    },
+    session: {
+      // Whether to refresh the session every time the browser window is refocused.
+      enableRefreshOnWindowFocus: true,
+
+      // Whether to refresh the session every `X` milliseconds. Set this to `false` to turn it off. The session will only be refreshed if a session already exists.
+      enableRefreshPeriodically: 60000
+    },
   },
 
   storybook: {
