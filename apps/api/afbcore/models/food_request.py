@@ -79,10 +79,10 @@ class FoodRequest(BaseAbstractModel):
     # No requires them to edit address in the UI so in theory this should
     # always be True. Note: we need to ensure that it's not attached to
     # another client or then both clients need to be on hold to review.
-    confirm_address = models.BooleanField()
+    confirm_correct = models.BooleanField()
 
     # Yes/No - No requires them to update phone number (validate format)
-    confirm_phone_number = models.BooleanField()
+    accept_terms = models.BooleanField()
 
     # Not sure what to call this one, but if the volunteer has an issue with the client - they are rude or aggressive for example, can we allow the driver to mark the client as suspended and admin to review? (was "needs review"). Maybe an enum would be more appropriate here? Although that would dilute status a bit.
     highlighted = models.BooleanField()
@@ -97,7 +97,7 @@ class FoodRequest(BaseAbstractModel):
     comments = models.JSONField(default=dict)
 
     def __str__(self):
-        return f"Pet Request {self.id}"
+        return f"Food Request {self.id}"
 
     class Meta:
         ordering = ["-date_requested"]
