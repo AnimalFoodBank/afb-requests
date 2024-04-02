@@ -1,6 +1,7 @@
+import uuid
+
 from django.db import models
 from .base import BaseAbstractModel
-
 from .mixins import PhysicalLocationMixin
 
 """
@@ -27,6 +28,8 @@ class DeliveryRegion(PhysicalLocationMixin, BaseAbstractModel):
     or region. Or it could be a list of foreign keys to a "DeliveryRegion"
     which would still be a simple string but reduce dupes.
     """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     name = models.CharField(
         max_length=255, help_text="Name of the region (e.g. postal code, city, or area)"

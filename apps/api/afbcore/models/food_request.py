@@ -69,7 +69,7 @@ class FoodRequest(BaseAbstractModel):
     # TODO: Pet
     # One or more.
     # ** We will want them to see and confirm/edit their address and phone number on the request, and be able to see pets, and edit some fields of their pets info
-    pets = models.ManyToManyField("Pet", default=list, null=True)  # uuid expected
+    pets = models.ManyToManyField("Pet", default=list)  # uuid expected
 
     # Safe drop - if they are not home, can we leave the food at the door?
     # Yes/No
