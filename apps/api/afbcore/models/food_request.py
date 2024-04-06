@@ -80,13 +80,13 @@ class FoodRequest(BaseAbstractModel):
     # No requires them to edit address in the UI so in theory this should
     # always be True. Note: we need to ensure that it's not attached to
     # another client or then both clients need to be on hold to review.
-    confirm_correct = models.BooleanField()
+    confirm_correct = models.BooleanField(null=True)
 
     # Yes/No - No requires them to update phone number (validate format)
-    accept_terms = models.BooleanField()
+    accept_terms = models.BooleanField(null=True)
 
     # Not sure what to call this one, but if the volunteer has an issue with the client - they are rude or aggressive for example, can we allow the driver to mark the client as suspended and admin to review? (was "needs review"). Maybe an enum would be more appropriate here? Although that would dilute status a bit.
-    flagged = models.BooleanField()
+    flagged = models.BooleanField(default=False)
 
     # Use system date - do not let clients input/edit.  We like to have deliveries made within the branches delivery window so would be great if we could send notifications when requests are "aging"
     date_requested = models.DateField(auto_now_add=True)
