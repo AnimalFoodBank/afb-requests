@@ -86,7 +86,7 @@ class FoodRequest(BaseAbstractModel):
     accept_terms = models.BooleanField()
 
     # Not sure what to call this one, but if the volunteer has an issue with the client - they are rude or aggressive for example, can we allow the driver to mark the client as suspended and admin to review? (was "needs review"). Maybe an enum would be more appropriate here? Although that would dilute status a bit.
-    highlighted = models.BooleanField()
+    flagged = models.BooleanField()
 
     # Use system date - do not let clients input/edit.  We like to have deliveries made within the branches delivery window so would be great if we could send notifications when requests are "aging"
     date_requested = models.DateField(auto_now_add=True)
