@@ -21,17 +21,25 @@ class FoodRequestSerializer(serializers.ModelSerializer):
             "contact_email",
             "contact_name",
             "method_of_contact",
-            # "pets",
+            "pet_details",
             # "safe_drop_agree",
             # "safe_drop_instructions",
             "confirm_correct",
             "accept_terms",
-            # "highlighted",
+            # "flagged",
             "date_requested",
             # "status",
             # "comments",
             # Via BaseAbstractModel
             "created",
             "modified",
+            # "is_removed",
+        ]
+        read_only_fields = [
+            "id",
+            "user",
+            "created",
+            "modified",
             "is_removed",
+            "branch",
         ]

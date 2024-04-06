@@ -51,10 +51,7 @@ export interface FoodRequestFormState {
     preferred_method: string;
   },
   your_pets: {
-    pet_name: string;
-    pet_breed: string;
-    pet_age: string;
-    pet_weight: string;
+    pets_blob?: string;
   },
   safe_drop: {
     // Policy is expected to be not set since it's a text

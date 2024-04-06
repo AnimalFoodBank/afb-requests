@@ -66,10 +66,9 @@ class FoodRequest(BaseAbstractModel):
     # Preferred way for us to contact them about the request Email, Text or Phone
     method_of_contact = models.CharField(max_length=100)
 
-    # TODO: Pet
     # One or more.
-    # ** We will want them to see and confirm/edit their address and phone number on the request, and be able to see pets, and edit some fields of their pets info
-    pets = models.ManyToManyField("Pet", default=list)  # uuid expected
+    # ** We will want them to see and confirm/edit their pets, and edit some fields of their pets info
+    pet_details = models.JSONField(default=dict)
 
     # Safe drop - if they are not home, can we leave the food at the door?
     # Yes/No

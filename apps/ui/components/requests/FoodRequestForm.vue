@@ -28,7 +28,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   // will submit the form as "Content-Type: application/json".
   // console.log("submitFoodRequest data", form$)
   const foodRequestFormData = form$.data
-  const userId = authData.value.id
+  const userId = authData?.value?.id;
   const foodRequestAPIData = {
     user: userId,
     address_text: foodRequestFormData.location.interactive_address,
@@ -39,15 +39,9 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
     contact_name: foodRequestFormData.delivery_contact.contact_name,
     contact_phone: foodRequestFormData.delivery_contact.contact_phone,
     method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
-    pets: [
-      // TODOTODOTODOTODO!!!!!!
-      // {
-      //   name: foodRequestFormData.pet_name,
-      //   breed: foodRequestFormData.pet_breed,
-      //   age: foodRequestFormData.pet_age,
-      //   weight: foodRequestFormData.pet_weight,
-      // }
-    ],
+    pet_details: {
+      pets_blob: foodRequestFormData.your_pets.pets_blob,
+    },
     confirm_correct: foodRequestFormData.confirm_correct,
     accept_terms: foodRequestFormData.accept_terms,
 
@@ -82,7 +76,7 @@ onMounted(() => {
 
   vueform.value = {
     size: "lg",
-    displayErrors: false,
+    displayErrors: true,
     displaySuccess: true,
 
     /**
@@ -125,10 +119,7 @@ onMounted(() => {
         label: "Your Pets",
         elements: [
           "step2_title",
-          "pet_name",
-          "pet_breed",
-          "pet_age",
-          "pet_weight",
+          "your_pets",
         ],
         labels: {
           previous: "← Contact",
@@ -312,39 +303,26 @@ onMounted(() => {
       //
       // STEP 2 - Your Pets
       //
-      pet_name: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Pet name",
-        placeholder: "e.g. Fluffy",
-        floating: false,
-        default: state.your_pets.pet_name,
+      your_pets: {
+        type: "object",
+        schema: {
+          pets_blob: {
+            type: "textarea",
+            rules: ["max:1024", "required"],
+            label: "Pet details",
+            description: "Please provide information about each of your pets (MAX: 4), starting with name, age, breed, weight, usually eats.",
+            placeholder: "e.g. 2 dogs, 1 cat: \n- (dog) Max: 3 years, Golden Retriever, 30 lbs, kibble \n- (dog) Luna, 5 years, Husky, 45 lbs, kibble \n- (cat) Whiskers, 2 years, Siamese, 10 lbs, wet food",
+            floating: '(dog) Name: age, breed, size, wet/dry',
+            rows: 6,
+            columns: {
+              container: 12,
+              label: 12,
+              wrapper: 12,
+            },
+            default: state.your_pets.pets_blob,
+          },
+        },
       },
-      pet_breed: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Breed",
-        placeholder: "e.g. Poodle",
-        floating: false,
-        default: state.your_pets.pet_breed,
-      },
-      pet_age: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Age",
-        placeholder: "e.g. 3",
-        floating: false,
-        default: state.your_pets.pet_age,
-      },
-      pet_weight: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Weight",
-        placeholder: "e.g. 12",
-        floating: false,
-        default: state.your_pets.pet_weight,
-      },
-
       //
       // STEP 3 - Safe Drop
       //

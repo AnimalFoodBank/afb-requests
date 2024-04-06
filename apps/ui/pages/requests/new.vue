@@ -97,10 +97,7 @@ onMounted(() => {
       preferred_method: "Email",
     },
     your_pets: {
-      pet_name: 'Buddy',
-      pet_breed: 'Labrador Retriever',
-      pet_age: '3 years',
-      pet_weight: '50 lbs',
+      pets_blob: "1 dog, 2 cats",
     },
     safe_drop: {
       safe_drop: true,
