@@ -49,7 +49,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        This view should return a list of all the users
+        This view should return a list of all the users/profiles
         for the currently authenticated user.
         """
         if self.action == "list":

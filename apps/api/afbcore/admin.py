@@ -28,6 +28,10 @@ class UserAdmin(BaseUserAdmin):
     callbacktoken.short_description = "Active Magic Codes"
 
 
+class AuthorAdmin(admin.ModelAdmin):
+    fields = ["name", "title"]
+
+
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.register(Profile)

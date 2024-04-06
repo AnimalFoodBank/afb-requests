@@ -38,7 +38,6 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   const userId = authData.value.id
   const foodRequestAPIData = {
     user: userId,
-    branch: null,
     address_text: foodRequestFormData.location.interactive_address,
     address_google_place_id: null,
     address_canadapost_id: null,
@@ -48,6 +47,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
     contact_phone: foodRequestFormData.delivery_contact.contact_phone,
     method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
     pets: [
+      // TODOTODOTODOTODO!!!!!!
       // {
       //   name: foodRequestFormData.pet_name,
       //   breed: foodRequestFormData.pet_breed,
