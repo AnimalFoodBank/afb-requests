@@ -29,7 +29,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   // console.log("submitFoodRequest data", form$)
   const foodRequestFormData = form$.data
   const userId = authData?.value?.id;
-  console.log(authData?.value?.id, userId, foodRequestFormData)
+
   const foodRequestAPIData = {
     user: userId,
     address_text: foodRequestFormData.location.interactive_address,
@@ -55,7 +55,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
       'Authorization': authToken.value,
     },
   }
-  return await form$.$vueform.services.axios.post('/api/v1/request/',
+  return await form$.$vueform.services.axios.post('/api/v1/requests/',
     foodRequestAPIData, options
   )
 };
