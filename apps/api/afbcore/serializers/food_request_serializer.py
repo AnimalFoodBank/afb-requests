@@ -25,6 +25,16 @@ class FoodRequestCreateSerializer(serializers.ModelSerializer):
             "accept_terms",
             "date_requested",
         ]
+        read_only_fields = [
+            "id",
+            "user",
+            "branch",
+            "created",
+            "modified",
+            "address_canadapost_id",
+            "address_google_place_id",
+            "pet_details",
+        ]
 
 
 class FoodRequestUpdateSerializer(serializers.ModelSerializer):

@@ -3,16 +3,15 @@ URL configuration for afb project.
 
 """
 
+from afbcore.views import FoodRequestViewSet, users
 from django.conf import settings
 from django.contrib import admin as afbcore_admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from rest_framework.routers import DefaultRouter
 
-from afbcore.views import users, FoodRequestViewSet
-
 router = DefaultRouter()
-router.register("request", FoodRequestViewSet, basename="request")
+router.register("requests", FoodRequestViewSet, basename="request")
 router.register(r"users", users.UserViewSet, basename="user")
 
 # TODO: How to add to browsable API?
@@ -50,4 +49,6 @@ if settings.DEBUG:
     if "debug_toolbar" in settings.INSTALLED_APPS:
         import debug_toolbar
 
-        urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+        urlpatterns = [
+            path("__debug__/", include(debug_toolbar.urls))
+        ] + urlpatterns
