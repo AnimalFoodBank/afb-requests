@@ -1,9 +1,4 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    // https://github.com/nuxt/nuxt/issues/14820#issuecomment-1890360196
-    // See also experimental.externalVue in nuxt.config.ts.
-    "jsxImportSource": "vue"
-  }
+  "extends": "./.nuxt/tsconfig.json"
 }

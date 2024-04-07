@@ -75,8 +75,6 @@ export default defineNuxtConfig({
       endpoints: {
         signIn: { path: "/passwordless/auth/token/", method: "post" },
         signOut: { path: "/logout", method: "post" },
-        // Can also be set to false to disable
-        // TODO: Look into this
         signUp: { path: "/register", method: "post" },
         getSession: { path: "/users/current_user/", method: "get" },
       },
@@ -106,11 +104,11 @@ export default defineNuxtConfig({
     },
   },
 
-  storybook: {
-    url: "http://localhost:6006",
-    storybookRoute: "/__storybook__",
-    port: 6006,
-  },
+  // storybook: {
+  //   url: "http://localhost:6006",
+  //   storybookRoute: "/__storybook__",
+  //   port: 6006,
+  // },
 
   // 2024-02-02
   //
@@ -130,7 +128,8 @@ export default defineNuxtConfig({
   // https://github.com/nuxt/nuxt/issues/14820#issuecomment-1890360196
   //
   experimental: {
-    externalVue: false,
+    // externalVue: false,
+    // appManifest: false,
   },
 
   // https://devtools.nuxt.com/guide/getting-started
