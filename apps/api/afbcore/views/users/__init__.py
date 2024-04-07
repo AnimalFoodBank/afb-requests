@@ -1,20 +1,12 @@
-# trunk-ignore-all(isort)
 import logging
-from datetime import datetime, timedelta
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
-from rest_framework import generics, permissions, status, viewsets
-from rest_framework.authentication import TokenAuthentication, exceptions
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import action, api_view
-from rest_framework.permissions import AllowAny
+from rest_framework import permissions, status, viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 
-from ..serializers import UserSerializer
+from ...serializers import UserSerializer
 
 User = get_user_model()
 
@@ -49,7 +41,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        This view should return a list of all the users
+        This view should return a list of all the users/profiles
         for the currently authenticated user.
         """
         if self.action == "list":

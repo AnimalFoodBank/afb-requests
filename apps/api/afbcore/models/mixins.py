@@ -9,10 +9,9 @@ class PhysicalLocationMixin(models.Model):
     drop off locations, etc.
     """
 
-    # An optional name to display in the UI for this location. Can be anything
-    # or nothing at all. It's just for convenience.
-    display_name = models.CharField(
-        max_length=255, help_text="ie Winnipeg, MB", null=True, blank=True
+    # Location Name / Area nameie Winnipeg, MB; Medicine Hat, AB etc.
+    location_name = models.CharField(
+        max_length=255, help_text="ie Winnipeg, MB;  Medicine Hat, AB etc."
     )
 
     # Street address

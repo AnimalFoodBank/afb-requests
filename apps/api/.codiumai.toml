@@ -18,7 +18,7 @@
 #    {
 #    "requestId": "1a7a8cc5-468d-449d-84b4-fd14e1a4a7c3:03701675-c268-4fb8-bf34-692031dd5b98",
 #    "action": "generateTests",
-#    "panelId": "/Users/d/Projects/clients/afb/afb-requests/apps/api/afbcore/views/__init__.py_RequestViewSet_1a7a8cc5-468d-449d-84b4-fd14e1a4a7c3",
+#    "panelId": "/Users/d/Projects/clients/afb/afb-requests/apps/api/afbcore/views/__init__.py_FoodRequestViewSet_1a7a8cc5-468d-449d-84b4-fd14e1a4a7c3",
 #    "previousRequestId": "1a7a8cc5-468d-449d-84b4-fd14e1a4a7c3",
 #    "configuration": {
 #        "reference_test": "",
@@ -44,7 +44,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import force_authenticate
-from afbcore.views import RequestViewSet
+from afbcore.views import FoodRequestViewSet
 from afbcore.models import Request
 from afbcore.serializers import RequestSerializer
 from django.contrib.auth import get_user_model
@@ -52,19 +52,19 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class RequestViewSetTestCase(TestCase):
+class FoodRequestViewSetTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create(
             email="testuser@example.com", password="testpassword"
         )
-        cls.request = Request.objects.create(
+        cls.food_request = Request.objects.create(
             title="Test Request", description="Test Description", user=cls.user
         )
 
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.view = RequestViewSet.as_view(
+        self.view = FoodRequestViewSet.as_view(
             {
                 "get": "list",
                 "post": "create",

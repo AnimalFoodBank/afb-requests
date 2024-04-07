@@ -1,0 +1,60 @@
+[
+
+  {
+    "model": "afbcore.deliveryregion",
+    "pk": "2d4245f0-f097-11ee-ab7d-4d038e3123d2",
+    "fields": {
+      "location_name": "POOP",
+      "address_line1": "123 Main Mews",
+      "address_line2": null,
+      "city": "Winnipeg",
+      "state_or_province": "MB",
+      "postal_code": "M1M1M3",
+      "country": "CA",
+      "ext_id": null,
+      "created": null,
+      "modified": null,
+      "is_removed": false,
+      "name": "Area 1 - Long name",
+      "description": null
+    }
+  },
+  {
+    "model": "afbcore.deliveryregion",
+    "pk": "4c8308d5-d4e4-4221-8b7a-4db0c46699a6",
+    "fields": {
+      "location_name": "POOP",
+      "address_line1": "432 Mynt Cr",
+      "address_line2": null,
+      "city": "Winnipeg",
+      "state_or_province": "MB",
+      "postal_code": "M2M1M1",
+      "country": "CA",
+      "ext_id": null,
+      "created": null,
+      "modified": null,
+      "is_removed": false,
+      "name": "Area 2 - Long name",
+      "description": null
+    }
+  },
+  {
+    "model": "afbcore.deliveryregion",
+    "pk": "e85e323a-bd1a-456c-b86e-76dde8292ccf",
+    "fields": {
+      "location_name": "POOP",
+      "address_line1": "888 Roadhouse Way",
+      "address_line2": null,
+      "city": "Winnipeg",
+      "state_or_province": "MB",
+      "postal_code": "M3M1M2",
+      "country": "CA",
+      "ext_id": null,
+      "created": null,
+      "modified": null,
+      "is_removed": false,
+      "name": "Area 3 - Long name",
+      "description": null
+    }
+  }
+]

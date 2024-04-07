@@ -88,7 +88,7 @@ onMounted(() => {
         postcode: 'M4C 1B5',
         country: 'CA',
       },
-      interactive_address: '',
+      interactive_address: '1201 Kingsway, Med Hat',
       building_type: 'Townhouse',
     },
     delivery_contact: {
@@ -97,18 +97,15 @@ onMounted(() => {
       preferred_method: "Email",
     },
     your_pets: {
-      pet_name: 'Buddy',
-      pet_breed: 'Labrador Retriever',
-      pet_age: '3 years',
-      pet_weight: '50 lbs',
+      pets_blob: "1 dog, 2 cats",
     },
     safe_drop: {
       safe_drop: true,
       safe_drop_instructions: 'Leave at the door',
     },
     confirmation: {
-      confirm_correct: false,
-      accept_terms: false,
+      confirm_correct: true,
+      accept_terms: true,
     },
   }
 

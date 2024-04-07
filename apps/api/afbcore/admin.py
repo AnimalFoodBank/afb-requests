@@ -9,7 +9,7 @@ from .models import (
     User,
     Role,
     Branch,
-    Request,
+    FoodRequest,
     Delivery,
     DeliveryRegion,
     FoodAvailable,
@@ -28,12 +28,16 @@ class UserAdmin(BaseUserAdmin):
     callbacktoken.short_description = "Active Magic Codes"
 
 
+class AuthorAdmin(admin.ModelAdmin):
+    fields = ["name", "title"]
+
+
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.register(Profile)
 admin.site.register(Role)
 admin.site.register(Branch)
-admin.site.register(Request)
+admin.site.register(FoodRequest)
 admin.site.register(Delivery)
 admin.site.register(DeliveryRegion)
 admin.site.register(FoodAvailable)

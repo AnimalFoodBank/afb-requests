@@ -9,10 +9,10 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from rest_framework.routers import DefaultRouter
 
-from afbcore.views import users, RequestViewSet
+from afbcore.views import users, FoodRequestViewSet
 
 router = DefaultRouter()
-router.register("request", RequestViewSet, basename="request")
+router.register("request", FoodRequestViewSet, basename="request")
 router.register(r"users", users.UserViewSet, basename="user")
 
 # TODO: How to add to browsable API?

@@ -1,11 +1,6 @@
 <template>
-  <Vueform
-    v-bind="vueform"
-    :state="state"
-    endpoint="/requests/new"
-    method="post"
-    add-class="vf-request-form"
-  />
+  <Vueform v-bind="vueform" :state="state" :endpoint="false" @submit="submitFoodRequest" add-class="vf-request-form"
+           ref="form$" sync />
 </template>
 
 
@@ -21,6 +16,50 @@ const props = defineProps<{
 
 const vueform = ref<any>(null);
 
+const {
+  status: authStatus,
+  data: authData,
+  token: authToken,
+} = useAuth();
+
+
+const submitFoodRequest = async (form$: any, FormData: any) => {
+  // Using form$.data will INCLUDE conditional elements and it
+  // will submit the form as "Content-Type: application/json".
+  // console.log("submitFoodRequest data", form$)
+  const foodRequestFormData = form$.data
+  const userId = authData?.value?.id;
+  console.log(authData?.value?.id, userId, foodRequestFormData)
+  const foodRequestAPIData = {
+    user: userId,
+    address_text: foodRequestFormData.location.interactive_address,
+    address_google_place_id: null,
+    address_canadapost_id: null,
+    address_latitude: null,
+    address_longitude: null,
+    contact_name: foodRequestFormData.delivery_contact.contact_name,
+    contact_phone: foodRequestFormData.delivery_contact.contact_phone,
+    method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
+    pet_details: {
+      pets_blob: foodRequestFormData.your_pets.pets_blob,
+    },
+    confirm_correct: foodRequestFormData.confirm_correct,
+    accept_terms: foodRequestFormData.accept_terms,
+
+    safe_drop: foodRequestFormData.safe_drop.safe_drop,
+    safe_drop_instructions: foodRequestFormData.safe_drop.safe_drop_instructions,
+  };
+
+  const options = {
+    headers: {
+      'Authorization': authToken.value,
+    },
+  }
+  return await form$.$vueform.services.axios.post('/api/v1/request/',
+    foodRequestAPIData, options
+  )
+};
+
 /**
  *  WARNING! ATTENTION! ACHTUNG! ATENCIÓN!
  *
@@ -32,13 +71,13 @@ const vueform = ref<any>(null);
  *
  **/
 onMounted(() => {
-  console.log("FoodRequestFormState has been mounted");
+  // console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
-  console.log("state", state);
+
   vueform.value = {
     size: "lg",
-    displayErrors: false,
+    displayErrors: true,
     displaySuccess: true,
 
     /**
@@ -81,10 +120,7 @@ onMounted(() => {
         label: "Your Pets",
         elements: [
           "step2_title",
-          "pet_name",
-          "pet_breed",
-          "pet_age",
-          "pet_weight",
+          "your_pets",
         ],
         labels: {
           previous: "← Contact",
@@ -120,7 +156,7 @@ onMounted(() => {
         },
         labels: {
           previous: "← Safe Drop",
-          next: "Submit Request",
+          finish: "Submit Request",
         },
       },
     },
@@ -175,6 +211,7 @@ onMounted(() => {
               label: 12,
               wrapper: 12,
             },
+            default: state.delivery_address.interactive_address,
           },
           country: {
             type: "hidden",
@@ -187,31 +224,32 @@ onMounted(() => {
             content:
               "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
           },
+
+          building_type: {
+            type: "radiogroup",
+            view: "default",
+            items: [
+              "Apartment",
+              "Townhouse",
+              "Condo",
+              "Laneway",
+              "Detached house",
+              "Other",
+            ],
+            rules: [],
+            fieldName: "Building type",
+            label: "Building type <i>(optional)</i>",
+
+            columns: {
+              container: 12,
+              label: 4,
+              wrapper: 8,
+            },
+            default: state.delivery_address.building_type,
+          },
         }
       },
 
-      building_type: {
-        type: "radiogroup",
-        view: "default",
-        items: [
-          "Apartment",
-          "Townhouse",
-          "Condo",
-          "Laneway",
-          "Detached house",
-          "Other",
-        ],
-        rules: [],
-        fieldName: "Building type",
-        label: "Building type <i>(optional)</i>",
-
-        columns: {
-          container: 12,
-          label: 4,
-          wrapper: 8,
-        },
-        default: state.delivery_address.building_type,
-      },
 
       //
       // STEP 1 - Delivery Contact
@@ -266,39 +304,26 @@ onMounted(() => {
       //
       // STEP 2 - Your Pets
       //
-      pet_name: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Pet name",
-        placeholder: "e.g. Fluffy",
-        floating: false,
-        default: state.your_pets.pet_name,
+      your_pets: {
+        type: "object",
+        schema: {
+          pets_blob: {
+            type: "textarea",
+            rules: ["max:1024", "required"],
+            label: "Pet details",
+            description: "Please provide information about each of your pets (MAX: 4), starting with name, age, breed, weight, usually eats.",
+            placeholder: "e.g. 2 dogs, 1 cat: \n- (dog) Max: 3 years, Golden Retriever, 30 lbs, kibble \n- (dog) Luna, 5 years, Husky, 45 lbs, kibble \n- (cat) Whiskers, 2 years, Siamese, 10 lbs, wet food",
+            floating: '(dog) Name: age, breed, size, wet/dry',
+            rows: 6,
+            columns: {
+              container: 12,
+              label: 12,
+              wrapper: 12,
+            },
+            default: state.your_pets.pets_blob,
+          },
+        },
       },
-      pet_breed: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Breed",
-        placeholder: "e.g. Poodle",
-        floating: false,
-        default: state.your_pets.pet_breed,
-      },
-      pet_age: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Age",
-        placeholder: "e.g. 3",
-        floating: false,
-        default: state.your_pets.pet_age,
-      },
-      pet_weight: {
-        type: "text",
-        rules: ["required", "max:32"],
-        label: "Weight",
-        placeholder: "e.g. 12",
-        floating: false,
-        default: state.your_pets.pet_weight,
-      },
-
       //
       // STEP 3 - Safe Drop
       //
@@ -313,12 +338,14 @@ onMounted(() => {
         text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
         fieldName: "Safe Drop Policy",
         rules: ["accepted"],
+        default: state.safe_drop.safe_drop,
       },
       safe_drop_instructions: {
         type: "textarea",
         rules: ["max:255"],
         label: "Safe Drop Instructions (optional)",
         placeholder: "e.g. Leave at the front door.",
+        default: state.safe_drop.safe_drop_instructions,
         columns: {
           container: 6,
           label: 12,
@@ -334,13 +361,14 @@ onMounted(() => {
         text: "I confirm that the information provided is correct.",
         fieldName: "Confirmation",
         rules: ["accepted"],
+        default: state.confirmation.confirm_correct,
       },
-
       accept_terms: {
         type: "checkbox",
         text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Policy.",
         fieldName: "Terms",
         rules: ["accepted"],
+        default: state.confirmation.accept_terms,
       },
 
       //
@@ -408,11 +436,12 @@ onMounted(() => {
   .dark:vf-request-form *:after,
   .dark:vf-request-form:root {
     /**
-      * Creating this namespace is enough to allow the existing
-      * CSS variables to be used in the dark mode.
-      **/
+        * Creating this namespace is enough to allow the existing
+        * CSS variables to be used in the dark mode.
+        **/
     --vf-bg-input: #ffffff;
   }
+
   .vf-request-form *,
   .vf-request-form *:before,
   .vf-request-form *:after,

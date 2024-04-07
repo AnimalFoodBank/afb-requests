@@ -1,0 +1,26 @@
+[
+  {
+    "model": "sites.site",
+    "pk": 3,
+    "fields": {
+      "domain": "dev.afb.pet",
+      "name": "dev.afb.pet"
+    }
+  },
+  {
+    "model": "sites.site",
+    "pk": 4,
+    "fields": {
+      "domain": "staging.afb.pet",
+      "name": "staging.afb.pet"
+    }
+  },
+  {
+    "model": "sites.site",
+    "pk": 5,
+    "fields": {
+      "domain": "localhost",
+      "name": "localhost"
+    }
+  }
+]
