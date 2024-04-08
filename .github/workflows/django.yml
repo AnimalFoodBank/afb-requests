@@ -82,6 +82,7 @@ jobs:
         with:
           fetch-depth: 1
           submodules: true
+
       - name: Set up python ${{ matrix.python-version }}
         id: setup-python
         uses: actions/setup-python@v5
@@ -133,16 +134,13 @@ jobs:
       #----------------------------------------------
       - name: Install django ${{ matrix.django-version }}
         run: |
-          ls -la
-          . .venv/bin/activate
           pip install "Django==${{ matrix.django-version }}"
         env:
             VIRTUAL_ENV: .venv
 
       - name: Run tests
         run: |
-          ls -la
-          .  .venv/bin/activate
+          python ./manage.py test
           pytest tests/
           coverage report
         env:
