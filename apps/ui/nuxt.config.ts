@@ -31,20 +31,20 @@ export default defineNuxtConfig({
    */
   ssr: false,
 
-  nitro: {
-    routeRules: {
-      "/**/*.ts": {
-        headers: {
-          "content-type": "application/typescript",
-        },
-      },
-      "/**/*.vue": {
-        headers: {
-          "content-type": "text/vue",
-        },
-      },
-    },
-  },
+  // nitro: {
+  //   routeRules: {
+  //     "/**/*.ts": {
+  //       headers: {
+  //         "content-type": "application/typescript",
+  //       },
+  //     },
+  //     "/**/*.vue": {
+  //       headers: {
+  //         "content-type": "text/vue",
+  //       },
+  //     },
+  //   },
+  // },
 
   ui: {
     icons: ["heroicons", "streamline", "ph", "game-icons"], // simple-icons
