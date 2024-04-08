@@ -22,7 +22,7 @@ const snackbar = useSnackbar();
 // middleware.
 
 definePageMeta({
-  layout: "auth",
+  layout: "onboarding",
   auth: false,
 });
 

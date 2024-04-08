@@ -21,7 +21,7 @@ const config = useRuntimeConfig();
 const snackbar = useSnackbar();
 
 definePageMeta({
-  layout: 'auth',
+  layout: 'onboarding',
   auth: false,
 })
 
