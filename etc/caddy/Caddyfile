@@ -51,7 +51,7 @@
 }
 
 https://dev.afb.pet https://dev.animalfoodbank.org, https://localhost {
-	tls etc/caddy/.certs/dev.afb.pet+2.pem etc/caddy/.certs/dev.afb.pet+2-key.pem
+  tls etc/caddy/.certs/dev.afb.pet+2.pem etc/caddy/.certs/dev.afb.pet+2-key.pem
   header Permissions-Policy "geolocation=(), microphone=()"
 
   log {
@@ -82,14 +82,14 @@ https://dev.afb.pet https://dev.animalfoodbank.org, https://localhost {
   # NOTE: The Django command needs to be run after every change
   # any of the static files.
   #
-	handle /static/* {
-		root * ./public
-		file_server
-	}
+  handle /static/* {
+    root * ./public
+    file_server
+  }
   root * ./public
 
-	handle {
-		reverse_proxy /api* 127.0.0.1:8000 {
+  handle {
+    reverse_proxy /api* 127.0.0.1:8000 {
       header_down Server "Proxied Server Name (django api)"
     }
     reverse_proxy /admin* 127.0.0.1:8000 {
@@ -98,7 +98,7 @@ https://dev.afb.pet https://dev.animalfoodbank.org, https://localhost {
     reverse_proxy 127.0.0.1:3000 {
       header_down Server "Proxied Server Name (vue)"
     }
-	}
+  }
 
   # TODO: Revisit websockets config in Caddy.
   # TODO: How to tell Nuxt/Vue to use wss:// instead of ws://? Also the hostname. 127.0.0.1:4000 is not going to work in production.
