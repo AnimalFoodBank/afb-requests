@@ -3,7 +3,7 @@
 import uuid
 
 from django.db import models
-from model_utils import Choices
+from model_utils.choices import Choices
 from phonenumber_field.modelfields import PhoneNumberField
 
 from .base import BaseAbstractModel
@@ -43,8 +43,12 @@ class FoodRequest(BaseAbstractModel):
     branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING, null=True)
 
     address_text = models.TextField(null=True, blank=True)
-    address_google_place_id = models.CharField(max_length=255, blank=True, null=True)
-    address_canadapost_id = models.CharField(max_length=255, blank=True, null=True)
+    address_google_place_id = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    address_canadapost_id = models.CharField(
+        max_length=255, blank=True, null=True
+    )
     address_latitude = models.FloatField(blank=True, null=True, default=0)
     address_longitude = models.FloatField(blank=True, null=True, default=0)
     address_buildingtype = models.CharField(
@@ -73,7 +77,9 @@ class FoodRequest(BaseAbstractModel):
     # Safe drop - if they are not home, can we leave the food at the door?
     # Yes/No
     safe_drop_agree = models.BooleanField(null=True, blank=True)
-    safe_drop_instructions = models.TextField(max_length=255, null=True, blank=True)
+    safe_drop_instructions = models.TextField(
+        max_length=255, null=True, blank=True
+    )
 
     # Yes/No -
     # No requires them to edit address in the UI so in theory this should
@@ -91,7 +97,9 @@ class FoodRequest(BaseAbstractModel):
     date_requested = models.DateField(auto_now_add=True)
 
     # Request Received, Request Approved & in Queue, Request Denied, Volunteer Assigned, Request Ready For Volunteer Pickup, Delivery Scheduled, Out For Delivery, Delivered, Undeliverable
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="received")
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="received"
+    )
 
     # Free form comments from driver, client, volunteer, etc.
     comments = models.JSONField(default=dict)
