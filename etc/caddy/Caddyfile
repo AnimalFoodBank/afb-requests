@@ -37,9 +37,9 @@
 }
 
 
-# https://staging.afb.pet {
-https://dev.afb.pet https://localhost {
-	tls etc/caddy/.certs/dev.afb.pet+2.pem etc/caddy/.certs/dev.afb.pet+2-key.pem
+https://staging.afb.pet {
+# https://dev.afb.pet https://localhost {
+  # tls etc/caddy/.certs/dev.afb.pet+2.pem etc/caddy/.certs/dev.afb.pet+2-key.pem
   header Permissions-Policy ""
 
   log {
@@ -60,7 +60,7 @@ https://dev.afb.pet https://localhost {
   # for development bc it's difficult to work around if there are any cert
   # issues (browsers cache the HSTS policy and it's difficult to clear).
   #
-  header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  #header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
   # Static files are served from the public directory. Django is
   # responsible for collecting static files into `public/static`. The
@@ -72,13 +72,12 @@ https://dev.afb.pet https://localhost {
   #
   root * /var/www/public
 
-	handle /api/* {
-
+  handle /api/* {
     # The backend API powered by Django. The exact settings here
     # depend on how we choose to run the Django app in production.
     # For example, we may choose to run it in a separate process
     # using something like gunicorn.
-		reverse_proxy 127.0.0.1:8000 {
+    reverse_proxy 127.0.0.1:8000 {
       header_down Server "Proxied Server Name (django api)"
     }
   }
@@ -91,15 +90,22 @@ https://dev.afb.pet https://localhost {
     reverse_proxy 127.0.0.1:8000 {
       header_down Server "Proxied Server Name (django admin)"
     }
-	}
+  }
 
+  # Enable only one of the following two blocks at a time. The first
+  # block is for serving the Nuxt app in development mode. The second
+  # block is for serving the Nuxt app as prebuilt, static files.
   handle {
+    # reverse_proxy 127.0.0.1:3000 {
+    #   header_down Server "Proxied Server Name (vue)"
+    # }
+
     root * /var/www/public
     file_server
   }
 
+
   # NOTE: Server-side components of a Nuxt app use websockets. Our
   # application is client-side only so we don't need to worry about
   # configuring websockets here.
-
 }
