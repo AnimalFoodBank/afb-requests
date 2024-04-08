@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
   modules: [
     "@nuxt/ui",
+    '@nuxt/test-utils/module',
     "@nuxt/fonts",
     "nuxt-snackbar",
     "@sidebase/nuxt-auth",
