@@ -35,6 +35,7 @@
     "@vueform/vueform": "^1.9.3",
     "@vueuse/nuxt": "^10.9.0",
     "date-fns": "^3.6.0",
+    "next-auth": "^4.24.7",
     "nitro": "^0.0.0",
     "nuxt-og-image": "3.0.0-rc.43",
     "nuxt-snackbar": "^1.0.4",
