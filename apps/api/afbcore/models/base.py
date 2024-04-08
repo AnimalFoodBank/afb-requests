@@ -1,11 +1,8 @@
-import uuid
 from django.db import models
-from model_utils import Choices
-from model_utils.managers import SoftDeletableManagerMixin, QueryManagerMixin
-from model_utils.models import (
-    TimeStampedModel,
+from model_utils.managers import QueryManagerMixin, SoftDeletableManagerMixin
+from model_utils.models import (  # StatusModel,
     SoftDeletableModel,
-    # StatusModel,
+    TimeStampedModel,
     UUIDModel,
 )
 

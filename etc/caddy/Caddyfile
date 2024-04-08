@@ -36,11 +36,11 @@
   email "delano@animalfoodbank.org"
 }
 
-
 https://staging.afb.pet {
 # https://dev.afb.pet https://localhost {
   # tls etc/caddy/.certs/dev.afb.pet+2.pem etc/caddy/.certs/dev.afb.pet+2-key.pem
   header Permissions-Policy ""
+
 
   log {
     output stdout
@@ -103,7 +103,6 @@ https://staging.afb.pet {
     root * /var/www/public
     file_server
   }
-
 
   # NOTE: Server-side components of a Nuxt app use websockets. Our
   # application is client-side only so we don't need to worry about
