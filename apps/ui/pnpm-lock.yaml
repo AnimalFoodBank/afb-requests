@@ -75,7 +75,7 @@ dependencies:
     specifier: ^3.2.5
     version: 3.2.5
   vue:
-    specifier: ^3.4.21
+    specifier: ^3.4.0
     version: 3.4.21(typescript@5.4.4)
   vue3-google-map:
     specifier: ^0.20.0
