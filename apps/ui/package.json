@@ -15,7 +15,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "test": "jest"
   },
   "dependencies": {
     "@iconify-json/game-icons": "^1.1.9",
