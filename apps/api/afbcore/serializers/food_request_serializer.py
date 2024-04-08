@@ -7,8 +7,11 @@ class FoodRequestCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodRequest
         fields = [
+            "id",
             "user",
             "branch",
+            "created",
+            "modified",
             "address_text",
             "address_google_place_id",
             "address_canadapost_id",
@@ -24,6 +27,8 @@ class FoodRequestCreateSerializer(serializers.ModelSerializer):
             "confirm_correct",
             "accept_terms",
             "date_requested",
+            "safe_drop_agree",
+            "safe_drop_instructions",
         ]
         read_only_fields = [
             "id",
@@ -41,6 +46,14 @@ class FoodRequestUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodRequest
         fields = [
+            "id",
+            "user",
+            "branch",
+            "created",
+            "modified",
+            "address_canadapost_id",
+            "address_google_place_id",
+            "pet_details",
             "address_text",
             "address_google_place_id",
             "address_canadapost_id",
@@ -56,6 +69,8 @@ class FoodRequestUpdateSerializer(serializers.ModelSerializer):
             "confirm_correct",
             "accept_terms",
             "date_requested",
+            "safe_drop_agree",
+            "safe_drop_instructions",
         ]
         read_only_fields = [
             "id",
