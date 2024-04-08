@@ -123,7 +123,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
 
-        #----------------------------------------------
+      #----------------------------------------------
       # install your root project, if required
       #----------------------------------------------
       - name: Install library
@@ -134,7 +134,7 @@ jobs:
       #----------------------------------------------
       - name: Install django ${{ matrix.django-version }}
         run: |
-          pip install "Django==${{ matrix.django-version }}"
+          poetry add Django@5${{ matrix.django-version }}
         env:
             VIRTUAL_ENV: .venv
 
