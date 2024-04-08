@@ -83,6 +83,7 @@ wheel = "0.43.0"
 djangorestframework = {git = "https://github.com/delano/django-rest-framework.git", rev = "dev"}
 drf-registration = {git = "https://github.com/delano/drf-registration.git", rev = "dev"}
 drfpasswordless = {git = "https://github.com/delano/django-rest-framework-passwordless.git", rev = "dev"}
+rich = "^13.7.1"
 
 
 [build-system]

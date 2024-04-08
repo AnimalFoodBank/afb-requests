@@ -17,6 +17,7 @@ from pathlib import Path
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
+
 # After loading dotenv, you can use os.getenv() to access
 # environment variables. e.g. `os.getenv("DEBUG", "False")`
 load_dotenv()
@@ -411,6 +412,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # more details on how to customize your logging configuration.
 LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -422,7 +424,7 @@ LOGGING = {
     "handlers": {
         "console": {
             "level": LOG_LEVEL,
-            "class": "logging.StreamHandler",
+            "class": "rich.logging.RichHandler",  # see afbcore/apps.py
             "formatter": "verbose",
         }
     },
