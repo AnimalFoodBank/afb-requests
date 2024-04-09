@@ -51,7 +51,7 @@ onMounted(() => {
 
         <!-- <h2 class="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight"></h2> -->
 
-        <RequestList
+        <RequestsList
           title="Request History"
           description=""
           :cta="true"

@@ -1,5 +1,6 @@
 
 <script setup lang="ts">
+import type { FoodRequest } from '@/types/index';
 
 const props = defineProps<{
   title?: String
