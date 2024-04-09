@@ -205,7 +205,7 @@ const defaultBranch = ref("none");
 
       <template #footer>
         By signing in, you agree to our
-        <NuxtLink to="/" class="text-primary font-medium"
+        <NuxtLink to="/legal/terms" class="text-primary font-medium"
           >Terms of Service</NuxtLink
         >.
       </template>

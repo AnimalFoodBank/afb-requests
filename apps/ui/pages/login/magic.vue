@@ -104,7 +104,7 @@ async function authHandler() {
         </UButton>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
-          By signing in, you agree to our <NuxtLink to="/" class="text-primary font-medium">Terms of Service</NuxtLink>.
+          By signing in, you agree to our <NuxtLink to="/legal/terms" class="text-primary font-medium">Terms of Service</NuxtLink>.
         </p>
       </div>
     </UForm>
