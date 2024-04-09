@@ -21,7 +21,7 @@ const config = useRuntimeConfig();
 const snackbar = useSnackbar();
 
 definePageMeta({
-  layout: 'auth',
+  layout: 'onboarding',
   auth: false,
 })
 
@@ -66,7 +66,7 @@ async function authHandler() {
     const toast = useToast()
     toast.add({
       title: 'Login Error',
-      description: 'An error occurred on our. Please try logging in again.',
+      description: 'An error occurred on our end. Please try logging in again.',
     })
 
     return navigateTo('/login')

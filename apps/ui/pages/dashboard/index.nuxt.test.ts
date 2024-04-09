@@ -98,7 +98,7 @@
 
         // The function should correctly pass the requests array to the RequestList component.
     import { shallowMount } from '@vue/test-utils';
-    import RequestList from '@/components/RequestList.vue';
+    import RequestList from '@/components/onboarding/RequestList.vue';
     import { requests } from './script-setup';
 
     describe('script setup', () => {
