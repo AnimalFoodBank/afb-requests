@@ -16,7 +16,9 @@
     "lint": "eslint apps/ui",
     "typecheck": "nuxt typecheck apps/ui",
     "prettier": "prettier --write \"apps/ui/src/**/*.{ts,tsx}\"",
-    "test": "jest apps/ui"
+    "test": "jest apps/ui",
+    "django": "python apps/api/manage.py",
+    "django:run": "python apps/api/manage.py runserver_plus"
   },
   "dependencies": {
     "@iconify-json/game-icons": "^1.1.9",
