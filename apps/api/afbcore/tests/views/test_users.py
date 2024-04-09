@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from afbcore.views.users import UserViewSet
 from afbcore.serializers import UserSerializer
-from django.test import RequestFactory
+from django.test import FoodRequestFactory
 
 """
 How to run the tests:
@@ -53,7 +53,7 @@ class RegisterTestCase(APITestCase):
         }
 
         # Create a mock request
-        factory = RequestFactory()
+        factory = FoodRequestFactory()
         request = factory.post("/users/", data, format="json")
 
         # Create a UserSerializer instance with the valid data

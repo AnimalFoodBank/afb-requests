@@ -10,12 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Load dotenv file
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
+
 
 # After loading dotenv, you can use os.getenv() to access
 # environment variables. e.g. `os.getenv("DEBUG", "False")`
@@ -87,12 +88,9 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "drf_spectacular",
     "drf_spectacular_sidecar",
-    # "drf_registration",
-    # 'djoser',
     "drfpasswordless",
     "django_filters",  # add DRF filters
     "phonenumber_field",
-    "django_vite",  # May not need this? If using Vite/Vue for frontend via API.
     "afbcore",
 ]
 
@@ -107,9 +105,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-
-VITE_APP_DIR = BASE_DIR.parent / "ui"
 
 # https://github.com/adamchainz/django-cors-headers
 CORS_ALLOW_ALL_ORIGINS = False
@@ -129,7 +124,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost",
     "https://dev.afb.pet",
     "https://staging.afb.pet",
-    "https://dev.animalfoodbank.org",
 ]
 CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 
@@ -141,13 +135,12 @@ CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 #   https://github.com/adamchainz/django-cors-headers
 #
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:3000",  # ViteJS dev server
-    "http://127.0.0.1:3001",  # ViteJS dev server (alt)
+    "http://127.0.0.1:3000",  # Nitro dev server
+    "http://127.0.0.1:3001",  # Nitro dev server (alt)
     "http://127.0.0.1:8000",  # Django dev server
     "https://localhost",
     "https://dev.afb.pet",
     "https://staging.afb.pet",
-    "https://dev.animalfoodbank.org",
 ]
 
 CSRF_USE_SESSIONS = False
@@ -170,38 +163,6 @@ CSRF_COOKIE_HTTPONLY = False
 
 TOKEN_EXPIRED_AFTER_WEEKS = 2
 
-# correspond to your build.outDir in your ViteJS configuration.
-DJANGO_VITE_ASSETS_PATH = VITE_APP_DIR / "public"
-
-# ViteJS webserver protocol (default : http).
-DJANGO_VITE_DEV_SERVER_PROTOCOL = "http"
-
-# ViteJS webserver hostname (default : localhost).
-DJANGO_VITE_DEV_SERVER_HOST = "127.0.0.1"
-
-# ViteJS webserver port (default : 3000)
-DJANGO_VITE_DEV_SERVER_PORT = "3000"
-
-# assets are included as modules using the ViteJS webserver. This will enable
-# HMR for your assets.
-DJANGO_VITE_DEV_MODE = True
-
-# ViteJS webserver path to the HMR client used in the vite_hmr_client tag
-# (default : @vite/client).
-DJANGO_VITE_WS_CLIENT_URL = "@vite/client"
-
-# Absolute path (including filename) to your ViteJS manifest file. This
-# file is generated in your DJANGO_VITE_ASSETS_PATH. But if you are in
-# production (DEBUG is false) then it is in your STATIC_ROOT after you
-# collected your static files (supports pathlib.Path or str).
-DJANGO_VITE_MANIFEST_PATH = DJANGO_VITE_ASSETS_PATH / "manifest.json"
-
-# prefix directory of your static files built by Vite. (default : "")
-# Use it if you want to avoid conflicts with other static files in your project.
-DJANGO_VITE_STATIC_URL_PREFIX = ""
-
-VITE_INPUT_CSS = "input.css"
-VITE_OUTPUT_CSS = "output.css"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-STATIC_ROOT
@@ -215,7 +176,7 @@ VITE_OUTPUT_CSS = "output.css"
 #
 #  $ python manage.py collectstatic
 #
-STATIC_ROOT = BASE_DIR / ".." / ".." / "public" / "static"
+STATIC_ROOT = "/var/www/public/static"
 
 # For prod:
 # https://docs.djangoproject.com/en/4.2/howto/static-files/deployment/#staticfiles-from-cdn
@@ -224,9 +185,11 @@ STATIC_ROOT = BASE_DIR / ".." / ".." / "public" / "static"
 # This is ignored when using a CDN or reverse proxy for serving static files.
 STATIC_URL = "static/"
 
+# Directories containing the static files. The contents are collected
+# into STATIC_ROOT using the collectstatic management command.
+#
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    DJANGO_VITE_ASSETS_PATH,
 ]
 
 REST_FRAMEWORK = {
@@ -240,10 +203,15 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "PAGE_SIZE": 25,
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend"
+    ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
+    "ALLOWED_VERSIONS": ["v1"],
+    "VERSION_PARAM": "version",
 }
 
 SPECTACULAR_SETTINGS = {
@@ -310,53 +278,13 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_TOKEN_GENERATION_ATTEMPTS": 3,
 }
 
-# # For the default settings see:
-# # https://drf-registration.readthedocs.io/en/latest/settings/index.html
-# DRF_REGISTRATION = {
-#     # General settings
-#     "PROJECT_NAME": "AFB Requests",
-#     "PROJECT_BASE_URL": "",
-#     # User fields to register and respond to profile
-#     "USER_FIELDS": (
-#         "id",
-#         "email",
-#         # "password",
-#         "name",
-#         "is_active",
-#     ),
-#     "USER_READ_ONLY_FIELDS": (
-#         "is_superuser",
-#         "is_staff",
-#         "is_active",
-#     ),
-#     "USER_SERIALIZER": "afbcore.serializers.UserSerializer",
-#     "REGISTER_SERIALIZER": "afbcore.serializers.RegisterSerializer",
-#     "USER_WRITE_ONLY_FIELDS": ("password",),
-#     "REGISTER_SEND_WELCOME_EMAIL_ENABLED": True,
-#     # For custom login username fields
-#     "LOGIN_USERNAME_FIELDS": [
-#         "email",
-#     ],
-#     "LOGOUT_REMOVE_TOKEN": True,
-# }
-
-
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "E164"
 PHONENUMBER_DEFAULT_REGION = "CA"
 
 ROOT_URLCONF = "afb.urls"
 
-# Django-Tailwind
-# https://django-tailwind.readthedocs.io/en/latest/installation.html#configuration
-
-# TAILWIND_APP_NAME = "theme"
-
 AUTH_USER_MODEL = "afbcore.User"
-
-AUTHENTICATION_BACKENDS = [
-    "drf_registration.auth.MultiFieldsModelBackend",
-]
 
 INTERNAL_IPS = [
     # Add local IP addresses here for tailwind to work, then run:
@@ -484,6 +412,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # more details on how to customize your logging configuration.
 LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -495,7 +424,7 @@ LOGGING = {
     "handlers": {
         "console": {
             "level": LOG_LEVEL,
-            "class": "logging.StreamHandler",
+            "class": "rich.logging.RichHandler",  # see afbcore/apps.py
             "formatter": "verbose",
         }
     },

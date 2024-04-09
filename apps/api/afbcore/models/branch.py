@@ -5,11 +5,15 @@ from .mixins import PhysicalLocationMixin
 
 
 class Branch(PhysicalLocationMixin):
+    class Meta:
+        verbose_name_plural = "Branches"
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    # Location Name ie Winnipeg, MB; Medicine Hat, AB etc.
-    location_name = models.CharField(
-        max_length=255, help_text="ie Winnipeg, MB;  Medicine Hat, AB etc."
+    # An optional name to display in the UI for this location. Can be anything
+    # or nothing at all. It's just for convenience.
+    display_name = models.CharField(
+        max_length=255, help_text="ie Winnipeg, MB", null=True, blank=True
     )
 
     # Postal/Zip Code Range start with Canada but the intent is to
@@ -22,7 +26,7 @@ class Branch(PhysicalLocationMixin):
 
     # Frequency of Requests Weeks, Month, Months. This would need to be able
     # to be edited, as we do change it sometimes.
-    frequency_of_requests = models.CharField(max_length=255)
+    frequency_of_requests = models.CharField(max_length=255, default="Monthly")
 
     # Spay/Neuter Requirement likely a yes or no?  As in does that branch expect
     # clients to spay/neuter their pets to gain access to the food bank?
@@ -32,10 +36,7 @@ class Branch(PhysicalLocationMixin):
     pets_per_household_max = models.IntegerField(default=4)
 
     # Delivery Deadline. For example, Winnipeg is 14 days
-    delivery_deadline_days = models.IntegerField()
-
-    # Delivery deadline in days
-    delivery_deadline_days = models.IntegerField(default=3)
+    delivery_deadline_days = models.IntegerField(default=30)
 
     # Type of delivery service, 'Drop off' or 'Pick up'
     # Delivery Type Drop off and/or pick up options
@@ -46,10 +47,10 @@ class Branch(PhysicalLocationMixin):
     )
 
     # Delivery/pickup More details
-    delivery_pickup_details = models.TextField(blank=True)
+    delivery_pickup_details = models.TextField(blank=True, null=True)
 
     # Blurb An optional text field for a short intro or description etc.
-    blurb = models.TextField(blank=True)
+    blurb = models.TextField(blank=True, null=True)
 
     # Blurb image A picture to go along with the blurb
     blurb_image = models.ImageField(upload_to="branch_images/", blank=True, null=True)

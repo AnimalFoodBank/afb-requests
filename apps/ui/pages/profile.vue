@@ -6,9 +6,6 @@ useSeoMeta({
 
 definePageMeta({
   layout: 'dashboard',
-  auth: {
-    authenticated: true,
-  },
 })
 
 const links = [[{

@@ -1,0 +1,70 @@
+#
+# Nuxt3 UI Tests workflow.
+#
+# This workflow is triggered on push and pull request events, specifically for changes in the 'apps/ui' directory.
+#
+# The workflow runs on the latest version of Ubuntu.
+#
+# The steps in the workflow include:
+# 1. Checking out the repository.
+# 2. Setting up Node.js with version 20.
+# 3. Installing dependencies using pnpm in the 'apps/ui' directory.
+# 4. Running tests using pnpm in the 'apps/ui' directory.
+#
+# Note: Make sure to have pnpm installed in the environment where this workflow will run.
+
+name: Nuxt3 CI - Tests
+
+on:
+  pull_request:
+    paths:
+      - apps/ui/**
+  push:
+    paths:
+      - .github/workflows/ui.yml
+
+jobs:
+
+  # Cache dependencies to speed up workflow execution.
+  # Note: Includes installation of pnpm
+  install-and-cache:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/ui
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm test

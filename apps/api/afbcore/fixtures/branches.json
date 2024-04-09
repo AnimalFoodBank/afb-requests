@@ -1,0 +1,102 @@
+[
+  {
+    "model": "afbcore.branch",
+    "pk": "383e8f22-b671-4b94-90e0-df864828ab05",
+    "fields": {
+      "location_name": "Michael's",
+      "address_line1": "1910 Pembina Hwy",
+      "address_line2": null,
+      "city": "Winnipeg",
+      "state_or_province": "MB",
+      "postal_code": "R3T 4S5",
+      "country": null,
+      "ext_id": null,
+      "display_name": "Michael's Tots",
+      "pickup_locations": null,
+      "frequency_of_requests": "30",
+      "spay_neuter_requirement": false,
+      "pets_per_household_max": 4,
+      "delivery_deadline_days": 14,
+      "delivery_type": "drop_off",
+      "delivery_pickup_details": " ",
+      "blurb": " ",
+      "blurb_image": "",
+      "delivery_regions": []
+    }
+  },
+  {
+    "model": "afbcore.branch",
+    "pk": "5c3549e0-a728-4510-a64a-69bcd26d52d5",
+    "fields": {
+      "location_name": "Xanadu's Lot",
+      "address_line1": "1225 St Mary's Rd",
+      "address_line2": null,
+      "city": "Winnipeg",
+      "state_or_province": "MB",
+      "postal_code": "R2M 5E5",
+      "country": null,
+      "ext_id": null,
+      "display_name": "Xanadu",
+      "pickup_locations": null,
+      "frequency_of_requests": "7",
+      "spay_neuter_requirement": false,
+      "pets_per_household_max": 4,
+      "delivery_deadline_days": 30,
+      "delivery_type": "drop_off",
+      "delivery_pickup_details": " ",
+      "blurb": " ",
+      "blurb_image": "",
+      "delivery_regions": []
+    }
+  },
+  {
+    "model": "afbcore.branch",
+    "pk": "8f786370-f10b-11ee-934b-0fdb3c7dc37f",
+    "fields": {
+      "location_name": "Martha's",
+      "address_line1": "400 North Town Rd",
+      "address_line2": null,
+      "city": "Winnipeg",
+      "state_or_province": "MB",
+      "postal_code": "R2V 3C4",
+      "country": null,
+      "ext_id": null,
+      "display_name": "Martha's Vines",
+      "pickup_locations": null,
+      "frequency_of_requests": "14",
+      "spay_neuter_requirement": false,
+      "pets_per_household_max": 4,
+      "delivery_deadline_days": 14,
+      "delivery_type": "drop_off",
+      "delivery_pickup_details": " ",
+      "blurb": " ",
+      "blurb_image": "",
+      "delivery_regions": []
+    }
+  },
+  {
+    "model": "afbcore.branch",
+    "pk": "f684ab06-c155-4b30-b046-80a721879b52",
+    "fields": {
+      "location_name": "The Uni",
+      "address_line1": "1555 Regent Ave W",
+      "address_line2": null,
+      "city": "Winnipeg",
+      "state_or_province": "MB",
+      "postal_code": "R2C 4J2",
+      "country": null,
+      "ext_id": null,
+      "display_name": "University Square ",
+      "pickup_locations": null,
+      "frequency_of_requests": "21",
+      "spay_neuter_requirement": false,
+      "pets_per_household_max": 4,
+      "delivery_deadline_days": 14,
+      "delivery_type": "drop_off",
+      "delivery_pickup_details": " ",
+      "blurb": " ",
+      "blurb_image": "",
+      "delivery_regions": []
+    }
+  }
+]

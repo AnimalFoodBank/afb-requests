@@ -1,78 +1,20 @@
 <!-- trunk-ignore(markdownlint/MD014) -->
 
-# AFB Requests -- 2024-01-24 (ALPHA)
+# AFB Requests -- 2024
 
 
 ## UI
 
 
-https://cli.vuejs.org/guide/installation.html
-
-```bash
-    <!-- trunk-ignore(markdownlint/MD014) -->
-    $ yarn install
-
-    $ npx vite
-    $ npx vite --help
-
-    $ npx vite --debug hmr
-```
+### Django Rest Framework (DRF)
 
 
-https://tailwindcss.com/docs/installation
-https://tailwindcss.com/docs/installation/using-postcss
 
-https://tailwindui.com/documentation#getting-set-up
-https://tailwindui.com/documentation#using-vue
+### Mailpit
 
-Vite is a build tool for Vue.
-https://vitejs.dev/guide/#scaffolding-your-first-vite-project
-
-https://vuejs.org/guide/scaling-up/tooling.html#project-scaffolding
+Send emails from your Django application in development without sending them to real email addresses. Mailpit is a local SMTP server with a web interface that allows you to view emails sent from your application.
 
 
-We're using Vue 3 with vue-i18n, make sure to install the vue-i18n@next version, which includes support for Vue 3 and TypeScript.
-
-```bash
-yarn add vue-i18n@next
-```
-
-
-Remember to configure TypeScript to include the vue-i18n types in your tsconfig.json file:
-
-```json
-{
-  "compilerOptions": {
-    // ...
-    "types": ["vue-i18n"]
-  }
-}
-```
-
-This will enable TypeScript to recognize the types from vue-i18n and provide better autocompletion and error checking.
-
-
-## Commands
-
-
-### Python Dependencies
-
-```bash
-
-    $ pip-compile --output-file=- requirements.in > requirements.txt
-    ...
-
-    $ pip-compile --upgrade --output-file=- requirements.in | tee requirements.txt
-    ...
-
-```bash
-    curl -v -X POST -H "Content-Type: application/json" -H "X-CSRFToken: $token" -d '{"username":"delbo@solutious.com","password":"1234"}' http://127.0.0.1:8000/auth-token/
-```
-
-### DRF
-
-
-#### Mailpit
 https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#mailpit
 https://github.com/axllent/mailpit
 
@@ -83,6 +25,49 @@ INFO[2023/11/17 18:22:21] [http] starting server on http://localhost:8025/
 ```
 http://localhost:8025
 
+
+### SMTP Service (Amazon SES)
+
+#### Testing SMTP credentials
+
+After you have created your SMTP credentials and updating the .env file, you can test the email sending functionality from the Django shell.
+
+```bash
+    $ ./manage.py shell_plus
+```
+
+
+
+```python
+from django.core.mail import send_mail
+
+# Define the email parameters
+subject = 'Test Email'
+message = 'This is a test email sent from the Django shell.'
+from_email = 'support@afb.pet'
+to_email = ['shep@afb.pet']
+
+# Send the email
+send_mail(
+    subject=subject,
+    from_email=from_email,
+    message=message,
+    recipient_list=to_email,
+    fail_silently=False,
+)
+
+```
+
+#### To create your SMTP credentials
+
+1. Sign in to the AWS Management Console and open the Amazon SES console at https://console.aws.amazon.com/ses/.
+2. Choose SMTP settings in the left navigation pane - this will open the Simple Mail Transfer Protocol (SMTP) settings page.
+3. Choose Create SMTP Credentials in the upper-right corner - the IAM console will open.
+4. (Optional) If you need to view, edit, or delete SMTP users you’ve already created, choose Manage my existing SMTP credentials in the lower-right corner - the IAM console will open. Details for managing SMTP credentials is given following these procedures.
+5. For Create User for SMTP, type a name for your SMTP user in the User Name field. Alternatively, you can use the default value that is provided in this field. When you finish, choose Create user in the bottom-right corner.
+6. Select Show under SMTP password - your SMTP credentials are shown on the screen.
+7. Download these credentials by choosing Download .csv file or copy them and store them in a safe place, because you can't view or save your credentials after you close this dialog box.
+8. Choose Return to SES console.
 
 
 ### Django Management

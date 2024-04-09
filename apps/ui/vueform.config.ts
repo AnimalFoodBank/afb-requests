@@ -7,6 +7,22 @@ import { defineConfig } from '@vueform/vueform'
 // import builder from '@vueform/builder/plugin'
 import PluginMask from '@vueform/plugin-mask'
 
+import axios from 'axios'
+
+
+const httpClient = axios.create({
+  baseURL: '',
+  withCredentials: true,
+  onUnauthenticated() {
+    location.href = '/login'
+  },
+})
+
+httpClient.interceptors.request.use((config) => {
+  config.headers.AFBRules = "true"
+  return config;
+});
+
 export default defineConfig({
   theme: tailwind,
   locales: { en },
@@ -18,6 +34,7 @@ export default defineConfig({
     // builder,
     PluginMask,
   ],
+  axios: httpClient,
   // services: {
   //   google2: {
   //     app_id: '338793354229-r38ovlt05ltulgdf2ar6kcg5fhcg2ut3.apps.googleusercontent.com',

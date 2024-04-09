@@ -65,7 +65,7 @@ const links = [
 ]
 
 const footerLinks = [{
-  label: 'Help & Support',
+  label: 'Help & FAQ',
   icon: 'i-heroicons-question-mark-circle',
   to: 'https://animalfoodbank.org/#help',
   target: '_blank',

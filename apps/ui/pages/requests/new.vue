@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import type { FoodDeliveryFormState } from '@/types/index';
+import type { FoodRequestFormState } from '@/types/index';
 
 definePageMeta({
   layout: 'dashboard',
-  auth: {
-    unauthenticatedOnly: true,
-  },
 })
 
 const links = [[
@@ -34,7 +31,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
 const googleMapsIsReady = ref(false)
 
-const state: Ref<FoodDeliveryFormState | null> = ref(null)
+const state: Ref<FoodRequestFormState | null> = ref(null)
 
 const loader = new Loader({
   apiKey: googleAPIKey,
@@ -91,7 +88,7 @@ onMounted(() => {
         postcode: 'M4C 1B5',
         country: 'CA',
       },
-      interactive_address: '',
+      interactive_address: '1201 Kingsway, Med Hat',
       building_type: 'Townhouse',
     },
     delivery_contact: {
@@ -100,18 +97,15 @@ onMounted(() => {
       preferred_method: "Email",
     },
     your_pets: {
-      pet_name: 'Buddy',
-      pet_breed: 'Labrador Retriever',
-      pet_age: '3 years',
-      pet_weight: '50 lbs',
+      pets_blob: "1 dog, 2 cats",
     },
     safe_drop: {
       safe_drop: true,
       safe_drop_instructions: 'Leave at the door',
     },
     confirmation: {
-      confirm_correct: false,
-      accept_terms: false,
+      confirm_correct: true,
+      accept_terms: true,
     },
   }
 
@@ -131,7 +125,7 @@ onMounted(() => {
 
       <UDashboardPanelContent class="pb-12 pr-16 mr-16">
 
-        <RequestsFoodDeliveryForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" />
+        <RequestsFoodRequestForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" />
 
       </UDashboardPanelContent>
 

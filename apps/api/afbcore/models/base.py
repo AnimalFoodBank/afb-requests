@@ -1,11 +1,8 @@
-import uuid
 from django.db import models
-from model_utils import Choices
-from model_utils.managers import SoftDeletableManagerMixin, QueryManagerMixin
-from model_utils.models import (
-    TimeStampedModel,
+from model_utils.managers import QueryManagerMixin, SoftDeletableManagerMixin
+from model_utils.models import (  # StatusModel,
     SoftDeletableModel,
-    # StatusModel,
+    TimeStampedModel,
     UUIDModel,
 )
 
@@ -23,15 +20,15 @@ from model_utils.models import (
 class BaseAbstractModelManager(
     SoftDeletableManagerMixin, QueryManagerMixin, models.Manager
 ):
-    """A common base class for all major core managers"""
+    """A common base class for core model managers"""
 
 
 class BaseAbstractQuerySet(models.QuerySet):
-    """A common base class for all major core querysets"""
+    """A common base class for core model querysets"""
 
 
 class BaseAbstractModel(UUIDModel, SoftDeletableModel, TimeStampedModel):
-    """A common base class for all major core models
+    """A common base class for core models
 
     Fields inherited from BaseAbstractModel:
         - id: UUIDField, primary key

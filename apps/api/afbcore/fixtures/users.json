@@ -1,0 +1,46 @@
+[
+  {
+    "model": "afbcore.user",
+    "pk": "0acb3d51-ddb8-4b2b-aa1c-254b08e9c9a9",
+    "fields": {
+      "password": "pbkdf2_sha256$720000$9pDIGn4pgGkGwt2MN4jo9Y$gF+0yJxjnXVwvSPq+wkAhuOVZd65EJWv13tTJII1sN4=",
+      "last_login": "2024-04-02T01:58:32.178Z",
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-04-02T01:58:05.053Z",
+      "created": "2024-04-02T01:58:05.053Z",
+      "modified": "2024-04-02T01:58:32.178Z",
+      "email": "delano@afb.pet",
+      "name": "Delano Admin",
+      "terms_agreement": false,
+      "username": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "afbcore.user",
+    "pk": "d67e87a2-0fb4-4b8c-8883-9b2090645c69",
+    "fields": {
+      "password": "!Wbc7dJsVk2MwzUF8iEM1xEengduCx9UuG2XuCzpp",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-04-01T19:55:22.122Z",
+      "created": "2024-04-01T19:55:22.122Z",
+      "modified": "2024-04-01T19:55:22.124Z",
+      "email": "delbo3@solutious.com",
+      "name": "",
+      "terms_agreement": false,
+      "username": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]
