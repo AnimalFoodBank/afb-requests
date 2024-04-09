@@ -75,7 +75,7 @@ export default defineNuxtConfig({
       type: "local",
       endpoints: {
         signIn: { path: "/passwordless/auth/token/", method: "post" },
-        signOut: { path: "/logout", method: "post" },
+        signOut: { path: "/authtoken/logout/", method: "post" },
         signUp: { path: "/register", method: "post" },
         getSession: { path: "/users/current_user/", method: "get" },
       },

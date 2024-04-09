@@ -61,10 +61,7 @@ const items = computed(() => [
         :class="[open && 'bg-gray-50 dark:bg-gray-800']"
       >
         <template #leading>
-          <UAvatar
-            src="https://avatars.githubusercontent.com/u/1206?v=4"
-            size="2xs"
-          />
+          <Icon name="i-heroicons-user" />
         </template>
 
         <template #trailing>
