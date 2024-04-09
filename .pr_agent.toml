@@ -2,29 +2,32 @@
 #
 # Change only what's needed to ease upstream merges. Be concise.
 
-
 [config]
-
-model = "gpt-4"                          # "gpt-4-0125-preview"
-model_turbo = "gpt-4-0125-preview"
-fallback_models = ["gpt-3.5-turbo-16k"]
+# model="gpt-4" # "gpt-4-0125-preview"
+model = "claude-3-sonnet-20240229"
+model_turbo = "claude-instant-1.2"
+# model_turbo = "gpt-4-0125-preview"
+fallback_models = [
+    "claude-3-haiku-20240307",
+    "gpt-4-0125-preview",
+] #"gpt-4", "gpt-3.5-turbo-16k"]
 git_provider = "github"
 publish_output = true
-publish_output_progress = true
-verbosity_level = 0                      # 0,1,2
+publish_output_progress = false
+verbosity_level = 0 # 0,1,2
 use_extra_bad_extensions = false
 use_wiki_settings_file = true
 use_repo_settings_file = true
 use_global_settings_file = true
-ai_timeout = 120                         # 2minutes
-max_description_tokens = 500
+ai_timeout = 120 # 2minutes
+max_description_tokens = 1024
 max_commits_tokens = 500
-max_model_tokens = 32000                 # Limits the maximum number of tokens that can be used by any model, regardless of the model's default capabilities.
+max_model_tokens = 128000 # Limits the maximum number of tokens that can be used by any model, regardless of the model's default capabilities.
 patch_extra_lines = 1
 secret_provider = "google_cloud_storage"
 cli_mode = false
-ai_disclaimer_title = ""                 # Pro feature, title for a collapsible disclaimer to AI outputs
-ai_disclaimer = ""                       # Pro feature, full text for the AI disclaimer
+ai_disclaimer_title = "" # Pro feature, title for a collapsible disclaimer to AI outputs
+ai_disclaimer = "" # Pro feature, full text for the AI disclaimer
 
 [pr_reviewer] # /review #
 # enable/disable features
