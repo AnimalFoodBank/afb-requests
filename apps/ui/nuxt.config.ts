@@ -1,22 +1,26 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import type { SessionData } from "./types/index.d";
+
 
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
   modules: [
     "@nuxt/ui",
-    '@nuxt/test-utils/module',
     "@nuxt/fonts",
+    "@nuxtjs/tailwindcss",
+    '@vueuse/nuxt',
     "nuxt-snackbar",
     "@sidebase/nuxt-auth",
     "@vueform/nuxt",
+    // '@nuxt/test-utils/module',
     // '@vueform/builder-nuxt',
   ],
 
+  debug: true,
+
   build: {
-    // transpile: ["@fawmi/vue-google-maps"],
+    transpile: [
+      'nuxt/app'
+    ],
   },
 
   /*
@@ -31,23 +35,24 @@ export default defineNuxtConfig({
    */
   ssr: false,
 
-  // nitro: {
-  //   routeRules: {
-  //     "/**/*.ts": {
-  //       headers: {
-  //         "content-type": "application/typescript",
-  //       },
-  //     },
-  //     "/**/*.vue": {
-  //       headers: {
-  //         "content-type": "text/vue",
-  //       },
-  //     },
-  //   },
-  // },
+  nitro: {
+    routeRules: {
+      "/**/*.ts": {
+        headers: {
+          "content-type": "application/typescript",
+        },
+      },
+      "/**/*.vue": {
+        headers: {
+          "content-type": "text/vue",
+        },
+      },
+    },
+  },
 
   ui: {
-    icons: ["heroicons", "streamline", "ph", "game-icons"], // simple-icons
+    icons: ["heroicons", "streamline", "ph", "game-icons"],
+    // safelistColors: ['primary', 'red', 'orange', 'green'],
   },
 
   //
