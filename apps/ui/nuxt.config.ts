@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     // '@vueform/builder-nuxt',
   ],
 
-  debug: true,
+  debug: !!process.env.NUXT_DEBUG || false,
 
   build: {
     transpile: [
