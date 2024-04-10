@@ -35,6 +35,12 @@ const fields = [
     icon: "i-heroicons-phone",
   },
   {
+    name: 'can_sms',
+    label: 'Can we text you at this number?',
+    type: 'checkbox',
+    value: 'yes'
+  },
+  {
     name: "intro",
     type: "textarea",
     label: "What's a funny name for a pet?",
