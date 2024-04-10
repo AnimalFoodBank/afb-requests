@@ -56,10 +56,10 @@ const validate = (state: any): FormError[] => {
     errors.push({ path: "name", message: "Name is required" });
 
   if (!state.email)
-      errors.push({ path: "email", message: "Email is required" });
+    errors.push({ path: "email", message: "Email is required" });
 
   if (!state.phone)
-      errors.push({ path: "phone", message: "Phone is required" });
+    errors.push({ path: "phone", message: "Phone is required" });
 
   return errors;
 };
@@ -96,31 +96,36 @@ const defaultBranch = ref("none");
 <!-- eslint-disable vue/multiline-html-element-content-newline -->
 <!-- eslint-disable vue/singleline-html-element-content-newline -->
 <template>
-  <NuxtSnackbar top left shadow :duration="10000" />
+  <NuxtSnackbar top
+                left
+                shadow
+                :duration="10000" />
   <UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
 
-    <UAuthForm
-      :fields="fields"
-      :validate="validate"
-      title="Volunteer Signup"
-      description="Enter a few details to get started."
-      align="top"
-      icon="i-ph-hand-heart-fill"
-      :ui="{ base: 'text-center', footer: 'text-center' }"
-      :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
-      :loading="false"
-      @submit="onSubmit"
-    >
+    <UAuthForm :fields="fields"
+               :validate="validate"
+               title="Volunteer Signup"
+               description="Enter a few details to get started."
+               align="top"
+               icon="i-ph-hand-heart-fill"
+               :ui="{ base: 'text-center', footer: 'text-center' }"
+               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
+               :loading="false"
+               @submit="onSubmit">
+
       <template #description>
         Let's create an account for you to get started. We'll send you an email to confirm your account.
-
       </template>
 
       <template #footer>
-        By signing in, you agree to our
-        <NuxtLink to="/legal/terms" class="text-primary font-medium"
-          >Terms of Service</NuxtLink
-        >.
+        By signing up, you agree to abide by the AFB
+
+        <NuxtLink to="/legal/volunteers"
+                  class="text-primary font-medium">Volunteer Agreement</NuxtLink>
+        and you consent to use of my personal information as described in the AFB
+
+        <NuxtLink to="/legal/privacy"
+                  class="text-primary font-medium">Privacy Notice</NuxtLink>.
       </template>
     </UAuthForm>
   </UCard>
