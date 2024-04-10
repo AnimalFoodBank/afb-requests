@@ -2,7 +2,7 @@
 import type { FormError, FormSubmitEvent } from "#ui/types";
 
 useSeoMeta({
-  title: "Become a Volunteer",
+  title: "Volunteer Signup",
 });
 
 definePageMeta({
@@ -21,28 +21,26 @@ const fields = [
     autofocus: true,
   },
   {
-    name: "location",
-    type: "text",
-    label: "City",
-    placeholder: "Where are you based?",
-    icon: "i-ph-map-pin-area",
-    required: false,
-  },
-  {
-    name: "intro",
-    type: "textarea",
-    label: "Favourite name for a pet",
-    placeholder: "What is your favourite pet name?",
-    icon: "i-ph-pencil-circle-fill",
-    autofocus: false,
-  },
-  {
     name: "email",
     type: "text",
     label: "Email",
     placeholder: "Your email address",
     icon: "i-heroicons-envelope",
-    autofocus: false,
+  },
+  {
+    name: "phone",
+    type: "text",
+    label: "Phone",
+    placeholder: "Your phone number",
+    icon: "i-heroicons-phone",
+  },
+  {
+    name: "intro",
+    type: "textarea",
+    label: "What's a funny name for a pet?",
+    placeholder: "e.g. I met a turtle named 'Jazz' once",
+    icon: "i-ph-signature",
+    required: false,
   },
 ];
 
@@ -54,11 +52,8 @@ const validate = (state: any): FormError[] => {
   if (!state.email)
       errors.push({ path: "email", message: "Email is required" });
 
-  if (!state.location)
-      errors.push({ path: "location", message: "City is required" });
-
-  if (!state.intro)
-      errors.push({ path: "intro", message: "Intro is required" });
+  if (!state.phone)
+      errors.push({ path: "phone", message: "Phone is required" });
 
   return errors;
 };
@@ -74,6 +69,9 @@ onUnmounted(() => {
 async function onSubmit(
   event: FormSubmitEvent<{
     email: string;
+    name: string;
+    phone: string;
+    intro: string;
   }>,
 ) {
   console.log("Submitted", event);
@@ -94,12 +92,11 @@ const defaultBranch = ref("none");
 <template>
   <NuxtSnackbar top left shadow :duration="10000" />
   <UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
-    <!-- https://ui.nuxt.com/pro/components/auth-form -->
 
     <UAuthForm
       :fields="fields"
       :validate="validate"
-      title="Become a Volunteer"
+      title="Volunteer Signup"
       description="Enter a few details to get started."
       align="top"
       icon="i-ph-hand-heart-fill"
