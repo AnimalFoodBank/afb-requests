@@ -4,10 +4,7 @@
 const links = [{
   label: 'Dashboard',
   to: '/dashboard'
-}, {
-  label: 'Request Food',
-  to: '/requests/new'
-}, {
+},{
   label: 'About Us',
   to: '/about'
 }]
