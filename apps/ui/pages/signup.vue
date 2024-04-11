@@ -1,5 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
+  <!--
+  This is a Vue page for the signup functionality.
+  It uses the 'definePageMeta' function to set the page metadata.
+  -->
   layout: 'onboarding',
   auth: false,
 })

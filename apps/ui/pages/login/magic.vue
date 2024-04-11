@@ -21,6 +21,10 @@ const config = useRuntimeConfig();
 const snackbar = useSnackbar();
 
 definePageMeta({
+  <!--
+  This is a Vue page for the magic login functionality.
+  It uses the 'definePageMeta' function to set the page metadata.
+  -->
   layout: 'onboarding',
   auth: false,
 })
