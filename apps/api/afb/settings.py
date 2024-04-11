@@ -240,10 +240,10 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
     "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
-    "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "passwordless_token_email.txt",
-    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "passwordless_token_email.html",
-    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "passwordless_verification_email.txt",
-    "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "passwordless_verification_email.html",
+    "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_token_email.txt",
+    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_token_email.html",
+    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_verification_email.txt",
+    "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_verification_email.html",
     # Registers previously unseen aliases as new users.
     "PASSWORDLESS_REGISTER_NEW_USERS": True,
     # URL Prefix for Authentication Endpoints
