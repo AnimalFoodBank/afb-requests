@@ -2,7 +2,7 @@
 import type { FormError, FormSubmitEvent } from "#ui/types";
 
 useSeoMeta({
-  title: "Volunteer Signup",
+  title: "Client Signup",
 });
 
 definePageMeta({
