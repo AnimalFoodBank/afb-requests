@@ -69,7 +69,7 @@ onMounted(() => {
 
         <!-- <h2 class="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight"></h2> -->
 
-        <RequestDetails title="Request Details" description="" :cta="true" :requestDetails="requestDetails" />
+        <RequestsDetails title="Request Details" description="" :cta="true" :requestDetails="requestDetails" />
 
       </UDashboardPanelContent>
     </UDashboardPanel>

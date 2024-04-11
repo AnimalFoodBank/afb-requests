@@ -2,31 +2,6 @@
 /**
  * Represents a Vue component that represents a dashboard page.
  *
- * @component
- * @example
- * <template>
- *   <UDashboardPage>
- *     <UDashboardPanel>
- *       <UDashboardNavbar title="Dashboard">
- *       </UDashboardNavbar>
- *       <UDashboardPanelContent>
- *         <UDashboardSection
- *           icon="i-heroicons-user"
- *           title="Client Portal"
- *           description="Your delivery address, pet info, requests history and more."
- *         />
- *         <UDashboardCard class="mx-9 mb-9 max-w-prose">
- *           <UDashboardSection class="mb-2 text-md italic">
- *             Please note that creating an account does not automatically create a request for food for you.
- *             If you've just created your account, please click the "Request Pet Food" button. You will need to complete this form each time you need food.
- *           </UDashboardSection>
- *         </UDashboardCard>
- *         <RequestList title="Request History" description="" :cta="true" :requests="requests" />
- *       </UDashboardPanelContent>
- *     </UDashboardPanel>
- *   </UDashboardPage>
- * </template>
- *
  * @param {Function} useSeoMeta - A function that sets the SEO meta information for the page.
  * @param {Function} definePageMeta - A function that defines the layout and authentication requirements for the page.
  * @param {Array} requests - An array of objects representing the requests.
@@ -47,9 +22,7 @@ const {
 } = useAuth();
 
 
-
 const requests = ref([]);
-
 
 const fetchRequests = async () => {
   const options = {
@@ -99,7 +72,7 @@ onMounted(() => {
 
         <!-- <h2 class="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight"></h2> -->
 
-        <RequestList title="Request History" description="" :cta="true" :requests="requests" />
+        <RequestsList title="Request History" description="" :cta="true" :requests="requests" />
 
       </UDashboardPanelContent>
 

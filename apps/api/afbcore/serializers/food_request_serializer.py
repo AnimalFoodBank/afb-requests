@@ -32,13 +32,13 @@ class FoodRequestCreateSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "id",
-            "user",
-            "branch",
-            "created",
-            "modified",
-            "address_canadapost_id",
-            "address_google_place_id",
-            "pet_details",
+            # Note about adding fields here in the create
+            # serializer: only fields that should be populated
+            # by our code or the database should be included
+            # here. Including "user" here for example, would
+            # prevent the UUID value from making it into
+            # the database -- leading to a NULL error
+            # since a request must have a user.
         ]
 
 
