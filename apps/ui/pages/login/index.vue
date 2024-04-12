@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { navigateTo } from '#app';
 import type { FormError, FormSubmitEvent } from "#ui/types";
 
 useSeoMeta({
@@ -37,15 +38,20 @@ const fields = [
   },
 ];
 
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!state.email)
-    errors.push({ path: "email", message: "Email is required" });
 
-  console.log("Errors:", errors);
-  console.log("State:", state);
-  return errors;
-};
+const validateEmail = (email: string) => {
+  return (/^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+}
+
+const validate = (state: any): FormError[] => {
+  const errors = []
+  if (!state.email) errors.push({ path: 'email', message: 'Email is required' })
+  if (!validateEmail(state.email)) {
+    errors.push({ path: 'email', message: 'Please enter a valid email address' })
+  }
+
+  return errors
+}
 
 let timeoutId: number | undefined;
 
@@ -119,10 +125,13 @@ async function onSubmit(
             coolOffCTA.value = false;
           }, 10000); // TODO: Increase to?
 
+          // Redirect after successful form submission
+          navigateTo('/login/almost')
+
         } else {
           // Handle the response errors
           console.error(
-            "A response error occurred (1):",
+            "A response error occurred:",
             "Status code:",
             response.status,
             "Status message:",
@@ -138,7 +147,7 @@ async function onSubmit(
       onResponseError({ request, response, options }) {
         // Handle the response errors
         console.error(
-          "A response error occurred (1):",
+          "A response error occurred:",
           "Status code:",
           response.status,
           "Status message:",
@@ -156,6 +165,8 @@ async function onSubmit(
   } catch (error) {
     console.error("An unhandled error occurred:", error);
   }
+
+
 }
 
 const branchLocations = [
@@ -184,30 +195,30 @@ const defaultBranch = ref("none");
 <!-- eslint-disable vue/multiline-html-element-content-newline -->
 <!-- eslint-disable vue/singleline-html-element-content-newline -->
 <template>
-  <NuxtSnackbar top left shadow :duration="10000" />
+  <NuxtSnackbar top
+                left
+                shadow
+                :duration="10000" />
   <UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
-    <!-- https://ui.nuxt.com/pro/components/auth-form -->
-    <UAuthForm
-      :fields="fields"
-      :validate="validate"
-      title="Sign in to AFB Requests"
-      description="Enter your email to access your account."
-      align="top"
-      icon="i-ph-paw-print-fill"
-      :ui="{ base: 'text-center', footer: 'text-center' }"
-      :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
-      :loading="false"
-      @submit="onSubmit"
-    >
+
+    <UAuthForm :fields="fields"
+               :validate="validate"
+               title="Sign in"
+               description="Enter your email to access your account."
+               align="top"
+               icon="i-ph-paw-print-fill"
+               :ui="{ base: 'text-center', footer: 'text-center' }"
+               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
+               :loading="false"
+               @submit="onSubmit">
       <template #description>
-        Submit the form to get a magic link sent to your email.
+        We'll send a magic link to complete your sign in.
       </template>
 
       <template #footer>
         By signing in, you agree to our
-        <NuxtLink to="/" class="text-primary font-medium"
-          >Terms of Service</NuxtLink
-        >.
+        <NuxtLink to="/legal/terms"
+                  class="text-primary font-medium">Terms of Service</NuxtLink>.
       </template>
     </UAuthForm>
   </UCard>
