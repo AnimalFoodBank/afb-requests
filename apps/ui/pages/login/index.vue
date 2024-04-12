@@ -38,15 +38,20 @@ const fields = [
   },
 ];
 
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!state.email)
-    errors.push({ path: "email", message: "Email is required" });
 
-  console.log("Errors:", errors);
-  console.log("State:", state);
-  return errors;
-};
+const validateEmail = (email: string) => {
+  return (/^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+}
+
+const validate = (state: any): FormError[] => {
+  const errors = []
+  if (!state.email) errors.push({ path: 'email', message: 'Email is required' })
+  if (!validateEmail(state.email)) {
+    errors.push({ path: 'email', message: 'Please enter a valid email address' })
+  }
+
+  return errors
+}
 
 let timeoutId: number | undefined;
 

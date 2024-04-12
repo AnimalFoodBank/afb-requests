@@ -50,6 +50,10 @@ const fields = [
   },
 ];
 
+const validateEmail = (email: string) => {
+  return (/^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+}
+
 const validate = (state: any): FormError[] => {
   const errors = [];
   if (!state.name)
@@ -57,6 +61,9 @@ const validate = (state: any): FormError[] => {
 
   if (!state.email)
     errors.push({ path: "email", message: "Email is required" });
+
+  if (!validateEmail(state.email))
+    errors.push({ path: 'email', message: 'Please enter a valid email address' });
 
   if (!state.phone)
     errors.push({ path: "phone", message: "Phone is required" });
