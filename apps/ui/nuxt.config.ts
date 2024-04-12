@@ -19,7 +19,6 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
-      'nuxt/app'
     ],
   },
 
