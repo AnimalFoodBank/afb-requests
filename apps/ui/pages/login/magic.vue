@@ -47,6 +47,24 @@ const validate = (state: any): FormError[] => {
   return errors
 }
 
+const fields = [
+  {
+    name: "name",
+    type: "text",
+    label: "Name",
+    placeholder: "e.g. first name, full name or a nickname",
+    icon: "i-heroicons-user-circle",
+    autofocus: true,
+  },
+  {
+    name: "email",
+    type: "text",
+    label: "Email",
+    placeholder: "Your email address",
+    icon: "i-heroicons-envelope",
+  },
+]
+
 async function authHandler() {
 
   // Prepare the credentials expected by the DRF Passwordless view:
@@ -87,6 +105,7 @@ async function authHandler() {
     <!-- https://ui.nuxt.com/pro/components/auth-form -->
     <!-- UForm implementation is a workaround for UAuthForm autopopulate+validation issue. -->
     <UForm
+      :fields="fields"
       :validate="validate"
       :state="state"
       title="Sign in to AFB Requests"
@@ -96,11 +115,12 @@ async function authHandler() {
       @submit="authHandler"
     >
       <div class="w-full max-w-sm space-y-6">
-        <h2 class="text-2xl text-gray-900 dark:text-white font-bold text-center">Welcome to AFB Requests</h2>
-        <!-- <p class="text-gray-500 dark:text-gray-400 mt-1 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p> -->
+        <h2 class="text-2xl text-gray-900 dark:text-white font-bold text-center">Complete Sign In</h2>
+        <p class="text-gray-500 dark:text-gray-400 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p>
 
         <UInput v-model="email" name="email" type="hidden" label="Email" required />
-        <UInput v-model="code" name="code" type="hidden" label="Code" required />
+        <UInput v-model="code" name="code" type="text" color="primary" variant="outline"  placeholder="Code" label="Code" size="xl" class="w-32 mx-auto" required />
+
 
         <UButton type="submit" class="focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 px-3 py-2 shadow-sm text-white dark:text-gray-900 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-500 dark:bg-primary-400 dark:hover:bg-primary-500 dark:disabled:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:focus-visible:outline-primary-400 w-full flex justify-center items-center">
           <span class="">Continue</span>
@@ -108,7 +128,7 @@ async function authHandler() {
         </UButton>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
-          By signing in, you agree to our <NuxtLink to="/" class="text-primary font-medium">Terms of Service</NuxtLink>.
+          By signing in, you agree to our <NuxtLink to="/legal/terms" class="text-primary font-medium">Terms of Service</NuxtLink>.
         </p>
       </div>
     </UForm>

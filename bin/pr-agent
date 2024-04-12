@@ -1,0 +1,60 @@
+
+import argparse
+import os
+
+from dotenv import load_dotenv
+from pr_agent import cli
+from pr_agent.config_loader import get_settings
+
+load_dotenv()
+
+# Dynaconf
+global_settings = get_settings()
+
+
+# Get the PR URL and command with argparse
+parser = argparse.ArgumentParser(description="Description of your program")
+parser.add_argument(
+    "--url", type=str, help="The URL of the pull request", required=False
+)
+parser.add_argument(
+    "--pat",
+    type=str,
+    help="Github PAT (fine-grained and approved for org)",
+    required=False,
+)
+parser.add_argument("command", type=str, help="The command to run")
+
+# Parse the arguments
+args = parser.parse_args()
+
+
+def main():
+    pr_url = args.url or os.getenv("PRAGENT_PR_URL")
+    user_pat = args.pat or os.getenv("PRAGENT_USER_PAT")
+    command = args.command
+
+    global_settings.set("CONFIG.MODEL", os.getenv("PRAGENT_MODEL"))
+    global_settings.set("CONFIG.MODEL_TURBO", os.getenv("PRAGENT_MODEL_TURBO"))
+
+    provider = os.getenv("PRAGENT_PROVIDER")  # GitHub provider
+    openai_key = os.getenv("PRAGENT_OPENAI_KEY")  # OpenAI key
+    anthropic_key = os.getenv("PRAGENT_ANTHROPIC_KEY")  # Anthropic key
+
+    # Setting the configurations
+    global_settings.set("CONFIG.git_provider", provider)
+    global_settings.set("openai.key", openai_key)
+    global_settings.set("openai.key", anthropic_key)
+    global_settings.set("GITHUB.DEPLOYMENT_TYPE", "user")
+    global_settings.set("github.user_token", user_pat)
+
+    # Debug PR Agent Dynaconf settings
+    # import json
+    # print(json.dumps(global_settings.to_dict()))
+
+    # Run the command. Feedback will appear in GitHub PR comments
+    cli.run_command(pr_url, command)
+
+
+if __name__ == "__main__":
+    main()
