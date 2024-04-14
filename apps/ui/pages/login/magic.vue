@@ -1,3 +1,7 @@
+<!--
+  This is a Vue page for the magic login functionality.
+  It uses the 'definePageMeta' function to set the page metadata.
+-->
 <script setup lang="ts">
 import type { FormError } from '#ui/types';
 import { useRoute } from 'vue-router';
@@ -21,10 +25,6 @@ const config = useRuntimeConfig();
 const snackbar = useSnackbar();
 
 definePageMeta({
-  <!--
-  This is a Vue page for the magic login functionality.
-  It uses the 'definePageMeta' function to set the page metadata.
-  -->
   layout: 'onboarding',
   auth: false,
 })
