@@ -216,14 +216,17 @@ const defaultBranch = ref("none");
                :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
                :loading="false"
                @submit="onSubmit">
+
       <template #description>
         We'll send a magic link to complete your sign in.
       </template>
 
-      <template #footer>
+      <template #validation>
+        <p class="ui.footer">
         By signing in, you agree to our
         <NuxtLink to="/legal/terms"
                   class="text-primary font-medium">Terms of Service</NuxtLink>.
+                </p>
       </template>
     </UAuthForm>
   </UCard>

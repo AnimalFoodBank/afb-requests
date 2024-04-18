@@ -15,7 +15,7 @@ const fields = [
   {
     name: "name",
     type: "text",
-    label: "Name",
+    label: "Name*",
     placeholder: "e.g. first name, full name or a nickname",
     icon: "i-heroicons-user-circle",
     autofocus: true,
@@ -23,22 +23,16 @@ const fields = [
   {
     name: "email",
     type: "text",
-    label: "Email",
+    label: "Email*",
     placeholder: "Your email address",
     icon: "i-heroicons-envelope",
   },
   {
     name: "phone",
     type: "text",
-    label: "Phone",
+    label: "Phone*",
     placeholder: "Your phone number",
     icon: "i-heroicons-phone",
-  },
-  {
-    name: 'can_sms',
-    label: 'Can we text you at this number?',
-    type: 'checkbox',
-    value: 'yes'
   },
   {
     name: "intro",
@@ -124,7 +118,8 @@ const defaultBranch = ref("none");
         Let's create an account for you to get started. We'll send you an email to confirm your account.
       </template>
 
-      <template #footer>
+      <template #validation>
+        <p class="ui.footer">
         By signing up, you agree to abide by the AFB
 
         <NuxtLink to="/legal/volunteers"
@@ -133,6 +128,7 @@ const defaultBranch = ref("none");
 
         <NuxtLink to="/legal/privacy"
                   class="text-primary font-medium">Privacy Notice</NuxtLink>.
+                </p>
       </template>
     </UAuthForm>
   </UCard>
