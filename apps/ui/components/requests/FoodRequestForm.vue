@@ -365,7 +365,7 @@ onMounted(() => {
       },
       accept_terms: {
         type: "checkbox",
-        text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Policy.",
+        text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Notice.",
         fieldName: "Terms",
         rules: ["accepted"],
         default: state.confirmation.accept_terms,
