@@ -33,6 +33,7 @@ const fields = [
     label: "Phone*",
     placeholder: "Your phone number",
     icon: "i-heroicons-phone",
+    help: "We require a phone number for verification. You will also be able to receive SMS notifications at this number if you choose to.",
   },
   {
     name: "intro",
@@ -110,25 +111,24 @@ const defaultBranch = ref("none");
                align="top"
                icon="i-ph-hand-heart-fill"
                :ui="{ base: 'text-center', footer: 'text-center' }"
-               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
+               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid', label: 'Create account' }"
                :loading="false"
                @submit="onSubmit">
 
       <template #description>
-        Let's create an account for you to get started. We'll send you an email to confirm your account.
+        Let's create an account for you to get started. All volunteer accounts are reviewed by AFB Staff before being approved.
       </template>
 
       <template #validation>
-        <p class="ui.footer">
-        By signing up, you agree to abide by the AFB
-
-        <NuxtLink to="/legal/volunteers"
-                  class="text-primary font-medium">Volunteer Agreement</NuxtLink>
-        and you consent to use of my personal information as described in the AFB
-
-        <NuxtLink to="/legal/privacy"
-                  class="text-primary font-medium">Privacy Notice</NuxtLink>.
-                </p>
+        <p class="ui.footer font-medium">
+          By creating an account, you agree to our
+          <NuxtLink to="/legal/volunteers"
+                    class="text-primary">Volunteer Agreement</NuxtLink>,
+          <NuxtLink to="/legal/terms"
+                    class="text-primary">Terms of Service</NuxtLink> and
+          <NuxtLink to="/legal/privacy"
+                    class="text-primary">Privacy Notice</NuxtLink>.
+        </p>
       </template>
     </UAuthForm>
   </UCard>

@@ -99,19 +99,22 @@ const defaultBranch = ref("none");
                title="Client Signup"
                icon="i-ph-paw-print-fill"
                :ui="{ base: 'text-center', footer: 'text-center' }"
-               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
+               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid', label: 'Create account' }"
                :loading="false"
                @submit="onSubmit">
+
       <template #description>
-        Let's create an account for you to get started. We'll send you an email to confirm your account.
+        Let's create an account for you to get started. We'll send you an email to confirm.
       </template>
 
       <template #validation>
         <p class="ui.footer">
-        By signing in, you agree to our
-        <NuxtLink to="/legal/terms"
-                  class="text-primary font-medium">Terms of Service</NuxtLink>.
-                </p>
+          By creating an account, you agree to our
+          <NuxtLink to="/legal/terms"
+                    class="text-primary font-medium">Terms of Service</NuxtLink> and
+          <NuxtLink to="/legal/privacy"
+                    class="text-primary font-medium">Privacy Notice</NuxtLink>.
+        </p>
       </template>
     </UAuthForm>
   </UCard>
