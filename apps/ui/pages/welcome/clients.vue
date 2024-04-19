@@ -15,7 +15,7 @@ const fields = [
   {
     name: "name",
     type: "text",
-    label: "Name",
+    label: "Name*",
     placeholder: "e.g. first name, full name or a nickname",
     icon: "i-heroicons-user-circle",
     autofocus: true,
@@ -23,7 +23,7 @@ const fields = [
   {
     name: "email",
     type: "text",
-    label: "Email",
+    label: "Email*",
     placeholder: "Your email address",
     icon: "i-heroicons-envelope",
   },
@@ -33,13 +33,8 @@ const fields = [
     label: "Phone",
     placeholder: "Your phone number",
     icon: "i-heroicons-phone",
+    help: "If you provide a phone number, we will use it to coordinate your delivery.",
   },
-  {
-    name: 'can_sms',
-    label: 'Can we text you at this number?',
-    type: 'checkbox',
-    value: 'yes'
-  }
 ];
 
 const validateEmail = (email: string) => {
@@ -57,8 +52,6 @@ const validate = (state: any): FormError[] => {
   if (!validateEmail(state.email)) {
     errors.push({ path: "email", message: "Please enter a valid email address" });
   }
-  if (!state.phone)
-    errors.push({ path: "phone", message: "Phone is required" });
 
   return errors;
 };
@@ -106,17 +99,22 @@ const defaultBranch = ref("none");
                title="Client Signup"
                icon="i-ph-paw-print-fill"
                :ui="{ base: 'text-center', footer: 'text-center' }"
-               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
+               :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid', label: 'Create account' }"
                :loading="false"
                @submit="onSubmit">
+
       <template #description>
-        Let's create an account for you to get started. We'll send you an email to confirm your account.
+        Let's create an account for you to get started. We'll send you an email to confirm.
       </template>
 
-      <template #footer>
-        By signing in, you agree to our
-        <NuxtLink to="/legal/terms"
-                  class="text-primary font-medium">Terms of Service</NuxtLink>.
+      <template #validation>
+        <p class="ui.footer">
+          By creating an account, you agree to our
+          <NuxtLink to="/legal/terms"
+                    class="text-primary font-medium">Terms of Service</NuxtLink> and
+          <NuxtLink to="/legal/privacy"
+                    class="text-primary font-medium">Privacy Notice</NuxtLink>.
+        </p>
       </template>
     </UAuthForm>
   </UCard>
