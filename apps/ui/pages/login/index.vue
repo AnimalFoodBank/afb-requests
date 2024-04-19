@@ -130,7 +130,7 @@ async function onSubmit(
           }, 10000); // TODO: Increase to?
 
           // Redirect after successful form submission
-          navigateTo('/login/almost')
+          navigateTo('/login/check')
 
         } else {
           // Handle the response errors
