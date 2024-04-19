@@ -36,8 +36,7 @@ const fields = [
   {
     name: "email",
     type: "text",
-    label: "Email",
-    placeholder: "Enter your email",
+    placeholder: "Your email address",
     icon: "i-heroicons-envelope",
     autofocus: true,
   },
@@ -171,30 +170,8 @@ async function onSubmit(
     console.error("An unhandled error occurred:", error);
   }
 
-
 }
 
-const branchLocations = [
-  {
-    name: "",
-    value: "",
-    // coolOffCTA: true
-  },
-  {
-    name: "Xanadu Branch",
-    value: "x",
-  },
-  {
-    name: "Yale Branch",
-    value: "y",
-  },
-  {
-    name: "Zulu Branch",
-    value: "z",
-  },
-];
-
-const defaultBranch = ref("none");
 </script>
 
 <!-- eslint-disable vue/multiline-html-element-content-newline -->
@@ -218,15 +195,17 @@ const defaultBranch = ref("none");
                @submit="onSubmit">
 
       <template #description>
-        We'll send a magic link to complete your sign in.
+        Enter the email address associated with your account and we'll send a magic link to your inbox.
       </template>
 
       <template #validation>
         <p class="ui.footer">
-        By signing in, you agree to our
-        <NuxtLink to="/legal/terms"
-                  class="text-primary font-medium">Terms of Service</NuxtLink>.
-                </p>
+          By signing in, you agree to our
+          <NuxtLink to="/legal/terms"
+                    class="text-primary font-medium">Terms of Service</NuxtLink> and
+          <NuxtLink to="/legal/privacy"
+                    class="text-primary font-medium">Privacy Notice</NuxtLink>.
+        </p>
       </template>
     </UAuthForm>
   </UCard>
