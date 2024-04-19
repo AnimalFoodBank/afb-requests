@@ -17,8 +17,9 @@
     "typecheck": "nuxt typecheck apps/ui",
     "prettier": "prettier --write \"apps/ui/src/**/*.{ts,tsx}\"",
     "test": "jest apps/ui",
-    "django": "python apps/api/manage.py",
-    "django:run": "python apps/api/manage.py runserver_plus",
+    "django": "dotenv python apps/api/manage.py",
+    "django:shell": "pnpm django shell_plus",
+    "django:run": "pnpm django runserver_plus",
     "mailpit": "mailpit -d .local/mailpit.db"
   },
   "dependencies": {
