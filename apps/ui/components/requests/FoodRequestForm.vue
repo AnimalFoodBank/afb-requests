@@ -12,6 +12,7 @@ const props = defineProps<{
   // onSubmit: (state: any) => void;
   state: FoodRequestFormState;
   googleMapsIsReady?: boolean;
+  user?: any;
 }>();
 
 const vueform = ref<any>(null);
@@ -21,7 +22,6 @@ const {
   data: authData,
   token: authToken,
 } = useAuth();
-
 
 const submitFoodRequest = async (form$: any, FormData: any) => {
   // Using form$.data will INCLUDE conditional elements and it
@@ -38,6 +38,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
     address_latitude: null,
     address_longitude: null,
     contact_name: foodRequestFormData.delivery_contact.contact_name,
+    contact_email: foodRequestFormData.delivery_contact.contact_email,
     contact_phone: foodRequestFormData.delivery_contact.contact_phone,
     method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
     pet_details: {
@@ -263,24 +264,11 @@ onMounted(() => {
             tag: "p",
             content: "Please provide a contact person for the delivery.",
           },
-          contact_phone: {
-            type: "text",
-            rules: ["required", "max:16"],
-            label: "Contact phone",
-            placeholder: "(123) 456-7890",
-            floating: false,
-            mask: "(000) 000-0000",
-            columns: {
-              container: 6,
-              label: 12,
-              wrapper: 6,
-            },
-            default: state.delivery_contact.contact_number,
-          },
+
           contact_name: {
             type: "text",
-            rules: ["max:32"],
-            label: "Contact name <em>(optional)</em>",
+            rules: ["required", "max:32"],
+            label: "Contact name",
             placeholder: "e.g. Jean",
             floating: false,
             columns: {
@@ -293,11 +281,64 @@ onMounted(() => {
           preferred_method: {
             type: "radiogroup",
             view: "default",
-            items: ["Call", "Text", "Email"],
+            items: ["Call", "Text", "Email", "Any"],
             rules: ["required"],
-            fieldName: "Preferred method",
+            fieldName: "Preferred contact method",
             label: "Preferred method",
-            default: state.delivery_contact.preferred_method || "Text",
+            default: state.delivery_contact.preferred_method || "Any",
+          },
+          contact_email: {
+            type: "text",
+            rules: ["required", "email"],
+            label: "Contact email",
+            placeholder: "e.g. your email address",
+            floating: false,
+            disabled: true,
+            columns: {
+              container: 12,
+              label: 12,
+              wrapper: 6,
+            },
+            conditions: [
+              ['delivery_contact.preferred_method', ['Email', 'Any']],
+            ],
+            default: state.delivery_contact.contact_email,
+          },
+          contact_phone: {
+            type: "text",
+            rules: ["required", "max:16"],
+            label: "Contact phone",
+            placeholder: "(123) 456-7890",
+            floating: false,
+            mask: "(000) 000-0000",
+            disabled: true,
+            columns: {
+              container: 12,
+              label: 12,
+              wrapper: 6,
+            },
+            conditions: [
+              ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+            ],
+
+            default: state.delivery_contact.contact_number,
+          },
+          alt_contact_phone: {
+            type: "text",
+            rules: ["required", "max:16"],
+            label: "Alternate phone number",
+            placeholder: "e.g. phone number of a friend",
+            floating: false,
+            mask: "(000) 000-0000",
+            description: "If you want to co-ordinate this delivery using a different phone number.",
+            columns: {
+              container: 12,
+              label: 12,
+              wrapper: 6,
+            },
+            conditions: [
+              ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+            ],
           },
         },
       },

@@ -19,6 +19,11 @@ const links = [[
   }
 ]]
 
+const {
+  status,
+  data: authData,
+} = useAuth();
+
 /**
  *
  *
@@ -92,9 +97,10 @@ onMounted(() => {
       building_type: 'Townhouse',
     },
     delivery_contact: {
-      contact_number: '250-777-2171',
       contact_name: 'Pearl',
-      preferred_method: "Email",
+      contact_email: 'me@afb.pet',  // authData?.email
+      contact_number: '250-777-2171',
+      preferred_method: "Any",
     },
     your_pets: {
       pets_blob: "1 dog, 2 cats",
@@ -125,7 +131,7 @@ onMounted(() => {
 
       <UDashboardPanelContent class="pb-12 pr-16 mr-16">
 
-        <RequestsFoodRequestForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" />
+        <RequestsFoodRequestForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" :user="authData" />
 
       </UDashboardPanelContent>
 
