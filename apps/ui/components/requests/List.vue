@@ -45,7 +45,7 @@ onMounted(() => {
             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white sm:table-cell">Contact</th>
             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white sm:table-cell">Address</th>
             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white sm:table-cell sm:pl-0 ">Contents</th>
-            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0"><span class="sr-only">Link</span></th>
+            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0"><span class="sr-only">View</span></th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white dark:bg-gray-900 dark:divide-gray-500">
