@@ -112,7 +112,7 @@ onMounted(() => {
         label: "Contact",
         elements: ["step1_title", "delivery_contact"],
         labels: {
-          previous: "← Address",
+          previous: "← Back",
           next: "Next: Your Pets",
         },
       },
@@ -124,7 +124,7 @@ onMounted(() => {
           "your_pets",
         ],
         labels: {
-          previous: "← Contact",
+          previous: "← Back",
           next: "Next: Safe Drop",
         },
       },
@@ -139,7 +139,7 @@ onMounted(() => {
           "safe_drop_instructions",
         ],
         labels: {
-          previous: "← Your Pets",
+          previous: "← Back",
           next: "Next: Confirmation",
         },
       },
@@ -156,7 +156,7 @@ onMounted(() => {
           previous: true,
         },
         labels: {
-          previous: "← Safe Drop",
+          previous: "← Back",
           finish: "Submit Request",
         },
       },
