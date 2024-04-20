@@ -68,6 +68,26 @@ async function onSubmit (event: FormSubmitEvent<any>) {
           </UFormGroup>
 
           <UFormGroup
+            name="email"
+            label="Your Email"
+            description="The email address you use to sign in. We also use this for co-ordinating food requests."
+            class="grid grid-cols-2 gap-2 items-center"
+            :ui="{ container: '' }"
+          >
+            <UInput v-model="state.email" autocomplete="off" icon="i-heroicons-envelope" size="md" disabled />
+          </UFormGroup>
+
+          <UFormGroup
+            name="name"
+            label="Your Phone (optional)"
+            description="Please enter your name."
+            class="grid grid-cols-2 gap-2 items-center"
+            :ui="{ container: '' }"
+          >
+            <UInput v-model="state.phone" autocomplete="off" icon="i-heroicons-phone" size="md" />
+          </UFormGroup>
+
+          <UFormGroup
             name="address"
             label="Address"
             description="The address for the pet food delivery."

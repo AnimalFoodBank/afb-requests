@@ -5,6 +5,7 @@ const state = reactive({
   name: 'Delbo Baggins',
   branch_selection: 'Xanadu',
   email: 'delbo@solutious.com',
+  phone: '123-456-7890',
   address: '123 Main St, Toronto, ON, Canada',
   pets: [
     { id: '', type: 'dog', name: 'Doggo', details: 'Birthdate: 2023-11-01\nUsual Food Brands: Kibbles \nWeight Ibs (Dogs only): 5 \nPetAllergies: Pork' },
