@@ -30,20 +30,6 @@ async function onSubmit (event: FormSubmitEvent<any>) {
   })
 }
 
-const branchLocations = {
-  // name: 'branch',
-  // type:  'select', // set the type to select
-  // label: 'AFB Branch',
-  // inputClass: '',
-  // options: [
-  //   { value: '', text: '-- Select --' }, // add a default option with an empty value to display in the dropdown
-  //   { value: 'x', text: 'Xanadu' },
-  //   { value: 'y', text: 'Yale' },
-  //   { value: 'z', text: 'Zulu' },
-  // ]
-}
-const defaultBranch = ref('x')
-
 </script>
 
 
@@ -65,10 +51,9 @@ const defaultBranch = ref('x')
             :ui="{ container: '' }"
           >
             <!-- <USelect v-model="state.branch_selection" name="branch_selection" icon="i-ph-map-pin" :options="branchLocations" option-attribute="text" class=""/> -->
-            <UInput v-model="state.branch_selection" type="branch" autocomplete="off" icon="i-ph-map-pin" size="md"  />
+            <UInput type="select" name="branch_selection" v-model="state.branch_selection" autocomplete="off" icon="i-ph-map-pin" size="md" disabled />
 
-            <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update.</p>
-
+            <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update your branch.</p>
           </UFormGroup>
 
           <UFormGroup
