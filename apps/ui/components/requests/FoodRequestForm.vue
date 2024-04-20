@@ -61,12 +61,13 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
 };
 
 /**
- *  WARNING! ATTENTION! ACHTUNG! ATENCIÓN!
+ * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
  *
  * Never define const state = ref() outside of <script setup> or setup() function.
  * Such state will be shared across all users visiting your website and
  * can lead to memory leaks!
  * Instead use const useX = () => useState('x')
+ *
  *    -- https://nuxt.com/docs/getting-started/state-management#best-practices
  *
  **/

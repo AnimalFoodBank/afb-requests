@@ -15,12 +15,21 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+
+/**
+ * Retrieves the authentication status, data, and token using the useAuth() function.
+ *
+ * @returns {{
+ *   status: string,
+ *   data: any,
+ *   token: string
+ * }} The authentication status, data, and token.
+ */
 const {
   status: authStatus,
   data: authData,
   token: authToken,
 } = useAuth();
-
 
 const requests = ref([]);
 
