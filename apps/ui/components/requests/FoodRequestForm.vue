@@ -183,7 +183,7 @@ onMounted(() => {
         items: "/json/branch_locations.json",
         rules: ["required"],
         label: "Your local branch",
-        placeholder: "Available branches",
+        disabled: true,
         conditions: [
           ["location.country", "in", ["CA"]]  // element disappears if doesn't pass
         ],

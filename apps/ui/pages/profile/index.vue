@@ -23,11 +23,12 @@ const state = reactive({
 
     <UDivider class="mb-16" />
 
-    <UDashboardSection title="Account Changes" description="These actions are not reversible.">
+    <UDashboardSection title="Account Changes" description="These actions are not reversible." class="">
       <div>
-        <UButton color="red" label="Deworm account (example)" size="md" @click="isDeleteAccountModalOpen = true" />
+        <UButton color="red" label="Delete account" size="md" @click="isDeleteAccountModalOpen = true" />
       </div>
     </UDashboardSection>
 
   </UDashboardPanelContent>
+  <SettingsDeleteAccountModal v-model="isDeleteAccountModalOpen" />
 </template>
