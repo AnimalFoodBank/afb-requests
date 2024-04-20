@@ -9,9 +9,16 @@ const props = defineProps<{
   cta?: Boolean
 }>()
 
-const requests = ref(props.requests || [])
-const hasOpenRequests = computed(() => requests.value.some(request => request.status !== 'delivered'))
-// A list of all the users in your account including their name, title, email and role.
+const visibleRequests = ref(props.requests || [])
+const hasOpenRequests = ref(false)
+
+onMounted(() => {
+  console.log('requests', visibleRequests.value)
+  let computedValue = computed(() => visibleRequests.value.some(request => request.status !== 'delivered'))
+  hasOpenRequests.value = computedValue.value
+})
+
+
 </script>
 
 <template>
@@ -29,23 +36,7 @@ const hasOpenRequests = computed(() => requests.value.some(request => request.st
         </a>
       </div>
     </div>
-    <!-- {
-  "address_text": "1201 Kingsway, Med Hat",
-  "address_google_place_id": null,
-  "address_canadapost_id": null,
-  "address_latitude": null,
-  "address_longitude": null,
-  "address_buildingtype": "NOT_SPECIFIED",
-  "address_details": {},
-  "contact_phone": "+12507772171",
-  "contact_email": "",
-  "contact_name": "Pearl",
-  "method_of_contact": "Email",
-  "pet_details": {},
-  "confirm_correct": true,
-  "accept_terms": true,
-  "date_requested": "2024-04-06"
-} -->
+
     <div class="-mx-4 mt-8 sm:-mx-0">
       <table class="min divide-y divide-gray-300 dark:divide-gray-300">
         <thead>
