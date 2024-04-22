@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { FoodRequestFormState } from '@/types/index';
 
+useHead({
+  title: 'New Food Request',
+})
+
 definePageMeta({
   layout: 'dashboard',
 })
@@ -99,7 +103,7 @@ onMounted(() => {
     delivery_contact: {
       contact_name: 'Pearl',
       contact_email: 'me@afb.pet',  // authData?.email
-      contact_number: '250-777-2171',
+      contact_phone: '250-777-2171',
       preferred_method: "Any",
     },
     your_pets: {
