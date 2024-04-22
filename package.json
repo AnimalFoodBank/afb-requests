@@ -9,7 +9,7 @@
     "build_debug": "NODE_OPTIONS='--trace-deprecation' nuxt build apps/ui",
     "dev": "dotenv nuxt dev apps/ui",
     "host": "nuxt dev --host apps/ui",
-    "_docs:dev": "nuxt dev --spa --tunnel --host",
+    "_docs:dev": "nuxt dev --spa --tunnel --host apps/ui",
     "generate": "nuxt generate apps/ui",
     "preview": "nuxt preview apps/ui",
     "postinstall": "nuxt prepare apps/ui",

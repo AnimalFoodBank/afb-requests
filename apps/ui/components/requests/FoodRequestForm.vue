@@ -42,7 +42,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
     contact_phone: foodRequestFormData.delivery_contact.contact_phone,
     method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
     pet_details: {
-      pets_blob: foodRequestFormData.your_pets.pets_blob,
+      pets_blob: foodRequestFormData.client_pets.pets_blob,
     },
     confirm_correct: foodRequestFormData.confirm_correct,
     accept_terms: foodRequestFormData.accept_terms,
@@ -122,7 +122,7 @@ onMounted(() => {
         label: "Your Pets",
         elements: [
           "step2_title",
-          "your_pets",
+          "client_pets",
         ],
         labels: {
           previous: "← Back",
@@ -344,7 +344,7 @@ onMounted(() => {
       //
       // STEP 2 - Your Pets
       //
-      your_pets: {
+      client_pets: {
         type: "object",
         before: "Please provide information about each of your pets.",
         schema: {
@@ -407,13 +407,13 @@ onMounted(() => {
                 food_details: {
                   type: "object",
                   conditions: [
-                    ['your_pets.pets.*.pet_type', ['Dog', 'Cat']],
+                    ['client_pets.pets.*.pet_type', ['Dog', 'Cat']],
                   ],
                   schema: {
                     allergies: {
                       type: "text",
                       placeholder: "Allergies",
-                      rules: ["required"],
+                      rules: [],
                       description: "If your pet has any allergies, please list them here.",
                       columns: {
                         container: 3,
@@ -424,7 +424,7 @@ onMounted(() => {
                     usual_brands: {
                       type: "text",
                       placeholder: "Usual brands",
-                      rules: ["required"],
+                      rules: [],
                       description: "We try to match brands when possible.",
                       columns: {
                         container: 3,
@@ -434,27 +434,28 @@ onMounted(() => {
                     },
                     foodtype: {
                       type: "select",
-                        placeholder: "Food Type",
-                        items: ["Dry", "Wet", "Either"],
-                        rules: ["required"],
-                        columns: {
-                          container: 3,
-                          label: 3,
-                          wrapper :12
+                      placeholder: "Food Type",
+                      items: ["", "Dry", "Wet", "Either"],
+                      rules: ["required"],
+                      columns: {
+                        container: 3,
+                        label: 3,
+                        wrapper :12
                       },
+                      default: null,
                     }
                   },
                 },
                 dog_details: {
                   type: "object",
-                  rules: ["required"],
                   conditions: [
-                    ['your_pets.pets.*.pet_type', ['Dog']],
+                    ['client_pets.pets.*.pet_type', ['Dog']],
                   ],
                   schema: {
                     size: {
                       type: "radiogroup",
                       view: "default",
+                      rules: ["required"],
                       items: ["Up to 10 lbs (Toy)", "10-20 lbs (Small)", "20-50 lbs (Medium)", "50-100 lbs (Large)", "Over 100 lbs (Extra Large)"],
                       label: "Size",
                       info: "If you're not sure, make a best guess.",
@@ -469,7 +470,7 @@ onMounted(() => {
                 other_details: {
                   type: "object",
                   conditions: [
-                    ['your_pets.pets.*.pet_type', ['Other']],
+                    ['client_pets.pets.*.pet_type', ['Other']],
                   ],
                   schema: {
                     size: {
