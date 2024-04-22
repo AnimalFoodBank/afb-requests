@@ -92,31 +92,31 @@ onMounted(() => {
      **/
     steps: {
 
-      step0: {
-        label: "Address",
-        elements: [
-          "step0_title",
-          "branch_locations",
-          "location",
-          "building_type",
-        ],
-        buttons: {
-          previous: false,
-        },
-        labels: {
-          next: "Next: Contact",
-        },
-      },
+      // step0: {
+      //   label: "Address",
+      //   elements: [
+      //     "step0_title",
+      //     "branch_locations",
+      //     "location",
+      //     "building_type",
+      //   ],
+      //   buttons: {
+      //     previous: false,
+      //   },
+      //   labels: {
+      //     next: "Next: Contact",
+      //   },
+      // },
 
-      step1: {
-        active: true,
-        label: "Contact",
-        elements: ["step1_title", "delivery_contact"],
-        labels: {
-          previous: "← Back",
-          next: "Next: Your Pets",
-        },
-      },
+      // step1: {
+      //   active: true,
+      //   label: "Contact",
+      //   elements: ["step1_title", "delivery_contact"],
+      //   labels: {
+      //     previous: "← Back",
+      //     next: "Next: Your Pets",
+      //   },
+      // },
 
       step2: {
         label: "Your Pets",
@@ -252,7 +252,6 @@ onMounted(() => {
         }
       },
 
-
       //
       // STEP 1 - Delivery Contact
       //
@@ -264,7 +263,6 @@ onMounted(() => {
             tag: "p",
             content: "Please provide a contact person for the delivery.",
           },
-
           contact_name: {
             type: "text",
             rules: ["required", "max:32"],
@@ -280,10 +278,10 @@ onMounted(() => {
           },
           preferred_method: {
             type: "radiogroup",
-            view: "default",
-            items: ["Call", "Text", "Email", "Any"],
+            view: "tabs",
+            items: ["Any", "Call", "Text", "Email"],
             rules: ["required"],
-            fieldName: "Preferred contact method",
+            description: "We do our best to accomodate your preferences whenever possible. Depending on volunteer availability, we may contact you via another method.",
             label: "Preferred method",
             default: state.delivery_contact.preferred_method || "Any",
           },
@@ -325,7 +323,7 @@ onMounted(() => {
           },
           alt_contact_phone: {
             type: "text",
-            rules: ["required", "max:16"],
+            rules: ["max:16"],
             label: "Alternate phone number",
             placeholder: "e.g. phone number of a friend",
             floating: false,
@@ -348,24 +346,152 @@ onMounted(() => {
       //
       your_pets: {
         type: "object",
+        before: "Please provide information about each of your pets.",
         schema: {
-          pets_blob: {
-            type: "textarea",
-            rules: ["max:1024", "required"],
-            label: "Pet details",
-            description: "Please provide information about each of your pets (MAX: 4), starting with name, age, breed, weight, usually eats.",
-            placeholder: "e.g. 2 dogs, 1 cat: \n- (dog) Max: 3 years, Golden Retriever, 30 lbs, kibble \n- (dog) Luna, 5 years, Husky, 45 lbs, kibble \n- (cat) Whiskers, 2 years, Siamese, 10 lbs, wet food",
-            floating: '(dog) Name: age, breed, size, wet/dry',
-            rows: 6,
-            columns: {
-              container: 12,
-              label: 12,
-              wrapper: 12,
+          pets: {
+            type: "list",
+            // label: "Your pets",
+            max: 4,
+            min: 1,
+            object: {
+              type: "object",
+              schema: {
+                pet_type: {
+                  type: "radiogroup",
+                  view: "tabs",
+                  items: ["Dog", "Cat", "Other"],
+                  rules: ["required"],
+                  // label: "Type",
+                  // description: "For Other",
+                  columns: {
+                    container: 3,
+                    // label: 3,
+                    wrapper: 12,
+                  },
+                },
+                pet_name: {
+                  type: "text",
+                  rules: ["required", "max:32"],
+                  // label: "Name",
+                  placeholder: "Name",
+                  columns: {
+                    container: 3,
+                    // label: 3,
+                    wrapper: 12,
+                  },
+                },
+                pet_age: {
+                  type: "select",
+                  rules: ["required", "max:32"],
+                  // label: "Age",
+                  placeholder: "Age",
+                  items: [
+                    'Up to 6 months',
+                    'Under 1 year',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    '9',
+                    '10+'
+                  ],
+                  columns: {
+                    container: 3,
+                    // label: 3,
+                    wrapper: 12,
+                  },
+                },
+                food_details: {
+                  type: "object",
+                  conditions: [
+                    ['your_pets.pets.*.pet_type', ['Dog', 'Cat']],
+                  ],
+                  schema: {
+                    allergies: {
+                      type: "text",
+                      placeholder: "Allergies",
+                      rules: ["required"],
+                      description: "If your pet has any allergies, please list them here.",
+                      columns: {
+                        container: 3,
+                        label: 3,
+                        wrapper: 12,
+                      },
+                    },
+                    usual_brands: {
+                      type: "text",
+                      placeholder: "Usual brands",
+                      rules: ["required"],
+                      description: "We try to match brands when possible.",
+                      columns: {
+                        container: 3,
+                        label: 3,
+                        wrapper: 12,
+                      },
+                    },
+                    foodtype: {
+                      type: "select",
+                        placeholder: "Food Type",
+                        items: ["Dry", "Wet", "Either"],
+                        rules: ["required"],
+                        columns: {
+                          container: 3,
+                          label: 3,
+                          wrapper :12
+                      },
+                    }
+                  },
+                },
+                dog_details: {
+                  type: "object",
+                  rules: ["required"],
+                  conditions: [
+                    ['your_pets.pets.*.pet_type', ['Dog']],
+                  ],
+                  schema: {
+                    size: {
+                      type: "radiogroup",
+                      view: "default",
+                      items: ["Up to 10 lbs (Toy)", "10-20 lbs (Small)", "20-50 lbs (Medium)", "50-100 lbs (Large)", "Over 100 lbs (Extra Large)"],
+                      label: "Size",
+                      info: "If you're not sure, make a best guess.",
+                      columns: {
+                        container: 12,
+                        label: 3,
+                        wrapper: 9,
+                      },
+                    },
+                  }
+                },
+                other_details: {
+                  type: "object",
+                  conditions: [
+                    ['your_pets.pets.*.pet_type', ['Other']],
+                  ],
+                  schema: {
+                    size: {
+                      type: "text",
+                      rules: ["required"],
+                      label: "Details",
+                      info: "Let us know what kind of animal and we'll do our best to accomodate",
+                      columns: {
+                        container: 12,
+                        label: 3,
+                        wrapper: 8,
+                      },
+                    },
+                  }
+                },
+              },
             },
-            default: state.your_pets.pets_blob,
           },
+
         },
       },
+
       //
       // STEP 3 - Safe Drop
       //
