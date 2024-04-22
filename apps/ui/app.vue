@@ -11,7 +11,11 @@ onMounted(() => {
   console.log('app.vue onMounted')
 })
 
-// TODO: Revisit this earl dark mode cruft. May not be needed anymore.
+// Set the suggested toolbar color based on the color mode.
+// Please note that not all browsers support this feature,
+// and even those that do may interpret it in different ways.
+// For example, Chrome for Android uses the color to tint
+// the tab bar, while Safari on iOS doesn't use it at all.
 const colorMode = useColorMode()
 const color = computed(() => colorMode.value === 'dark' ? '#111827' : 'white')
 
@@ -19,7 +23,7 @@ useHead({
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { key: 'theme-color', name: 'theme-color', content: color }
+    // { name: 'theme-color', content: color }
   ],
   link: [
     { rel: 'icon', href: '/favicon.ico' }
