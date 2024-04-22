@@ -7,16 +7,16 @@ definePageMeta({
 
 const links = [[
   {
+    label: 'New Request',
+    icon: 'i-ph-plus-square-light',
+    to: '/requests/new',
+  },
+  {
     label: 'Request History',
     icon: 'i-heroicons-calendar',
     to: '/requests',
     exact: true
   },
-  {
-    label: 'New Request',
-    icon: 'i-ph-plus-square-light',
-    to: '/requests/new',
-  }
 ]]
 
 const {

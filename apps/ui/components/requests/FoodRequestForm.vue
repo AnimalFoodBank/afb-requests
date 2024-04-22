@@ -350,9 +350,16 @@ onMounted(() => {
         schema: {
           pets: {
             type: "list",
-            // label: "Your pets",
             max: 4,
             min: 1,
+            addClasses: {
+              ListElement: {
+                listItem: 'pt-6 mt-2 border-t border-gray-200'
+              },
+              ElementLabel: {
+                wrapper: 'text-[20px] font-semibold mb-4'
+              },
+            },
             object: {
               type: "object",
               schema: {
@@ -361,29 +368,23 @@ onMounted(() => {
                   view: "tabs",
                   items: ["Dog", "Cat", "Other"],
                   rules: ["required"],
-                  // label: "Type",
-                  // description: "For Other",
                   columns: {
-                    container: 3,
-                    // label: 3,
+                    container: 12,
                     wrapper: 12,
                   },
                 },
                 pet_name: {
                   type: "text",
                   rules: ["required", "max:32"],
-                  // label: "Name",
                   placeholder: "Name",
                   columns: {
-                    container: 3,
-                    // label: 3,
+                    container: 6,
                     wrapper: 12,
                   },
                 },
                 pet_age: {
                   type: "select",
                   rules: ["required", "max:32"],
-                  // label: "Age",
                   placeholder: "Age",
                   items: [
                     'Up to 6 months',
@@ -399,9 +400,7 @@ onMounted(() => {
                     '10+'
                   ],
                   columns: {
-                    container: 3,
-                    // label: 3,
-                    wrapper: 12,
+                    container: 6,
                   },
                 },
                 food_details: {
@@ -416,9 +415,7 @@ onMounted(() => {
                       rules: [],
                       description: "If your pet has any allergies, please list them here.",
                       columns: {
-                        container: 3,
-                        label: 3,
-                        wrapper: 12,
+                        container: 6,
                       },
                     },
                     usual_brands: {
@@ -427,22 +424,19 @@ onMounted(() => {
                       rules: [],
                       description: "We try to match brands when possible.",
                       columns: {
-                        container: 3,
-                        label: 3,
-                        wrapper: 12,
+                        container: 6,
                       },
                     },
                     foodtype: {
-                      type: "select",
-                      placeholder: "Food Type",
-                      items: ["", "Dry", "Wet", "Either"],
+                      type: "radiogroup",
+                      label: "Food Type",
+                      items: ["Either", "Dry", "Wet"],
                       rules: ["required"],
                       columns: {
-                        container: 3,
-                        label: 3,
-                        wrapper :12
+                        container: 12,
+                        label: 6,
                       },
-                      default: null,
+                      default: "Either",
                     }
                   },
                 },
@@ -461,8 +455,7 @@ onMounted(() => {
                       info: "If you're not sure, make a best guess.",
                       columns: {
                         container: 12,
-                        label: 3,
-                        wrapper: 9,
+                        label: 6,
                       },
                     },
                   }
