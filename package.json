@@ -1,6 +1,6 @@
 {
   "name": "afb-requests",
-  "packageManager": "pnpm@8.15.4",
+  "packageManager": "pnpm@9.0.5",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -41,6 +41,7 @@
     "@vueuse/nuxt": "^10.9.0",
     "date-fns": "^3.6.0",
     "next-auth": "^4.24.7",
+    "axios": "^1.6.8",
     "nitro": "^0.0.0",
     "nuxt-og-image": "3.0.0-rc.43",
     "nuxt-snackbar": "^1.0.4",
