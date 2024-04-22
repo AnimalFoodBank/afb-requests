@@ -106,8 +106,13 @@ onMounted(() => {
       contact_phone: '250-777-2171',
       preferred_method: "Any",
     },
-    your_pets: {
-      pets_blob: "1 dog, 2 cats",
+    client_pets: {
+      pet_name: 'Bella',
+      pet_type: 'Dog',
+      pet_breed: 'Poodle',
+      pet_age: '5',
+      pet_size: '10',
+      pet_food: 'Purina',
     },
     safe_drop: {
       safe_drop: true,

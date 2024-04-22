@@ -28,28 +28,37 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   // will submit the form as "Content-Type: application/json".
   // console.log("submitFoodRequest data", form$)
   const foodRequestFormData = form$.data
+
+  // Using form$.requestData will EXCLUDE conditional elements and it
+  // will submit the form as "Content-Type: application/json".
+  const requestData = form$.requestData
+
+  // Show loading spinner
+  form$.submitting = true
+
   const userId = authData?.value?.id;
 
   const foodRequestAPIData = {
     user: userId,  // not user_id
-    address_text: foodRequestFormData.location.interactive_address,
+    address_text: requestData.location.interactive_address,
     address_google_place_id: null,
     address_canadapost_id: null,
     address_latitude: null,
     address_longitude: null,
-    contact_name: foodRequestFormData.delivery_contact.contact_name,
-    contact_email: foodRequestFormData.delivery_contact.contact_email,
-    contact_phone: foodRequestFormData.delivery_contact.contact_phone,
-    method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
-    client_pets: foodRequestFormData.client_pets,
-    confirmation: foodRequestFormData.confirmation,
-    confirm_correct: foodRequestFormData.confirm_correct,
-    accept_terms: foodRequestFormData.accept_terms,
+    contact_name: requestData.delivery_contact.contact_name,
+    contact_email: requestData.delivery_contact.contact_email,
+    contact_phone: requestData.delivery_contact.contact_phone,
+    method_of_contact: requestData.delivery_contact.preferred_method,
 
-    safe_drop: {
-      confirm: foodRequestFormData.safe_drop.safe_drop,
-      instructions: foodRequestFormData.safe_drop.safe_drop_instructions,
-    },
+    // Pass complete form data as-is, by step name. See requestData vs
+    // form$.data above for the differences in terms of which fields
+    // are included.
+    branch_location: requestData.branch_locations,
+    location: requestData.location,
+    delivery_contact: requestData.delivery_contact,
+    client_pets: requestData.client_pets,
+    confirmation: requestData.confirmation,
+    safe_drop: requestData.safe_drop,
   };
 
   const options = {
