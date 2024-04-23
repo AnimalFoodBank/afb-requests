@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router';
 
 useSeoMeta({
-  title: "About Us",
+  title: "Privacy Notice",
 })
 
 definePageMeta({
@@ -15,6 +15,6 @@ const route = useRoute()
 
 <template>
   <div>
-    <h1>About Us</h1>
+    <h1>Privacy Notice</h1>
   </div>
 </template>

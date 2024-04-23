@@ -9,7 +9,7 @@ definePageMeta({
 })
 
 const links = [[{
-    label: 'My Delivery Info',
+    label: 'Delivery Information',
     icon: 'i-heroicons-user-circle',
     to: '/profile',
     exact: true

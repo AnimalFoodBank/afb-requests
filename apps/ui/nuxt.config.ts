@@ -1,25 +1,36 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import type { SessionData } from "./types/index";
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
-import type { SessionData } from "./types/index.d";
 
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
   modules: [
     "@nuxt/ui",
-    '@nuxt/test-utils/module',
     "@nuxt/fonts",
+    "@nuxtjs/tailwindcss",
+    '@vueuse/nuxt',
     "nuxt-snackbar",
     "@sidebase/nuxt-auth",
     "@vueform/nuxt",
+    // '@nuxt/test-utils/module',
     // '@vueform/builder-nuxt',
   ],
 
-  build: {
-    // transpile: ["@fawmi/vue-google-maps"],
+  debug: !!process.env.NUXT_DEBUG || false,
+
+  app: {},
+
+  alias: {
+    "~": "apps/ui",
+    "@": "apps/ui",
   },
 
-  /*
+  build: {
+    transpile: [
+    ],
+  },
+
+
+  /**
    *  Client-side Rendering:
    *  Set to false to disable client-side rendering.
    *
@@ -28,26 +39,48 @@ export default defineNuxtConfig({
    *  browser downloads and parses all the JavaScript code containing the
    *  instructions to create the current interface. See:
    *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
-   */
+   **/
   ssr: false,
 
-  // nitro: {
-  //   routeRules: {
-  //     "/**/*.ts": {
-  //       headers: {
-  //         "content-type": "application/typescript",
-  //       },
-  //     },
-  //     "/**/*.vue": {
-  //       headers: {
-  //         "content-type": "text/vue",
-  //       },
-  //     },
-  //   },
-  // },
+  /**
+  * Enable type checking for dev and build modes.
+  *
+  * From the docs:
+  *   "You may experience issues with the latest vue-tsc and
+  *   vite-plugin-checker, used internally when type checking.
+  *   For now, you may need to stay on v1 of vue-tsc, and
+  *   follow these upstream issues for updates:
+  *   fi3ework/vite-plugin-checker#306 and
+  *   vuejs/language-tools#3969."
+  *
+  *     -- https://nuxt.com/docs/guide/concepts/typescript#type-checking
+  *
+  * @see https://github.com/fi3ework/vite-plugin-checker/issues/306
+  * @see https://github.com/vuejs/language-tools/issues/3969
+  *
+  **/
+  typescript: {
+    typeCheck: false,
+  },
+
+  nitro: {
+    routeRules: {
+      "/**/*.ts": {
+        headers: {
+          "content-type": "application/typescript",
+        },
+      },
+      "/**/*.vue": {
+        headers: {
+          "content-type": "text/vue",
+        },
+      },
+    },
+  },
 
   ui: {
-    icons: ["heroicons", "streamline", "ph", "game-icons"], // simple-icons
+    icons: ["heroicons", "streamline", "ph", "game-icons"],
+    // safelistColors: ['primary', 'red', 'orange', 'green'],
   },
 
   //
@@ -145,7 +178,6 @@ export default defineNuxtConfig({
       mode: "local-serve", // 'tunnel' or 'local-serve',
       tunnel: {
         name: "tundra",
-        password: "tundra",
       },
     },
     timeline: {

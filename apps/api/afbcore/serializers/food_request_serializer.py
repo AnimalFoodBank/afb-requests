@@ -29,6 +29,7 @@ class FoodRequestCreateSerializer(serializers.ModelSerializer):
             "date_requested",
             "safe_drop_agree",
             "safe_drop_instructions",
+            "status",
         ]
         read_only_fields = [
             "id",
@@ -39,6 +40,7 @@ class FoodRequestCreateSerializer(serializers.ModelSerializer):
             # prevent the UUID value from making it into
             # the database -- leading to a NULL error
             # since a request must have a user.
+            "status",
         ]
 
 
@@ -71,6 +73,7 @@ class FoodRequestUpdateSerializer(serializers.ModelSerializer):
             "date_requested",
             "safe_drop_agree",
             "safe_drop_instructions",
+            "status",
         ]
         read_only_fields = [
             "id",
@@ -80,4 +83,5 @@ class FoodRequestUpdateSerializer(serializers.ModelSerializer):
             "address_canadapost_id",
             "address_google_place_id",
             "pet_details",
+            "status",
         ]

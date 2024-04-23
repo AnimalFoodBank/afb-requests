@@ -13,10 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-# Load dotenv file
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
-
 
 # After loading dotenv, you can use os.getenv() to access
 # environment variables. e.g. `os.getenv("DEBUG", "False")`
