@@ -12,7 +12,7 @@ function onDelete () {
 
   setTimeout(() => {
     loading.value = false
-    toast.add({ icon: 'i-heroicons-check-circle', title: 'Your account has been dewormed', color: 'red' })
+    toast.add({ icon: 'i-heroicons-check-circle', title: 'Your account has been deleted', color: 'red' })
     model.value = false
   }, 2000)
 }
@@ -21,8 +21,8 @@ function onDelete () {
 <template>
   <UDashboardModal
     v-model="model"
-    title="Dangerous action (example)"
-    description="Are you sure you want to deworm your account? NOTE: This action does not do anything. It's just an example."
+    title="Caution"
+    description="Are you sure you want to delete your account? NOTE: This action does not do anything. It's just an example."
     icon="i-heroicons-exclamation-circle"
     prevent-close
     :close-button="null"
@@ -36,7 +36,7 @@ function onDelete () {
     }"
   >
     <template #footer>
-      <UButton color="red" label="Deworm" :loading="loading" @click="onDelete" />
+      <UButton color="red" label="Delete" :loading="loading" @click="onDelete" />
       <UButton color="white" label="Cancel" @click="model = false" />
     </template>
   </UDashboardModal>

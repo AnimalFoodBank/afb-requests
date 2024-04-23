@@ -97,5 +97,5 @@ public/static/*
 tmp/*
 *.sqlite3
 .env*
-!.env.empty
+!.env.example
 mailpit.db*

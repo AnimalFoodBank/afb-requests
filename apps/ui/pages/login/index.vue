@@ -1,3 +1,8 @@
+<!--
+  This is a Vue page for the login functionality.
+  It uses the 'definePageMeta' function to set the page metadata.
+  -->
+
 <script setup lang="ts">
 import { navigateTo } from '#app';
 import type { FormError, FormSubmitEvent } from "#ui/types";
@@ -35,8 +40,7 @@ const fields = [
   {
     name: "email",
     type: "text",
-    label: "Email",
-    placeholder: "Enter your email",
+    placeholder: "Your email address",
     icon: "i-heroicons-envelope",
     autofocus: true,
   },
@@ -130,7 +134,7 @@ async function onSubmit(
           }, 10000); // TODO: Increase to?
 
           // Redirect after successful form submission
-          navigateTo('/login/almost')
+          navigateTo('/login/check')
 
         } else {
           // Handle the response errors
@@ -170,30 +174,8 @@ async function onSubmit(
     console.error("An unhandled error occurred:", error);
   }
 
-
 }
 
-const branchLocations = [
-  {
-    name: "",
-    value: "",
-    // coolOffCTA: true
-  },
-  {
-    name: "Xanadu Branch",
-    value: "x",
-  },
-  {
-    name: "Yale Branch",
-    value: "y",
-  },
-  {
-    name: "Zulu Branch",
-    value: "z",
-  },
-];
-
-const defaultBranch = ref("none");
 </script>
 
 <!-- eslint-disable vue/multiline-html-element-content-newline -->
@@ -215,14 +197,19 @@ const defaultBranch = ref("none");
                :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
                :loading="false"
                @submit="onSubmit">
+
       <template #description>
-        We'll send a magic link to complete your sign in.
+        Enter the email address associated with your account and we'll send a magic link to your inbox.
       </template>
 
-      <template #footer>
-        By signing in, you agree to our
-        <NuxtLink to="/legal/terms"
-                  class="text-primary font-medium">Terms of Service</NuxtLink>.
+      <template #validation>
+        <p class="ui.footer">
+          By signing in, you agree to our
+          <NuxtLink to="/legal/terms"
+                    class="text-primary font-medium">Terms of Service</NuxtLink> and
+          <NuxtLink to="/legal/privacy"
+                    class="text-primary font-medium">Privacy Notice</NuxtLink>.
+        </p>
       </template>
     </UAuthForm>
   </UCard>

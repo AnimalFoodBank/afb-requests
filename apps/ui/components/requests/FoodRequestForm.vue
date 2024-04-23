@@ -1,20 +1,41 @@
 <template>
-  <Vueform v-bind="vueform" :state="state" :endpoint="false" @submit="submitFoodRequest" add-class="vf-request-form"
-           ref="form$" sync />
+  <Vueform :steps="steps"
+           :schema="schema"
+           :endpoint="false"
+           add-class="vf-request-form"
+           size="lg"
+           display-errors
+           display-success
+           @submit="submitFoodRequest"
+           @mounted="addSummaryFunctionality"
+           ref="form$" />
 </template>
 
 
 <script setup lang="ts">
-import type { FoodRequestFormState } from '@/types/index';
+import type { FoodRequestFormState } from '@/types/requests/index';
+
+/**
+ * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
+ *
+ * Never define const state = ref() outside of <script setup> or setup() function.
+ * Such state will be shared across all users visiting your website and
+ * can lead to memory leaks!
+ * Instead use const useX = () => useState('x')
+ *
+ *    -- https://nuxt.com/docs/getting-started/state-management#best-practices
+ *
+ **/
 
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
   state: FoodRequestFormState;
   googleMapsIsReady?: boolean;
+  user?: any;
 }>();
 
-const vueform = ref<any>(null);
+const form$ = ref<any>(null);
 
 const {
   status: authStatus,
@@ -22,32 +43,67 @@ const {
   token: authToken,
 } = useAuth();
 
+// Use the form's mounted event to add custom functionality to
+// the confirmation step. This is where we can add a summary
+// of the form data for the user to review before submitting.
+//
+// We need to do this at the time of mounting so that the
+// entire form is rendered and available to us. We can then
+// add a function to the confirmation step that dynamically
+// updates the summary based on the form data that's been
+// entered. This is a good way to keep the summary in sync
+// with the form data.
+const addSummaryFunctionality = (form$: any) => {
+  console.log("Form mounted", 'form$');
+
+  let summaryStep = form$.steps$.steps$.step4;
+
+  summaryStep.on("activate", (form$: any) => {
+    console.log("Summary step activated", form$);
+
+    // TODO: Generate the summary based on the form data
+    // and update the summary element in the form.
+  });
+};
+
 
 const submitFoodRequest = async (form$: any, FormData: any) => {
   // Using form$.data will INCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
   // console.log("submitFoodRequest data", form$)
   const foodRequestFormData = form$.data
+
+  // Using form$.requestData will EXCLUDE conditional elements and it
+  // will submit the form as "Content-Type: application/json".
+  const requestData = form$.requestData
+
+  // Show loading spinner
+  form$.submitting = true
+
   const userId = authData?.value?.id;
 
   const foodRequestAPIData = {
+    // Match the API field names exactly
     user: userId,  // not user_id
-    address_text: foodRequestFormData.location.interactive_address,
+    address_text: requestData.location.interactive_address,
     address_google_place_id: null,
     address_canadapost_id: null,
     address_latitude: null,
     address_longitude: null,
-    contact_name: foodRequestFormData.delivery_contact.contact_name,
-    contact_phone: foodRequestFormData.delivery_contact.contact_phone,
-    method_of_contact: foodRequestFormData.delivery_contact.preferred_method,
-    pet_details: {
-      pets_blob: foodRequestFormData.your_pets.pets_blob,
-    },
-    confirm_correct: foodRequestFormData.confirm_correct,
-    accept_terms: foodRequestFormData.accept_terms,
+    contact_name: requestData.delivery_contact.contact_name,
+    contact_email: requestData.delivery_contact.contact_email,
+    contact_phone: requestData.delivery_contact.contact_phone,
+    method_of_contact: requestData.delivery_contact.preferred_method,
 
-    safe_drop: foodRequestFormData.safe_drop.safe_drop,
-    safe_drop_instructions: foodRequestFormData.safe_drop.safe_drop_instructions,
+    // Pass complete form data as-is, by step name. See requestData vs
+    // form$.data above for the differences in terms of which fields
+    // are included.
+    branch_location: requestData.branch_locations,
+    location: requestData.location,
+    delivery_contact: requestData.delivery_contact,
+    client_pets: requestData.client_pets,
+    confirmation: requestData.confirmation,
+    safe_drop: requestData.safe_drop,
   };
 
   const options = {
@@ -60,374 +116,613 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   )
 };
 
+
 /**
- *  WARNING! ATTENTION! ACHTUNG! ATENCIÓN!
+ * ***************************************************
+ *  FORM STEPS
+ * ***************************************************
  *
- * Never define const state = ref() outside of <script setup> or setup() function.
- * Such state will be shared across all users visiting your website and
- * can lead to memory leaks!
- * Instead use const useX = () => useState('x')
- *    -- https://nuxt.com/docs/getting-started/state-management#best-practices
+ * The steps object organizes the form schema across multiple
+ * UI steps. Each step has its own set of elements and can
+ * have custom labels, buttons, and event handlers.
  *
  **/
+const steps = {
+
+  step0: {
+    label: "Address",
+    elements: [
+      "step0_title",
+      "branch_locations",
+      "location",
+      "building_type",
+    ],
+    buttons: {
+      previous: false,
+    },
+    labels: {
+      next: "Next: Contact",
+    },
+    on: (form$: any, el: any) => {
+      console.log("Step 0 on", form$, el);
+    },
+  },
+
+  step1: {
+    active: true,
+    label: "Contact",
+    elements: ["step1_title", "delivery_contact"],
+    labels: {
+      previous: "← Back",
+      next: "Next: Your Pets",
+    },
+    onActivate: (form$: any) => {
+      console.log("Step 1 activated", form$);
+    },
+    onComplete: (form$: any) => {
+      console.log("Step 1 completed", form$);
+    },
+  },
+
+  step2: {
+    label: "Pets",
+    elements: [
+      "step2_title",
+      "client_pets",
+    ],
+    labels: {
+      previous: "← Back",
+      next: "Next: Safe Drop",
+    },
+  },
+
+  step3: {
+    label: "Safe Drop",
+    elements: [
+      "step3_title",
+      "safe_drop",
+    ],
+    labels: {
+      previous: "← Back",
+      next: "Next: Confirmation",
+    },
+    onActivate: (form$: any) => {
+      console.log("Step 1 activated", form$);
+    },
+    onComplete: (form$: any) => {
+      console.log("Step 1 completed", form$);
+    },
+  },
+
+  step4: {
+    label: "Confirmation",
+    elements: [
+      "step4_title",
+      "summary",
+      "divider_2",
+      "confirmation",
+      "divider_1",
+    ],
+    buttons: {
+      previous: true,
+    },
+    labels: {
+      previous: "← Back",
+      finish: "Submit Request",
+    },
+    onActivate: (form$: any) => {
+      console.log("Step 4 onActivate", form$, this);
+    },
+  },
+};
+
+/**
+ * ***************************************************
+ *  VUEFORM SCHEMA
+ * ***************************************************
+ *
+ * The vueform schema is a JSON object that defines the
+ * structure of the form fields. It includes the elements that
+ * make up the form, the order in which they appear, and
+ * any additional configuration options.
+ *
+ * Unlike the steps object which is defined entirely start time
+ * the schema object is defined only after this component has
+ * been mounted. This is because the schema object is dependent
+ * on the props that are passed to the component.
+ *
+ **/
+const schema = ref<any>({})
+
+
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
 
-  vueform.value = {
-    size: "lg",
-    displayErrors: true,
-    displaySuccess: true,
-
-    /**
-     * ***************************************************
-     *  FORM STEPS
-     * ***************************************************
-     *
-     *
-     *
-     **/
-    steps: {
-
-      step0: {
-        label: "Address",
-        elements: [
-          "step0_title",
-          "branch_locations",
-          "location",
-          "building_type",
-        ],
-        buttons: {
-          previous: false,
-        },
-        labels: {
-          next: "Next: Contact",
-        },
+  schema.value = {
+    //
+    // === STEP 0: Delivery Address ====
+    //
+    branch_locations: {
+      type: "select",
+      search: true,
+      native: false,
+      inputType: "search",
+      autocomplete: "off",
+      items: "/json/branch_locations.json",
+      rules: ["required"],
+      label: "Your local branch",
+      description: "Please contact admin@animalfoodbank.org to change your branch.",
+      disabled: true,
+      conditions: [
+        ["location.country", "in", ["CA"]]  // element disappears if doesn't pass
+      ],
+      columns: {
+        container: 6,
+        label: 12,
       },
+      default: state.delivery_address.branch_location,
+    },
 
-      step1: {
-        active: true,
-        label: "Contact",
-        elements: ["step1_title", "delivery_contact"],
-        labels: {
-          previous: "← Address",
-          next: "Next: Your Pets",
+    location: {
+      type: "object",
+      schema: {
+        interactive_address: {
+          type: "text",
+          autocomplete: "one-time-code",
+          placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
+          label: "Your address",
+          description: "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
+          rules: ["required"],
+          attrs: {
+            autofocus: true,
+          },
+          columns: {
+            container: 6,
+            label: 12,
+          },
+          floating: false,
+          // Disable progressing to next step on "Enter" keypress. This
+          // is a rudimentary to prevent the issue but it's not a proper
+          // solution. There should be a way to handle this with either
+          // Vueform or the google autocomplete library itself.
+          onKeypress: (e: any) => {
+            console.log("[interactive_address-debug]", e);
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          },
+          default: state.delivery_address.interactive_address,
         },
-      },
+        country: {
+          type: "hidden",
+          hidden: true,
+          default: "CA",
+        },
+        building_type: {
+          type: "radiogroup",
+          view: "default",
+          items: [
+            "Apartment",
+            "Townhouse",
+            "Condo",
+            "Laneway",
+            "Detached house",
+            "Other",
+          ],
+          rules: [],
+          fieldName: "Building type",
+          label: "Building type <i>(optional)</i>",
 
-      step2: {
-        label: "Your Pets",
-        elements: [
-          "step2_title",
-          "your_pets",
-        ],
-        labels: {
-          previous: "← Contact",
-          next: "Next: Safe Drop",
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 8,
+          },
+          default: state.delivery_address.building_type,
         },
-      },
+      }
+    },
 
-      step3: {
-        label: "Safe Drop",
-        elements: [
-          "step3_title",
-          "safe_drop_policy",
-          "safe_drop",
-          "divider",
-          "safe_drop_instructions",
-        ],
-        labels: {
-          previous: "← Your Pets",
-          next: "Next: Confirmation",
+    //
+    // STEP 1 - Delivery Contact
+    //
+    delivery_contact: {
+      type: "object",
+      schema: {
+        step1_intro: {
+          type: "static",
+          tag: "p",
+          content: "Please provide a contact person for the delivery.",
         },
-      },
-
-      step4: {
-        label: "Confirmation",
-        elements: [
-          "step4_title",
-          "confirm_correct",
-          "accept_terms",
-          "divider_2",
-        ],
-        buttons: {
-          previous: true,
+        contact_name: {
+          type: "text",
+          rules: ["required", "max:32"],
+          label: "Contact name",
+          placeholder: "e.g. Jean",
+          floating: false,
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 3,
+          },
+          default: state.delivery_contact.contact_name,
         },
-        labels: {
-          previous: "← Safe Drop",
-          finish: "Submit Request",
+        preferred_method: {
+          type: "radiogroup",
+          view: "tabs",
+          items: ["Any", "Call", "Text", "Email"],
+          rules: ["required"],
+          description: "We do our best to accomodate your preferences whenever possible. Depending on volunteer availability, we may contact you via another method.",
+          label: "Preferred method",
+          default: state.delivery_contact.preferred_method || "Any",
+        },
+        contact_email: {
+          type: "text",
+          rules: ["required", "email"],
+          label: "Contact email",
+          placeholder: "e.g. your email address",
+          floating: false,
+          disabled: true,
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 6,
+          },
+          conditions: [
+            ['delivery_contact.preferred_method', ['Email', 'Any']],
+          ],
+          default: state.delivery_contact.contact_email,
+        },
+        contact_phone: {
+          type: "text",
+          rules: ["required", "max:16"],
+          label: "Contact phone",
+          placeholder: "(123) 456-7890",
+          floating: false,
+          mask: "(000) 000-0000",
+          disabled: true,
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 6,
+          },
+          conditions: [
+            ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+          ],
+          default: state.delivery_contact.contact_phone,
+        },
+        alt_contact_phone: {
+          type: "text",
+          rules: ["max:16"],
+          label: "Alternate phone number",
+          placeholder: "e.g. phone number of a friend",
+          floating: false,
+          mask: "(000) 000-0000",
+          description: "If you want to co-ordinate this delivery using a different phone number.",
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 6,
+          },
+          conditions: [
+            ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+          ],
         },
       },
     },
 
-    /**
-     * ***************************************************
-     *  SCHEMA
-     * ***************************************************
-     *
-     *
-     **/
-    schema: {
-
-      //
-      // === STEP 0: Delivery Address ====
-      //
-      branch_locations: {
-        type: "select",
-        search: true,
-        native: false,
-        inputType: "search",
-        autocomplete: "off",
-        items: "/json/branch_locations.json",
-        rules: ["required"],
-        label: "Your local branch",
-        placeholder: "Available branches",
-        conditions: [
-          ["location.country", "in", ["CA"]]  // element disappears if doesn't pass
-        ],
-        columns: {
-          container: 6,
-          label: 6,
-          wrapper: 12,
-        },
-        default: state.delivery_address.branch_location,
-      },
-
-      location: {
-        type: "object",
-        schema: {
-          interactive_address: {
-            type: "text",
-            autocomplete: "one-time-code",
-            placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
-            label: "Your address",
-            rules: ["required"],
-            attrs: {
-              autofocus: true,
+    //
+    // STEP 2 - Your Pets
+    //
+    client_pets: {
+      type: "object",
+      before: "Please provide information about each of your pets.",
+      schema: {
+        pets: {
+          type: "list",
+          max: 4,
+          min: 1,
+          addClasses: {
+            ListElement: {
+              listItem: 'pt-6 mt-2 border-t border-gray-200'
             },
-            columns: {
-              container: 6,
-              label: 12,
-              wrapper: 12,
+            ElementLabel: {
+              wrapper: 'text-[20px] font-semibold mb-4'
             },
-            default: state.delivery_address.interactive_address,
           },
-          country: {
-            type: "hidden",
-            hidden: true,
-            default: "CA",
-          },
-          attention: {
-            type: "static",
-            tag: "p",
-            content:
-              "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
-          },
-
-          building_type: {
-            type: "radiogroup",
-            view: "default",
-            items: [
-              "Apartment",
-              "Townhouse",
-              "Condo",
-              "Laneway",
-              "Detached house",
-              "Other",
-            ],
-            rules: [],
-            fieldName: "Building type",
-            label: "Building type <i>(optional)</i>",
-
-            columns: {
-              container: 12,
-              label: 4,
-              wrapper: 8,
+          object: {
+            type: "object",
+            schema: {
+              pet_type: {
+                type: "radiogroup",
+                view: "tabs",
+                items: ["Dog", "Cat", "Other"],
+                rules: ["required"],
+                columns: {
+                  container: 12,
+                  wrapper: 12,
+                },
+              },
+              pet_name: {
+                type: "text",
+                rules: ["required", "max:32"],
+                placeholder: "Name",
+                columns: {
+                  container: 6,
+                  wrapper: 12,
+                },
+              },
+              pet_age: {
+                type: "select",
+                rules: ["required", "max:32"],
+                placeholder: "Age",
+                items: [
+                  'Up to 6 months',
+                  'Under 1 year',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '10+'
+                ],
+                columns: {
+                  container: 6,
+                },
+              },
+              food_details: {
+                type: "object",
+                conditions: [
+                  ['client_pets.pets.*.pet_type', ['Dog', 'Cat']],
+                ],
+                schema: {
+                  allergies: {
+                    type: "text",
+                    placeholder: "Allergies",
+                    rules: [],
+                    description: "If your pet has any allergies, please list them here.",
+                    columns: {
+                      container: 6,
+                    },
+                  },
+                  usual_brands: {
+                    type: "text",
+                    placeholder: "Usual brands",
+                    rules: [],
+                    description: "We try to match brands when possible.",
+                    columns: {
+                      container: 6,
+                    },
+                  },
+                  foodtype: {
+                    type: "radiogroup",
+                    label: "Food Type",
+                    items: ["Either", "Dry", "Wet"],
+                    rules: ["required"],
+                    columns: {
+                      container: 12,
+                      label: 6,
+                    },
+                    default: "Either",
+                  }
+                },
+              },
+              dog_details: {
+                type: "object",
+                conditions: [
+                  ['client_pets.pets.*.pet_type', ['Dog']],
+                ],
+                schema: {
+                  size: {
+                    type: "radiogroup",
+                    view: "default",
+                    rules: ["required"],
+                    items: ["Up to 10 lbs (Toy)", "10-20 lbs (Small)", "20-50 lbs (Medium)", "50-100 lbs (Large)", "Over 100 lbs (Extra Large)"],
+                    label: "Size",
+                    info: "If you're not sure, make a best guess.",
+                    columns: {
+                      container: 12,
+                      label: 6,
+                    },
+                  },
+                }
+              },
+              other_details: {
+                type: "object",
+                conditions: [
+                  ['client_pets.pets.*.pet_type', ['Other']],
+                ],
+                schema: {
+                  size: {
+                    type: "text",
+                    rules: ["required"],
+                    label: "Details",
+                    info: "Let us know what kind of animal and we'll do our best to accomodate",
+                    columns: {
+                      container: 12,
+                      label: 3,
+                      wrapper: 8,
+                    },
+                  },
+                }
+              },
             },
-            default: state.delivery_address.building_type,
-          },
-        }
-      },
-
-
-      //
-      // STEP 1 - Delivery Contact
-      //
-      delivery_contact: {
-        type: "object",
-        schema: {
-          step1_intro: {
-            type: "static",
-            tag: "p",
-            content: "Please provide a contact person for the delivery.",
-          },
-          contact_phone: {
-            type: "text",
-            rules: ["required", "max:16"],
-            label: "Contact phone",
-            placeholder: "(123) 456-7890",
-            floating: false,
-            mask: "(000) 000-0000",
-            columns: {
-              container: 6,
-              label: 12,
-              wrapper: 6,
-            },
-            default: state.delivery_contact.contact_number,
-          },
-          contact_name: {
-            type: "text",
-            rules: ["max:32"],
-            label: "Contact name <em>(optional)</em>",
-            placeholder: "e.g. Jean",
-            floating: false,
-            columns: {
-              container: 12,
-              label: 12,
-              wrapper: 3,
-            },
-            default: state.delivery_contact.contact_name,
-          },
-          preferred_method: {
-            type: "radiogroup",
-            view: "default",
-            items: ["Call", "Text", "Email"],
-            rules: ["required"],
-            fieldName: "Preferred method",
-            label: "Preferred method",
-            default: state.delivery_contact.preferred_method || "Text",
-          },
-        },
-      },
-
-      //
-      // STEP 2 - Your Pets
-      //
-      your_pets: {
-        type: "object",
-        schema: {
-          pets_blob: {
-            type: "textarea",
-            rules: ["max:1024", "required"],
-            label: "Pet details",
-            description: "Please provide information about each of your pets (MAX: 4), starting with name, age, breed, weight, usually eats.",
-            placeholder: "e.g. 2 dogs, 1 cat: \n- (dog) Max: 3 years, Golden Retriever, 30 lbs, kibble \n- (dog) Luna, 5 years, Husky, 45 lbs, kibble \n- (cat) Whiskers, 2 years, Siamese, 10 lbs, wet food",
-            floating: '(dog) Name: age, breed, size, wet/dry',
-            rows: 6,
-            columns: {
-              container: 12,
-              label: 12,
-              wrapper: 12,
-            },
-            default: state.your_pets.pets_blob,
           },
         },
+
       },
-      //
-      // STEP 3 - Safe Drop
-      //
-      safe_drop_policy: {
-        type: "static",
-        tag: "p",
-        content:
-          "Our Safe Drop policy allows our drivers to leave your order at your door, lobby, or another safe location. By checking the box below, you agree to the Safe Drop policy.",
-      },
-      safe_drop: {
-        type: "checkbox",
-        text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
-        fieldName: "Safe Drop Policy",
-        rules: ["accepted"],
-        default: state.safe_drop.safe_drop,
-      },
-      safe_drop_instructions: {
-        type: "textarea",
-        rules: ["max:255"],
-        label: "Safe Drop Instructions (optional)",
-        placeholder: "e.g. Leave at the front door.",
-        default: state.safe_drop.safe_drop_instructions,
-        columns: {
-          container: 6,
-          label: 12,
-          wrapper: 12,
+    },
+
+    //
+    // STEP 3 - Safe Drop
+    //
+    safe_drop: {
+      type: "object",
+      schema: {
+        policy: {
+          type: "static",
+          tag: "p",
+          content:
+            "Our Safe Drop policy allows our drivers to leave your order at your door, lobby, or another safe location. By checking the box below, you agree to the Safe Drop policy.",
+        },
+        confirm: {
+          type: "checkbox",
+          text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
+          fieldName: "Safe Drop Policy",
+          rules: ["accepted"],
+          default: state.safe_drop.safe_drop,
+        },
+        instructions: {
+          type: "textarea",
+          rules: ["max:255"],
+          label: "Safe Drop Instructions (optional)",
+          placeholder: "e.g. Leave at the front door.",
+          default: state.safe_drop.safe_drop_instructions,
+          columns: {
+            container: 6,
+            label: 12,
+            wrapper: 12,
+          },
         },
       },
+    },
 
-      //
-      // STEP 4 - Confirmation
-      //
-      confirm_correct: {
-        type: "checkbox",
-        text: "I confirm that the information provided is correct.",
-        fieldName: "Confirmation",
-        rules: ["accepted"],
-        default: state.confirmation.confirm_correct,
+    //
+    // STEP 4 - Confirmation
+    //
+    summary: {
+      type: "object",
+      schema:{
+        summary: {
+          type: "static",
+          tag: "p",
+          content: "Please review the information below and confirm that it is correct.",
+        },
+        location: {
+          type: "static",
+          tag: "p",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: "<strong>Address:</strong> " + state.delivery_address.interactive_address,
+        },
+        contact: {
+          type: "static",
+          tag: "p",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: "<strong>Contact:</strong> " + state.delivery_contact.contact_name + " (" + state.delivery_contact.contact_phone + ")",
+        },
+        pets: {
+          type: "static",
+          tag: "p",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: "<strong>Pets:</strong> ",
+        },
+        safe_drop: {
+          type: "static",
+          tag: "p",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: "<strong>Safe Drop:</strong> " + (state.safe_drop.safe_drop ? "Yes" : "No") + " - " + state.safe_drop.safe_drop_instructions,
+        },
       },
-      accept_terms: {
-        type: "checkbox",
-        text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Policy.",
-        fieldName: "Terms",
-        rules: ["accepted"],
-        default: state.confirmation.accept_terms,
+    },
+    confirmation: {
+      type: "object",
+      schema: {
+        confirm_info: {
+          type: "checkbox",
+          text: "I confirm that the information provided is correct.",
+          fieldName: "Confirmation",
+          rules: ["accepted"],
+          default: state.confirmation.confirm_correct,
+        },
+        accept_terms: {
+          type: "checkbox",
+          text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Notice.",
+          fieldName: "Terms",
+          rules: ["accepted"],
+          default: state.confirmation.accept_terms,
+        },
       },
+    },
 
-      //
-      // === SHARED ELEMENTS ===
-      //
-      divider: {
-        type: "static",
-        tag: "hr",
-      },
-      divider_1: {
-        type: "static",
-        tag: "hr",
-        top: "1",
-        bottom: "1",
-      },
-      divider_2: {
-        type: "static",
-        tag: "hr",
-        top: "2",
-        bottom: "2",
-      },
+    //
+    // === SHARED ELEMENTS ===
+    //
+    divider: {
+      type: "static",
+      tag: "hr",
+    },
+    divider_1: {
+      type: "static",
+      tag: "hr",
+      top: "1",
+      bottom: "1",
+    },
+    divider_2: {
+      type: "static",
+      tag: "hr",
+      top: "2",
+      bottom: "2",
+    },
 
-      //
-      // === STATIC ELEMENTS ===
-      //
-      step0_title: {
-        type: "static",
-        content: "Delivery Address",
-        tag: "h3",
-        top: "1",
-      },
-      step1_title: {
-        type: "static",
-        content: "Delivery Contact",
-        tag: "h3",
-        top: "1",
-      },
-      step2_title: {
-        type: "static",
-        content: "Your Pets",
-        tag: "h3",
-        top: 1,
-      },
-      step3_title: {
-        type: "static",
-        content: "Safe Drop",
-        tag: "h3",
-        top: 1,
-      },
-      step4_title: {
-        type: "static",
-        content: "Confirmation",
-        tag: "h3",
-        top: 2,
-      },
-
+    //
+    // === STATIC ELEMENTS ===
+    //
+    step0_title: {
+      type: "static",
+      content: "Delivery Address",
+      tag: "h3",
+      top: "1",
+    },
+    step1_title: {
+      type: "static",
+      content: "Delivery Contact",
+      tag: "h3",
+      top: "1",
+    },
+    step2_title: {
+      type: "static",
+      content: "Your Pets",
+      tag: "h3",
+      top: 1,
+    },
+    step3_title: {
+      type: "static",
+      content: "Safe Drop",
+      tag: "h3",
+      top: 1,
+    },
+    step4_title: {
+      type: "static",
+      content: "Confirmation",
+      tag: "h3",
+      top: 2,
     },
   };
+
+
 });
+
 </script>
 
 <style>
@@ -456,7 +751,7 @@ onMounted(() => {
     --vf-gray-50: #f9fafb;
     --vf-gray-100: #f3f4f6;
     --vf-gray-200: #e5e7eb;
-    --vf-gray-300: #d1d5db;
+    --vf-gray-300: #d1d5db; /* Without this, the steps timeline is plain white and invisible in light mode.  */
     --vf-gray-400: #9ca3af;
     --vf-gray-500: #6b7280;
     --vf-gray-600: #4b5563;
@@ -477,275 +772,5 @@ onMounted(() => {
     --vf-ring-color: #07bf9b66;
     --vf-link-color: var(--vf-primary);
     --vf-link-decoration: inherit;
-    --vf-font-size: 1rem;
-    --vf-font-size-sm: 0.875rem;
-    --vf-font-size-lg: 1rem;
-    --vf-font-size-small: 0.875rem;
-    --vf-font-size-small-sm: 0.8125rem;
-    --vf-font-size-small-lg: 0.875rem;
-    --vf-font-size-h1: 2.125rem;
-    --vf-font-size-h1-sm: 2.125rem;
-    --vf-font-size-h1-lg: 2.125rem;
-    --vf-font-size-h2: 1.875rem;
-    --vf-font-size-h2-sm: 1.875rem;
-    --vf-font-size-h2-lg: 1.875rem;
-    --vf-font-size-h3: 1.5rem;
-    --vf-font-size-h3-sm: 1.5rem;
-    --vf-font-size-h3-lg: 1.5rem;
-    --vf-font-size-h4: 1.25rem;
-    --vf-font-size-h4-sm: 1.25rem;
-    --vf-font-size-h4-lg: 1.25rem;
-    --vf-font-size-h1-mobile: 1.5rem;
-    --vf-font-size-h1-mobile-sm: 1.5rem;
-    --vf-font-size-h1-mobile-lg: 1.5rem;
-    --vf-font-size-h2-mobile: 1.25rem;
-    --vf-font-size-h2-mobile-sm: 1.25rem;
-    --vf-font-size-h2-mobile-lg: 1.25rem;
-    --vf-font-size-h3-mobile: 1.125rem;
-    --vf-font-size-h3-mobile-sm: 1.125rem;
-    --vf-font-size-h3-mobile-lg: 1.125rem;
-    --vf-font-size-h4-mobile: 1rem;
-    --vf-font-size-h4-mobile-sm: 1rem;
-    --vf-font-size-h4-mobile-lg: 1rem;
-    --vf-font-size-blockquote: 1rem;
-    --vf-font-size-blockquote-sm: 0.875rem;
-    --vf-font-size-blockquote-lg: 1rem;
-    --vf-line-height: 1.5rem;
-    --vf-line-height-sm: 1.25rem;
-    --vf-line-height-lg: 1.5rem;
-    --vf-line-height-small: 1.25rem;
-    --vf-line-height-small-sm: 1.125rem;
-    --vf-line-height-small-lg: 1.25rem;
-    --vf-line-height-headings: 1.2;
-    --vf-line-height-headings-sm: 1.2;
-    --vf-line-height-headings-lg: 1.2;
-    --vf-line-height-blockquote: 1.5rem;
-    --vf-line-height-blockquote-sm: 1.25rem;
-    --vf-line-height-blockquote-lg: 1.5rem;
-    --vf-letter-spacing: 0px;
-    --vf-letter-spacing-sm: 0px;
-    --vf-letter-spacing-lg: 0px;
-    --vf-letter-spacing-small: 0px;
-    --vf-letter-spacing-small-sm: 0px;
-    --vf-letter-spacing-small-lg: 0px;
-    --vf-letter-spacing-headings: 0px;
-    --vf-letter-spacing-headings-sm: 0px;
-    --vf-letter-spacing-headings-lg: 0px;
-    --vf-letter-spacing-blockquote: 0px;
-    --vf-letter-spacing-blockquote-sm: 0px;
-    --vf-letter-spacing-blockquote-lg: 0px;
-    --vf-gutter: 1rem;
-    --vf-gutter-sm: 0.5rem;
-    --vf-gutter-lg: 1rem;
-    --vf-min-height-input: 2.375rem;
-    --vf-min-height-input-sm: 2.125rem;
-    --vf-min-height-input-lg: 2.875rem;
-    --vf-py-input: 0.375rem;
-    --vf-py-input-sm: 0.375rem;
-    --vf-py-input-lg: 0.625rem;
-    --vf-px-input: 0.75rem;
-    --vf-px-input-sm: 0.5rem;
-    --vf-px-input-lg: 0.875rem;
-    --vf-py-btn: 0.375rem;
-    --vf-py-btn-sm: 0.375rem;
-    --vf-py-btn-lg: 0.625rem;
-    --vf-px-btn: 0.875rem;
-    --vf-px-btn-sm: 0.75rem;
-    --vf-px-btn-lg: 1.25rem;
-    --vf-py-btn-small: 0.25rem;
-    --vf-py-btn-small-sm: 0.25rem;
-    --vf-py-btn-small-lg: 0.375rem;
-    --vf-px-btn-small: 0.625rem;
-    --vf-px-btn-small-sm: 0.625rem;
-    --vf-px-btn-small-lg: 0.75rem;
-    --vf-py-group-tabs: 0.375rem;
-    --vf-py-group-tabs-sm: 0.375rem;
-    --vf-py-group-tabs-lg: 0.625rem;
-    --vf-px-group-tabs: 0.75rem;
-    --vf-px-group-tabs-sm: 0.5rem;
-    --vf-px-group-tabs-lg: 0.875rem;
-    --vf-py-group-blocks: 0.75rem;
-    --vf-py-group-blocks-sm: 0.625rem;
-    --vf-py-group-blocks-lg: 0.875rem;
-    --vf-px-group-blocks: 1rem;
-    --vf-px-group-blocks-sm: 1rem;
-    --vf-px-group-blocks-lg: 1rem;
-    --vf-py-tag: 0px;
-    --vf-py-tag-sm: 0px;
-    --vf-py-tag-lg: 0px;
-    --vf-px-tag: 0.4375rem;
-    --vf-px-tag-sm: 0.4375rem;
-    --vf-px-tag-lg: 0.4375rem;
-    --vf-py-slider-tooltip: 0.125rem;
-    --vf-py-slider-tooltip-sm: 0.0625rem;
-    --vf-py-slider-tooltip-lg: 0.1875rem;
-    --vf-px-slider-tooltip: 0.375rem;
-    --vf-px-slider-tooltip-sm: 0.3125rem;
-    --vf-px-slider-tooltip-lg: 0.5rem;
-    --vf-py-blockquote: 0.25rem;
-    --vf-py-blockquote-sm: 0.25rem;
-    --vf-py-blockquote-lg: 0.25rem;
-    --vf-px-blockquote: 0.75rem;
-    --vf-px-blockquote-sm: 0.75rem;
-    --vf-px-blockquote-lg: 0.75rem;
-    --vf-py-hr: 0.25rem;
-    --vf-space-addon: 0px;
-    --vf-space-addon-sm: 0px;
-    --vf-space-addon-lg: 0px;
-    --vf-space-checkbox: 0.375rem;
-    --vf-space-checkbox-sm: 0.375rem;
-    --vf-space-checkbox-lg: 0.375rem;
-    --vf-space-tags: 0.1875rem;
-    --vf-space-tags-sm: 0.1875rem;
-    --vf-space-tags-lg: 0.1875rem;
-    --vf-space-static-tag-1: 1rem;
-    --vf-space-static-tag-2: 2rem;
-    --vf-space-static-tag-3: 3rem;
-    --vf-floating-top: 0rem;
-    --vf-floating-top-sm: 0rem;
-    --vf-floating-top-lg: 0.6875rem;
-    --vf-bg-input: #ffffff;
-    --vf-bg-input-hover: #ffffff;
-    --vf-bg-input-focus: #ffffff;
-    --vf-bg-input-danger: #ffffff;
-    --vf-bg-input-success: #ffffff;
-    --vf-bg-checkbox: #ffffff;
-    --vf-bg-checkbox-hover: #ffffff;
-    --vf-bg-checkbox-focus: #ffffff;
-    --vf-bg-checkbox-danger: #ffffff;
-    --vf-bg-checkbox-success: #ffffff;
-    --vf-bg-disabled: var(--vf-gray-200);
-    --vf-bg-selected: #1118270d;
-    --vf-bg-passive: var(--vf-gray-300);
-    --vf-bg-icon: var(--vf-gray-500);
-    --vf-bg-danger: var(--vf-danger-lighter);
-    --vf-bg-success: var(--vf-success-lighter);
-    --vf-bg-tag: var(--vf-primary);
-    --vf-bg-slider-handle: var(--vf-primary);
-    --vf-bg-toggle-handle: #ffffff;
-    --vf-bg-date-head: var(--vf-gray-100);
-    --vf-bg-addon: #ffffff00;
-    --vf-bg-btn: var(--vf-primary);
-    --vf-bg-btn-danger: var(--vf-danger);
-    --vf-bg-btn-secondary: var(--vf-gray-200);
-    --vf-color-input: var(--vf-gray-800);
-    --vf-color-input-hover: var(--vf-gray-800);
-    --vf-color-input-focus: var(--vf-gray-800);
-    --vf-color-input-danger: var(--vf-gray-800);
-    --vf-color-input-success: var(--vf-gray-800);
-    --vf-color-disabled: var(--vf-gray-400);
-    --vf-color-placeholder: var(--vf-gray-300);
-    --vf-color-passive: var(--vf-gray-700);
-    --vf-color-muted: var(--vf-gray-500);
-    --vf-color-floating: var(--vf-gray-500);
-    --vf-color-floating-focus: var(--vf-gray-500);
-    --vf-color-floating-success: var(--vf-gray-500);
-    --vf-color-floating-danger: var(--vf-gray-500);
-    --vf-color-danger: var(--vf-danger);
-    --vf-color-success: var(--vf-success);
-    --vf-color-tag: var(--vf-color-on-primary);
-    --vf-color-addon: var(--vf-gray-800);
-    --vf-color-date-head: var(--vf-gray-700);
-    --vf-color-btn: var(--vf-color-on-primary);
-    --vf-color-btn-danger: #ffffff;
-    --vf-color-btn-secondary: var(--vf-gray-700);
-    --vf-border-color-input: var(--vf-gray-300);
-    --vf-border-color-input-hover: var(--vf-gray-300);
-    --vf-border-color-input-focus: var(--vf-primary);
-    --vf-border-color-input-danger: var(--vf-gray-300);
-    --vf-border-color-input-success: var(--vf-gray-300);
-    --vf-border-color-checkbox: var(--vf-gray-300);
-    --vf-border-color-checkbox-focus: var(--vf-primary);
-    --vf-border-color-checkbox-hover: var(--vf-gray-300);
-    --vf-border-color-checkbox-danger: var(--vf-gray-300);
-    --vf-border-color-checkbox-success: var(--vf-gray-300);
-    --vf-border-color-checked: var(--vf-primary);
-    --vf-border-color-passive: var(--vf-gray-300);
-    --vf-border-color-slider-tooltip: var(--vf-primary);
-    --vf-border-color-tag: var(--vf-primary);
-    --vf-border-color-btn: var(--vf-primary);
-    --vf-border-color-btn-danger: var(--vf-danger);
-    --vf-border-color-btn-secondary: var(--vf-gray-200);
-    --vf-border-color-blockquote: var(--vf-gray-300);
-    --vf-border-color-hr: var(--vf-gray-300);
-    --vf-border-width-input-t: 1px;
-    --vf-border-width-input-r: 1px;
-    --vf-border-width-input-b: 1px;
-    --vf-border-width-input-l: 1px;
-    --vf-border-width-radio-t: 1px;
-    --vf-border-width-radio-r: 1px;
-    --vf-border-width-radio-b: 1px;
-    --vf-border-width-radio-l: 1px;
-    --vf-border-width-checkbox-t: 1px;
-    --vf-border-width-checkbox-r: 1px;
-    --vf-border-width-checkbox-b: 1px;
-    --vf-border-width-checkbox-l: 1px;
-    --vf-border-width-dropdown: 1px;
-    --vf-border-width-btn: 1px;
-    --vf-border-width-toggle: 0.125rem;
-    --vf-border-width-tag: 1px;
-    --vf-border-width-blockquote: 3px;
-    --vf-shadow-input: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-shadow-input-hover: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-shadow-input-focus: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-shadow-handles: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-shadow-handles-hover: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-shadow-handles-focus: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-shadow-btn: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-shadow-dropdown: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --vf-radius-input: 0.25rem;
-    --vf-radius-input-sm: 0.25rem;
-    --vf-radius-input-lg: 0.25rem;
-    --vf-radius-btn: 0.25rem;
-    --vf-radius-btn-sm: 0.25rem;
-    --vf-radius-btn-lg: 0.25rem;
-    --vf-radius-small: 0.25rem;
-    --vf-radius-small-sm: 0.25rem;
-    --vf-radius-small-lg: 0.25rem;
-    --vf-radius-large: 0.25rem;
-    --vf-radius-large-sm: 0.25rem;
-    --vf-radius-large-lg: 0.25rem;
-    --vf-radius-tag: 0.25rem;
-    --vf-radius-tag-sm: 0.25rem;
-    --vf-radius-tag-lg: 0.25rem;
-    --vf-radius-checkbox: 0.25rem;
-    --vf-radius-checkbox-sm: 0.25rem;
-    --vf-radius-checkbox-lg: 0.25rem;
-    --vf-radius-slider: 0.25rem;
-    --vf-radius-slider-sm: 0.25rem;
-    --vf-radius-slider-lg: 0.25rem;
-    --vf-radius-image: 0.25rem;
-    --vf-radius-image-sm: 0.25rem;
-    --vf-radius-image-lg: 0.25rem;
-    --vf-radius-gallery: 0.25rem;
-    --vf-radius-gallery-sm: 0.25rem;
-    --vf-radius-gallery-lg: 0.25rem;
-    --vf-checkbox-size: 1rem;
-    --vf-checkbox-size-sm: 0.875rem;
-    --vf-checkbox-size-lg: 1rem;
-    --vf-gallery-size: 6rem;
-    --vf-gallery-size-sm: 5rem;
-    --vf-gallery-size-lg: 7rem;
-    --vf-toggle-width: 3rem;
-    --vf-toggle-width-sm: 2.75rem;
-    --vf-toggle-width-lg: 3rem;
-    --vf-toggle-height: 1.25rem;
-    --vf-toggle-height-sm: 1rem;
-    --vf-toggle-height-lg: 1.25rem;
-    --vf-slider-height: 0.375rem;
-    --vf-slider-height-sm: 0.3125rem;
-    --vf-slider-height-lg: 0.5rem;
-    --vf-slider-height-vertical: 20rem;
-    --vf-slider-height-vertical-sm: 20rem;
-    --vf-slider-height-vertical-lg: 20rem;
-    --vf-slider-handle-size: 1rem;
-    --vf-slider-handle-size-sm: 0.875rem;
-    --vf-slider-handle-size-lg: 1.25rem;
-    --vf-slider-tooltip-distance: 0.5rem;
-    --vf-slider-tooltip-distance-sm: 0.375rem;
-    --vf-slider-tooltip-distance-lg: 0.5rem;
-    --vf-slider-tooltip-arrow-size: 0.3125rem;
-    --vf-slider-tooltip-arrow-size-sm: 0.3125rem;
-    --vf-slider-tooltip-arrow-size-lg: 0.3125rem;
   }
 </style>
