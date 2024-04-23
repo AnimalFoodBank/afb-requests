@@ -28,10 +28,6 @@ const snackbar = useSnackbar();
 // middleware.
 
 definePageMeta({
-  <!--
-  This is a Vue page for the login functionality.
-  It uses the 'definePageMeta' function to set the page metadata.
-  -->
   layout: "onboarding",
   auth: false,
 });
