@@ -23,6 +23,7 @@
     "mailpit": "mailpit -d .local/mailpit.db"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.6",
     "@iconify-json/game-icons": "^1.1.9",
     "@iconify-json/heroicons": "^1.1.20",
     "@iconify-json/ph": "^1.1.12",
@@ -39,9 +40,9 @@
     "@vueform/plugin-mask": "^1.0.3",
     "@vueform/vueform": "^1.9.4",
     "@vueuse/nuxt": "^10.9.0",
+    "axios": "^1.6.8",
     "date-fns": "^3.6.0",
     "next-auth": "^4.24.7",
-    "axios": "^1.6.8",
     "nitro": "^0.0.0",
     "nuxt-og-image": "3.0.0-rc.43",
     "nuxt-snackbar": "^1.0.4",
