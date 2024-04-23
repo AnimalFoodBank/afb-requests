@@ -1,4 +1,4 @@
-import type { SessionData } from "./types/index.d";
+import type { SessionData } from "./types/index";
 
 
 export default defineNuxtConfig({
@@ -16,6 +16,13 @@ export default defineNuxtConfig({
   ],
 
   debug: !!process.env.NUXT_DEBUG || false,
+
+  app: {},
+
+  alias: {
+    "~": "apps/ui",
+    "@": "apps/ui",
+  },
 
   build: {
     transpile: [
