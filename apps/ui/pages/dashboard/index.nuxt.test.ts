@@ -1,6 +1,6 @@
 
     // The function should correctly set the SEO meta title to "Dashboard".
-    import { useSeoMeta } from '';
+
 
     describe('script setup', () => {
       it('should set the SEO meta title to "Dashboard"', () => {
@@ -17,9 +17,6 @@
       });
     });
 
-        // The function should handle cases where the SEO meta title is not provided.
-    import { useSeoMeta } from 'some-package';
-
     describe('script setup', () => {
       it('should handle missing SEO meta title', () => {
         const useSeoMetaMock = jest.fn();
@@ -34,7 +31,7 @@
     });
 
         // The function should correctly set the page meta layout to "dashboard".
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should set the page meta layout to "dashboard"', () => {
@@ -55,7 +52,7 @@
     });
 
         // The function should correctly set the page meta auth unauthenticatedOnly to false.
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should set the page meta auth unauthenticatedOnly to false', () => {
@@ -76,7 +73,7 @@
     });
 
         // The function should handle cases where the page meta layout is not provided.
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should set the page meta layout to "dashboard" when layout is not provided', () => {
@@ -131,7 +128,7 @@
     });
 
         // The function should handle cases where the page meta auth unauthenticatedOnly is not provided.
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should set the page meta layout to "dashboard"', () => {
@@ -152,7 +149,7 @@
     });
 
         // The function should correctly initialize the requests array with three objects.
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should initialize the requests array with three objects', () => {
@@ -193,7 +190,7 @@
     });
 
         // The function should handle cases where the RequestList component is not provided with the requests array.
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should define the page meta layout as "dashboard"', () => {
@@ -227,7 +224,7 @@
     });
 
         // The function should handle cases where the requests array is empty.
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should set the page meta layout to "dashboard"', () => {
@@ -266,7 +263,7 @@
     });
 
         // The function should handle cases where the requests array is not empty.
-    import { definePageMeta } from 'some-package';
+
 
     describe('script setup', () => {
       it('should set the page meta layout to "dashboard"', () => {
