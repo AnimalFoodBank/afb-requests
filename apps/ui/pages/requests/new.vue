@@ -1,23 +1,32 @@
 <script setup lang="ts">
 import type { FoodRequestFormState } from '@/types/index';
 
+useHead({
+  title: 'New Food Request',
+})
+
 definePageMeta({
   layout: 'dashboard',
 })
 
 const links = [[
   {
+    label: 'New Request',
+    icon: 'i-ph-plus-square-light',
+    to: '/requests/new',
+  },
+  {
     label: 'Request History',
     icon: 'i-heroicons-calendar',
     to: '/requests',
     exact: true
   },
-  {
-    label: 'New Request',
-    icon: 'i-ph-plus-square-light',
-    to: '/requests/new',
-  }
 ]]
+
+const {
+  status,
+  data: authData,
+} = useAuth();
 
 /**
  *
@@ -92,12 +101,18 @@ onMounted(() => {
       building_type: 'Townhouse',
     },
     delivery_contact: {
-      contact_number: '250-777-2171',
       contact_name: 'Pearl',
-      preferred_method: "Email",
+      contact_email: 'me@afb.pet',  // authData?.email
+      contact_phone: '250-777-2171',
+      preferred_method: "Any",
     },
-    your_pets: {
-      pets_blob: "1 dog, 2 cats",
+    client_pets: {
+      pet_name: 'Bella',
+      pet_type: 'Dog',
+      pet_breed: 'Poodle',
+      pet_age: '5',
+      pet_size: '10',
+      pet_food: 'Purina',
     },
     safe_drop: {
       safe_drop: true,
@@ -125,7 +140,7 @@ onMounted(() => {
 
       <UDashboardPanelContent class="pb-12 pr-16 mr-16">
 
-        <RequestsFoodRequestForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" />
+        <RequestsFoodRequestForm v-if="state" :state="state" :googleMapsIsReady="googleMapsIsReady" :user="authData" />
 
       </UDashboardPanelContent>
 

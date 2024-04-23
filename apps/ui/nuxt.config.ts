@@ -22,7 +22,8 @@ export default defineNuxtConfig({
     ],
   },
 
-  /*
+
+  /**
    *  Client-side Rendering:
    *  Set to false to disable client-side rendering.
    *
@@ -31,8 +32,29 @@ export default defineNuxtConfig({
    *  browser downloads and parses all the JavaScript code containing the
    *  instructions to create the current interface. See:
    *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
-   */
+   **/
   ssr: false,
+
+  /**
+  * Enable type checking for dev and build modes.
+  *
+  * From the docs:
+  *   "You may experience issues with the latest vue-tsc and
+  *   vite-plugin-checker, used internally when type checking.
+  *   For now, you may need to stay on v1 of vue-tsc, and
+  *   follow these upstream issues for updates:
+  *   fi3ework/vite-plugin-checker#306 and
+  *   vuejs/language-tools#3969."
+  *
+  *     -- https://nuxt.com/docs/guide/concepts/typescript#type-checking
+  *
+  * @see https://github.com/fi3ework/vite-plugin-checker/issues/306
+  * @see https://github.com/vuejs/language-tools/issues/3969
+  *
+  **/
+  typescript: {
+    typeCheck: false,
+  },
 
   nitro: {
     routeRules: {
@@ -149,7 +171,6 @@ export default defineNuxtConfig({
       mode: "local-serve", // 'tunnel' or 'local-serve',
       tunnel: {
         name: "tundra",
-        password: "tundra",
       },
     },
     timeline: {
