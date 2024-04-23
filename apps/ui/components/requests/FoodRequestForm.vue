@@ -13,7 +13,19 @@
 
 
 <script setup lang="ts">
-import type { FoodRequestFormState } from '@/types/index';
+import type { FoodRequestFormState } from '~/types';
+
+/**
+ * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
+ *
+ * Never define const state = ref() outside of <script setup> or setup() function.
+ * Such state will be shared across all users visiting your website and
+ * can lead to memory leaks!
+ * Instead use const useX = () => useState('x')
+ *
+ *    -- https://nuxt.com/docs/getting-started/state-management#best-practices
+ *
+ **/
 
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
@@ -110,7 +122,9 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
  *  FORM STEPS
  * ***************************************************
  *
- *
+ * The steps object organizes the form schema across multiple
+ * UI steps. Each step has its own set of elements and can
+ * have custom labels, buttons, and event handlers.
  *
  **/
 const steps = {
@@ -204,25 +218,23 @@ const steps = {
 
 /**
  * ***************************************************
- *  SCHEMA
+ *  VUEFORM SCHEMA
  * ***************************************************
  *
+ * The vueform schema is a JSON object that defines the
+ * structure of the form fields. It includes the elements that
+ * make up the form, the order in which they appear, and
+ * any additional configuration options.
+ *
+ * Unlike the steps object which is defined entirely start time
+ * the schema object is defined only after this component has
+ * been mounted. This is because the schema object is dependent
+ * on the props that are passed to the component.
  *
  **/
 const schema = ref<any>({})
 
 
-/**
- * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
- *
- * Never define const state = ref() outside of <script setup> or setup() function.
- * Such state will be shared across all users visiting your website and
- * can lead to memory leaks!
- * Instead use const useX = () => useState('x')
- *
- *    -- https://nuxt.com/docs/getting-started/state-management#best-practices
- *
- **/
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
