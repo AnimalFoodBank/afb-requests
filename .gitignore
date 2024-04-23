@@ -99,3 +99,4 @@ tmp/*
 .env*
 !.env.example
 mailpit.db*
+.output/
