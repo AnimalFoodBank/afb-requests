@@ -20,7 +20,7 @@ const state = reactive({
 <template>
   <UDashboardPanelContent class="pb-24">
 
-    <DeliveryInfoForm title="My Delivery Info" description="Update your delivery information." icon="i-game-icons-cardboard-box-closed" :cta="true" :state="state" />
+    <DeliveryInfoForm title="Delivery Information" description="Update your delivery information." icon="i-game-icons-cardboard-box-closed" :cta="true" :state="state" />
 
     <UDivider class="mb-16" />
 
