@@ -10,14 +10,16 @@ const props = defineProps<{
 }>()
 
 const visibleRequests = ref(props.requests || [])
-const hasOpenRequests = ref(false)
+
+
+// We define the computed value outside of onMounted to to properly
+// utilize Vue's reactivity system. This will ensure that
+// hasOpenRequests updates automatically when visibleRequests changes.
+const hasOpenRequests = computed(() => visibleRequests.value.some(request => request.status !== 'delivered'))
 
 onMounted(() => {
-  console.log('requests', visibleRequests.value)
-  let computedValue = computed(() => visibleRequests.value.some(request => request.status !== 'delivered'))
-  hasOpenRequests.value = computedValue.value
+  console.log('requests', visibleRequests.value, hasOpenRequests.value)
 })
-
 
 </script>
 
