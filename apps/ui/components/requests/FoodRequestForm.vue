@@ -13,7 +13,7 @@
 
 
 <script setup lang="ts">
-import type { FoodRequestFormState } from '@/types/requests/index';
+import type { FoodRequestFormState } from '@/types/forms/index';
 
 /**
  * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!

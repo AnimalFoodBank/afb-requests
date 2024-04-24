@@ -19,14 +19,10 @@ export default defineNuxtConfig({
 
   app: {},
 
-  alias: {
-    "~": "apps/ui",
-    "@": "apps/ui",
-  },
+  alias: {},
 
   build: {
-    transpile: [
-    ],
+    transpile: [],
   },
 
 
@@ -40,7 +36,7 @@ export default defineNuxtConfig({
    *  instructions to create the current interface. See:
    *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
    **/
-  ssr: true,
+  ssr: false,
 
   /**
   * Enable type checking for dev and build modes.
