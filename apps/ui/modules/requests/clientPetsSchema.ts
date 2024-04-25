@@ -24,8 +24,10 @@
 
  onMounted(() => {
    // ...
+
    schema.value = {
      // ...
+
      client_pets: clientPetsSchema,
      // ...
    };
@@ -50,16 +52,6 @@ const clientPetsSchema = {
       object: {
         type: "object",
         schema: {
-          pet_type: {
-            type: "radiogroup",
-            view: "tabs",
-            items: ["Dog", "Cat", "Other"],
-            rules: ["required"],
-            columns: {
-              container: 12,
-              wrapper: 12,
-            },
-          },
           pet_name: {
             type: "text",
             rules: ["required", "max:32"],
@@ -88,6 +80,16 @@ const clientPetsSchema = {
             ],
             columns: {
               container: 6,
+            },
+          },
+          pet_type: {
+            type: "radiogroup",
+            view: "tabs",
+            items: ["Cat", "Dog", "Other"],
+            rules: ["required"],
+            columns: {
+              container: 12,
+              wrapper: 12,
             },
           },
           food_details: {
