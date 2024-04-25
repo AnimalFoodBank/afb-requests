@@ -35,7 +35,7 @@
  */
 const clientPetsSchema = {
   type: "object",
-  before: "Please provide information about each of your pets.",
+  before: "",
   schema: {
     pets: {
       type: "list",
@@ -43,7 +43,7 @@ const clientPetsSchema = {
       min: 1,
       addClasses: {
         ListElement: {
-          listItem: 'pt-6 mt-2 border-t border-gray-200'
+          listItem: 'pt-6 mt-2 border- border-gray-200'
         },
         ElementLabel: {
           wrapper: 'text-[20px] font-semibold mb-4'

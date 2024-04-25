@@ -1,7 +1,7 @@
 <template>
   <Vueform :state="state"
            :schema="schema"
-           add-class="vf-request-form"
+           add-class="vf-profile-form"
            size="lg"
            display-errors
            display-success
@@ -12,6 +12,8 @@
 // import type { PetFormState } from '@/types/forms/index';
 import clientPetsSchema from '@/modules/requests/clientPetsSchema';
 
+const toast = useToast()
+
 const props = defineProps<{
   title?: String
   description?: String
@@ -19,11 +21,8 @@ const props = defineProps<{
   cta?: Boolean
 }>()
 
-
-const toast = useToast()
-
-
 const schema = ref({})
+
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
@@ -37,10 +36,10 @@ onMounted(() => {
 </script>
 
 <style>
-  .dark:vf-request-form *,
-  .dark:vf-request-form *:before,
-  .dark:vf-request-form *:after,
-  .dark:vf-request-form:root {
+  .dark:vf-profile-form *,
+  .dark:vf-profile-form *:before,
+  .dark:vf-profile-form *:after,
+  .dark:vf-profile-form:root {
     /**
         * Creating this namespace is enough to allow the existing
         * CSS variables to be used in the dark mode.
@@ -48,10 +47,10 @@ onMounted(() => {
     --vf-bg-input: #ffffff;
   }
 
-  .vf-request-form *,
-  .vf-request-form *:before,
-  .vf-request-form *:after,
-  .vf-request-form:root {
+  .vf-profile-form *,
+  .vf-profile-form *:before,
+  .vf-profile-form *:after,
+  .vf-profile-form:root {
     --vf-primary: #07bf9b;
     --vf-primary-darker: #06ac8b;
     --vf-color-on-primary: #ffffff;
