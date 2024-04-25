@@ -13,7 +13,7 @@
 
 
 <script setup lang="ts">
-import type { FoodRequestFormState } from '@/types/forms/index';
+import type { FoodRequestFormState } from '@/types/index';
 
 /**
  * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
@@ -133,9 +133,7 @@ const steps = {
     label: "Address",
     elements: [
       "step0_title",
-      "branch_locations",
-      "location",
-      "building_type",
+      "delivery_address",
     ],
     buttons: {
       previous: false,
@@ -151,7 +149,10 @@ const steps = {
   step1: {
     active: true,
     label: "Contact",
-    elements: ["step1_title", "delivery_contact"],
+    elements: [
+      "step1_title",
+      "delivery_contact"
+    ],
     labels: {
       previous: "← Back",
       next: "Next: Your Pets",
@@ -246,30 +247,31 @@ onMounted(() => {
     //
     // === STEP 0: Delivery Address ====
     //
-    branch_locations: {
-      type: "select",
-      search: true,
-      native: false,
-      inputType: "search",
-      autocomplete: "off",
-      items: "/json/branch_locations.json",
-      rules: ["required"],
-      label: "Your local branch",
-      description: "Please contact admin@animalfoodbank.org to change your branch.",
-      disabled: true,
-      conditions: [
-        ["location.country", "in", ["CA"]]  // element disappears if doesn't pass
-      ],
-      columns: {
-        container: 6,
-        label: 12,
-      },
-      default: state.delivery_address.branch_location,
-    },
 
-    location: {
+    delivery_address: {
       type: "object",
       schema: {
+        branch_locations: {
+          type: "select",
+          search: true,
+          native: false,
+          inputType: "search",
+          autocomplete: "off",
+          items: "/json/branch_locations.json",
+          rules: ["required"],
+          label: "Your local branch",
+          description: "Please contact admin@animalfoodbank.org to change your branch.",
+          // disabled: true,
+          conditions: [
+            ["delivery_address.country", "in", ["CA"]]  // element disappears if doesn't pass
+          ],
+          columns: {
+            label: 12,
+            container: 12,
+            wrapper: 6,
+          },
+          default: state.delivery_address.branch_location,
+        },
         interactive_address: {
           type: "text",
           autocomplete: "one-time-code",
@@ -281,8 +283,9 @@ onMounted(() => {
             autofocus: true,
           },
           columns: {
-            container: 6,
             label: 12,
+            container: 12,
+            wrapper: 6
           },
           floating: false,
           // Disable progressing to next step on "Enter" keypress. This
@@ -296,11 +299,6 @@ onMounted(() => {
             }
           },
           default: state.delivery_address.interactive_address,
-        },
-        country: {
-          type: "hidden",
-          hidden: true,
-          default: "CA",
         },
         building_type: {
           type: "radiogroup",
@@ -323,6 +321,14 @@ onMounted(() => {
             wrapper: 8,
           },
           default: state.delivery_address.building_type,
+        },
+        location: {
+          type: "object",
+        },
+        country: {
+          type: "hidden",
+          hidden: true,
+          default: "CA",
         },
       }
     },

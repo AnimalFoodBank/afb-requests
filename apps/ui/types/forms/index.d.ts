@@ -1,14 +1,20 @@
-
 export interface FoodRequestFormState {
   id: string;
   user_id: string;
   delivery_address: {
     branch_location: string;
+    interactive_address: string;
+    building_type: string;
+    country: string;  // all user addresses assumed to be in the same country
     location: {
-      interactive_address?: string;
-      country: string;
-      building_type?: string;
-    };
+      address_line1: string;
+      address_line2?: string;
+      city: string;
+      prov_or_state: string;
+      postcode: string;
+      lat?: number;
+      lon?: number;
+    }
   };
   delivery_contact: {
     contact_name: string;
@@ -31,8 +37,9 @@ export interface FoodRequestFormState {
         size: string;
       };
       other_details?: {
-        size?: string;
+        animal_description: string;
       };
+      details?: string;
     }[];
   };
   safe_drop: {

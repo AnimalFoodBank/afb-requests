@@ -9,7 +9,7 @@ import vueform from '@vueform/vueform/themes/vueform'
 import PluginMask from '@vueform/plugin-mask'
 
 import axios from 'axios'
-import { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 
 
 const httpClient = axios.create({
