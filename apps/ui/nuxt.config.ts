@@ -19,14 +19,10 @@ export default defineNuxtConfig({
 
   app: {},
 
-  alias: {
-    "~": "apps/ui",
-    "@": "apps/ui",
-  },
+  alias: {},
 
   build: {
-    transpile: [
-    ],
+    transpile: [],
   },
 
 
@@ -133,8 +129,10 @@ export default defineNuxtConfig({
       // Whether to refresh the session every time the browser window is refocused.
       enableRefreshOnWindowFocus: true,
 
-      // Whether to refresh the session every `X` milliseconds. Set this to `false` to turn it off. The session will only be refreshed if a session already exists.
-      enableRefreshPeriodically: 60000
+      // Whether to refresh the session every `X` milliseconds. Set
+      // this to `false` to turn it off. The session will only be
+      // refreshed if a session already exists.
+      enableRefreshPeriodically: 60000 * 5, // 5 minutes
     },
   },
 
@@ -200,7 +198,8 @@ export default defineNuxtConfig({
     // Public keys are exposed to the client
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
-      AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
+
+      googleAPIKey: process.env.NUXT_ENV_GOOGLE_API_KEY,
     },
   },
 });

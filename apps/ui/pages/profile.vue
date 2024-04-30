@@ -8,23 +8,20 @@ definePageMeta({
   layout: 'dashboard',
 })
 
-const links = [[{
+const links = [[
+  {
     label: 'Delivery Information',
     icon: 'i-heroicons-user-circle',
     to: '/profile',
     exact: true
-  }, {
+  },
+  {
     label: 'My Pets',
     icon: 'i-heroicons-home',
     to: '/profile/pets',
-  }, {
-    label: 'Contact us',
-    icon: 'i-heroicons-house',
-    to: 'https://animalfoodbank.org/#contact',
-    target: '_blank',
-    exact: true
-  }]
-]
+  }
+]]
+
 </script>
 
 <template>

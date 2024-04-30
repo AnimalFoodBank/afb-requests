@@ -1,8 +1,9 @@
 <script setup lang="ts">
+const config = useRuntimeConfig();
 
 // https://www.npmjs.com/package/@googlemaps/js-api-loader
 
-const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
+const googleAPIKey = config.public.googleAPIKey;
 let autocomplete: google.maps.places.Autocomplete | null = null;
 const googleMapsIsReady = ref(false)
 

@@ -13,7 +13,7 @@
 
 
 <script setup lang="ts">
-import type { FoodRequestFormState } from '@/types/requests/index';
+import type { FoodRequestFormState } from '@/types/index';
 
 /**
  * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
@@ -133,9 +133,7 @@ const steps = {
     label: "Address",
     elements: [
       "step0_title",
-      "branch_locations",
-      "location",
-      "building_type",
+      "delivery_address",
     ],
     buttons: {
       previous: false,
@@ -151,7 +149,10 @@ const steps = {
   step1: {
     active: true,
     label: "Contact",
-    elements: ["step1_title", "delivery_contact"],
+    elements: [
+      "step1_title",
+      "delivery_contact"
+    ],
     labels: {
       previous: "← Back",
       next: "Next: Your Pets",
@@ -234,6 +235,8 @@ const steps = {
  **/
 const schema = ref<any>({})
 
+// Define the schema for the client pets section of the form.
+import clientPetsSchema from '@/modules/requests/clientPetsSchema';
 
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
@@ -244,30 +247,31 @@ onMounted(() => {
     //
     // === STEP 0: Delivery Address ====
     //
-    branch_locations: {
-      type: "select",
-      search: true,
-      native: false,
-      inputType: "search",
-      autocomplete: "off",
-      items: "/json/branch_locations.json",
-      rules: ["required"],
-      label: "Your local branch",
-      description: "Please contact admin@animalfoodbank.org to change your branch.",
-      disabled: true,
-      conditions: [
-        ["location.country", "in", ["CA"]]  // element disappears if doesn't pass
-      ],
-      columns: {
-        container: 6,
-        label: 12,
-      },
-      default: state.delivery_address.branch_location,
-    },
 
-    location: {
+    delivery_address: {
       type: "object",
       schema: {
+        branch_locations: {
+          type: "select",
+          search: true,
+          native: false,
+          inputType: "search",
+          autocomplete: "off",
+          items: "/json/branch_locations.json",
+          rules: ["required"],
+          label: "Your local branch",
+          description: "Please contact admin@animalfoodbank.org to change your branch.",
+          disabled: true,
+          conditions: [
+            ["delivery_address.country", "in", ["CA"]]  // element disappears if doesn't pass
+          ],
+          columns: {
+            label: 12,
+            container: 12,
+            wrapper: 6,
+          },
+          default: state.delivery_address.branch_location,
+        },
         interactive_address: {
           type: "text",
           autocomplete: "one-time-code",
@@ -279,8 +283,9 @@ onMounted(() => {
             autofocus: true,
           },
           columns: {
-            container: 6,
             label: 12,
+            container: 12,
+            wrapper: 6
           },
           floating: false,
           // Disable progressing to next step on "Enter" keypress. This
@@ -294,11 +299,6 @@ onMounted(() => {
             }
           },
           default: state.delivery_address.interactive_address,
-        },
-        country: {
-          type: "hidden",
-          hidden: true,
-          default: "CA",
         },
         building_type: {
           type: "radiogroup",
@@ -321,6 +321,14 @@ onMounted(() => {
             wrapper: 8,
           },
           default: state.delivery_address.building_type,
+        },
+        location: {
+          type: "object",
+        },
+        country: {
+          type: "hidden",
+          hidden: true,
+          default: "CA",
         },
       }
     },
@@ -416,147 +424,7 @@ onMounted(() => {
     //
     // STEP 2 - Your Pets
     //
-    client_pets: {
-      type: "object",
-      before: "Please provide information about each of your pets.",
-      schema: {
-        pets: {
-          type: "list",
-          max: 4,
-          min: 1,
-          addClasses: {
-            ListElement: {
-              listItem: 'pt-6 mt-2 border-t border-gray-200'
-            },
-            ElementLabel: {
-              wrapper: 'text-[20px] font-semibold mb-4'
-            },
-          },
-          object: {
-            type: "object",
-            schema: {
-              pet_type: {
-                type: "radiogroup",
-                view: "tabs",
-                items: ["Dog", "Cat", "Other"],
-                rules: ["required"],
-                columns: {
-                  container: 12,
-                  wrapper: 12,
-                },
-              },
-              pet_name: {
-                type: "text",
-                rules: ["required", "max:32"],
-                placeholder: "Name",
-                columns: {
-                  container: 6,
-                  wrapper: 12,
-                },
-              },
-              pet_age: {
-                type: "select",
-                rules: ["required", "max:32"],
-                placeholder: "Age",
-                items: [
-                  'Up to 6 months',
-                  'Under 1 year',
-                  '2',
-                  '3',
-                  '4',
-                  '5',
-                  '6',
-                  '7',
-                  '8',
-                  '9',
-                  '10+'
-                ],
-                columns: {
-                  container: 6,
-                },
-              },
-              food_details: {
-                type: "object",
-                conditions: [
-                  ['client_pets.pets.*.pet_type', ['Dog', 'Cat']],
-                ],
-                schema: {
-                  allergies: {
-                    type: "text",
-                    placeholder: "Allergies",
-                    rules: [],
-                    description: "If your pet has any allergies, please list them here.",
-                    columns: {
-                      container: 6,
-                    },
-                  },
-                  usual_brands: {
-                    type: "text",
-                    placeholder: "Usual brands",
-                    rules: [],
-                    description: "We try to match brands when possible.",
-                    columns: {
-                      container: 6,
-                    },
-                  },
-                  foodtype: {
-                    type: "radiogroup",
-                    label: "Food Type",
-                    items: ["Either", "Dry", "Wet"],
-                    rules: ["required"],
-                    columns: {
-                      container: 12,
-                      label: 6,
-                    },
-                    default: "Either",
-                  }
-                },
-              },
-              dog_details: {
-                type: "object",
-                conditions: [
-                  ['client_pets.pets.*.pet_type', ['Dog']],
-                ],
-                schema: {
-                  size: {
-                    type: "radiogroup",
-                    view: "default",
-                    rules: ["required"],
-                    items: ["Up to 10 lbs (Toy)", "10-20 lbs (Small)", "20-50 lbs (Medium)", "50-100 lbs (Large)", "Over 100 lbs (Extra Large)"],
-                    label: "Size",
-                    info: "If you're not sure, make a best guess.",
-                    columns: {
-                      container: 12,
-                      label: 6,
-                    },
-                  },
-                }
-              },
-              other_details: {
-                type: "object",
-                conditions: [
-                  ['client_pets.pets.*.pet_type', ['Other']],
-                ],
-                schema: {
-                  size: {
-                    type: "text",
-                    rules: ["required"],
-                    label: "Details",
-                    info: "Let us know what kind of animal and we'll do our best to accomodate",
-                    columns: {
-                      container: 12,
-                      label: 3,
-                      wrapper: 8,
-                    },
-                  },
-                }
-              },
-            },
-          },
-        },
-
-      },
-    },
+    client_pets: clientPetsSchema,
 
     //
     // STEP 3 - Safe Drop
