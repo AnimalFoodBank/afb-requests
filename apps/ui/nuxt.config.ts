@@ -198,7 +198,8 @@ export default defineNuxtConfig({
     // Public keys are exposed to the client
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
-      AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
+
+      googleAPIKey: process.env.NUXT_ENV_GOOGLE_API_KEY,
     },
   },
 });

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { FoodRequestFormState } from '@/types/index';
 
+const config = useRuntimeConfig();
+
 useHead({
   title: 'New Food Request',
 })
@@ -37,7 +39,7 @@ const {
 
 import { Loader } from "@googlemaps/js-api-loader";
 
-const googleAPIKey = 'AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg'
+const googleAPIKey = config.public.googleAPIKey;
 const googleMapsIsReady = ref(false)
 
 const state: Ref<FoodRequestFormState | null> = ref(null)
@@ -48,6 +50,26 @@ const loader = new Loader({
   libraries: ['places'],
 });
 
+// Create a bounding box with sides ~20km away from the center point
+const center = { lat: 50.064192, lng: -110.605469 };
+const bounds = new google.maps.LatLngBounds(center);
+const boundaryDistance = 0.2;
+const defaultBounds = {
+  north: center.lat + 0.2,
+  south: center.lat - 0.2,
+  east: center.lng + 0.2,
+  west: center.lng - 0.2,
+};
+
+const mapOptions = {
+      location: center,
+      bounds: defaultBounds,
+      componentRestrictions: { country: "ca" },
+      fields: ["formatted_address", "geometry", "place_id", "plus_code"], // address_components, place_id
+      // This is an option for the Google Maps Places Autocomplete API
+      // It sets whether the Autocomplete predictions should be strictly biased to the bounds set via the bounds option.
+      strictBounds: true,
+    };
 
 loader.load().then(async () => {
     // const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
@@ -59,28 +81,10 @@ loader.load().then(async () => {
       google.maps.importLibrary("places"),
     ]);
 
-    const center = { lat: 50.064192, lng: -110.605469 };
-    // Create a bounding box with sides ~20km away from the center point
-    const bounds = new google.maps.LatLngBounds(center);
-    const boundaryDistance = 0.2;
-    const defaultBounds = {
-      north: center.lat + 0.2,
-      south: center.lat - 0.2,
-      east: center.lng + 0.2,
-      west: center.lng - 0.2,
-    };
-    const input = document.getElementById("location.interactive_address") as HTMLInputElement;
-    const options = {
-      location: center,
-      bounds: defaultBounds,
-      componentRestrictions: { country: "ca" },
-      fields: ["formatted_address", "geometry", "place_id", "plus_code"], // address_components, place_id
-      // This is an option for the Google Maps Places Autocomplete API
-      // It sets whether the Autocomplete predictions should be strictly biased to the bounds set via the bounds option.
-      strictBounds: true
-    };
+    const input = document.getElementById("delivery_address.interactive_address") as HTMLInputElement;
 
-    const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    const autocomplete = new google.maps.places.Autocomplete(input, mapOptions);
 
   });
 
@@ -94,11 +98,11 @@ onMounted(() => {
       branch_location: 'Medicine Hat',
       location: {
         address_line1: 'Addr line 1',
-        city: 'Cccityy',
+        city: 'Slurpee',
         prov_or_state: 'BC',
         postcode: 'M4C 1B5',
-        country: 'CA',
       },
+      country: 'CA',
       interactive_address: '1201 Kingsway, Med Hat',
       building_type: 'Townhouse',
     },
