@@ -30,10 +30,11 @@ const fields = [
   {
     name: "phone",
     type: "text",
-    label: "Phone*",
+    label: "Phone",
     placeholder: "Your phone number",
     icon: "i-heroicons-phone",
-    help: "We require a phone number for verification. You will also be able to receive SMS notifications at this number if you choose to.",
+    help: "You will be able to receive SMS notifications at this number if you choose to. See our Privacy Notice for how we use your information (link below).",
+    required: false,
   },
   {
     name: "intro",
@@ -59,9 +60,6 @@ const validate = (state: any): FormError[] => {
 
   if (!validateEmail(state.email))
     errors.push({ path: 'email', message: 'Please enter a valid email address' });
-
-  if (!state.phone)
-    errors.push({ path: "phone", message: "Phone is required" });
 
   return errors;
 };
