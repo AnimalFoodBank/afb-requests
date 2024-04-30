@@ -1,4 +1,18 @@
+<template>
+  <Vueform :state="state"
+           :schema="schema"
+           add-class="vf-profile-form"
+           size="lg"
+           display-errors
+           display-success
+           ref="form$" />
+</template>
+
 <script setup lang="ts">
+// import type { PetFormState } from '@/types/forms/index';
+import clientPetsSchema from '@/modules/requests/clientPetsSchema';
+
+const toast = useToast()
 
 const props = defineProps<{
   title?: String
@@ -7,61 +21,66 @@ const props = defineProps<{
   cta?: Boolean
 }>()
 
+const schema = ref({})
 
-const errors = ref<FormError[]>([])
-const toast = useToast()
+onMounted(() => {
+  // console.log("FoodRequestFormState has been mounted");
 
+  const state = props.state;
 
-function validate (state: any): FormError[] {
-  const errors = []
-  if (!state.name) errors.push({ path: 'name', message: 'Please enter your name.' })
-  if (!state.email) errors.push({ path: 'email', message: 'Please enter your email.' })
-  if ((state.password_current && !state.password_new) || (!state.password_current && state.password_new)) errors.push({ path: 'password', message: 'Please enter a valid password.' })
-  return errors
-}
+  schema.value = {
+    client_pets: clientPetsSchema,
+  }
 
-async function onSubmit (event: FormSubmitEvent<any>) {
-  // Do something with data
-  console.log(event.data)
-
-  toast.add({
-    title: `${props.title} updated`,
-    icon: 'i-heroicons-check-circle',
-  })
-}
-
+});
 </script>
 
-<template>
-    <div>
-      <UForm :state="state" :validate="validate" :validate-on="['submit']" @submit="onSubmit">
-        <UDashboardSection :title="title" :description="description" icon="i-ph-paw-print">
-          <template #links v-if="cta">
-            <UButton type="submit" label="Save changes" color="black" />
-          </template>
+<style>
+  .dark:vf-profile-form *,
+  .dark:vf-profile-form *:before,
+  .dark:vf-profile-form *:after,
+  .dark:vf-profile-form:root {
+    /**
+        * Creating this namespace is enough to allow the existing
+        * CSS variables to be used in the dark mode.
+        **/
+    --vf-bg-input: #ffffff;
+  }
 
-          <UFormGroup
-            name="pets"
-            label="Pets"
-            description="The pets in your household"
-            class="grid grid-cols-2 gap-2"
-            :ui="{ container: '' }"
-          >
-            <ul role="list" class="divide-y divide-gray-100 dark:divide-gray-700">
-              <li v-for="petDetails in state.pets" :key="petDetails" class="flex justify-between gap-x-6 py-5">
-                <div class="flex">
-                  <div class="flex-auto">
-                    <p class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">{{ petDetails.name }}</p>
-                    <p class="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-200">{{ petDetails.type }}</p>
-                    <UTextarea :rows="5" autoresize size="lg" :placeholder="petDetails.details" />
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </UFormGroup>
-
-        </UDashboardSection>
-      </UForm>
-
-    </div>
-  </template>
+  .vf-profile-form *,
+  .vf-profile-form *:before,
+  .vf-profile-form *:after,
+  .vf-profile-form:root {
+    --vf-primary: #07bf9b;
+    --vf-primary-darker: #06ac8b;
+    --vf-color-on-primary: #ffffff;
+    --vf-danger: #ef4444;
+    --vf-danger-lighter: #fee2e2;
+    --vf-success: #10b981;
+    --vf-success-lighter: #d1fae5;
+    --vf-gray-50: #f9fafb;
+    --vf-gray-100: #f3f4f6;
+    --vf-gray-200: #e5e7eb;
+    --vf-gray-300: #d1d5db; /* Without this, the steps timeline is plain white and invisible in light mode.  */
+    --vf-gray-400: #9ca3af;
+    --vf-gray-500: #6b7280;
+    --vf-gray-600: #4b5563;
+    --vf-gray-700: #374151;
+    --vf-gray-800: #1f2937;
+    --vf-gray-900: #111827;
+    --vf-dark-50: #efefef;
+    --vf-dark-100: #dcdcdc;
+    --vf-dark-200: #bdbdbd;
+    --vf-dark-300: #a0a0a0;
+    --vf-dark-400: #848484;
+    --vf-dark-500: #737373;
+    --vf-dark-600: #393939;
+    --vf-dark-700: #323232;
+    --vf-dark-800: #262626;
+    --vf-dark-900: #191919;
+    --vf-ring-width: 2px;
+    --vf-ring-color: #07bf9b66;
+    --vf-link-color: var(--vf-primary);
+    --vf-link-decoration: inherit;
+  }
+</style>

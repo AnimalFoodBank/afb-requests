@@ -1,5 +1,5 @@
 ##
-# Caddy configuration file for Animal Food Bank
+# == Caddy configuration file for AFB Requests
 #
 # To run Caddy with the following Caddyfile, use the following command:
 #
@@ -11,13 +11,13 @@
 # Automatically reload the Caddyfile when it changes:
 #   $ caddy run --config ./etc/caddy/Caddyfile --watch
 #
-# Automatically reformats the Caddyfile after saving:
+# Automatically formats the Caddyfile after saving:
 #   $ caddy fmt --overwrite ./etc/caddy/Caddyfile
-
-# About the certs
+#
+# == About local dev certs
 #
 # The certs are generated using the following command:
-#   $ mkcert localhost 127.0.0.1 ::1 dev.animalfoodbank.org
+#   $ mkcert localhost ::1 dev.example.com
 #   $ mkcert -install
 #
 # And stored in the following directory: etc/caddy/.certs. The directory is created
@@ -32,15 +32,14 @@
 #   $ export NODE_EXTRA_CA_CERTS="/Users/d/Library/Application Support/mkcert/rootCA.pem"
 
 {
-  # TODO: Create alias email address to use for ACME (Let's Encrypt) contacts
-  email "delano@animalfoodbank.org"
+  # This email address is used for ACME (Let's Encrypt) contacts
+  # and depending on your customer domain privacy settings, may be
+  # publicly visible in the certificate transparency logs.
+  email "domains@example.com"
 }
 
-https://staging.afb.pet {
-# https://dev.afb.pet https://localhost {
-  # tls etc/caddy/.certs/dev.afb.pet+2.pem etc/caddy/.certs/dev.afb.pet+2-key.pem
+https://example.com {
   header Permissions-Policy ""
-
 
   log {
     output stdout
@@ -71,6 +70,7 @@ https://staging.afb.pet {
   # any of the static files.
   #
   root * /var/www/public
+  file_server
 
   handle /api/* {
     # The backend API powered by Django. The exact settings here
