@@ -50,6 +50,20 @@ const loader = new Loader({
   libraries: ['places'],
 });
 
+
+loader.load().then(async () => {
+  // const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+  // const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
+  googleMapsIsReady.value = true
+
+  // Request needed libraries. Currently only Places API is used for selecting address.
+  await Promise.all([
+    google.maps.importLibrary("places"),
+  ]);
+
+  const input = document.getElementById("delivery_address.interactive_address") as HTMLInputElement;
+
+
 // Create a bounding box with sides ~20km away from the center point
 const center = { lat: 50.064192, lng: -110.605469 };
 const bounds = new google.maps.LatLngBounds(center);
@@ -71,22 +85,9 @@ const mapOptions = {
       strictBounds: true,
     };
 
-loader.load().then(async () => {
-    // const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
-    // const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
-    googleMapsIsReady.value = true
+  const autocomplete = new google.maps.places.Autocomplete(input, mapOptions);
 
-    // Request needed libraries. Currently only Places API is used for selecting address.
-    await Promise.all([
-      google.maps.importLibrary("places"),
-    ]);
-
-    const input = document.getElementById("delivery_address.interactive_address") as HTMLInputElement;
-
-
-    const autocomplete = new google.maps.places.Autocomplete(input, mapOptions);
-
-  });
+});
 
 onMounted(() => {
   console.log('requests/new.vue onMounted')
