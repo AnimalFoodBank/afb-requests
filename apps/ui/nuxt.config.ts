@@ -36,7 +36,7 @@ export default defineNuxtConfig({
    *  instructions to create the current interface. See:
    *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
    **/
-  ssr: false,
+  ssr: true,
 
   /**
   * Enable type checking for dev and build modes.

@@ -261,7 +261,7 @@ onMounted(() => {
           rules: ["required"],
           label: "Your local branch",
           description: "Please contact admin@animalfoodbank.org to change your branch.",
-          // disabled: true,
+          disabled: true,
           conditions: [
             ["delivery_address.country", "in", ["CA"]]  // element disappears if doesn't pass
           ],
