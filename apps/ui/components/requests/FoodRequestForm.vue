@@ -277,7 +277,7 @@ onMounted(() => {
           autocomplete: "one-time-code",
           placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
           label: "Your address",
-          description: "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
+          description: "Please contact us if you need to change your address.",
           rules: ["required"],
           attrs: {
             autofocus: true,
