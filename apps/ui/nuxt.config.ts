@@ -75,7 +75,7 @@ export default defineNuxtConfig({
   },
 
   ui: {
-    icons: ["heroicons", "streamline", "ph", "game-icons"],
+    // icons: ["heroicons", "streamline", "ph", "game-icons"],
     // safelistColors: ['primary', 'red', 'orange', 'green'],
   },
 
