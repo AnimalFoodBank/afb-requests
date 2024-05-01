@@ -8,6 +8,11 @@ from django.conf import settings
 from django.contrib import admin as afbcore_admin
 from django.urls import include, path
 from django.views import defaults as default_views
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.routers import DefaultRouter
 
@@ -19,7 +24,7 @@ passwordless = include("drfpasswordless.urls")
 
 # e.g. /api/v1/requests/abcdef1234/
 urlpatterns = [
-    path("admin/", afbcore_admin.site.urls, name="admin"),
+    path("afbadmin/", afbcore_admin.site.urls, name="admin"),
     path("api/<str:version>/", include(router.urls)),
     path("api/<str:version>/passwordless/", passwordless),
     path(
@@ -31,6 +36,19 @@ urlpatterns = [
         "api/<str:version>/authtoken/logout/",
         authtoken.LogoutView.as_view(),
         name="api_token_logout",
+    ),
+    path(
+        "api/<str:version>/schema/", SpectacularAPIView.as_view(), name="schema"
+    ),
+    path(
+        "api/<str:version>/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/<str:version>/schema/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
     ),
 ]
 
