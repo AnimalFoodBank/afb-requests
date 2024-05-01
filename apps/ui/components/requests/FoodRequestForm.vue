@@ -145,7 +145,7 @@ const steps = {
       console.log("Step 0 on", form$, el);
     },
     conditions: [
-      ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
+      // ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
     ],
   },
 
