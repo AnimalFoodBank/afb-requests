@@ -73,10 +73,13 @@ export default defineNuxtConfig({
       },
     },
   },
-
   ui: {
+    // Icons are now loaded via tailwindcss (to avoid any
+    // network requests).
+    //
+    // See tailwind.config.ts
     // icons: ["heroicons", "streamline", "ph", "game-icons"],
-    // safelistColors: ['primary', 'red', 'orange', 'green'],
+    safelistColors: ['primary', 'red', 'orange', 'green'],
   },
 
   //
