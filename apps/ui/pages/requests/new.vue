@@ -116,9 +116,9 @@ onMounted(() => {
     client_pets: {
       pets: [
         {
-          pet_name: 'Bella',
           pet_type: 'Dog',
-          pet_age: '5',
+          pet_name: 'Bella',
+          pet_dob: '5',
           food_details: {
             usual_brands: 'Purina',
             foodtype: 'dry',
