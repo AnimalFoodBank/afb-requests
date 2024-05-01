@@ -108,8 +108,8 @@ onMounted(() => {
       building_type: 'Townhouse',
     },
     delivery_contact: {
-      contact_name: 'Pearl',
-      contact_email: 'me@afb.pet',  // authData?.email
+      contact_name: 'Delbo Baggins',
+      contact_email: 'delbo@afb.pet',
       contact_phone: '250-777-2171',
       preferred_method: "Any",
     },

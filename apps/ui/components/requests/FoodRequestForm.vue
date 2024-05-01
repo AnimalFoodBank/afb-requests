@@ -144,6 +144,9 @@ const steps = {
     on: (form$: any, el: any) => {
       console.log("Step 0 on", form$, el);
     },
+    conditions: [
+      ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
+    ],
   },
 
   step1: {
@@ -151,7 +154,7 @@ const steps = {
     label: "Contact",
     elements: [
       "step1_title",
-      "delivery_contact"
+      "delivery_contact",
     ],
     labels: {
       previous: "← Back",
@@ -344,7 +347,30 @@ onMounted(() => {
           tag: "p",
           content: "Please provide a contact person for the delivery.",
         },
+        choose_contact: {
+          type: "checkbox",
+          rules: [],
+          text: "I am the contact person for this delivery.",
+          default: true,
+        },
         contact_name: {
+          type: "text",
+          rules: ["required", "max:32"],
+          label: "Contact name",
+          placeholder: "e.g. Jean",
+          floating: false,
+          disabled: true,
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 3,
+          },
+          default: state.delivery_contact.contact_name,
+          conditions: [
+            ['delivery_contact.choose_contact', true],
+          ],
+        },
+        alt_contact_name: {
           type: "text",
           rules: ["required", "max:32"],
           label: "Contact name",
@@ -355,16 +381,18 @@ onMounted(() => {
             label: 12,
             wrapper: 3,
           },
-          default: state.delivery_contact.contact_name,
+          conditions: [
+            ['delivery_contact.choose_contact', false],
+          ],
         },
         preferred_method: {
           type: "radiogroup",
           view: "tabs",
-          items: ["Any", "Call", "Text", "Email"],
+          items: ["Call", "Text", "Email"],
           rules: ["required"],
           description: "We do our best to accomodate your preferences whenever possible. Depending on volunteer availability, we may contact you via another method.",
           label: "Preferred method",
-          default: state.delivery_contact.preferred_method || "Any",
+          default: state.delivery_contact.preferred_method,
         },
         contact_email: {
           type: "text",
@@ -379,9 +407,26 @@ onMounted(() => {
             wrapper: 6,
           },
           conditions: [
-            ['delivery_contact.preferred_method', ['Email', 'Any']],
+            ['delivery_contact.preferred_method', ['Email']],
+            ['delivery_contact.choose_contact', true],
           ],
           default: state.delivery_contact.contact_email,
+        },
+        alt_contact_email: {
+          type: "text",
+          rules: ["required", "email"],
+          label: "Contact email",
+          placeholder: "e.g. alternate email address",
+          floating: false,
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 6,
+          },
+          conditions: [
+            ['delivery_contact.preferred_method', ['Email']],
+            ['delivery_contact.choose_contact', false],
+          ],
         },
         contact_phone: {
           type: "text",
@@ -397,7 +442,8 @@ onMounted(() => {
             wrapper: 6,
           },
           conditions: [
-            ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+            ['delivery_contact.preferred_method', ['Call', 'Text']],
+            ['delivery_contact.choose_contact', true],
           ],
           default: state.delivery_contact.contact_phone,
         },
@@ -415,7 +461,8 @@ onMounted(() => {
             wrapper: 6,
           },
           conditions: [
-            ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+            ['delivery_contact.preferred_method', ['Call', 'Text']],
+            ['delivery_contact.choose_contact', false],
           ],
         },
       },
@@ -513,6 +560,7 @@ onMounted(() => {
         },
       },
     },
+
     confirmation: {
       type: "object",
       schema: {
