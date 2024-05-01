@@ -1,5 +1,10 @@
 <script setup lang="ts">
 
+const title = 'Address & Delivery Info'
+const description = 'Update your delivery information.'
+const icon = 'i-heroicons-home'
+const cta = true
+
 const isDeleteAccountModalOpen = ref(false)
 const state = reactive({
   name: 'Delbo Baggins',
@@ -20,7 +25,7 @@ const state = reactive({
 <template>
   <UDashboardPanelContent class="pb-24">
 
-    <DeliveryInfoForm title="Delivery Information" description="Update your delivery information." icon="i-game-icons-cardboard-box-closed" :cta="true" :state="state" />
+    <DeliveryInfoForm :title="title" :description="description" :icon="icon" :cta="cta" :state="state" />
 
     <UDivider class="mb-16" />
 

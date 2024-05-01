@@ -43,12 +43,12 @@ const links = [
     icon: 'i-heroicons-user',
     children: [
       {
-        label: 'Delivery Information',
+        label: 'Address',
         to: '/profile',
         exact: true
       },
       {
-        label: 'Pet Details',
+        label: 'Pets',
         to: '/profile/pets',
         exact: true
       },

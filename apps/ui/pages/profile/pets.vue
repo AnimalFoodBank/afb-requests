@@ -2,9 +2,9 @@
 
 const state = reactive({})
 
-const title = 'My Pets'
+const title = 'Your Pets'
 const description = 'Manage your pet information. '
-const icon = 'i-heroicons-home'
+const icon = 'i-ph-paw-print-fill'
 const cta = false
 
 </script>
