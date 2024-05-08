@@ -3,21 +3,10 @@
 
  Here's a breakdown of the `clientPetsSchema` object:
 
- 1. `type: "object"`: This defines the overall type of the schema as an object.
- 2. `before: "Please provide information about each of your pets."`: This is a string that will be displayed before the "Your Pets" section of the form.
- 3. `schema`: This is an object that contains the actual schema definition for the "Your Pets" section.
- 4. `pets`: This is a nested object within the `schema` object. It defines a "list" type field, which means that it will allow the user to add multiple pet entries.
-    - `type: "list"`: Specifies that this is a list field.
-    - `max: 4`: Sets the maximum number of pet entries that can be added to 4.
-    - `min: 1`: Sets the minimum number of pet entries required to 1.
-    - `addClasses`: This object defines CSS classes to be applied to specific elements within the list field.
-    - `object`: This is another nested object that defines the schema for each individual pet entry.
- 5. `object.schema`: This is an object that contains the schema definition for each individual pet entry.
- 6. Within `object.schema`, there are several fields defined, such as `pet_type`, `pet_name`, `pet_dob`, `food_details`, `dog_details`, and `other_details`. These fields define the different properties that need to be provided for each pet, such as the type of pet, name, age, food details (if applicable), dog-specific details (if applicable), and other animal details (if applicable).
+1. `which_pets`: A "radiogroup" field for selecting the pets being requested for.
+2. `pets`: A "list" field for adding multiple pets (max 4). Each entry follows the schema defined in `object.schema`.
 
- Each field within `object.schema` has its own set of properties, such as `type` (which defines the type of input field), `rules` (which defines validation rules), `items` (for select or radio group fields), `conditions` (for conditional rendering of fields based on certain conditions), and `columns` (for layout purposes).
-
- In the `FoodRequestForm.vue` file, the `clientPetsSchema` is imported and used within the `schema` object of the form:
+ In `FoodRequestForm.vue`, the `clientPetsSchema` is imported and used within the `schema` object of the form:
 
  ```js
  import clientPetsSchema from '@/modules/requests/clientPetsSchema';
@@ -26,10 +15,10 @@
    // ...
 
    schema.value = {
-     // ...
+   // ...
 
-     client_pets: clientPetsSchema,
-     // ...
+   client_pets: clientPetsSchema,
+   // ...
    };
  });
  */
