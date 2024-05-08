@@ -24,8 +24,17 @@
  */
 const clientPetsSchema = {
   type: "object",
-  before: "",
+  before: "Please confirm the details of each of your pets that you're requesting for.",
   schema: {
+    which_pets: {
+      type: "radiogroup",
+      label: "Which pets are you requesting for?",
+      items: ["All", "Selected"],
+      rules: ["required"],
+      columns: {
+        container: 12,
+      },
+    },
     pets: {
       type: "list",
       max: 4,
@@ -44,11 +53,13 @@ const clientPetsSchema = {
           pet_type: {
             type: "radiogroup",
             view: "tabs",
+            label: "What kind of pet?",
             items: ["Cat", "Dog", "Other"],
             rules: ["required"],
             columns: {
               container: 12,
               wrapper: 12,
+              label: 2,
             },
           },
           pet_name: {
