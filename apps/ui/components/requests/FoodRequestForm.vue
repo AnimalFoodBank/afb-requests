@@ -166,6 +166,9 @@ const steps = {
     onComplete: (form$: any) => {
       console.log("Step 1 completed", form$);
     },
+    conditions: [
+      // ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
+    ],
   },
 
   step2: {
