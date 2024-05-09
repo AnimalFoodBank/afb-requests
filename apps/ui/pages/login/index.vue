@@ -195,7 +195,9 @@ async function onSubmit(
                @submit="onSubmit">
 
       <template #description>
-        Enter the email address associated with your account and we'll send a magic link to your inbox.
+        <p class="text-sm italic mb-4">(Don't have an account? <NuxtLink to="/welcome" class="text-primary font-medium">Sign up</NuxtLink>)</p>
+
+        <p>Enter the email address associated with your account and we'll send a magic link to your inbox.</p>
       </template>
 
       <template #validation>

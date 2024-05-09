@@ -120,7 +120,7 @@ async function authHandler() {
         <p class="text-gray-500 dark:text-gray-400 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p>
 
         <UInput v-model="email" name="email" type="hidden" label="Email" required />
-        <UInput v-model="code" name="code" type="text" color="primary" variant="outline" disabled placeholder="Code" label="Code" size="xl" class="w-32 mx-auto" required />
+        <UInput v-model="code" name="code" type="text" color="primary" variant="outline" :disabled="state.code" placeholder="Code" label="Code" size="xl" class="w-32 mx-auto" maxLength="6" required />
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
           By signing in, you agree to our
