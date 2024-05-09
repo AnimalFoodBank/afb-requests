@@ -264,7 +264,7 @@ onMounted(() => {
           inputType: "search",
           autocomplete: "off",
           items: "/json/branch_locations.json",
-          rules: ["required"],
+          rules: [],  // it's for display only so not "required" when submitting the form
           label: "Your local branch",
           description: "Please contact admin@animalfoodbank.org to change your branch.",
           disabled: true,
@@ -276,7 +276,7 @@ onMounted(() => {
             container: 12,
             wrapper: 6,
           },
-          default: state.delivery_address.branch_location,
+          default: state.delivery_address?.branch_location,
         },
         interactive_address: {
           type: "text",
@@ -304,7 +304,7 @@ onMounted(() => {
               e.preventDefault();
             }
           },
-          default: state.delivery_address.interactive_address,
+          default: state.delivery_address?.interactive_address,
         },
         building_type: {
           type: "radiogroup",
@@ -320,13 +320,12 @@ onMounted(() => {
           rules: [],
           fieldName: "Building type",
           label: "Building type <i>(optional)</i>",
-
           columns: {
             container: 12,
             label: 12,
             wrapper: 8,
           },
-          default: state.delivery_address.building_type,
+          default: state.delivery_address?.building_type,
         },
         location: {
           type: "object",
@@ -368,7 +367,7 @@ onMounted(() => {
             label: 12,
             wrapper: 3,
           },
-          default: state.delivery_contact.contact_name,
+          default: state.delivery_contact?.contact_name,
           conditions: [
             ['delivery_contact.choose_contact', true],
           ],
@@ -395,7 +394,7 @@ onMounted(() => {
           rules: ["required"],
           description: "We do our best to accomodate your preferences whenever possible. Depending on volunteer availability, we may contact you via another method.",
           label: "Preferred method",
-          default: state.delivery_contact.preferred_method,
+          default: state.delivery_contact?.preferred_method,
         },
         contact_email: {
           type: "text",
@@ -413,7 +412,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Email']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact.contact_email,
+          default: state.delivery_contact?.contact_email,
         },
         alt_contact_email: {
           type: "text",
@@ -448,7 +447,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Call', 'Text']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact.contact_phone,
+          default: state.delivery_contact?.contact_phone,
         },
         alt_contact_phone: {
           type: "text",
@@ -493,14 +492,14 @@ onMounted(() => {
           text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
           fieldName: "Safe Drop Policy",
           rules: ["accepted"],
-          default: state.safe_drop.safe_drop,
+          default: state.safe_drop?.safe_drop,
         },
         instructions: {
           type: "textarea",
           rules: ["max:255"],
           label: "Safe Drop Instructions (optional)",
           placeholder: "e.g. Leave at the front door.",
-          default: state.safe_drop.safe_drop_instructions,
+          default: state.safe_drop?.safe_drop_instructions,
           columns: {
             container: 6,
             label: 12,
@@ -529,7 +528,7 @@ onMounted(() => {
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Address:</strong> " + state.delivery_address.interactive_address,
+          content: "<strong>Address:</strong> " + state.delivery_address?.interactive_address,
         },
         contact: {
           type: "static",
@@ -539,7 +538,7 @@ onMounted(() => {
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Contact:</strong> " + state.delivery_contact.contact_name + " (" + state.delivery_contact.contact_phone + ")",
+          content: "<strong>Contact:</strong> " + state.delivery_contact?.contact_name + " (" + state.delivery_contact?.contact_phone + ")",
         },
         pets: {
           type: "static",
@@ -559,7 +558,7 @@ onMounted(() => {
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Safe Drop:</strong> " + (state.safe_drop.safe_drop ? "Yes" : "No") + " - " + state.safe_drop.safe_drop_instructions,
+          content: "<strong>Safe Drop:</strong> " + (state.safe_drop?.safe_drop ? "Yes" : "No") + " - " + state.safe_drop?.safe_drop_instructions,
         },
       },
     },
@@ -572,14 +571,14 @@ onMounted(() => {
           text: "I confirm that the information provided is correct.",
           fieldName: "Confirmation",
           rules: ["accepted"],
-          default: state.confirmation.confirm_correct,
+          default: state.confirmation?.confirm_correct,
         },
         accept_terms: {
           type: "checkbox",
           text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Notice.",
           fieldName: "Terms",
           rules: ["accepted"],
-          default: state.confirmation.accept_terms,
+          default: state.confirmation?.accept_terms,
         },
       },
     },
