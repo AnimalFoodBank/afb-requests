@@ -5,19 +5,45 @@ const description = 'Update your delivery information.'
 const icon = 'i-heroicons-home'
 const cta = true
 
+useHead({
+  title: 'New Food Request',
+})
+
+definePageMeta({
+  layout: 'dashboard',
+})
+
+
+/**
+ * Retrieves the authentication status, data, and token using the useAuth() function.
+ *
+ * @returns {{
+ *   status: string,
+ *   data: any,
+ *   token: string
+ * }} The authentication status, data, and token.
+ */
+ const {
+  status: authStatus,
+  data: authData,
+  token: authToken,
+} = useAuth();
+
+
 const isDeleteAccountModalOpen = ref(false)
 const state = reactive({
-  name: 'Delbo Baggins',
-  branch_selection: 'Xanadu',
-  email: 'delbo@solutious.com',
+  name: authData?.name || 'Delbo Baggins',
+  branch_selection: 'Medicine Hat',
+  email: authData?.email || 'delbo@solutious.com',
   phone: '123-456-7890',
-  address: '123 Main St, Toronto, ON, Canada',
-  pets: [
-    { id: '', type: 'dog', name: 'Doggo', details: 'Birthdate: 2023-11-01\nUsual Food Brands: Kibbles \nWeight Ibs (Dogs only): 5 \nPetAllergies: Pork' },
-    { id: '', type: 'cat', name: 'Cato', details: 'Birthdate: 2022-11-01\nUsual Food Brands: Whiskas \nWeight Ibs (Dogs only):  \nPetAllergies: none' },
-  ],
-  password_current: '',
-  password_new: ''
+  address: '1234 Southview Drive SE, Medicine Hat, AB, Canada',
+})
+
+onMounted(() => {
+  console.log('profile/index.vue onMounted')
+
+  console.log('authData', authData)
+  // state.value.email = authData?.email || 'delbo2@solutious.com'
 })
 
 </script>

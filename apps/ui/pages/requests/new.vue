@@ -76,14 +76,14 @@ const defaultBounds = {
 };
 
 const mapOptions = {
-      location: center,
-      bounds: defaultBounds,
-      componentRestrictions: { country: "ca" },
-      fields: ["formatted_address", "geometry", "place_id", "plus_code"], // address_components, place_id
-      // This is an option for the Google Maps Places Autocomplete API
-      // It sets whether the Autocomplete predictions should be strictly biased to the bounds set via the bounds option.
-      strictBounds: true,
-    };
+  location: center,
+  bounds: defaultBounds,
+  componentRestrictions: { country: "ca" },
+  fields: ["formatted_address", "geometry", "place_id", "plus_code"], // address_components, place_id
+  // This is an option for the Google Maps Places Autocomplete API
+  // It sets whether the Autocomplete predictions should be strictly biased to the bounds set via the bounds option.
+  strictBounds: true,
+};
 
   const autocomplete = new google.maps.places.Autocomplete(input, mapOptions);
 

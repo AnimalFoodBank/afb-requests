@@ -304,7 +304,7 @@ onMounted(() => {
               e.preventDefault();
             }
           },
-          default: state.delivery_address?.interactive_address,
+          default: state.delivery_address?.interactive_address || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
         },
         building_type: {
           type: "radiogroup",
@@ -367,7 +367,7 @@ onMounted(() => {
             label: 12,
             wrapper: 3,
           },
-          default: state.delivery_contact?.contact_name,
+          default: state.delivery_contact?.contact_name || "Delbo Baggins",
           conditions: [
             ['delivery_contact.choose_contact', true],
           ],
@@ -412,7 +412,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Email']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact?.contact_email,
+          default: state.delivery_contact?.contact_email || 'delbo@solutious.com',
         },
         alt_contact_email: {
           type: "text",
@@ -447,7 +447,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Call', 'Text']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact?.contact_phone,
+          default: state.delivery_contact?.contact_phone || '123-456-7890',
         },
         alt_contact_phone: {
           type: "text",
