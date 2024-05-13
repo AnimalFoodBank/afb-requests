@@ -134,7 +134,7 @@ jobs:
       #----------------------------------------------
       - name: Install django ${{ matrix.django-version }}
         run: |
-          poetry add Django@5${{ matrix.django-version }}
+          poetry add Django@${{ matrix.django-version }}
         env:
             VIRTUAL_ENV: .venv
 
