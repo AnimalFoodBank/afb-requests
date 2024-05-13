@@ -144,6 +144,9 @@ const steps = {
     on: (form$: any, el: any) => {
       console.log("Step 0 on", form$, el);
     },
+    conditions: [
+      // ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
+    ],
   },
 
   step1: {
@@ -151,7 +154,7 @@ const steps = {
     label: "Contact",
     elements: [
       "step1_title",
-      "delivery_contact"
+      "delivery_contact",
     ],
     labels: {
       previous: "← Back",
@@ -163,6 +166,9 @@ const steps = {
     onComplete: (form$: any) => {
       console.log("Step 1 completed", form$);
     },
+    conditions: [
+      // ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
+    ],
   },
 
   step2: {
@@ -258,7 +264,7 @@ onMounted(() => {
           inputType: "search",
           autocomplete: "off",
           items: "/json/branch_locations.json",
-          rules: ["required"],
+          rules: [],  // it's for display only so not "required" when submitting the form
           label: "Your local branch",
           description: "Please contact admin@animalfoodbank.org to change your branch.",
           disabled: true,
@@ -270,14 +276,14 @@ onMounted(() => {
             container: 12,
             wrapper: 6,
           },
-          default: state.delivery_address.branch_location,
+          default: state.delivery_address?.branch_location,
         },
         interactive_address: {
           type: "text",
           autocomplete: "one-time-code",
           placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
           label: "Your address",
-          description: "<em>Please make sure your address is correct. <b>Later it can only be modified by support staff.</b></em>",
+          description: "Please contact us if you need to change your address.",
           rules: ["required"],
           attrs: {
             autofocus: true,
@@ -298,7 +304,7 @@ onMounted(() => {
               e.preventDefault();
             }
           },
-          default: state.delivery_address.interactive_address,
+          default: state.delivery_address?.interactive_address || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
         },
         building_type: {
           type: "radiogroup",
@@ -314,13 +320,12 @@ onMounted(() => {
           rules: [],
           fieldName: "Building type",
           label: "Building type <i>(optional)</i>",
-
           columns: {
             container: 12,
             label: 12,
             wrapper: 8,
           },
-          default: state.delivery_address.building_type,
+          default: state.delivery_address?.building_type,
         },
         location: {
           type: "object",
@@ -344,7 +349,30 @@ onMounted(() => {
           tag: "p",
           content: "Please provide a contact person for the delivery.",
         },
+        choose_contact: {
+          type: "checkbox",
+          rules: [],
+          text: "I am the contact person for this delivery.",
+          default: true,
+        },
         contact_name: {
+          type: "text",
+          rules: ["required", "max:32"],
+          label: "Contact name",
+          placeholder: "e.g. Jean",
+          floating: false,
+          disabled: true,
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 3,
+          },
+          default: state.delivery_contact?.contact_name || "Delbo Baggins",
+          conditions: [
+            ['delivery_contact.choose_contact', true],
+          ],
+        },
+        alt_contact_name: {
           type: "text",
           rules: ["required", "max:32"],
           label: "Contact name",
@@ -355,16 +383,18 @@ onMounted(() => {
             label: 12,
             wrapper: 3,
           },
-          default: state.delivery_contact.contact_name,
+          conditions: [
+            ['delivery_contact.choose_contact', false],
+          ],
         },
         preferred_method: {
           type: "radiogroup",
           view: "tabs",
-          items: ["Any", "Call", "Text", "Email"],
+          items: ["Call", "Text", "Email"],
           rules: ["required"],
           description: "We do our best to accomodate your preferences whenever possible. Depending on volunteer availability, we may contact you via another method.",
           label: "Preferred method",
-          default: state.delivery_contact.preferred_method || "Any",
+          default: state.delivery_contact?.preferred_method,
         },
         contact_email: {
           type: "text",
@@ -379,9 +409,26 @@ onMounted(() => {
             wrapper: 6,
           },
           conditions: [
-            ['delivery_contact.preferred_method', ['Email', 'Any']],
+            ['delivery_contact.preferred_method', ['Email']],
+            ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact.contact_email,
+          default: state.delivery_contact?.contact_email || 'delbo@solutious.com',
+        },
+        alt_contact_email: {
+          type: "text",
+          rules: ["required", "email"],
+          label: "Contact email",
+          placeholder: "e.g. alternate email address",
+          floating: false,
+          columns: {
+            container: 12,
+            label: 12,
+            wrapper: 6,
+          },
+          conditions: [
+            ['delivery_contact.preferred_method', ['Email']],
+            ['delivery_contact.choose_contact', false],
+          ],
         },
         contact_phone: {
           type: "text",
@@ -397,9 +444,10 @@ onMounted(() => {
             wrapper: 6,
           },
           conditions: [
-            ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+            ['delivery_contact.preferred_method', ['Call', 'Text']],
+            ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact.contact_phone,
+          default: state.delivery_contact?.contact_phone || '123-456-7890',
         },
         alt_contact_phone: {
           type: "text",
@@ -415,7 +463,8 @@ onMounted(() => {
             wrapper: 6,
           },
           conditions: [
-            ['delivery_contact.preferred_method', ['Call', 'Text', 'Any']],
+            ['delivery_contact.preferred_method', ['Call', 'Text']],
+            ['delivery_contact.choose_contact', false],
           ],
         },
       },
@@ -443,14 +492,14 @@ onMounted(() => {
           text: "<strong>I understand and agree to the Safe Drop policy.</strong>",
           fieldName: "Safe Drop Policy",
           rules: ["accepted"],
-          default: state.safe_drop.safe_drop,
+          default: state.safe_drop?.safe_drop,
         },
         instructions: {
           type: "textarea",
           rules: ["max:255"],
           label: "Safe Drop Instructions (optional)",
           placeholder: "e.g. Leave at the front door.",
-          default: state.safe_drop.safe_drop_instructions,
+          default: state.safe_drop?.safe_drop_instructions,
           columns: {
             container: 6,
             label: 12,
@@ -479,7 +528,7 @@ onMounted(() => {
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Address:</strong> " + state.delivery_address.interactive_address,
+          content: "<strong>Address:</strong> " + state.delivery_address?.interactive_address,
         },
         contact: {
           type: "static",
@@ -489,7 +538,7 @@ onMounted(() => {
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Contact:</strong> " + state.delivery_contact.contact_name + " (" + state.delivery_contact.contact_phone + ")",
+          content: "<strong>Contact:</strong> " + state.delivery_contact?.contact_name + " (" + state.delivery_contact?.contact_phone + ")",
         },
         pets: {
           type: "static",
@@ -509,10 +558,11 @@ onMounted(() => {
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Safe Drop:</strong> " + (state.safe_drop.safe_drop ? "Yes" : "No") + " - " + state.safe_drop.safe_drop_instructions,
+          content: "<strong>Safe Drop:</strong> " + (state.safe_drop?.safe_drop ? "Yes" : "No") + " - " + state.safe_drop?.safe_drop_instructions,
         },
       },
     },
+
     confirmation: {
       type: "object",
       schema: {
@@ -521,14 +571,14 @@ onMounted(() => {
           text: "I confirm that the information provided is correct.",
           fieldName: "Confirmation",
           rules: ["accepted"],
-          default: state.confirmation.confirm_correct,
+          default: state.confirmation?.confirm_correct,
         },
         accept_terms: {
           type: "checkbox",
           text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Notice.",
           fieldName: "Terms",
           rules: ["accepted"],
-          default: state.confirmation.accept_terms,
+          default: state.confirmation?.accept_terms,
         },
       },
     },

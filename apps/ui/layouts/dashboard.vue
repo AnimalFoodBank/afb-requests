@@ -43,12 +43,12 @@ const links = [
     icon: 'i-heroicons-user',
     children: [
       {
-        label: 'Delivery Information',
+        label: 'Address',
         to: '/profile',
         exact: true
       },
       {
-        label: 'Pet Details',
+        label: 'Pets',
         to: '/profile/pets',
         exact: true
       },
@@ -60,9 +60,9 @@ const links = [
 ]
 
 const footerLinks = [{
-  label: 'Help & FAQ',
+  label: 'Help & Support',
   icon: 'i-heroicons-question-mark-circle',
-  to: 'https://animalfoodbank.org/#help',
+  to: '/contact',
   target: '_blank',
 }]
 

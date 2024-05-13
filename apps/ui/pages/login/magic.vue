@@ -6,6 +6,16 @@
 import type { FormError } from '#ui/types';
 import { useRoute } from 'vue-router';
 
+const colorMode = useColorMode()
+const isDark = computed({
+  get () {
+    return colorMode.value === 'dark'
+  },
+  set () {
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+  }
+})
+
 const {
   status,
   data,
@@ -91,7 +101,7 @@ async function authHandler() {
 
 <template>
   <UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
-    <img src="/img/afb_icon_black.png" alt="Logo" class="mx-auto w-24 h-24 rounded-full" />
+    <img :src="isDark ? '/img/afb_icon_white.png' : '/img/afb_icon_black.png'" alt="Logo" class="mx-auto w-24 h-24 rounded-full" />
 
     <!-- https://ui.nuxt.com/components/form -->
     <!-- https://ui.nuxt.com/pro/components/auth-form -->
@@ -110,7 +120,7 @@ async function authHandler() {
         <p class="text-gray-500 dark:text-gray-400 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p>
 
         <UInput v-model="email" name="email" type="hidden" label="Email" required />
-        <UInput v-model="code" name="code" type="text" color="primary" variant="outline" disabled placeholder="Code" label="Code" size="xl" class="w-32 mx-auto" required />
+        <UInput v-model="code" name="code" type="text" color="primary" variant="outline" :disabled="state.code" placeholder="Code" label="Code" size="xl" class="w-32 mx-auto" maxLength="6" required />
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
           By signing in, you agree to our

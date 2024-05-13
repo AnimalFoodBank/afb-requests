@@ -76,14 +76,14 @@ const defaultBounds = {
 };
 
 const mapOptions = {
-      location: center,
-      bounds: defaultBounds,
-      componentRestrictions: { country: "ca" },
-      fields: ["formatted_address", "geometry", "place_id", "plus_code"], // address_components, place_id
-      // This is an option for the Google Maps Places Autocomplete API
-      // It sets whether the Autocomplete predictions should be strictly biased to the bounds set via the bounds option.
-      strictBounds: true,
-    };
+  location: center,
+  bounds: defaultBounds,
+  componentRestrictions: { country: "ca" },
+  fields: ["formatted_address", "geometry", "place_id", "plus_code"], // address_components, place_id
+  // This is an option for the Google Maps Places Autocomplete API
+  // It sets whether the Autocomplete predictions should be strictly biased to the bounds set via the bounds option.
+  strictBounds: true,
+};
 
   const autocomplete = new google.maps.places.Autocomplete(input, mapOptions);
 
@@ -92,52 +92,7 @@ const mapOptions = {
 onMounted(() => {
   console.log('requests/new.vue onMounted')
 
-  state.value = {
-    id: '8d3a9c7-4b93-44f1-bf6a-f5b0a2e2c54',
-    user_id: '76f7f43-dfca-41ae-a5ee-cdb1d7e8af9',
-    delivery_address: {
-      branch_location: 'Medicine Hat',
-      location: {
-        address_line1: 'Addr line 1',
-        city: 'Slurpee',
-        prov_or_state: 'BC',
-        postcode: 'M4C 1B5',
-      },
-      country: 'CA',
-      interactive_address: '1201 Kingsway, Med Hat',
-      building_type: 'Townhouse',
-    },
-    delivery_contact: {
-      contact_name: 'Pearl',
-      contact_email: 'me@afb.pet',  // authData?.email
-      contact_phone: '250-777-2171',
-      preferred_method: "Any",
-    },
-    client_pets: {
-      pets: [
-        {
-          pet_name: 'Bella',
-          pet_type: 'Dog',
-          pet_age: '5',
-          food_details: {
-            usual_brands: 'Purina',
-            foodtype: 'dry',
-          },
-          dog_details: {
-            size: '10',
-          }
-        },
-      ],
-    },
-    safe_drop: {
-      safe_drop: true,
-      safe_drop_instructions: 'Leave at the door',
-    },
-    confirmation: {
-      confirm_correct: true,
-      accept_terms: true,
-    },
-  }
+  state.value = {} as FoodRequestFormState;
 
 })
 
