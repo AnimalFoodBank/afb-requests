@@ -37,60 +37,72 @@ jobs:
         python-version: ["3.11"]
 
     steps:
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: true
+      - name: Set up python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    #----------------------------------------------
-    #       check-out repo and set-up python
-    #----------------------------------------------
-    - name: Check out repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 1
-        submodules: true
-    - name: Set up python ${{ matrix.python-version }}
-      id: setup-python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+      #----------------------------------------------
+      #       install & configure poetry
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-    #----------------------------------------------
-    #       install & configure poetry
-    #----------------------------------------------
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
+      #----------------------------------------------
+      #         install python deps
+      #----------------------------------------------
+      - name: Install dependencies
+        run: poetry install --no-interaction
 
-    #----------------------------------------------
-    #         install dependencies
-    #----------------------------------------------
-    - name: Install dependencies
-      run: poetry install --no-interaction
+      #----------------------------------------------
+      #         install node & pnpm
+      #----------------------------------------------
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    #----------------------------------------------
-    #         install node & pnpm
-    #----------------------------------------------
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
+      #----------------------------------------------
+      #         install javascript deps
+      #----------------------------------------------
+      - name: Install dependencies
+        working-directory: apps/ui
+        run: |
+          npm install -g pnpm@9.1.1
+          pnpm install
 
-    - name: Install dependencies
-      working-directory: apps/ui
-      run: |
-        npm install -g pnpm@9.1.1
-        pnpm install
+      #----------------------------------------------
+      #         build & test
+      #----------------------------------------------
+      - name: Build Nuxt3 app
+        working-directory: apps/ui
+        env:
+          NUXT_UI_PRO_LICENSE: ${{ secrets.NUXT_UI_PRO_LICENSE }}
+        run: pnpm run build
 
-    - name: Build Nuxt3 app
-      working-directory: apps/ui
-      env:
-        NUXT_UI_PRO_LICENSE: ${{ secrets.NUXT_UI_PRO_LICENSE }}
-      run: pnpm run build
+      #----------------------------------------------
+      #         lint  & test (disabled)
+      #----------------------------------------------
+      # - name: Run tests
+      #   working-directory: apps/ui
+      #   run: pnpm test
 
-    - name: Run tests
-      working-directory: apps/ui
-      run: pnpm test
 
-    - name: Audit dependencies
-      working-directory: apps/ui
-      run: pnpm audit
+      #----------------------------------------------
+      #         pnpm package audit
+      #----------------------------------------------
+      - name: Audit dependencies
+        working-directory: apps/ui
+        run: pnpm audit
