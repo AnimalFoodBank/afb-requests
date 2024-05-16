@@ -35,7 +35,7 @@ const categories = computed(() => [{
   items: [
     { shortcuts: [metaSymbol.value, 'K'], name: 'Command menu' },
     { shortcuts: ['N'], name: 'Notifications' },
-    { shortcuts: ['?'], name: 'Help & FAQ' },
+    { shortcuts: ['?'], name: 'Help & Support' },
     { shortcuts: ['/'], name: 'Search' }
   ]
 }, {
@@ -76,7 +76,7 @@ const filteredCategories = computed(() => {
         @click="shortcuts = false"
       />
 
-      {{ shortcuts ? 'Shortcuts' : 'Help & FAQ' }}
+      {{ shortcuts ? 'Shortcuts' : 'Help & Support' }}
     </template>
 
     <div v-if="shortcuts" class="space-y-6">

@@ -44,7 +44,7 @@ const toast = useToast()
 
     <template #left>
       <p class="text-gray-500 dark:text-gray-400 text-sm">
-        Animal Food Bank © {{ new Date().getFullYear() }}.
+        Animal Food Bank Foundation © {{ new Date().getFullYear() }}.
       </p>
     </template>
 

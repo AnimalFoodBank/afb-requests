@@ -1,25 +1,32 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import type { SessionData } from "./types/index";
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
-import type { SessionData } from "./types/index.d";
 
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
   modules: [
     "@nuxt/ui",
-    '@nuxt/test-utils/module',
     "@nuxt/fonts",
+    "@nuxtjs/tailwindcss",
+    '@vueuse/nuxt',
     "nuxt-snackbar",
     "@sidebase/nuxt-auth",
     "@vueform/nuxt",
+    // '@nuxt/test-utils/module',
     // '@vueform/builder-nuxt',
   ],
 
+  debug: !!process.env.NUXT_DEBUG || false,
+
+  app: {},
+
+  alias: {},
+
   build: {
-    // transpile: ["@fawmi/vue-google-maps"],
+    transpile: [],
   },
 
-  /*
+
+  /**
    *  Client-side Rendering:
    *  Set to false to disable client-side rendering.
    *
@@ -28,26 +35,51 @@ export default defineNuxtConfig({
    *  browser downloads and parses all the JavaScript code containing the
    *  instructions to create the current interface. See:
    *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
-   */
+   **/
   ssr: false,
 
-  // nitro: {
-  //   routeRules: {
-  //     "/**/*.ts": {
-  //       headers: {
-  //         "content-type": "application/typescript",
-  //       },
-  //     },
-  //     "/**/*.vue": {
-  //       headers: {
-  //         "content-type": "text/vue",
-  //       },
-  //     },
-  //   },
-  // },
+  /**
+  * Enable type checking for dev and build modes.
+  *
+  * From the docs:
+  *   "You may experience issues with the latest vue-tsc and
+  *   vite-plugin-checker, used internally when type checking.
+  *   For now, you may need to stay on v1 of vue-tsc, and
+  *   follow these upstream issues for updates:
+  *   fi3ework/vite-plugin-checker#306 and
+  *   vuejs/language-tools#3969."
+  *
+  *     -- https://nuxt.com/docs/guide/concepts/typescript#type-checking
+  *
+  * @see https://github.com/fi3ework/vite-plugin-checker/issues/306
+  * @see https://github.com/vuejs/language-tools/issues/3969
+  *
+  **/
+  typescript: {
+    typeCheck: false,
+  },
 
+  nitro: {
+    routeRules: {
+      "/**/*.ts": {
+        headers: {
+          "content-type": "application/typescript",
+        },
+      },
+      "/**/*.vue": {
+        headers: {
+          "content-type": "text/vue",
+        },
+      },
+    },
+  },
   ui: {
-    icons: ["heroicons", "streamline", "ph", "game-icons"], // simple-icons
+    // Icons are now loaded via tailwindcss (to avoid any
+    // network requests).
+    //
+    // See tailwind.config.ts
+    // icons: ["heroicons", "streamline", "ph", "game-icons"],
+    safelistColors: ['primary', 'red', 'orange', 'green'],
   },
 
   //
@@ -75,7 +107,7 @@ export default defineNuxtConfig({
       type: "local",
       endpoints: {
         signIn: { path: "/passwordless/auth/token/", method: "post" },
-        signOut: { path: "/logout", method: "post" },
+        signOut: { path: "/authtoken/logout/", method: "post" },
         signUp: { path: "/register", method: "post" },
         getSession: { path: "/users/current_user/", method: "get" },
       },
@@ -100,8 +132,10 @@ export default defineNuxtConfig({
       // Whether to refresh the session every time the browser window is refocused.
       enableRefreshOnWindowFocus: true,
 
-      // Whether to refresh the session every `X` milliseconds. Set this to `false` to turn it off. The session will only be refreshed if a session already exists.
-      enableRefreshPeriodically: 60000
+      // Whether to refresh the session every `X` milliseconds. Set
+      // this to `false` to turn it off. The session will only be
+      // refreshed if a session already exists.
+      enableRefreshPeriodically: 60000 * 5, // 5 minutes
     },
   },
 
@@ -145,7 +179,6 @@ export default defineNuxtConfig({
       mode: "local-serve", // 'tunnel' or 'local-serve',
       tunnel: {
         name: "tundra",
-        password: "tundra",
       },
     },
     timeline: {
@@ -168,7 +201,8 @@ export default defineNuxtConfig({
     // Public keys are exposed to the client
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
-      AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
+
+      googleAPIKey: process.env.NUXT_ENV_GOOGLE_API_KEY,
     },
   },
 });

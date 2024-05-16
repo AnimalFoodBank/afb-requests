@@ -30,20 +30,6 @@ async function onSubmit (event: FormSubmitEvent<any>) {
   })
 }
 
-const branchLocations = {
-  // name: 'branch',
-  // type:  'select', // set the type to select
-  // label: 'AFB Branch',
-  // inputClass: '',
-  // options: [
-  //   { value: '', text: '-- Select --' }, // add a default option with an empty value to display in the dropdown
-  //   { value: 'x', text: 'Xanadu' },
-  //   { value: 'y', text: 'Yale' },
-  //   { value: 'z', text: 'Zulu' },
-  // ]
-}
-const defaultBranch = ref('x')
-
 </script>
 
 
@@ -65,10 +51,9 @@ const defaultBranch = ref('x')
             :ui="{ container: '' }"
           >
             <!-- <USelect v-model="state.branch_selection" name="branch_selection" icon="i-ph-map-pin" :options="branchLocations" option-attribute="text" class=""/> -->
-            <UInput v-model="state.branch_selection" type="branch" autocomplete="off" icon="i-ph-map-pin" size="md"  />
+            <UInput type="select" name="branch_selection" v-model="state.branch_selection" autocomplete="off" icon="i-ph-map-pin" size="md" disabled />
 
-            <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update.</p>
-
+            <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update your branch.</p>
           </UFormGroup>
 
           <UFormGroup
@@ -80,6 +65,26 @@ const defaultBranch = ref('x')
             :ui="{ container: '' }"
           >
             <UInput v-model="state.name" autocomplete="off" icon="i-heroicons-user" size="md" />
+          </UFormGroup>
+
+          <UFormGroup
+            name="email"
+            label="Your Email"
+            description="The email address you use to sign in. We also use this for co-ordinating food requests."
+            class="grid grid-cols-2 gap-2 items-center"
+            :ui="{ container: '' }"
+          >
+            <UInput v-model="state.email" autocomplete="off" icon="i-heroicons-envelope" size="md" disabled />
+          </UFormGroup>
+
+          <UFormGroup
+            name="name"
+            label="Your Phone (optional)"
+            description="Please enter your name."
+            class="grid grid-cols-2 gap-2 items-center"
+            :ui="{ container: '' }"
+          >
+            <UInput v-model="state.phone" autocomplete="off" icon="i-heroicons-phone" size="md" />
           </UFormGroup>
 
           <UFormGroup

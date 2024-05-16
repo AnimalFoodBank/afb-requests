@@ -90,11 +90,13 @@ local_settings.py
 .certs/
 .local
 .vscode/
+.nuxt/
 !env/*.example
 node_modules/
 public/static/*
 tmp/*
 *.sqlite3
 .env*
-!.env.empty
+!.env.example
 mailpit.db*
+.output/

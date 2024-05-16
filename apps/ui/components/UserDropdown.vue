@@ -5,7 +5,7 @@ const { metaSymbol } = useShortcuts();
 
 const {
   status,
-  data,
+  data: authData,
   token,
   lastRefreshedAt,
   getSession,
@@ -57,14 +57,11 @@ const items = computed(() => [
         color="gray"
         variant="ghost"
         class="w-full"
-        :label="data?.name || 'AFB Client'"
+        :label="authData?.name || 'AFB Client'"
         :class="[open && 'bg-gray-50 dark:bg-gray-800']"
       >
         <template #leading>
-          <UAvatar
-            src="https://avatars.githubusercontent.com/u/1206?v=4"
-            size="2xs"
-          />
+          <Icon name="i-heroicons-user" />
         </template>
 
         <template #trailing>
@@ -77,7 +74,7 @@ const items = computed(() => [
       <div class="text-left">
         <p>Signed in as</p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
-          {{ data?.email }}
+          {{ authData?.email }}
         </p>
       </div>
     </template>

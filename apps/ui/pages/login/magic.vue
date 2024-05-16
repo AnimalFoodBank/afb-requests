@@ -1,6 +1,20 @@
+<!--
+  This is a Vue page for the magic login functionality.
+  It uses the 'definePageMeta' function to set the page metadata.
+-->
 <script setup lang="ts">
 import type { FormError } from '#ui/types';
 import { useRoute } from 'vue-router';
+
+const colorMode = useColorMode()
+const isDark = computed({
+  get () {
+    return colorMode.value === 'dark'
+  },
+  set () {
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+  }
+})
 
 const {
   status,
@@ -21,7 +35,7 @@ const config = useRuntimeConfig();
 const snackbar = useSnackbar();
 
 definePageMeta({
-  layout: 'auth',
+  layout: 'onboarding',
   auth: false,
 })
 
@@ -42,6 +56,16 @@ const validate = (state: any): FormError[] => {
   if (!state.code) errors.push({ path: 'code', message: 'Required' })
   return errors
 }
+
+const fields = [
+  {
+    name: "email",
+    type: "text",
+    label: "Email",
+    placeholder: "Your email address",
+    icon: "i-heroicons-envelope",
+  },
+]
 
 async function authHandler() {
 
@@ -66,7 +90,7 @@ async function authHandler() {
     const toast = useToast()
     toast.add({
       title: 'Login Error',
-      description: 'An error occurred on our. Please try logging in again.',
+      description: 'An error occurred on our end. Please try logging in again.',
     })
 
     return navigateTo('/login')
@@ -77,7 +101,7 @@ async function authHandler() {
 
 <template>
   <UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
-    <img src="/img/afb_icon_black.png" alt="Logo" class="mx-auto w-24 h-24 rounded-full" />
+    <img :src="isDark ? '/img/afb_icon_white.png' : '/img/afb_icon_black.png'" alt="Logo" class="mx-auto w-24 h-24 rounded-full" />
 
     <!-- https://ui.nuxt.com/components/form -->
     <!-- https://ui.nuxt.com/pro/components/auth-form -->
@@ -92,20 +116,25 @@ async function authHandler() {
       @submit="authHandler"
     >
       <div class="w-full max-w-sm space-y-6">
-        <h2 class="text-2xl text-gray-900 dark:text-white font-bold text-center">Welcome to AFB Requests</h2>
-        <!-- <p class="text-gray-500 dark:text-gray-400 mt-1 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p> -->
+        <h2 class="text-2xl text-gray-900 dark:text-white font-bold text-center">Complete Sign In</h2>
+        <p class="text-gray-500 dark:text-gray-400 text-center">Don't have an account? <NuxtLink to="/login" class="text-primary font-medium">Sign up</NuxtLink>.</p>
 
         <UInput v-model="email" name="email" type="hidden" label="Email" required />
-        <UInput v-model="code" name="code" type="hidden" label="Code" required />
+        <UInput v-model="code" name="code" type="text" color="primary" variant="outline" :disabled="state.code" placeholder="Code" label="Code" size="xl" class="w-32 mx-auto" maxLength="6" required />
+
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
+          By signing in, you agree to our
+          <NuxtLink to="/legal/terms"
+                    class="text-primary font-medium">Terms of Service</NuxtLink> and
+          <NuxtLink to="/legal/privacy"
+                    class="text-primary font-medium">Privacy Notice</NuxtLink>.
+        </p>
 
         <UButton type="submit" class="focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 px-3 py-2 shadow-sm text-white dark:text-gray-900 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-500 dark:bg-primary-400 dark:hover:bg-primary-500 dark:disabled:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:focus-visible:outline-primary-400 w-full flex justify-center items-center">
           <span class="">Continue</span>
           <span class="i-heroicons-arrow-right-20-solid flex-shrink-0 h-5 w-5" aria-hidden="true"></span>
         </UButton>
 
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
-          By signing in, you agree to our <NuxtLink to="/" class="text-primary font-medium">Terms of Service</NuxtLink>.
-        </p>
       </div>
     </UForm>
   </UCard>

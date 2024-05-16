@@ -13,10 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-# Load dotenv file
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
-
 
 # After loading dotenv, you can use os.getenv() to access
 # environment variables. e.g. `os.getenv("DEBUG", "False")`
@@ -29,6 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_HOST = os.getenv("BASE_HOST", "localhost")
 URI_SCHEMA = os.getenv("URI_SCHEMA", "https")
 BASE_URI = f"{URI_SCHEMA}://{BASE_HOST}"
+
+STAGING_HOST = os.getenv("STAGING_HOST", "example.com")
+STAGING_URI = f"{URI_SCHEMA}://{STAGING_HOST}"
+
+PRODUCTION_HOST = os.getenv("PRODUCTION_HOST", "example.com")
+PRODUCTION_URI = f"{URI_SCHEMA}://{PRODUCTION_HOST}"
 
 UI_BASE_HOST = os.getenv("UI_BASE_HOST", "localhost")
 UI_URI_SCHEMA = os.getenv("UI_URI_SCHEMA", "https")
@@ -192,6 +196,10 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -212,11 +220,16 @@ REST_FRAMEWORK = {
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
     "ALLOWED_VERSIONS": ["v1"],
     "VERSION_PARAM": "version",
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        # 'rest_framework.renderers.BrowsableAPIRenderer',  # DRF's default HTML docs
+    ],
 }
 
+# @see https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Your Project API",
-    "DESCRIPTION": "Your project description",
+    "TITLE": "AFB Requests API",
+    "DESCRIPTION": "API for managing food requests at the Animal Food Bank.",
     "VERSION": "1.0.0",
     # https://drf-spectacular.readthedocs.io/en/latest/client_generation.html
     "COMPONENT_SPLIT_REQUEST": True,
@@ -224,7 +237,11 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
-    # OTHER SETTINGS
+    "SERVERS": [
+        {"url": f"{BASE_URI}/", "description": "Dev Host"},
+        {"url": f"{STAGING_URI}/", "description": "Staging Host"},
+        {"url": f"{PRODUCTION_URI}/", "description": "Production Host"},
+    ],
 }
 
 # drfpasswordless
@@ -240,10 +257,10 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
     "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
-    "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "passwordless_token_email.txt",
-    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "passwordless_token_email.html",
-    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "passwordless_verification_email.txt",
-    "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "passwordless_verification_email.html",
+    "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_token_email.txt",
+    "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_token_email.html",
+    "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_verification_email.txt",
+    "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_verification_email.html",
     # Registers previously unseen aliases as new users.
     "PASSWORDLESS_REGISTER_NEW_USERS": True,
     # URL Prefix for Authentication Endpoints
