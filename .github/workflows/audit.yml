@@ -61,14 +61,32 @@ jobs:
           virtualenvs-in-project: true
 
       #----------------------------------------------
-      #         install python deps
+      #         install python deps (w/ cache)
       #----------------------------------------------
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
       - name: Install dependencies
         run: poetry install --no-interaction
 
       #----------------------------------------------
-      #         install node & pnpm
+      #         install node & pnpm (w/ cache)
       #----------------------------------------------
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pnpm-store
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
