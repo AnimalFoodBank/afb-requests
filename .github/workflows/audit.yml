@@ -83,6 +83,8 @@ jobs:
 
     - name: Build Nuxt3 app
       working-directory: apps/ui
+      env:
+        NUXT_UI_PRO_LICENSE: ${{ secrets.NUXT_UI_PRO_LICENSE }}
       run: pnpm run build
 
     - name: Run tests
