@@ -78,7 +78,7 @@ jobs:
     - name: Install dependencies
       working-directory: apps/ui
       run: |
-        npm install -g pnpm
+        npm install -g pnpm@9.1.1
         pnpm install
 
     - name: Build Nuxt3 app
