@@ -45,20 +45,21 @@ class AbstractFoodRequestSerializer(serializers.ModelSerializer):
         abstract = True
         model = FoodRequest
         fields = [f.name for f in FoodRequest._meta.fields if f.name != "pets"]
-        read_only_fields = ["id", "created_at", "updated_at"]
 
 
 class FoodRequestCreateSerializer(AbstractFoodRequestSerializer):
-    pass
+    class Meta(AbstractFoodRequestSerializer.Meta):
+        read_only_fields = ["id", "created_at", "updated_at"]
 
 
 class FoodRequestUpdateSerializer(serializers.ModelSerializer):
-    read_only_fields = [
-        "id",
-        "user",
-        "branch",
-        "created",
-        "address_canadapost_id",
-        "address_google_place_id",
-        "status",
-    ]
+    class Meta(AbstractFoodRequestSerializer.Meta):
+        read_only_fields = [
+            "id",
+            "user",
+            "branch",
+            "created",
+            "address_canadapost_id",
+            "address_google_place_id",
+            "status",
+        ]

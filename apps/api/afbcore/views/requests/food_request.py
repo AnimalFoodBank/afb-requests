@@ -15,6 +15,7 @@ from ...serializers import (
 class FoodRequestViewSet(viewsets.ModelViewSet):
     queryset = FoodRequest.objects.all()
     lookup_field = "id"
+    serializer_class = FoodRequestUpdateSerializer
 
     def get_serializer_class(self):
         if self.request.method == "POST":

@@ -1,1 +1,1 @@
-from . import FoodRequestViewSet  # noqa: F401
+from .food_request import FoodRequestViewSet  # noqa: F401
