@@ -10,9 +10,9 @@ services:
       - 8000:8000
 
   ui:
-    build: ./ui-vue3
+    build: ./ui
     command: npm run start
     volumes:
-      - ./ui-vue3:/app
+      - ./ui:/app
     ports:
       - 3000:3000
