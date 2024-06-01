@@ -219,6 +219,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
     "ALLOWED_VERSIONS": ["v1"],
+    "DEFAULT_VERSION": "v1",
     "VERSION_PARAM": "version",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",

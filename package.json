@@ -17,9 +17,10 @@
     "typecheck": "nuxt typecheck apps/ui",
     "prettier": "prettier --write \"apps/ui/src/**/*.{ts,tsx}\"",
     "test": "jest apps/ui",
-    "django": "dotenv python apps/api/manage.py",
+    "django": "PYTHONPATH=$(pwd) dotenv python apps/api/manage.py",
     "django:shell": "pnpm django shell_plus",
     "django:run": "pnpm django runserver_plus",
+    "django:test": "pnpm django test",
     "caddy": "caddy run --config /etc/caddy/Caddyfile",
     "mailpit": "mailpit -d .local/mailpit.db"
   },
