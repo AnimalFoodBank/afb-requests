@@ -20,6 +20,7 @@
     "django": "dotenv python apps/api/manage.py",
     "django:shell": "pnpm django shell_plus",
     "django:run": "pnpm django runserver_plus",
+    "caddy": "caddy run --config /etc/caddy/Caddyfile",
     "mailpit": "mailpit -d .local/mailpit.db"
   },
   "dependencies": {
