@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import FoodRequest, Pet
+from ...models import FoodRequest, Pet
 
 
 class PetSerializer(serializers.ModelSerializer):
@@ -52,7 +52,7 @@ class FoodRequestCreateSerializer(AbstractFoodRequestSerializer):
         read_only_fields = ["id", "created_at", "updated_at"]
 
 
-class FoodRequestUpdateSerializer(serializers.ModelSerializer):
+class FoodRequestUpdateSerializer(AbstractFoodRequestSerializer):
     class Meta(AbstractFoodRequestSerializer.Meta):
         read_only_fields = [
             "id",
