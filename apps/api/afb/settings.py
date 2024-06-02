@@ -263,7 +263,7 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_verification_email.txt",
     "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_verification_email.html",
     # Registers previously unseen aliases as new users.
-    "PASSWORDLESS_REGISTER_NEW_USERS": True,
+    "PASSWORDLESS_REGISTER_NEW_USERS": False,
     # URL Prefix for Authentication Endpoints
     "PASSWORDLESS_AUTH_PREFIX": "auth/",
     # URL Prefix for Verification Endpoints

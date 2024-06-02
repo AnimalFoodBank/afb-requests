@@ -3,7 +3,9 @@ import logging
 from django.contrib.auth import get_user_model
 from rest_framework import permissions, status, viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
 from ...serializers import UserSerializer
@@ -36,7 +38,9 @@ class UserViewSet(viewsets.ModelViewSet):
         Retrieve the current authenticated user.
         """
         logger.debug("API Version: #{version}")
-        serializer = self.get_serializer(request.user, context={"request": request})
+        serializer = self.get_serializer(
+            request.user, context={"request": request}
+        )
         return Response(serializer.data)
 
     def get_queryset(self):
@@ -56,3 +60,18 @@ class UserViewSet(viewsets.ModelViewSet):
             {"detail": "Delete action is disabled"},
             status=status.HTTP_405_METHOD_NOT_ALLOWED,
         )
+
+
+class RegisterUserAPIView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = serializer.data
+        token = Token.objects.create(user=user)
+        data["token"] = token.key
+        return Response(data, status=status.HTTP_201_CREATED)

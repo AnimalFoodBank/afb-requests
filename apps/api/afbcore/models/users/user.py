@@ -20,6 +20,7 @@ from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel, UUIDModel
+from phonenumber_field.modelfields import PhoneNumberField
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,9 @@ class UserManager(BaseUserManager):
 
         # Fast fail on bad input.
         if value is None or value == "":
-            logger.info(f"UserManager.is_a_truly_unique - value is None or empty")
+            logger.info(
+                f"UserManager.is_a_truly_unique - value is None or empty"
+            )
             return False
 
         # Assume pessimistically that the value is not unique.
@@ -131,10 +134,19 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     terms_agreement = models.BooleanField(
         _("terms agreement"),
         default=False,
-        help_text=_("Indicates whether the user has agreed to the terms of service."),
+        help_text=_(
+            "Indicates whether the user has agreed to the terms of service."
+        ),
     )
 
     # Override the username field from AbstractUser to allow null values.
     username = models.CharField(
         _("username"), max_length=255, unique=True, null=True, blank=True
+    )
+
+    phone = PhoneNumberField(
+        _("phone number"),
+        null=True,
+        blank=True,
+        help_text=_("The user's phone number."),
     )

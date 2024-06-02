@@ -18,13 +18,19 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register("requests", FoodRequestViewSet, basename="foodrequest")
-router.register(r"users", users.UserViewSet, basename="user")
+router.register("users", users.UserViewSet, basename="user")
+
 
 passwordless = include("drfpasswordless.urls")
 
 # e.g. /api/v1/requests/abcdef1234/
 urlpatterns = [
     path("afbadmin/", afbcore_admin.site.urls, name="admin"),
+    path(
+        "api/<str:version>/register/",
+        users.RegisterUserAPIView.as_view(),
+        name="registration",
+    ),
     path("api/<str:version>/", include(router.urls)),
     path("api/<str:version>/passwordless/", passwordless),
     path(
