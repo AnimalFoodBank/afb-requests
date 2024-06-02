@@ -10,32 +10,12 @@ definePageMeta({
   auth: false,
 });
 
+const snackbar = useSnackbar();
 
-const fields = [
-  {
-    name: "name",
-    type: "text",
-    label: "Name*",
-    placeholder: "e.g. first name, full name or a nickname",
-    icon: "i-heroicons-user-circle",
-    autofocus: true,
-  },
-  {
-    name: "email",
-    type: "text",
-    label: "Email*",
-    placeholder: "Your email address",
-    icon: "i-heroicons-envelope",
-  },
-  {
-    name: "phone",
-    type: "text",
-    label: "Phone",
-    placeholder: "Your phone number",
-    icon: "i-heroicons-phone",
-    help: "If you provide a phone number, we will use it to coordinate your delivery.",
-  },
-];
+const route = useRoute();
+const email = route.query.email as string;
+
+const fields = ref<any>([]);
 
 const validateEmail = (email: string) => {
   return (/^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
@@ -56,12 +36,28 @@ const validate = (state: any): FormError[] => {
   return errors;
 };
 
-let timeoutId: number | undefined;
 
-onUnmounted(() => {
-  if (timeoutId) {
-    clearTimeout(timeoutId);
-  }
+onMounted(() => {
+  fields.value = [
+    {
+      name: "name",
+      type: "text",
+      label: "Name",
+      placeholder: "Enter your name",
+    },
+    {
+      name: "email",
+      type: "text",
+      label: "Email",
+      placeholder: "Enter your email",
+  },
+    {
+      name: "phone",
+      type: "text",
+      label: "Phone",
+      placeholder: "Enter your phone",
+    },
+  ];
 });
 
 async function onSubmit(
@@ -75,9 +71,21 @@ async function onSubmit(
 
   // Prepare the payload
   const payload = {
+    name: event.name,
     email: event.email,
+    phone: event.phone,
   };
   console.log("Payload:", payload);
+
+  // Send post request to the API endpoint using Nuxt 3 useFetch
+  const path = "/api/v1/register/";
+  const { data, pending, error, refresh } = await useFetch(path, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
 }
 
@@ -108,12 +116,19 @@ const defaultBranch = ref("none");
       </template>
 
       <template #validation>
-        <p class="ui.footer">
+        <p class="ui.validation">
           By creating an account, you agree to our
           <NuxtLink to="/legal/terms"
                     class="text-primary font-medium">Terms of Service</NuxtLink> and
           <NuxtLink to="/legal/privacy"
                     class="text-primary font-medium">Privacy Notice</NuxtLink>.
+        </p>
+      </template>
+
+      <template #footer>
+        <p class="ui.footer italic">
+          Or <NuxtLink to="/welcome/volunteers"
+                    class="text-secondary underline font-medium">signup as a Volunteer</NuxtLink>.
         </p>
       </template>
     </UAuthForm>

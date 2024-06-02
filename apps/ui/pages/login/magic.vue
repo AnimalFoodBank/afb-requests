@@ -31,7 +31,6 @@ useSeoMeta({
   title: "Sign In",
 })
 
-const config = useRuntimeConfig();
 const snackbar = useSnackbar();
 
 definePageMeta({
