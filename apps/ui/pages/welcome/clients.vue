@@ -12,6 +12,7 @@ definePageMeta({
 
 const snackbar = useSnackbar();
 
+const router = useRouter();
 const route = useRoute();
 const email = route.query.email as string;
 
@@ -86,13 +87,58 @@ async function onSubmit(
 
   // Send post request to the API endpoint using Nuxt 3 useFetch
   const path = "/api/v1/register/";
-  const { data, pending, error, refresh } = await useFetch(path, {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+
+
+  try {
+
+    const data = await $fetch(path, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    await navigateTo("/dashboard");
+
+  } catch (error: any) {
+    const data = error.data;
+
+    if (data && data.email) {
+      snackbar.add({
+        type: "error",
+        text: data.email[0]
+      });
+
+    } else {
+
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Page Not Found',
+        fatal: true
+      })
+    }
+  }
+
+
+  //     const data = response._data;
+
+  //     // Process the response data
+  //     .catch((error) => error.data)
+  //     if (response.ok) {
+  //       // Redirect to the next page
+  //       router.push("/dashboard");
+  //     } else {
+  //       console.log('error:', response.status, response.ok);
+
+  //       // Show an error message
+  //       snackbar.add({
+  //         type: "error",
+  //         text: data
+  //       });
+  //     }
+  //   },
+  // });
 
 }
 

@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib.auth import get_user_model
+from drfpasswordless.utils import create_authentication_token
 from rest_framework import permissions, status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -70,8 +71,20 @@ class RegisterUserAPIView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         user = serializer.save()
+        headers = self.get_success_headers(serializer.data)
+
+        # TODO: Check which fields are required for the user to be created
+        # and only send the required fields in the response.
         data = serializer.data
-        token = Token.objects.create(user=user)
+
+        # Get or create token for user
+        (token, _) = create_authentication_token(user=user)
+
+        # Add the authentication token to the response. The Nuxt
+        # UI will store this token in the browser's local storage
+        # and use it to authenticate requests to the API.
         data["token"] = token.key
-        return Response(data, status=status.HTTP_201_CREATED)
+
+        return Response(data, status=status.HTTP_201_CREATED, headers=headers)
