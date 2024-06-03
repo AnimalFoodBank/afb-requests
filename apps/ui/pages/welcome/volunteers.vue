@@ -128,6 +128,13 @@ const defaultBranch = ref("none");
                     class="text-primary">Privacy Notice</NuxtLink>.
         </p>
       </template>
+
+      <template #footer>
+        <p class="ui.footer italic">
+          Or <NuxtLink to="/welcome/clients"
+                    class="text-secondary underline font-medium">signup as a Client</NuxtLink>.
+        </p>
+      </template>
     </UAuthForm>
   </UCard>
 </template>

@@ -42,23 +42,30 @@ onMounted(() => {
     {
       name: "name",
       type: "text",
-      label: "Name",
-      placeholder: "Enter your name",
+      label: "Name*",
+      placeholder: "e.g. first name, full name or a nickname",
+      icon: "i-heroicons-user-circle",
+      autofocus: true,
     },
     {
       name: "email",
       type: "text",
-      label: "Email",
-      placeholder: "Enter your email",
-  },
+      label: "Email*",
+      placeholder: "Your email address",
+      icon: "i-heroicons-envelope",
+    },
     {
       name: "phone",
       type: "text",
       label: "Phone",
-      placeholder: "Enter your phone",
+      placeholder: "Your phone number",
+      icon: "i-heroicons-phone",
+      help: "We use your phone number to coordinate deliveries. See our Privacy Notice for how we use your information (link below).",
+      required: false,
     },
   ];
 });
+
 
 async function onSubmit(
   event: FormSubmitEvent<{

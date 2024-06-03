@@ -6,7 +6,6 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from drf_registration.api.user import UserSerializer as BaseUserSerializer
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
 # Get the User model
 User = get_user_model()
