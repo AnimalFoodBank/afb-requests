@@ -16,20 +16,25 @@ from drf_spectacular.views import (
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter()
-router.register("requests", FoodRequestViewSet, basename="foodrequest")
-router.register("users", users.UserViewSet, basename="user")
-
-
 passwordless = include("drfpasswordless.urls")
 
+router = DefaultRouter()
+
 # e.g. /api/v1/requests/abcdef1234/
+router.register("requests", FoodRequestViewSet, basename="foodrequest")
+
+
 urlpatterns = [
     path("afbadmin/", afbcore_admin.site.urls, name="admin"),
     path(
         "api/<str:version>/register/",
         users.RegisterUserAPIView.as_view(),
         name="registration",
+    ),
+    path(
+        "api/<str:version>/current_user/",
+        users.CurrentUserAPIView.as_view(),
+        name="current_user",
     ),
     path("api/<str:version>/", include(router.urls)),
     path("api/<str:version>/passwordless/", passwordless),

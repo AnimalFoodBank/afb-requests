@@ -1,15 +1,14 @@
 import uuid
 
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from phonenumber_field.modelfields import PhoneNumberField
 
-from .role import Role  # noqa: F401
+from ..base import BaseAbstractModel, HasDetails
 
 # Profile depends on User and not the other way around
 from .user import User  # noqa: F401
-
-from ..base import BaseAbstractModel
 
 # Status - Active, On Hold, Banned
 STATUS_CHOICES = [
@@ -26,8 +25,15 @@ MANY_TO_MANY_DEFAULTS = {
     "symmetrical": False,
 }
 
+ROLE_CHOICES = [
+    ("client", "Client"),
+    ("volunteer", "Volunteer"),
+    ("manager", "Manager"),
+    ("admin", "Admin"),
+]
 
-class Profile(BaseAbstractModel):
+
+class Profile(HasDetails, BaseAbstractModel):
     """
     A model representing a user profile.
 
@@ -42,7 +48,6 @@ class Profile(BaseAbstractModel):
     - address_verbatim: CharField, max length 255, blank
     - address: CharField, max length 255, null
     - delivery_regions: ManyToManyField to DeliveryRegion model
-    - points_earned: IntegerField, default 0
     - validated_postal_code: CharField, max length 20, null
     - country: CharField, max length 255, blank
     - status: CharField, max length 20, choices STATUS_CHOICES, default "active"
@@ -55,20 +60,18 @@ class Profile(BaseAbstractModel):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="profiles")
-    role = models.ForeignKey(Role, on_delete=models.DO_NOTHING, related_name="profiles")
+    user = models.ForeignKey(
+        User, on_delete=models.DO_NOTHING, related_name="profiles"
+    )
 
     # Usually just one, but can be multiple
     branches = models.ManyToManyField("Branch", **MANY_TO_MANY_DEFAULTS)
 
     # Name fields
-    preferred_name = models.CharField(max_length=64)
-
-    # Email - Unique - don't allow duplicates.
-    email = models.EmailField(unique=True)
+    preferred_name = models.CharField(max_length=64, null=True)
 
     # Phone - Validate format - numbers only
-    phone_number = PhoneNumberField(region="US")
+    phone_number = PhoneNumberField(region="CA")
 
     # We allow free form text entry but store the validated
     # address in the `address` field. These fields should
@@ -82,6 +85,13 @@ class Profile(BaseAbstractModel):
     # i.e. An address from Canada Post or Google Maps
     address = models.CharField(max_length=255, blank=True, null=True)
 
+    role = models.CharField(
+        _("role"),
+        choices=ROLE_CHOICES,
+        max_length=255,
+        default="client",
+    )
+
     #
     # Via Volunteer
     #
@@ -89,10 +99,6 @@ class Profile(BaseAbstractModel):
     # Postal/Zip Codes/Cities will deliver to
     # We will use this to notify them of available deliveries in their "regions"
     delivery_regions = models.ManyToManyField("DeliveryRegion")
-
-    # Points/Rewards Earned
-    # For each delivery made/attempted - redeem these for swag/gift cards
-    points_earned = models.IntegerField(default=0)
 
     #
     # Via Client
@@ -115,7 +121,9 @@ class Profile(BaseAbstractModel):
     # Country - I don't know if we need this but google addresses populate country too. It may be useful for analytics
     country = models.CharField(max_length=255, blank=True)
 
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="active")
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="active"
+    )
 
     def __str__(self):
         return f"{self.preferred_name}"

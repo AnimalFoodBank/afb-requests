@@ -16,4 +16,4 @@ module.
 """
 
 from .requests import FoodRequestViewSet  # noqa: F401
-from .users import UserViewSet  # noqa: F401
+from .users import CurrentUserAPIView  # noqa: F401

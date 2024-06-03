@@ -20,7 +20,8 @@ from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel, UUIDModel
-from phonenumber_field.modelfields import PhoneNumberField
+
+from ..base import HasDetails
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +39,7 @@ class UserManager(BaseUserManager):
         # Fast fail on bad input.
         if value is None or value == "":
             logger.info(
-                f"UserManager.is_a_truly_unique - value is None or empty"
+                "UserManager.is_a_truly_unique - value is None or empty"
             )
             return False
 
@@ -50,7 +51,7 @@ class UserManager(BaseUserManager):
             logger.info(f"UserManager.is_a_truly_unique - record: {record.pk}")
 
         except User.DoesNotExist:
-            logger.info(f"UserManager.is_a_truly_unique - DoesNotExist")
+            logger.info("UserManager.is_a_truly_unique - DoesNotExist")
             is_unique = True
 
         return is_unique
@@ -88,7 +89,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(UUIDModel, TimeStampedModel, AbstractUser):
+class User(UUIDModel, TimeStampedModel, HasDetails, AbstractUser):
     """
     A custom user model that extends Django's built-in AbstractUser model.
 
@@ -126,6 +127,11 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
     # Override the email field from AbstractUser to make it unique.
     email = models.EmailField(_("email address"), unique=True)
 
+    # Override the username field from AbstractUser to allow null values.
+    username = models.CharField(
+        _("username"), max_length=255, unique=True, null=True, blank=True
+    )
+
     # Add a single name field which we'll use instead of the default
     # first_name and last_name fields. We leave those fields in place
     # for compatibility with other apps that expect them to be present.
@@ -137,16 +143,4 @@ class User(UUIDModel, TimeStampedModel, AbstractUser):
         help_text=_(
             "Indicates whether the user has agreed to the terms of service."
         ),
-    )
-
-    # Override the username field from AbstractUser to allow null values.
-    username = models.CharField(
-        _("username"), max_length=255, unique=True, null=True, blank=True
-    )
-
-    phone = PhoneNumberField(
-        _("phone number"),
-        null=True,
-        blank=True,
-        help_text=_("The user's phone number."),
     )

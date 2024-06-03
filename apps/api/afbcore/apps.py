@@ -22,4 +22,12 @@ class AfbcoreConfig(AppConfig):
     name = "afbcore"
 
     def ready(self):
-        pass
+        """
+        Overriding the ready method to import the signals module.
+
+        Django provides a set of built-in signals that allow certain senders
+        to notify a set of receivers when certain actions have taken place.
+        We're importing the signals here to ensure that they get registered
+        when the application configuration is ready.
+        """
+        import afbcore.signals  # noqa: F401

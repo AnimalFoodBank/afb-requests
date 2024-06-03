@@ -18,14 +18,15 @@ logger = logging.getLogger(__name__)
 
 # Example of a viewset with custom actions.
 #
-class UserViewSet(viewsets.ModelViewSet):
+class CurrentUserAPIView(CreateAPIView):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint for the currently logged in user. No access to
+    other users is made available through this endpoint.
     """
 
     # TODO: Use a more limited queryset. This makes all users available to all
     # usersto this endpoint. Can't spill beans you don't have.
-    queryset = User.objects.all().order_by("-date_joined")
+    queryset = User.objects.none()
     serializer_class = UserSerializer  # must be a class, not string
 
     # both permissions and authentication are required for
@@ -44,27 +45,9 @@ class UserViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data)
 
-    def get_queryset(self):
-        """
-        This view should return a list of all the users/profiles
-        for the currently authenticated user.
-        """
-        if self.action == "list":
-            return User.objects.none()  # disable list view
-        return super().get_queryset()
-
-    def destroy(self, request, *args, **kwargs):
-        """
-        Override destroy method to disable delete action
-        """
-        return Response(
-            {"detail": "Delete action is disabled"},
-            status=status.HTTP_405_METHOD_NOT_ALLOWED,
-        )
-
 
 class RegisterUserAPIView(CreateAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.none()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -73,11 +56,9 @@ class RegisterUserAPIView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
 
         user = serializer.save()
-        headers = self.get_success_headers(serializer.data)
-
-        # TODO: Check which fields are required for the user to be created
-        # and only send the required fields in the response.
         data = serializer.data
+
+        headers = self.get_success_headers(data)
 
         # Get or create token for user
         (token, _) = create_authentication_token(user=user)

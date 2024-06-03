@@ -109,7 +109,7 @@ export default defineNuxtConfig({
         signIn: { path: "/passwordless/auth/token/", method: "post" },
         signOut: { path: "/authtoken/logout/", method: "post" },
         signUp: { path: "/register", method: "post" },
-        getSession: { path: "/users/current_user/", method: "get" },
+        getSession: { path: "/current_user/", method: "get" },
       },
       sessionDataType: {
         id: "string",

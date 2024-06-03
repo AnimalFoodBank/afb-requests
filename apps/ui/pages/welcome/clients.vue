@@ -37,7 +37,6 @@ const validate = (state: any): FormError[] => {
   return errors;
 };
 
-
 onMounted(() => {
   fields.value = [
     {
@@ -56,7 +55,7 @@ onMounted(() => {
       icon: "i-heroicons-envelope",
     },
     {
-      name: "phone",
+      name: "phone_number",
       type: "text",
       label: "Phone",
       placeholder: "Your phone number",
@@ -72,22 +71,22 @@ async function onSubmit(
   event: FormSubmitEvent<{
     email: string;
     name: string;
-    phone: string;
+    phone_number: string;
   }>,
 ) {
   console.log("Submitted", event);
 
   // Prepare the payload
   const payload = {
+    role: 'client',
     name: event.name,
     email: event.email,
-    phone: event.phone,
+    phone_number: event.phone_number,
   };
   console.log("Payload:", payload);
 
   // Send post request to the API endpoint using Nuxt 3 useFetch
   const path = "/api/v1/register/";
-
 
   try {
 
@@ -107,7 +106,7 @@ async function onSubmit(
     if (data && data.email) {
       snackbar.add({
         type: "error",
-        text: data.email[0]
+        text: "Please choose another email address",
       });
 
     } else {
@@ -119,26 +118,6 @@ async function onSubmit(
       })
     }
   }
-
-
-  //     const data = response._data;
-
-  //     // Process the response data
-  //     .catch((error) => error.data)
-  //     if (response.ok) {
-  //       // Redirect to the next page
-  //       router.push("/dashboard");
-  //     } else {
-  //       console.log('error:', response.status, response.ok);
-
-  //       // Show an error message
-  //       snackbar.add({
-  //         type: "error",
-  //         text: data
-  //       });
-  //     }
-  //   },
-  // });
 
 }
 

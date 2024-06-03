@@ -41,3 +41,17 @@ class BaseAbstractModel(UUIDModel, SoftDeletableModel, TimeStampedModel):
         abstract = True
 
     objects = BaseAbstractModelManager()
+
+
+class HasDetails(models.Model):
+    """
+    A mixin for models that have a details field.
+
+    Fields:
+        - details: JSONField, blank=True, default=dict
+    """
+
+    details = models.JSONField(blank=True, default=dict)
+
+    class Meta:
+        abstract = True
