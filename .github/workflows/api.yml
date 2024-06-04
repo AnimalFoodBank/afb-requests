@@ -10,14 +10,13 @@
 #
 
 
-name: Django CI - Matrix
+name: API - Tests
 on:
+  # Trigger the workflow during API PRs and when this file changes
   pull_request:
     paths:
       - apps/api/**
-  push:
-    paths:
-      - .github/workflows/django.yml
+      - .github/workflows/api.yml
 
   # Allow running the workflow manually
   workflow_dispatch:
