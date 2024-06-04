@@ -10,8 +10,35 @@ definePageMeta({
   auth: false,
 });
 
+const snackbar = useSnackbar();
 
-const fields = [
+const router = useRouter();
+const route = useRoute();
+const email = route.query.email as string;
+
+const fields = ref<any>([]);
+
+const validateEmail = (email: string) => {
+  return (/^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+}
+
+const validate = (state: any): FormError[] => {
+  const errors = [];
+  if (!state.name)
+    errors.push({ path: "name", message: "Name is required" });
+
+  if (!state.email)
+    errors.push({ path: "email", message: "Email is required" });
+
+  if (!validateEmail(state.email)) {
+    errors.push({ path: "email", message: "Please enter a valid email address" });
+  }
+
+  return errors;
+};
+
+onMounted(() => {
+  fields.value = [
   {
     name: "name",
     type: "text",
@@ -28,7 +55,7 @@ const fields = [
     icon: "i-heroicons-envelope",
   },
   {
-    name: "phone",
+    name: "phone_number",
     type: "text",
     label: "Phone",
     placeholder: "Your phone number",
@@ -44,49 +71,61 @@ const fields = [
     icon: "i-ph-signature",
     required: false,
   },
-];
-
-const validateEmail = (email: string) => {
-  return (/^\w+([\.-\\+]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
-}
-
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!state.name)
-    errors.push({ path: "name", message: "Name is required" });
-
-  if (!state.email)
-    errors.push({ path: "email", message: "Email is required" });
-
-  if (!validateEmail(state.email))
-    errors.push({ path: 'email', message: 'Please enter a valid email address' });
-
-  return errors;
-};
-
-let timeoutId: number | undefined;
-
-onUnmounted(() => {
-  if (timeoutId) {
-    clearTimeout(timeoutId);
-  }
+  ]
 });
 
 async function onSubmit(
   event: FormSubmitEvent<{
     email: string;
     name: string;
-    phone: string;
-    intro: string;
+    phone_number: string;
   }>,
 ) {
   console.log("Submitted", event);
 
   // Prepare the payload
   const payload = {
+    role: 'volunteer',
+    name: event.name,
     email: event.email,
+    phone_number: event.phone_number,
+    intro: event.intro,
   };
   console.log("Payload:", payload);
+
+  // Send post request to the API endpoint using Nuxt 3 useFetch
+  const path = "/api/v1/register/";
+
+  try {
+
+    const data = await $fetch(path, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    await navigateTo("/dashboard");
+
+  } catch (error: any) {
+    const data = error.data;
+
+    if (data && data.email) {
+      snackbar.add({
+        type: "error",
+        text: "Please choose another email address",
+      });
+
+    } else {
+
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Page Not Found',
+        fatal: true
+      })
+    }
+  }
 
 }
 
@@ -126,6 +165,13 @@ const defaultBranch = ref("none");
                     class="text-primary">Terms of Service</NuxtLink> and
           <NuxtLink to="/legal/privacy"
                     class="text-primary">Privacy Notice</NuxtLink>.
+        </p>
+      </template>
+
+      <template #footer>
+        <p class="ui.footer italic">
+          Or <NuxtLink to="/welcome/clients"
+                    class="text-secondary underline font-medium">signup as a Client</NuxtLink>.
         </p>
       </template>
     </UAuthForm>

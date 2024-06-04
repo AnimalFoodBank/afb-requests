@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 # environment variables. e.g. `os.getenv("DEBUG", "False")`
 load_dotenv()
 
+TEST_RUNNER = "afb.test_runner.PytestTestRunner"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +38,6 @@ PRODUCTION_URI = f"{URI_SCHEMA}://{PRODUCTION_HOST}"
 UI_BASE_HOST = os.getenv("UI_BASE_HOST", "localhost")
 UI_URI_SCHEMA = os.getenv("UI_URI_SCHEMA", "https")
 UI_BASE_URI = f"{URI_SCHEMA}://{UI_BASE_HOST}"
-
 
 # When using Django Rest Framework (DRF), you typically don't use
 # LOGIN_REDIRECT_URL because DRF is designed to build APIs, which are
@@ -201,24 +201,40 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         # "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
         # 'rest_framework.permissions.AllowAny',
         "rest_framework.permissions.IsAuthenticated",
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    # Rate limiting / resource throttling
+    #
+    # See: https://www.django-rest-framework.org/api-guide/throttling/#how-clients-are-identified
+    #
+    "DEFAULT_THROTTLE_CLASSES": [
+        # "rest_framework.throttling.AnonRateThrottle",
+        # "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.ScopedRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        # "anon": "100/min",
+        # "user": "1000/day",
+        "signups": "60/hour",  # per IP Address (e.g. think library)
+    },
+    "NUM_PROXIES": 1,  # https://github.com/encode/django-rest-framework/issues/3234#issuecomment-128664927
+    # Pagination
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 25,
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend"
     ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
-    ],
+    # API Version
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
     "ALLOWED_VERSIONS": ["v1"],
+    "DEFAULT_VERSION": "v1",
     "VERSION_PARAM": "version",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
@@ -262,7 +278,7 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_verification_email.txt",
     "PASSWORDLESS_EMAIL_VERIFICATION_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_verification_email.html",
     # Registers previously unseen aliases as new users.
-    "PASSWORDLESS_REGISTER_NEW_USERS": True,
+    "PASSWORDLESS_REGISTER_NEW_USERS": False,
     # URL Prefix for Authentication Endpoints
     "PASSWORDLESS_AUTH_PREFIX": "auth/",
     # URL Prefix for Verification Endpoints
@@ -441,7 +457,8 @@ LOGGING = {
     "handlers": {
         "console": {
             "level": LOG_LEVEL,
-            "class": "rich.logging.RichHandler",  # see afbcore/apps.py
+            # "class": "rich.logging.RichHandler",  # see afbcore/apps.py
+            "class": "logging.StreamHandler",
             "formatter": "verbose",
         }
     },

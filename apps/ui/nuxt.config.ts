@@ -7,11 +7,11 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@nuxt/fonts",
     "@nuxtjs/tailwindcss",
-    '@vueuse/nuxt',
+    "@vueuse/nuxt",
     "nuxt-snackbar",
     "@sidebase/nuxt-auth",
     "@vueform/nuxt",
-    // '@nuxt/test-utils/module',
+    "@nuxt/test-utils/module",
     // '@vueform/builder-nuxt',
   ],
 
@@ -109,7 +109,7 @@ export default defineNuxtConfig({
         signIn: { path: "/passwordless/auth/token/", method: "post" },
         signOut: { path: "/authtoken/logout/", method: "post" },
         signUp: { path: "/register", method: "post" },
-        getSession: { path: "/users/current_user/", method: "get" },
+        getSession: { path: "/current_user/", method: "get" },
       },
       sessionDataType: {
         id: "string",

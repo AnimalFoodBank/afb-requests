@@ -22,8 +22,8 @@ definePageMeta({
  *   data: any,
  *   token: string
  * }} The authentication status, data, and token.
- */
- const {
+*/
+const {
   status: authStatus,
   data: authData,
   token: authToken,

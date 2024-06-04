@@ -1,24 +1,20 @@
 [tool.poetry]
 name = "AFB Requests"
 version = "0.1.0"
-description = "allows people to both request and donate pet food to help feed animals."
+description = "The Animal Food Bank Requests application"
 authors = ["Delano"]
 license = "MIT"
 readme = "README.md"
 package-mode = false
 
-# [build-system]
-# requires = ["poetry-core>=1.0.0"]
-# build-backend = "poetry.core.masonry.api"
-
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-Django = "5.0.4"
+Django = "5.0.6"
 asgiref = "3.8.1"
 asttokens = "2.4.1"
 attrs = "23.2.0"
-build = "1.1.1"
-certifi = "2024.2.2"
+build = "1.2.1"
+certifi = "2024.6.2"
 cfgv = "3.4.0"
 charset-normalizer = "3.3.2"
 click = "8.1.7"
@@ -27,13 +23,13 @@ decorator = "5.1.1"
 distlib = "0.3.8"
 django-cors-headers = "4.3.1"
 django-extensions = "3.2.3"
-django-filter = "24.1"
+django-filter = "24.2"
 django-model-utils = "4.4.0"
 django-phonenumber-field = "7.3.0"
-django-unfold = "0.21.1"
-django-vite = "3.0.3"
-drf-spectacular = "0.27.1"
-drf-spectacular-sidecar = "2024.3.4"
+django-unfold = "0.26.0"
+django-vite = "3.0.4"
+drf-spectacular = "0.27.2"
+drf-spectacular-sidecar = "2024.6.1"
 executing = "2.0.1"
 filelock = "3.13.1"
 identify = "2.5.35"
@@ -48,7 +44,7 @@ jsonschema-specifications = "2023.12.1"
 markdown = "3.6"
 markupsafe = "2.1.5"
 matplotlib-inline = "0.1.6"
-nodeenv = "1.8.0"
+nodeenv = "1.9.0"
 packaging = "24.0"
 parso = "0.8.3"
 pexpect = "4.9.0"
@@ -56,7 +52,7 @@ phonenumbers = "8.13.32"
 pip-tools = "7.4.1"
 platformdirs = "4.2.0"
 pluggy = "1.4.0"
-pre-commit = "3.7.0"
+pre-commit = "3.7.1"
 prompt-toolkit = "3.0.43"
 psycopg2-binary = "2.9.9"
 ptyprocess = "0.7.0"
@@ -67,24 +63,23 @@ pytest = "8.1.1"
 pytest-django = "4.8.0"
 python-dotenv = "1.0.1"
 pyyaml = "6.0.1"
-referencing = "0.34.0"
-requests = "2.32.0"
-rpds-py = "0.18.0"
+referencing = "0.35.1"
+requests = "2.32.3"
+rpds-py = "0.18.1"
 six = "1.16.0"
 sqlparse = "0.5.0"
 stack-data = "0.6.3"
 traitlets = "5.14.2"
 uritemplate = "4.1.1"
 urllib3 = "2.2.1"
-virtualenv = "20.25.1"
+virtualenv = "20.26.2"
 wcwidth = "0.2.13"
-werkzeug = "3.0.1"
+werkzeug = "3.0.3"
 wheel = "0.43.0"
 djangorestframework = {git = "https://github.com/delano/django-rest-framework.git", rev = "dev"}
-drf-registration = {git = "https://github.com/delano/drf-registration.git", rev = "dev"}
 drfpasswordless = {git = "https://github.com/delano/django-rest-framework-passwordless.git", rev = "dev"}
 rich = "^13.7.1"
-
+pytest-xdist = "^3.6.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.5"
@@ -95,6 +90,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 80
+target-version = ['py38']
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -141,7 +137,7 @@ exclude = [
 ]
 
 # Same as Black.
-line-length = 88
+line-length = 80
 indent-width = 4
 
 # Assume Python 3.8
@@ -180,3 +176,26 @@ include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
 line_length = 80
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "afb.settings"
+pythonpath = [
+  ".",
+  "./apps/api",
+]
+minversion = "8.1"
+
+# https://docs.pytest.org/en/8.1.x/reference/reference.html#command-line-flags
+addopts = "-rfe -q"
+
+required_plugins = "pytest-django>=4.8.0 pytest-xdist>=3.6.0"
+
+python_files = [
+  "test_*.py",
+  "*_test.py",
+]
+testpaths = [
+    "apps/api/tests",
+    "apps/api/afbcore/tests",
+]

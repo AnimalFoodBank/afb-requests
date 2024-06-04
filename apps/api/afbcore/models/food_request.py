@@ -39,6 +39,9 @@ class FoodRequest(BaseAbstractModel):
     # multiple profiles, so we need to think about this.
     user = models.ForeignKey("User", on_delete=models.DO_NOTHING)
 
+    # ** We will want them to see and confirm/edit their pets, and edit some fields of their pets info
+    pets = models.ManyToManyField("Pet")
+
     # A food request can belong to only one Branch
     branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING, null=True)
 
@@ -69,10 +72,6 @@ class FoodRequest(BaseAbstractModel):
 
     # Preferred way for us to contact them about the request Email, Text or Phone
     method_of_contact = models.CharField(max_length=100)
-
-    # One or more.
-    # ** We will want them to see and confirm/edit their pets, and edit some fields of their pets info
-    pet_details = models.JSONField(default=dict)
 
     # Safe drop - if they are not home, can we leave the food at the door?
     # Yes/No

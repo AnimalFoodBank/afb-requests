@@ -1,11 +1,10 @@
 from unittest import skip
-from django.test import TestCase
-from django.contrib.auth import get_user_model
-from afbcore.models.users.profile import Profile
 
-from afbcore.models.users.role import Role
 from afbcore.models.branch import Branch
 from afbcore.models.delivery_region import DeliveryRegion
+from afbcore.models.users.profile import Profile
+from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 """
     Run these tests with the following command:
@@ -18,22 +17,20 @@ class ProfileModelTest(TestCase):
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
         cls.User = get_user_model()
-        cls.Role = Role.objects.create(name="Test Role", level=1)
-        cls.Branch = Branch.objects.create(name="Test Branch")
-        cls.DeliveryRegion = DeliveryRegion.objects.create(name="Test Delivery Region")
+        cls.Branch = Branch.objects.create(display_name="Test Branch")
+        cls.DeliveryRegion = DeliveryRegion.objects.create(
+            name="Test Delivery Region"
+        )
 
         cls.user = cls.User.objects.create_user(
-            username="testuser",
+            name="testuser",
             email="testuser@example.com",
             password="testpass123",
         )
 
         cls.profile = Profile.objects.create(
             user=cls.user,
-            role=cls.Role,
-            first_name="Test",
-            last_name="User",
-            email="testuser@example.com",
+            preferred_name="Plop",
             phone_number="+1234567890",
             address_verbatim="123 Main St",
             address="123 Main St",
@@ -49,11 +46,6 @@ class ProfileModelTest(TestCase):
         profile = Profile.objects.get(id=self.profile.id)
         self.assertEqual(profile.user, self.user)
 
-    @skip("Role model is not implemented yet")
-    def test_profile_role_relation(self):
-        profile = Profile.objects.get(id=self.profile.id)
-        self.assertEqual(profile.role, self.Role)
-
     def test_profile_branches_relation(self):
         profile = Profile.objects.get(id=self.profile.id)
         self.assertEqual(profile.branches.count(), 1)
@@ -66,8 +58,4 @@ class ProfileModelTest(TestCase):
 
     def test_profile_str_method(self):
         profile = Profile.objects.get(id=self.profile.id)
-        self.assertEqual(str(profile), "Test User")
-
-    def test_profile_absolute_url_method(self):
-        profile = Profile.objects.get(id=self.profile.id)
-        self.assertEqual(profile.get_absolute_url(), f"/clients/create/{profile.id}/")
+        self.assertEqual(str(profile), "Plop")

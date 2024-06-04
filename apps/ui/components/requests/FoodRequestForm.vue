@@ -85,7 +85,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   const foodRequestAPIData = {
     // Match the API field names exactly
     user: userId,  // not user_id
-    address_text: requestData.location.interactive_address,
+    address_text: requestData.delivery_address.interactive_address,
     address_google_place_id: null,
     address_canadapost_id: null,
     address_latitude: null,

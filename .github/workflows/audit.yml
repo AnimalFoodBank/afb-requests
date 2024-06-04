@@ -18,7 +18,7 @@
 # - https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
 
-name: Audit (Both apps)
+name: Dependency Audit (Both apps)
 on:
   push:
     branches: [main]
@@ -98,7 +98,7 @@ jobs:
       - name: Install dependencies
         working-directory: apps/ui
         run: |
-          npm install -g pnpm@9.1.1
+          npm install -g pnpm@9.1.4
           pnpm install
 
       #----------------------------------------------
@@ -116,7 +116,6 @@ jobs:
       # - name: Run tests
       #   working-directory: apps/ui
       #   run: pnpm test
-
 
       #----------------------------------------------
       #         pnpm package audit

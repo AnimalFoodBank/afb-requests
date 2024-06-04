@@ -10,14 +10,13 @@
 #
 
 
-name: Django CI - Matrix
+name: API - Tests
 on:
+  # Trigger the workflow during API PRs and when this file changes
   pull_request:
     paths:
       - apps/api/**
-  push:
-    paths:
-      - .github/workflows/django.yml
+      - .github/workflows/api.yml
 
   # Allow running the workflow manually
   workflow_dispatch:
@@ -48,7 +47,7 @@ jobs:
         image: postgres:16.2-bookworm
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: bronco
+          POSTGRES_PASSWORD: ronco
           POSTGRES_DB: postgres
         ports:
           - 5432:5432
@@ -61,8 +60,10 @@ jobs:
     env:
       DB_NAME: postgres
       DB_USER: postgres
-      DB_HOST: postgres
-      DB_PASSWORD: bronco
+      DB_PASSWORD: ronco
+      # Use the locally mapped port otherwise accessing the name of the service
+      # container "postgres" leads to: "Temporary failure in name resolution".
+      DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_ENGINE: django.db.backends.postgresql
 
@@ -135,16 +136,18 @@ jobs:
       - name: Install django ${{ matrix.django-version }}
         run: |
           poetry add Django@${{ matrix.django-version }}
-        env:
-            VIRTUAL_ENV: .venv
 
       #--------------------------------------------
-      # run tests (disabled for now)
+      # run tests
       #--------------------------------------------
-      # - name: Run tests
-      #   run: |
-      #     poetry run python ./manage.py test
-      #     pytest tests/
-      #     coverage report
-      #   env:
-      #       VIRTUAL_ENV: .venv
+      - name: Run tests
+        run: |
+          # Install the default environment settings. This includes
+          # the database config for the CI environment (sqlite3).
+          #
+          # Disabled temporarily:
+          #   "cp: cannot stat '.env.example': No such file or directory" ?
+          #
+          # cp -p .env.example .env
+
+          poetry run pytest

@@ -104,6 +104,8 @@ async function onSubmit(
       onRequestError({ request, options, error }) {
         // Handle the request errors
         console.error("A request error occurred:", error);
+
+        // TODO
       },
       onResponse({ request, response, options }) {
         const data = response._data;
@@ -132,20 +134,6 @@ async function onSubmit(
           // Redirect after successful form submission
           navigateTo('/login/check')
 
-        } else {
-          // Handle the response errors
-          console.error(
-            "A response error occurred:",
-            "Status code:",
-            response.status,
-            "Status message:",
-            data.detail,
-          );
-
-          snackbar.add({
-            type: "error",
-            text: "An error occurred. Please try again.",
-          });
         }
       },
       onResponseError({ request, response, options }) {
@@ -155,8 +143,37 @@ async function onSubmit(
           "Status code:",
           response.status,
           "Status message:",
-          response._data.detail,
+          response._data,
         );
+
+        // Check for a non field error and that the value has at least
+        // one message.
+        if (response._data?.non_field_errors && response._data.non_field_errors.length > 0) {
+          snackbar.add({
+            type: "info",
+            text: "Please create an account.",
+          });
+
+          // Nuxt redirect to welcome/clients page, including the email address
+          // in the query string.
+          console.log('Directing to welcome/clients')
+          navigateTo({
+            path: '/welcome/clients',
+            query: {
+              email: event.email,
+            }
+          });
+
+
+        } else {
+          // Display error message
+          snackbar.add({
+            type: "error",
+            text: "An error occurred. Please try again.",
+          });
+        }
+        // debugger
+
       },
       baseURL: config.public.apiBase,
       method: "POST",
@@ -195,7 +212,7 @@ async function onSubmit(
                @submit="onSubmit">
 
       <template #description>
-        <p class="text-sm italic mb-4">(Don't have an account? <NuxtLink to="/welcome" class="text-primary font-medium">Sign up</NuxtLink>)</p>
+        <p class="text-sm italic mb-4">(Don't have an account? <NuxtLink to="/welcome/clients" class="text-primary font-medium">Sign up</NuxtLink>)</p>
 
         <p>Enter the email address associated with your account and we'll send a magic link to your inbox.</p>
       </template>
