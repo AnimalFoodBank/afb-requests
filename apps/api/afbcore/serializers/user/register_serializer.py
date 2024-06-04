@@ -1,7 +1,8 @@
 import uuid
 
 from django.contrib.auth.hashers import make_password
-from drf_registration.api.user import UserSerializer
+
+from .user_serializer import UserSerializer
 
 
 class RegisterSerializer(UserSerializer):
