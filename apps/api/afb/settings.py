@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 # environment variables. e.g. `os.getenv("DEBUG", "False")`
 load_dotenv()
 
+TEST_RUNNER = "afb.test_runner.PytestTestRunner"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -442,7 +443,8 @@ LOGGING = {
     "handlers": {
         "console": {
             "level": LOG_LEVEL,
-            "class": "rich.logging.RichHandler",  # see afbcore/apps.py
+            # "class": "rich.logging.RichHandler",  # see afbcore/apps.py
+            "class": "logging.StreamHandler",
             "formatter": "verbose",
         }
     },
