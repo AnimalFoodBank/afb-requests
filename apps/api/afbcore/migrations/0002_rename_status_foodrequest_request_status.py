@@ -4,6 +4,8 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+    def reverse_code(apps, schema_editor):
+        apps.get_model("afbcore", "FoodRequest").objects.all().update(request_status=F('status'))
     dependencies = [
         ("afbcore", "0001_initial"),
     ]
