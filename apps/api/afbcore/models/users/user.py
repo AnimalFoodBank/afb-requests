@@ -21,7 +21,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel, UUIDModel
 
-from ..base import HasDetails
+from ..mixins import HasDetails
 
 logger = logging.getLogger(__name__)
 
