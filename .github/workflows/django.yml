@@ -141,5 +141,8 @@ jobs:
       #--------------------------------------------
       - name: Run tests
         run: |
-          poetry add pytest
+          # Install the default environment settings. This includes
+          # the database config for the CI environment (sqlite3).
+          cp -p .env.example .env
+
           poetry run pytest
