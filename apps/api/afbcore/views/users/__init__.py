@@ -47,6 +47,7 @@ class CurrentUserAPIView(CreateAPIView):
 
 
 class RegisterUserAPIView(CreateAPIView):
+    throttle_scope = "signups"
     queryset = User.objects.none()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
