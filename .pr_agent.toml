@@ -88,11 +88,18 @@ enable_help_text = true
 [pr_code_suggestions] # /improve #
 max_context_tokens = 10000
 num_code_suggestions = 5
+commitable_code_suggestions = true
 summarize = true
-extra_instructions = ""
 rank_suggestions = true
 enable_help_text = true
 persistent_comment = false
+extra_instructions="""\
+Emphasize the following aspects:
+1. Does the code logic cover likely edge cases?
+2. What security considerations have been taken into account?
+3. Are the code changes clear and easy to understand?
+4. Are decisions documented in the code?
+"""
 # params for '/improve --extended' mode
 auto_extended_mode = true
 num_code_suggestions_per_chunk = 5
