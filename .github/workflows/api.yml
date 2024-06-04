@@ -60,7 +60,7 @@ jobs:
     env:
       DB_NAME: postgres
       DB_USER: postgres
-      DB_HOST: postgres
+      DB_HOST: 127.0.0.1
       DB_PASSWORD: bronco
       DB_PORT: 5432
       DB_ENGINE: django.db.backends.postgresql
