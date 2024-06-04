@@ -97,7 +97,8 @@ class FoodRequest(BaseAbstractModel):
 
     # Request Received, Request Approved & in Queue, Request Denied, Volunteer Assigned, Request Ready For Volunteer Pickup, Delivery Scheduled, Out For Delivery, Delivered, Undeliverable
     request_status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default="received"
+        max_length=50, choices=STATUS_CHOICES, default="received"
+    )
     )
 
     # Free form comments from driver, client, volunteer, etc.
