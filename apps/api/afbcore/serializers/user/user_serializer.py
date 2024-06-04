@@ -17,15 +17,14 @@ User = get_user_model()
 
 # UserSerializer class
 class UserSerializer(serializers.ModelSerializer):
-    # # Serialize as a plain string field to smooth out the
-    # # registration flow.
-    # phone = serializers.CharField(required=False, allow_blank=True)
-    profile = ProfileSerializer(required=False)
+    # A user can have multiple profiles
+    profiles = ProfileSerializer(many=True)
 
     class Meta:
         model = User
-        fields = ["id", "name", "email", "profile", "is_staff"]
-        read_only_fields = ["id", "is_staff", "profile"]
+        # depth = 1
+        fields = ["id", "name", "email", "profiles", "is_staff"]
+        read_only_fields = ["id", "is_staff", "profiles"]
         extra_kwargs = {
             "password": {"write_only": True},
         }
