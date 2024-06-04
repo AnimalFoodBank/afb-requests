@@ -44,7 +44,12 @@ def create_user_profile(sender, instance, created, **kwargs):
         role = details.pop("role", None)
         phone_number = details.pop("phone_number", None)
 
+        # Build the parameters for calling Profile.create. Note that
+        # role is a non-nullable field in Profile, so we only include
+        # it if it has a value. Otherwise we would get an IntegrityError.
+        params = {"user": instance, "phone_number": phone_number}
+        if role is not None:
+            params["role"] = role
+
         # Create the profile for the new user
-        Profile.objects.create(
-            user=instance, role=role, phone_number=phone_number
-        )
+        Profile.objects.create(**params)

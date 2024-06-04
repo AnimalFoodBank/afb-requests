@@ -5,7 +5,8 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-from ..base import BaseAbstractModel, HasDetails
+from ..base import BaseAbstractModel
+from ..mixins import HasDetails
 
 # Profile depends on User and not the other way around
 from .user import User  # noqa: F401
@@ -61,7 +62,7 @@ class Profile(HasDetails, BaseAbstractModel):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
-        User, on_delete=models.DO_NOTHING, related_name="profiles"
+        User, on_delete=models.CASCADE, related_name="profiles"
     )
 
     # Usually just one, but can be multiple
@@ -71,7 +72,7 @@ class Profile(HasDetails, BaseAbstractModel):
     preferred_name = models.CharField(max_length=64, null=True)
 
     # Phone - Validate format - numbers only
-    phone_number = PhoneNumberField(region="CA")
+    phone_number = PhoneNumberField(region="CA", null=True)
 
     # We allow free form text entry but store the validated
     # address in the `address` field. These fields should
@@ -127,6 +128,3 @@ class Profile(HasDetails, BaseAbstractModel):
 
     def __str__(self):
         return f"{self.preferred_name}"
-
-    def get_absolute_url(self):
-        return reverse("client-create", kwargs={"pk": self.pk})
