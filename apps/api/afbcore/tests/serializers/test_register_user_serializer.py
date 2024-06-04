@@ -1,6 +1,8 @@
+from afbcore.serializers import UserSerializer
 from django.contrib.auth import get_user_model
-from rest_framework.test import APITestCase
+from django.contrib.auth.hashers import check_password
 from rest_framework import status
+from rest_framework.test import APITestCase
 
 """
     To run this test, run the following command:
@@ -17,96 +19,53 @@ class TestCase(APITestCase):
     def test_register_user_serializer_valid_data(self):
         password_str = TestCase.valid_password
         data = {
-            "username": "testuser",
+            "name": "testuser",
             "email": "testuser@example.com",
-            "password": password_str,
-            "password2": password_str,
-            "first_name": "Test",
-            "last_name": "User",
         }
 
-        serializer = RegisterUserSerializer(data=data)
+        serializer = UserSerializer(data=data)
         is_valid = serializer.is_valid()
 
         if not is_valid:
             print(serializer.errors)
 
         self.assertNotIn("email", serializer.errors)
-        self.assertNotIn("username", serializer.errors)
+        self.assertNotIn("name", serializer.errors)
         self.assertNotIn("password", serializer.errors)
         self.assertNotIn("password2", serializer.errors)
         self.assertTrue(is_valid)
 
         user = serializer.save()
-        self.assertEqual(user.username, data["username"])
+        self.assertEqual(user.name, data["name"])
         self.assertEqual(user.email, data["email"])
-        self.assertEqual(user.first_name, data["first_name"])
-        self.assertEqual(user.last_name, data["last_name"])
-
-    def test_register_user_serializer_simple_password(self):
-        # python manage.py test afbcore.tests.serializers.test_register_user_serializer.TestCase.test_register_user_serializer_simple_password
-        password_str = "password123"
-        data = {
-            "username": "testuser",
-            "email": "testuser@example.com",
-            "password": password_str,
-            "password2": password_str,
-            "first_name": "Test",
-            "last_name": "User",
-        }
-
-        serializer = RegisterUserSerializer(data=data)
-        is_valid = serializer.is_valid()
-
-        if not is_valid:
-            print(serializer.errors)
-
-        self.assertNotIn("email", serializer.errors)
-        self.assertNotIn("username", serializer.errors)
-        self.assertIn("password", serializer.errors)
-        self.assertNotIn("password2", serializer.errors)
-        self.assertFalse(is_valid)
 
     def test_register_user_serializer_invalid_email(self):
-        password_str = TestCase.valid_password
         data = {
-            "username": "testuser",
+            "name": "testuser",
             "email": "invalid_email",
-            "password": password_str,
-            "password2": password_str,
-            "first_name": "Test",
-            "last_name": "User",
         }
 
-        serializer = RegisterUserSerializer(data=data)
+        serializer = UserSerializer(data=data)
         self.assertFalse(serializer.is_valid())
         self.assertIn("email", serializer.errors)
 
-    def test_register_user_serializer_password_mismatch(self):
+    def test_register_user_serializer_password_ignored(self):
         password_str = TestCase.valid_password
         data = {
-            "username": "testuser",
+            "name": "testuser",
             "email": "testuser@example.com",
             "password": password_str,
             "password2": "password456",
-            "first_name": "Test",
-            "last_name": "User",
         }
 
-        serializer = RegisterUserSerializer(data=data)
-        self.assertFalse(serializer.is_valid())
-        self.assertIn("password", serializer.errors)
+        serializer = UserSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        user = serializer.save()
 
-    def test_register_user_serializer_short_password(self):
-        data = {
-            "username": "testuser",
-            "email": "testuser@example.com",
-            "password": "fail",
-            "password2": "fail",
-            "first_name": "Test",
-            "last_name": "User",
-        }
+        # The given passwork doesn't match the literal value of
+        # the field and doesn't match the hashed value either.
+        self.assertFalse(user.password is None)
+        self.assertNotEqual(user.password, password_str)
+        self.assertFalse(check_password(password_str, user.password))
 
-        serializer = RegisterUserSerializer(data=data)
-        self.assertFalse(serializer.is_valid())
-        self.assertIn("password", serializer.errors)
+        self.assertTrue(len(serializer.errors) == 0)
