@@ -141,10 +141,9 @@ jobs:
       #--------------------------------------------
       # run tests (disabled for now)
       #--------------------------------------------
-      # - name: Run tests
-      #   run: |
-      #     poetry run python ./manage.py test
-      #     pytest tests/
-      #     coverage report
-      #   env:
-      #       VIRTUAL_ENV: .venv
+      - name: Run tests
+        run: |
+          poetry run pytest
+
+        env:
+            VIRTUAL_ENV: .venv
