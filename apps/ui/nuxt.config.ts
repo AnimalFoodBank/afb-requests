@@ -7,11 +7,11 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@nuxt/fonts",
     "@nuxtjs/tailwindcss",
-    '@vueuse/nuxt',
+    "@vueuse/nuxt",
     "nuxt-snackbar",
     "@sidebase/nuxt-auth",
     "@vueform/nuxt",
-    // '@nuxt/test-utils/module',
+    "@nuxt/test-utils/module",
     // '@vueform/builder-nuxt',
   ],
 
