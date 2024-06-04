@@ -36,51 +36,81 @@
 
 # plan_instructions = """
 
-framework = "Pytest"
+use_mocks = false
+num_desired_tests = 2
+is_add_test_to_suite = true
+
+framework = "pytest"
 
 reference_test = """
-
-from django.test import TestCase
-from rest_framework import status
-from rest_framework.test import APIRequestFactory
-from rest_framework.test import force_authenticate
-from afbcore.views import FoodRequestViewSet
-from afbcore.models import Request
-from afbcore.serializers import RequestSerializer
+# 2024-06-03
+from afbcore.serializers import UserSerializer
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import check_password
+from rest_framework import status
+from rest_framework.test import APITestCase
 
-User = get_user_model()
-
-
-class FoodRequestViewSetTestCase(TestCase):
+class TestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create(
-            email="testuser@example.com", password="testpassword"
-        )
-        cls.food_request = Request.objects.create(
-            title="Test Request", description="Test Description", user=cls.user
-        )
+        cls.User = get_user_model()
+        cls.valid_password = "xyz9.helloPLEASE"
 
-    def setUp(self):
-        self.factory = APIRequestFactory()
-        self.view = FoodRequestViewSet.as_view(
-            {
-                "get": "list",
-                "post": "create",
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-            }
-        )
-        self.url = "/requests/"
+    def test_register_user_serializer_valid_data(self):
+        password_str = TestCase.valid_password
+        data = {
+            "name": "testuser",
+            "email": "testuser@example.com",
+        }
 
-    def test_list_requests(self):
-        request = self.factory.get(self.url)
-        force_authenticate(request, user=self.user)
-        response = self.view(request)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer = UserSerializer(data=data)
+        is_valid = serializer.is_valid()
+
+        if not is_valid:
+            print(serializer.errors)
+
+        self.assertNotIn("email", serializer.errors)
+        self.assertNotIn("name", serializer.errors)
+        self.assertNotIn("password", serializer.errors)
+        self.assertNotIn("password2", serializer.errors)
+        self.assertTrue(is_valid)
+
+        user = serializer.save()
+        self.assertEqual(user.name, data["name"])
+        self.assertEqual(user.email, data["email"])
+
+    def test_register_user_serializer_invalid_email(self):
+        data = {
+            "name": "testuser",
+            "email": "invalid_email",
+        }
+
+        serializer = UserSerializer(data=data)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("email", serializer.errors)
+
+    def test_register_user_serializer_password_ignored(self):
+        password_str = TestCase.valid_password
+        data = {
+            "name": "testuser",
+            "email": "testuser@example.com",
+            "password": password_str,
+            "password2": "password456",
+        }
+
+        serializer = UserSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        user = serializer.save()
+
+        # The given passwork doesn't match the literal value of
+        # the field and doesn't match the hashed value either.
+        self.assertFalse(user.password is None)
+        self.assertNotEqual(user.password, password_str)
+        self.assertFalse(check_password(password_str, user.password))
+
+        self.assertTrue(len(serializer.errors) == 0)
+
 """
 
 
-[tests.python]
+[tests.javascript]

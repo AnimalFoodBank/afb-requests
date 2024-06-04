@@ -1,15 +1,11 @@
 [tool.poetry]
 name = "AFB Requests"
 version = "0.1.0"
-description = "allows people to both request and donate pet food to help feed animals."
+description = "The Animal Food Bank Requests application"
 authors = ["Delano"]
 license = "MIT"
 readme = "README.md"
 package-mode = false
-
-# [build-system]
-# requires = ["poetry-core>=1.0.0"]
-# build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
@@ -83,7 +79,7 @@ wheel = "0.43.0"
 djangorestframework = {git = "https://github.com/delano/django-rest-framework.git", rev = "dev"}
 drfpasswordless = {git = "https://github.com/delano/django-rest-framework-passwordless.git", rev = "dev"}
 rich = "^13.7.1"
-
+pytest-xdist = "^3.6.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.5"
@@ -94,6 +90,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 80
+target-version = ['py38']
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -140,7 +137,7 @@ exclude = [
 ]
 
 # Same as Black.
-line-length = 88
+line-length = 80
 indent-width = 4
 
 # Assume Python 3.8
@@ -179,3 +176,26 @@ include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
 line_length = 80
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "afb.settings"
+pythonpath = [
+  ".",
+  "./apps/api",
+]
+minversion = "8.1"
+
+# https://docs.pytest.org/en/8.1.x/reference/reference.html#command-line-flags
+addopts = "-rfe -q"
+
+required_plugins = "pytest-django>=4.8.0 pytest-xdist>=3.6.0"
+
+python_files = [
+  "test_*.py",
+  "*_test.py",
+]
+testpaths = [
+    "apps/api/tests",
+    "apps/api/afbcore/tests",
+]

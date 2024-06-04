@@ -455,27 +455,6 @@ reference = "dev"
 resolved_reference = "085b7e166ba80aa973645e5249b441f2dbdc0c96"
 
 [[package]]
-name = "drf-registration"
-version = "0.2.0"
-description = "Simple user registration package based on Django Rest Framework. DRF Registration - The easy way to generate registration RESTful APIs."
-optional = false
-python-versions = ">=3.6"
-files = []
-develop = false
-
-[package.dependencies]
-Django = ">=2.0"
-djangorestframework = ">=3.8.2"
-requests = "*"
-six = "*"
-
-[package.source]
-type = "git"
-url = "https://github.com/delano/drf-registration.git"
-reference = "dev"
-resolved_reference = "b99c88e1f87b5cd943185ebce83e6925f4d66e84"
-
-[[package]]
 name = "drf-spectacular"
 version = "0.27.1"
 description = "Sane and flexible OpenAPI 3 schema generation for Django REST framework"
@@ -544,6 +523,20 @@ files = [
 
 [package.extras]
 test = ["pytest (>=6)"]
+
+[[package]]
+name = "execnet"
+version = "2.1.1"
+description = "execnet: rapid multi-Python deployment"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "execnet-2.1.1-py3-none-any.whl", hash = "sha256:26dee51f1b80cebd6d0ca8e74dd8745419761d3bef34163928cbebbdc4749fdc"},
+    {file = "execnet-2.1.1.tar.gz", hash = "sha256:5189b52c6121c24feae288166ab41b32549c7e2348652736540b9e6e7d4e72e3"},
+]
+
+[package.extras]
+testing = ["hatch", "pre-commit", "pytest", "tox"]
 
 [[package]]
 name = "executing"
@@ -1218,6 +1211,26 @@ docs = ["sphinx", "sphinx-rtd-theme"]
 testing = ["Django", "django-configurations (>=2.0)"]
 
 [[package]]
+name = "pytest-xdist"
+version = "3.6.1"
+description = "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest_xdist-3.6.1-py3-none-any.whl", hash = "sha256:9ed4adfb68a016610848639bb7e02c9352d5d9f03d04809919e2dafc3be4cca7"},
+    {file = "pytest_xdist-3.6.1.tar.gz", hash = "sha256:ead156a4db231eec769737f57668ef58a2084a34b2e55c4a8fa20d861107300d"},
+]
+
+[package.dependencies]
+execnet = ">=2.1"
+pytest = ">=7.0.0"
+
+[package.extras]
+psutil = ["psutil (>=3.0)"]
+setproctitle = ["setproctitle"]
+testing = ["filelock"]
+
+[[package]]
 name = "python-dotenv"
 version = "1.0.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -1696,4 +1709,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "f46ac57880e1d201d22245dc14dad1e97691baeaaa44d1c8d7e9741dd1ebb5df"
+content-hash = "4da590c3bba26ed7c3f92526b2a2a15f0036f5993fede05053fd026dd4c71b6e"
