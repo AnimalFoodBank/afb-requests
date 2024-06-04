@@ -139,10 +139,11 @@ jobs:
             VIRTUAL_ENV: .venv
 
       #--------------------------------------------
-      # run tests (disabled for now)
+      # run tests
       #--------------------------------------------
       - name: Run tests
         run: |
+          poetry install --no-interaction --no-root
           poetry run pytest
 
         env:
