@@ -134,17 +134,13 @@ jobs:
       #----------------------------------------------
       - name: Install django ${{ matrix.django-version }}
         run: |
+          source .venv/bin/activate
           poetry add Django@${{ matrix.django-version }}
-        env:
-            VIRTUAL_ENV: .venv
 
       #--------------------------------------------
       # run tests
       #--------------------------------------------
       - name: Run tests
         run: |
-          poetry install --no-interaction --no-root
+          source .venv/bin/activate
           poetry run pytest
-
-        env:
-            VIRTUAL_ENV: .venv
