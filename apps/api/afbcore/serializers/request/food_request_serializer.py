@@ -61,5 +61,5 @@ class FoodRequestUpdateSerializer(AbstractFoodRequestSerializer):
             "created",
             "address_canadapost_id",
             "address_google_place_id",
-            "status",
+            "request_status",
         ]
