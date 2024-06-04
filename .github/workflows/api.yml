@@ -47,7 +47,7 @@ jobs:
         image: postgres:16.2-bookworm
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: bronco
+          POSTGRES_PASSWORD: ronco
           POSTGRES_DB: postgres
         ports:
           - 5432:5432
@@ -60,8 +60,10 @@ jobs:
     env:
       DB_NAME: postgres
       DB_USER: postgres
+      DB_PASSWORD: ronco
+      # Use the locally mapped port otherwise accessing the name of the service
+      # container "postgres" leads to: "Temporary failure in name resolution".
       DB_HOST: 127.0.0.1
-      DB_PASSWORD: bronco
       DB_PORT: 5432
       DB_ENGINE: django.db.backends.postgresql
 
