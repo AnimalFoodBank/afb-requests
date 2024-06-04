@@ -3,7 +3,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-# from ..serializers.user import UserSerializer
+from ..serializers import UserSerializer
 
 # NOTE: The passwordless "token/code" is only ever set to is_active=False
 # in two places (both in drfpasswordless/utils.py):
@@ -18,7 +18,7 @@ from rest_framework.response import Response
 
 class LogoutView(GenericAPIView):
     permission_classes = [IsAuthenticated]
-    # serializer_class = "UserSerializer"
+    serializer_class = UserSerializer
 
     def post(self, request, version=None):
         try:
