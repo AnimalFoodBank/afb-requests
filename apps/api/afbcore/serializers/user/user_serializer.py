@@ -22,7 +22,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        # depth = 1
         fields = ["id", "name", "email", "profiles", "is_staff"]
         read_only_fields = ["id", "is_staff", "profiles"]
         extra_kwargs = {
