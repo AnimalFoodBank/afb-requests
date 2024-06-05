@@ -155,18 +155,20 @@ const defaultBranch = ref("none");
                @submit="onSubmit">
 
       <template #description>
-        Let's create an account for you to get started. All volunteer accounts are reviewed by AFB Staff before being approved.
+        <p class="text-sm italic mb-4">(Already have an account? <NuxtLink to="/login" class="text-secondary underline font-medium">Sign in</NuxtLink>)</p>
+
+        <p>Let's create an account for you to get started. All volunteer accounts are reviewed by AFB Staff before being approved.</p>
       </template>
 
       <template #validation>
         <p class="ui.footer font-medium">
           By creating an account, you agree to our
           <NuxtLink to="/legal/volunteers"
-                    class="text-primary">Volunteer Agreement</NuxtLink>,
+                    class="text-secondary underline font-medium">Volunteer Agreement</NuxtLink>,
           <NuxtLink to="/legal/terms"
-                    class="text-primary">Terms of Service</NuxtLink> and
+                    class="text-secondary underline font-medium">Terms of Service</NuxtLink> and
           <NuxtLink to="/legal/privacy"
-                    class="text-primary">Privacy Notice</NuxtLink>.
+                    class="text-secondary underline font-medium">Privacy Notice</NuxtLink>.
         </p>
       </template>
 
