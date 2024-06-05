@@ -6,7 +6,7 @@ from rest_framework import permissions, status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
 from ...serializers import UserSerializer
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 # Example of a viewset with custom actions.
 #
-class CurrentUserAPIView(CreateAPIView):
+class CurrentUserAPIView(RetrieveAPIView):
     """
     API endpoint for the currently logged in user. No access to
     other users is made available through this endpoint.
@@ -28,14 +28,10 @@ class CurrentUserAPIView(CreateAPIView):
     # usersto this endpoint. Can't spill beans you don't have.
     queryset = User.objects.none()
     serializer_class = UserSerializer  # must be a class, not string
-
-    # both permissions and authentication are required for
-    # the viewset to be protected (and usable).
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
-    @action(detail=False, methods=["get"])
-    def current_user(self, request, version=None, *args, **kwargs):
+    def get(self, request, version=None, *args, **kwargs):
         """
         Retrieve the current authenticated user.
         """

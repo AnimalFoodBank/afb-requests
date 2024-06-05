@@ -41,6 +41,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         # it has keys 'role' and 'phone_number', then pop them out
         # and assign them to the equivalent fields in Profile.
         details = instance.details
+        logger.info(f"create_user_profile - details: {details}")
         role = details.pop("role", None)
         phone_number = details.pop("phone_number", None)
 
