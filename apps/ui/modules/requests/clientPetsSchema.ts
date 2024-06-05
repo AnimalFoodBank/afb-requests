@@ -34,6 +34,8 @@ const clientPetsSchema = {
       columns: {
         container: 12,
       },
+      hidden: true,
+      required: false,
     },
     pets: {
       type: "list",
