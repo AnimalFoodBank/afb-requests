@@ -85,11 +85,13 @@ async function onSubmit(
 
   // Prepare the payload
   const payload = {
-    role: 'volunteer',
     name: event.name,
     email: event.email,
-    phone_number: event.phone_number,
-    intro: event.intro,
+    details: {
+      role: 'volunteer',
+      phone_number: event.phone_number,
+      intro: event.intro,
+    },
   };
   console.log("Payload:", payload);
 

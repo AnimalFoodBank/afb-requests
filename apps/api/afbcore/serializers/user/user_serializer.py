@@ -18,15 +18,15 @@ User = get_user_model()
 # UserSerializer class
 class UserSerializer(serializers.ModelSerializer):
     # A user can have multiple profiles
-    profiles = ProfileSerializer(many=True)
+    profiles = ProfileSerializer(many=True, read_only=True, required=False)
 
     class Meta:
         model = User
         # depth = 1
-        fields = ["id", "name", "email", "profiles", "is_staff"]
+        fields = ["id", "name", "email", "profiles", "is_staff", "details"]
         read_only_fields = ["id", "is_staff", "profiles"]
         extra_kwargs = {
-            "password": {"write_only": True},
+            "details": {"write_only": True},
         }
 
     def create(self, validated_data):
@@ -34,10 +34,20 @@ class UserSerializer(serializers.ModelSerializer):
         # post_save signal will have access to them. This is
         # necessary because the profile is created after the
         # user is created.
-        validated_data["details"] = {
-            "role": validated_data.pop("role", None),
-            "phone_number": validated_data.pop("phone_number", None),
-        }
+        #
+        # e.g.
+        #   validated_data["details"] = {
+        #       "role": validated_data.pop("role", None),
+        #       "phone_number": validated_data.pop("phone_number", None),
+        #   }
+        #
+        # Note: details will only appear in validated_data if it was
+        # included in the request data. If it wasn't, it will be an
+        # empty dictionary. The field name needs to be added to the
+        # list of fields in this UserSerializer class; the write_only
+        # extra args is what prevents it from being included in the
+        # response.
+        logger.info(f"UserSerializer.create - validated_data: {validated_data}")
 
         # Use a randomly generated UUID in place of a password. This effectively
         # disables the password field for registration. Later on, the user will
