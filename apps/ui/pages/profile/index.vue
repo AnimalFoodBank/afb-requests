@@ -5,10 +5,6 @@ const description = 'Update your delivery information.'
 const icon = 'i-heroicons-home'
 const cta = true
 
-useHead({
-  title: 'New Food Request',
-})
-
 definePageMeta({
   layout: 'dashboard',
 })
@@ -31,19 +27,30 @@ const {
 
 
 const isDeleteAccountModalOpen = ref(false)
-const state = reactive({
-  name: authData?.name || 'Delbo Baggins',
-  branch_selection: 'Medicine Hat',
-  email: authData?.email || 'delbo@solutious.com',
-  phone: '123-456-7890',
-  address: '1234 Southview Drive SE, Medicine Hat, AB, Canada',
-})
+const state = ref({})
+
 
 onMounted(() => {
   console.log('profile/index.vue onMounted')
 
-  console.log('authData', authData)
-  // state.value.email = authData?.email || 'delbo2@solutious.com'
+  const userInfo = authData?.value || {}
+  const profile = userInfo.profiles?.[0] || {}
+
+  console.log('authData', userInfo)
+  console.log('profile', profile)
+
+  state.value = {
+    branch_selection: profile?.branch_selection || 'Medicine Hat',
+    name: userInfo.name,
+    email: userInfo.email,
+    phone_number: profile?.phone_number,
+    address: profile?.address || '1234 Southview Drive SE',
+    city: profile?.city || 'Medicine Hat',
+    state: profile?.state || 'AB',
+    zip: profile?.zip || 'T1A 8E1',
+  }
+
+  console.log('state', state.value)
 })
 
 </script>
@@ -62,5 +69,6 @@ onMounted(() => {
     </UDashboardSection>
 
   </UDashboardPanelContent>
+
   <SettingsDeleteAccountModal v-model="isDeleteAccountModalOpen" />
 </template>
