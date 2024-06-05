@@ -10,44 +10,26 @@ definePageMeta({
 })
 
 
-/**
- * Retrieves the authentication status, data, and token using the useAuth() function.
- *
- * @returns {{
- *   status: string,
- *   data: any,
- *   token: string
- * }} The authentication status, data, and token.
-*/
 const {
-  status: authStatus,
-  data: authData,
-  token: authToken,
-} = useAuth();
-
+  userInfo,
+  profileInfo,
+} = useProfile();
 
 const isDeleteAccountModalOpen = ref(false)
 const state = ref({})
 
-
 onMounted(() => {
   console.log('profile/index.vue onMounted')
 
-  const userInfo = authData?.value || {}
-  const profile = userInfo.profiles?.[0] || {}
-
-  console.log('authData', userInfo)
-  console.log('profile', profile)
-
   state.value = {
-    branch_selection: profile?.branch_selection || 'Medicine Hat',
+    branch_selection: profileInfo?.branch_selection || 'Medicine Hat',
     name: userInfo.name,
     email: userInfo.email,
-    phone_number: profile?.phone_number,
-    address: profile?.address || '1234 Southview Drive SE',
-    city: profile?.city || 'Medicine Hat',
-    state: profile?.state || 'AB',
-    zip: profile?.zip || 'T1A 8E1',
+    phone_number: profileInfo?.phone_number,
+    address: profileInfo?.address || '1234 Southview Drive SE',
+    city: profileInfo?.city || 'Medicine Hat',
+    state: profileInfo?.state || 'AB',
+    zip: profileInfo?.zip || 'T1A 8E1',
   }
 
   console.log('state', state.value)
