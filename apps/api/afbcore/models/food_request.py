@@ -9,7 +9,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from .base import BaseAbstractModel
 
 STATUS_CHOICES = [
-    ("received", "Request Received"),
+    ("submitted", "Request Submitted"),
     ("approved", "Request Approved & in Queue"),
     ("denied", "Request Denied"),
     ("assigned", "Volunteer Assigned"),
