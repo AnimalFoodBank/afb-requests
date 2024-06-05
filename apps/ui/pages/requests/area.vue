@@ -5,6 +5,11 @@
 <script setup lang="ts">
 import { Circle, GoogleMap } from "vue3-google-map";
 
+definePageMeta({
+  layout: 'dashboard',
+})
+
+
 // Get the google api Key from nuxt config
 const config = useRuntimeConfig()
 console.log('config', config);

@@ -1,12 +1,5 @@
 <script setup lang="ts">
-/**
- * Represents a Vue component that represents a dashboard page.
- *
- * @param {Function} useSeoMeta - A function that sets the SEO meta information for the page.
- * @param {Function} definePageMeta - A function that defines the layout and authentication requirements for the page.
- * @param {Array} requests - An array of objects representing the requests.
- * @returns {Object} - The rendered HTML structure of the dashboard page, including sections, cards, and a request list component.
- */
+
 useSeoMeta({
   title: "Dashboard",
 })
@@ -32,6 +25,7 @@ const {
 } = useAuth();
 
 const requests = ref([]);
+const role = ref('unknown');
 
 const fetchRequests = async () => {
   const options = {
@@ -47,8 +41,16 @@ const fetchRequests = async () => {
   console.log(requests);
 }
 
+const isClient = computed(() => role.value === 'client');
+const isVolunteer = computed(() => role.value === 'volunteer');
+const isManager = computed(() => role.value === 'manager');
+
 onMounted(() => {
   fetchRequests();
+
+  const userInfo = authData?.value || {}
+  const profile = userInfo.profiles?.[0] || {}
+  role.value = profile?.role || 'unknown';
 });
 
 
@@ -64,26 +66,12 @@ onMounted(() => {
       <!-- <UDashboardToolbar>
       </UDashboardToolbar> -->
 
-      <UDashboardPanelContent>
-
-        <UDashboardSection
-          icon="i-heroicons-user"
-          title="Client Portal"
-          description="Your delivery address, pet info, requests history and more. "
-          />
-
-        <UDashboardCard class="mx-9 mb-9 max-w-prose">
-          <UDashboardSection class="mb-2 text-md italic">
-            Please note that creating an account does not automaticaly create a request for food for you.
-            If you've just created your account, please click the "Request Pet Food" button. You will need to complete this form each time you need food.
-          </UDashboardSection>
-        </UDashboardCard>
-
-        <!-- <h2 class="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight"></h2> -->
-
-        <RequestsList title="Request History" description="" :cta="true" :requests="requests" />
-
-      </UDashboardPanelContent>
+      <DashboardClientView :requests="requests" v-if="isClient" />
+      <DashboardVolunteerView :requests="requests" v-if="isVolunteer" />
+      <DashboardManagerView :requests="requests" v-if="isManager" />
+      <div v-if="role === 'unknown'">
+        <p>Loading dashboard content...</p>
+      </div>
 
     </UDashboardPanel>
   </UDashboardPage>
