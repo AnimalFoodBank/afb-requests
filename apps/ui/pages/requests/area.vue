@@ -5,7 +5,10 @@
 <script setup lang="ts">
 import { Circle, GoogleMap } from "vue3-google-map";
 
-const googleAPIKey = "AIzaSyC_UvqrTnimc1Pc7LDYCqdqUiGMMUgMCWg";
+// Get the google api Key from nuxt config
+const config = useRuntimeConfig()
+console.log('config', config);
+const googleAPIKey = config.public.googleAPIKey;
 
 const centerV = { lat: 49.282, lng: -123.12 };
 const centerMH = { lat: 50.04, lng: -110.667, zoom: 12};
