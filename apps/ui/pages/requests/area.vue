@@ -14,37 +14,62 @@ const centerMH = { lat: 50.04, lng: -110.667, zoom: 12};
 let apiPromise: Promise<typeof window.google> | undefined = undefined;
 
 
-const center = { lat: 37.09, lng: -95.712 }
-const cities = {
-  chicago: {
-    center: { lat: 41.878, lng: -87.629 },
-    population: 2714856,
-  },
-  newyork: {
-    center: { lat: 40.714, lng: -74.005 },
-    population: 8405837,
-  },
-  losangeles: {
-    center: { lat: 34.052, lng: -118.243 },
-    population: 3857799,
-  },
+const center = {
+  lat: 50.04,
+  lng: -110.667,
+  zoom: 12,
+};
+const colour = '#00FF00';
+type City = {
+  center: { lat: number, lng: number },
+  population: number,
+  radius?: number,
+  strokeColor?: string,
+  strokeOpacity?: number,
+  strokeWeight?: number,
+  fillColor?: string,
+  fillOpacity?: number,
+};
+
+const cities: Record<string, City> = {
   vancouver: {
     center: { lat: 49.25, lng: -123.1 },
     population: 603502,
   },
+  medicinehat: {
+    center: { lat: 50.04, lng: -110.667 },
+    population: 63138,
+  },
+  toronto: {
+    center: { lat: 43.7, lng: -79.42 },
+    population: 2731571,
+  },
+  winnipeg: {
+    center: { lat: 49.9, lng: -97.13 },
+    population: 632063,
+  },
+  saskatoon: {
+    center: { lat: 52.13, lng: -106.67 },
+    population: 202340,
+  },
+  edmonton: {
+    center: { lat: 53.55, lng: -113.5 },
+    population: 1159869,
+  },
 }
 
-const circles = {}
+const circles: Record<string, City> = {}
 
 for (const key in cities) {
   circles[key] = {
     center: cities[key].center,
-    radius: Math.sqrt(cities[key].population) * 100,
-    strokeColor: '#FF0000',
+    population: cities[key].population,
+    radius: Math.sqrt(cities[key].population) * 20,
+    strokeColor: colour,
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35,
+    fillColor: colour,
+    fillOpacity: 0.15,
   }
 }
 
