@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import logging
 import os
 from pathlib import Path
 
+import sqlparse
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
@@ -64,7 +65,7 @@ IN_PRODUCTION = not DEBUG
 
 USE_X_FORWARDED_HOST = True
 
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 ALLOWED_HOSTS = [
@@ -100,6 +101,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
+    "log_request_id.middleware.RequestIDMiddleware",
     # "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -445,14 +447,37 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # more details on how to customize your logging configuration.
 LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
+REQUEST_ID_RESPONSE_HEADER = "REQID"
+
+
+class QueryFormatter(logging.Formatter):
+    def format(self, record):
+        record.prettysql = ""
+        try:
+            _, rawsql, *_ = record.args
+        except ValueError:
+            print("record.args does not contain enough values to unpack")
+        else:
+            record.prettysql = sqlparse.format(rawsql, reindent=True)
+
+        # Call the original formatter class to do the actual formatting
+        return super().format(record)
+
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s",
+            "format": "%(levelname)s [%(request_id)s] %(asctime)s %(module)s %(process)d %(thread)d %(message)s",
         },
+        "sql": {
+            "()": QueryFormatter,
+            "format": "%(levelname)s [%(request_id)s] [SQL: %(name)s'] \n %(prettysql)s",
+        },
+    },
+    "filters": {
+        "request_id": {"()": "log_request_id.filters.RequestIDFilter"},
     },
     "handlers": {
         "console": {
@@ -460,7 +485,26 @@ LOGGING = {
             # "class": "rich.logging.RichHandler",  # see afbcore/apps.py
             "class": "logging.StreamHandler",
             "formatter": "verbose",
-        }
+            "filters": ["request_id"],
+        },
+        "console_db": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "sql",
+            "filters": ["request_id"],
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["console_db"],
+            "level": "DEBUG",  # Set to DEBUG to capture all SQL queries
+            "propagate": False,
+        },
     },
     "root": {"level": LOG_LEVEL, "handlers": ["console"]},
 }
