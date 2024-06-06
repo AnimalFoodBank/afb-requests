@@ -41,7 +41,7 @@ const {
   profileInfo,
   userInfo,
   authToken,
-} = useAuth();
+} = useProfile();
 
 // Use the form's mounted event to add custom functionality to
 // the confirmation step. This is where we can add a summary
