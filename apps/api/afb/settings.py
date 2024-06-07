@@ -274,7 +274,7 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_BASE_URI": UI_BASE_URI,
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
-    "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
+    "PASSWORDLESS_EMAIL_SUBJECT": "Continue signing in",
     "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_token_email.txt",
     "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_token_email.html",
     "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_verification_email.txt",
