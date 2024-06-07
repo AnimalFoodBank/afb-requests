@@ -60,6 +60,9 @@ class Profile(HasDetails, BaseAbstractModel):
 
     """
 
+    class Meta:
+        ordering = ["-created"]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="profiles"
@@ -99,7 +102,9 @@ class Profile(HasDetails, BaseAbstractModel):
 
     # Postal/Zip Codes/Cities will deliver to
     # We will use this to notify them of available deliveries in their "regions"
-    delivery_regions = models.ManyToManyField("DeliveryRegion")
+    delivery_regions = models.ManyToManyField(
+        "DeliveryRegion", related_name="delivery_regions"
+    )
 
     #
     # Via Client

@@ -206,24 +206,25 @@ async function onSubmit(
                description="Enter your email to access your account."
                align="top"
                icon="i-ph-paw-print-fill"
+               class=""
                :ui="{ base: 'text-center', footer: 'text-center' }"
                :submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
                :loading="false"
                @submit="onSubmit">
 
       <template #description>
-        <p class="text-sm italic mb-4">(Don't have an account? <NuxtLink to="/welcome/clients" class="text-primary font-medium">Sign up</NuxtLink>)</p>
+        <p class="text-sm italic mb-4">(Don't have an account? <NuxtLink to="/welcome/clients" class="text-secondary underline font-medium">Sign up</NuxtLink>)</p>
 
         <p>Enter the email address associated with your account and we'll send a magic link to your inbox.</p>
       </template>
 
       <template #validation>
-        <p class="ui.footer">
+        <p class="ui.validation">
           By signing in, you agree to our
           <NuxtLink to="/legal/terms"
-                    class="text-primary font-medium">Terms of Service</NuxtLink> and
+                    class="text-secondary underline font-medium">Terms of Service</NuxtLink> and
           <NuxtLink to="/legal/privacy"
-                    class="text-primary font-medium">Privacy Notice</NuxtLink>.
+                    class="text-secondary underline font-medium">Privacy Notice</NuxtLink>.
         </p>
       </template>
     </UAuthForm>

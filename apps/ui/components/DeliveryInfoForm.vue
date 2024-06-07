@@ -39,7 +39,7 @@ async function onSubmit (event: FormSubmitEvent<any>) {
       <UForm :state="state" :validate="validate" :validate-on="['submit']" @submit="onSubmit">
         <UDashboardSection :title="title" :description="description" :icon="icon">
           <template #links v-if="cta">
-            <UButton type="submit" label="Save changes" color="black" />
+            <UButton type="submit" label="Save changes" class="block rounded-md bg-primary text-white dark:text-white"/>
           </template>
 
           <UFormGroup
@@ -50,9 +50,12 @@ async function onSubmit (event: FormSubmitEvent<any>) {
             class="grid grid-cols-2 gap-2"
             :ui="{ container: '' }"
           >
-            <!-- <USelect v-model="state.branch_selection" name="branch_selection" icon="i-ph-map-pin" :options="branchLocations" option-attribute="text" class=""/> -->
+
             <UInput type="select" name="branch_selection" v-model="state.branch_selection" autocomplete="off" icon="i-ph-map-pin" size="md" disabled />
 
+            <p class="text-gray-500 text-xs">
+              <NuxtLink to="/requests/area/" class="text-secondary underline font-medium">See delivery area</NuxtLink>
+            </p>
             <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update your branch.</p>
           </UFormGroup>
 
@@ -84,7 +87,7 @@ async function onSubmit (event: FormSubmitEvent<any>) {
             class="grid grid-cols-2 gap-2 items-center"
             :ui="{ container: '' }"
           >
-            <UInput v-model="state.phone" autocomplete="off" icon="i-heroicons-phone" size="md" />
+            <UInput v-model="state.phone_number" autocomplete="off" icon="i-heroicons-phone" size="md" />
           </UFormGroup>
 
           <UFormGroup
@@ -97,7 +100,7 @@ async function onSubmit (event: FormSubmitEvent<any>) {
           >
             <UInput v-model="state.address" type="address" autocomplete="off" icon="i-heroicons-envelope" size="md" disabled>
               <template #trailing>
-                <span class="text-gray-500 dark:text-gray-400 text-sm">H0H 0H0</span>
+                <span class="text-gray-500 dark:text-gray-400 text-sm">{{ state.zip }}</span>
               </template>
             </UInput>
           </UFormGroup>

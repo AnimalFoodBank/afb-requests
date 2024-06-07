@@ -38,10 +38,10 @@ const props = defineProps<{
 const form$ = ref<any>(null);
 
 const {
-  status: authStatus,
-  data: authData,
-  token: authToken,
-} = useAuth();
+  profileInfo,
+  userInfo,
+  authToken,
+} = useProfile();
 
 // Use the form's mounted event to add custom functionality to
 // the confirmation step. This is where we can add a summary
@@ -304,7 +304,7 @@ onMounted(() => {
               e.preventDefault();
             }
           },
-          default: state.delivery_address?.interactive_address || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
+          default: state.delivery_address?.interactive_address, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
         },
         building_type: {
           type: "radiogroup",
@@ -412,7 +412,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Email']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact?.contact_email || 'delbo@solutious.com',
+          default: state.delivery_contact?.contact_email || 'profile?.email',
         },
         alt_contact_email: {
           type: "text",

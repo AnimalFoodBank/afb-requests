@@ -5,45 +5,34 @@ const description = 'Update your delivery information.'
 const icon = 'i-heroicons-home'
 const cta = true
 
-useHead({
-  title: 'New Food Request',
-})
-
 definePageMeta({
   layout: 'dashboard',
 })
 
 
-/**
- * Retrieves the authentication status, data, and token using the useAuth() function.
- *
- * @returns {{
- *   status: string,
- *   data: any,
- *   token: string
- * }} The authentication status, data, and token.
-*/
 const {
-  status: authStatus,
-  data: authData,
-  token: authToken,
-} = useAuth();
-
+  userInfo,
+  profileInfo,
+} = useProfile();
 
 const isDeleteAccountModalOpen = ref(false)
-const state = reactive({
-  name: authData?.name || 'Delbo Baggins',
-  branch_selection: 'Medicine Hat',
-  email: authData?.email || 'delbo@solutious.com',
-  phone: '123-456-7890',
-  address: '1234 Southview Drive SE, Medicine Hat, AB, Canada',
-})
+const state = ref({})
 
 onMounted(() => {
   console.log('profile/index.vue onMounted')
 
-  console.log('authData', authData)
-  // state.value.email = authData?.email || 'delbo2@solutious.com'
+  state.value = {
+    branch_selection: profileInfo?.branch_selection || 'Medicine Hat',
+    name: userInfo.name,
+    email: userInfo.email,
+    phone_number: profileInfo?.phone_number,
+    address: profileInfo?.address || '1234 Southview Drive SE',
+    city: profileInfo?.city || 'Medicine Hat',
+    state: profileInfo?.state || 'AB',
+    zip: profileInfo?.zip || 'T1A 8E1',
+  }
+
+  console.log('state', state.value)
 })
 
 </script>
@@ -62,5 +51,6 @@ onMounted(() => {
     </UDashboardSection>
 
   </UDashboardPanelContent>
+
   <SettingsDeleteAccountModal v-model="isDeleteAccountModalOpen" />
 </template>

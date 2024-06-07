@@ -7,6 +7,11 @@ const description = 'Manage your pet information. '
 const icon = 'i-ph-paw-print'
 const cta = false
 
+definePageMeta({
+  layout: 'dashboard',
+})
+
+
 </script>
 
 <template>

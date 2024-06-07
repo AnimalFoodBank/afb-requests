@@ -15,5 +15,6 @@ classes that are used exclusively by the views in this
 module.
 """
 
+from .profile import ProfileViewSet  # noqa: F401
 from .requests import FoodRequestViewSet  # noqa: F401
 from .users import CurrentUserAPIView  # noqa: F401

@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "@sidebase/nuxt-auth",
     "@vueform/nuxt",
     "@nuxt/test-utils/module",
+    "@pinia/nuxt",
     // '@vueform/builder-nuxt',
   ],
 

@@ -10,7 +10,7 @@
     "build": "dotenv nuxt build apps/ui",
     "caddy": "caddy run --config /etc/caddy/Caddyfile",
     "dev": "dotenv nuxt dev apps/ui",
-    "django:run": "pnpm django runserver_plus",
+    "django:run": "pnpm django runserver_plus --print-sql",
     "django:shell": "pnpm django shell_plus",
     "django:test": "pnpm django test",
     "django": "PYTHONPATH=$(pwd) dotenv python apps/api/manage.py",
