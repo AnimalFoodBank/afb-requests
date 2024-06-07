@@ -80,6 +80,7 @@ drfpasswordless = {git = "https://github.com/delano/django-rest-framework-passwo
 rich = "^13.7.1"
 pytest-xdist = "^3.6.1"
 django-log-request-id = "^2.1.0"
+psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.5"
