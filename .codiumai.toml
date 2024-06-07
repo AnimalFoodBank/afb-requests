@@ -35,13 +35,23 @@
 [tests]
 
 use_mocks = false
-num_desired_tests = 3
+num_desired_tests = 4
 is_add_test_to_suite = true
+
+reference_test = """
+# 2024-06-03
+from afbcore.serializers import UserSerializer
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import check_password
+from rest_framework import status
+from rest_framework.test import APITestCase
+"""
 
 # A multiline string, delimited with triple-quotes (""")
 # serving as an extra instruction that the AI model will
 # consider. This will appear as "General instructions" in
 # the configuration section in the tests panel.
+#
 # plan_instructions = """
 
 # Possible values are:

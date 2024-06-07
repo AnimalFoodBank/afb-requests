@@ -14,6 +14,7 @@
 # Automatically formats the Caddyfile after saving:
 #   $ caddy fmt --overwrite ./etc/caddy/Caddyfile
 #
+#
 # == About local dev certs
 #
 # The certs are generated using the following command:
@@ -30,6 +31,7 @@
 #
 # For node to work with the certs, the following environment variable needs to be set:
 #   $ export NODE_EXTRA_CA_CERTS="/Users/d/Library/Application Support/mkcert/rootCA.pem"
+#
 
 {
   # This email address is used for ACME (Let's Encrypt) contacts
@@ -45,10 +47,48 @@ https://example.com {
     output stdout
   }
 
+  # re: Client IP Address when proxying.
+  #
+  # Caddy automatically handles the X-Forwarded-For header when
+  # proxying requests. This is the header that contains the client's
+  # IP address. Otherwise if we relied on the "Remote-Addr" header,
+  # that would be the IP address of this caddy proxy server.
+  #
+  # Note: If there are multiple proxies in the path of the request,
+  # the X-Forwarded-For header can contain multiple IP addresses,
+  # appended by each proxy in the chain. The first IP address in the
+  # list is the original client's IP address, and the subsequent IP
+  # addresses are the IP addresses of each proxy.
+  #
+  # Understanding the X-Forwarded-For header is important for
+  # security reasons. For example, if we were to use the client's
+  # IP address for rate limiting or audit logging purposes.
+  #
+  # See:
+  #   - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+  #   - The DRF setting NUM_PROXIES in settings.py.
+  #
+
+  # re: Content Security Policies (CSP)
+  #
+  # The Content-Security-Policy header helps prevent cross-site scripting
+  # attacks by allowing you to control what resources the browser is allowed
+  # to load for a particular page. The header is a string consisting of one
+  # or more directives that specify the allowed sources for a type of resource.
+  #
+  # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+  #
+  #
+  # Very restrictive
+  #
   # header Content-Security-Policy "default-src 'self'; connect-src 'self' staging.afb.pet staging.animalfoodbank.org; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self';"
-
+  #
+  # Moderately restrictive
+  #
   # header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';"
-
+  #
+  # Least restrictive
+  #
   # header Content-Security-Policy "default-src 'self' staging.afb.pet staging.animalfoodbank.org; connect-src 'self' staging.afb.pet staging.animalfoodbank.org; script-src 'self' 'unsafe-inline' staging.afb.pet staging.animalfoodbank.org; style-src 'self' 'unsafe-inline' staging.afb.pet staging.animalfoodbank.org; img-src 'self' data: staging.afb.pet staging.animalfoodbank.org; font-src 'self' staging.afb.pet staging.animalfoodbank.org;"
 
   header X-Frame-Options "SAMEORIGIN"
@@ -78,17 +118,17 @@ https://example.com {
     # For example, we may choose to run it in a separate process
     # using something like gunicorn.
     reverse_proxy 127.0.0.1:8000 {
-      header_down Server "Proxied Server Name (django api)"
+      header_down Server "Proxied Server Name (api)"
     }
   }
 
-  # Using a unique path helps prevent scripts et al from detecting
-  # a Django install and trying to exploit it.
   handle /afbadmin/* {
-    # The Django admin is served from the same server as the API
-    # which we'll revisit in the future so similar reasons.
+    # Using a unique path helps prevent scripts et al from detecting
+    # a Django install and trying to exploit it.
+    # NOTE: The Django admin is served from the same server as the
+    # API which we'll revisit in the future so similar reasons.
     reverse_proxy 127.0.0.1:8000 {
-      header_down Server "Proxied Server Name (django admin)"
+      header_down Server "Proxied Server Name (admin)"
     }
   }
 

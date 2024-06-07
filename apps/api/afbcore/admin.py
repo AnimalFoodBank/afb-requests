@@ -3,17 +3,15 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from drfpasswordless.admin import CallbackInline
 from drfpasswordless.models import CallbackToken
 
-
 from .models import (
-    Profile,
-    User,
-    Role,
     Branch,
-    FoodRequest,
     Delivery,
     DeliveryRegion,
     FoodAvailable,
+    FoodRequest,
     Pet,
+    Profile,
+    User,
 )
 
 
@@ -35,7 +33,6 @@ class AuthorAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.register(Profile)
-admin.site.register(Role)
 admin.site.register(Branch)
 admin.site.register(FoodRequest)
 admin.site.register(Delivery)

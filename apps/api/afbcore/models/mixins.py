@@ -1,6 +1,20 @@
 from django.db import models
 
 
+class HasDetails(models.Model):
+    """
+    A mixin for models that have a details field.
+
+    Fields:
+        - details: JSONField, blank=True, default=dict
+    """
+
+    details = models.JSONField(blank=True, default=dict)
+
+    class Meta:
+        abstract = True
+
+
 class PhysicalLocationMixin(models.Model):
     """
     Represents a single, IRL physical location.

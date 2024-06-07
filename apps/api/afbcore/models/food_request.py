@@ -39,6 +39,9 @@ class FoodRequest(BaseAbstractModel):
     # multiple profiles, so we need to think about this.
     user = models.ForeignKey("User", on_delete=models.DO_NOTHING)
 
+    # ** We will want them to see and confirm/edit their pets, and edit some fields of their pets info
+    pets = models.ManyToManyField("Pet")
+
     # A food request can belong to only one Branch
     branch = models.ForeignKey("Branch", on_delete=models.DO_NOTHING, null=True)
 
@@ -70,10 +73,6 @@ class FoodRequest(BaseAbstractModel):
     # Preferred way for us to contact them about the request Email, Text or Phone
     method_of_contact = models.CharField(max_length=100)
 
-    # One or more.
-    # ** We will want them to see and confirm/edit their pets, and edit some fields of their pets info
-    pet_details = models.JSONField(default=dict)
-
     # Safe drop - if they are not home, can we leave the food at the door?
     # Yes/No
     safe_drop_agree = models.BooleanField(null=True, blank=True)
@@ -97,8 +96,8 @@ class FoodRequest(BaseAbstractModel):
     date_requested = models.DateField(auto_now_add=True)
 
     # Request Received, Request Approved & in Queue, Request Denied, Volunteer Assigned, Request Ready For Volunteer Pickup, Delivery Scheduled, Out For Delivery, Delivered, Undeliverable
-    status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default="received"
+    request_status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default="received"
     )
 
     # Free form comments from driver, client, volunteer, etc.
