@@ -5,6 +5,7 @@ export interface FoodRequestFormState {
     branch_location: string;
     interactive_address: string;
     building_type: string;
+    instructions: string;
     country: string;  // all user addresses assumed to be in the same country
     location: {
       address_line1: string;

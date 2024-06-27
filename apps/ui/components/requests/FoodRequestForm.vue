@@ -322,10 +322,24 @@ onMounted(() => {
           label: "Building type <i>(optional)</i>",
           columns: {
             container: 12,
-            label: 12,
+            label: 6,
             wrapper: 8,
           },
           default: state.delivery_address?.building_type,
+        },
+        instructions: {
+          type: "textarea",
+          rules: ["max:50"],
+          label: "Delivery instructions (optional)",
+          description: "Please provide any additional information that we'll need to reach your address, e.g. buzz code, suite number, etc",
+          placeholder: "e.g. Buzz 1234",
+
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 8,
+          },
+          default: state.delivery_address?.instructions,
         },
         location: {
           type: "object",
