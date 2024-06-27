@@ -44,7 +44,7 @@ const fields = [
 
 
 const validateEmail = (email: string) => {
-  return (/^\w{1,128}([\.-\\+]?\w{1,128})*@\w{1,128}([\.-]?\w{1,128})*(\.\w{2,3})+$/.test(email))
+  return (/^\w{1,128}([\.-\\+]?\w{1,128}){1,3}@\w{1,128}([\.-]?\w{1,128}){1,2}(\.\w{2,3})+$/.test(email))
 }
 
 const validate = (state: any): FormError[] => {
