@@ -13,6 +13,7 @@ from .models import (
     Profile,
     User,
 )
+from .views.admin.branch_admin import BranchAdmin
 
 
 class UserAdmin(BaseUserAdmin):
@@ -33,7 +34,7 @@ class AuthorAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(User, UserAdmin)
 admin.site.register(Profile)
-admin.site.register(Branch)
+admin.site.register(Branch, BranchAdmin)
 admin.site.register(FoodRequest)
 admin.site.register(Delivery)
 admin.site.register(DeliveryRegion)
