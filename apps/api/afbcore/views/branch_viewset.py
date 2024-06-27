@@ -2,8 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Branch
-from .serializers import BranchSerializer
+from ..models import Branch
+from ..serializers import BranchSerializer
 
 
 class BranchViewSet(viewsets.ModelViewSet):
@@ -21,8 +21,20 @@ class BranchViewSet(viewsets.ModelViewSet):
         "delivery_type",
         "spay_neuter_requirement",
     ]
-    search_fields = ["display_name", "city", "province_state", "country"]
-    ordering_fields = ["display_name", "city", "province_state", "country"]
+    search_fields = [
+        "display_name",
+        "location_name",
+        "city",
+        "state_or_province",
+        "country",
+    ]
+    ordering_fields = [
+        "display_name",
+        "location_name",
+        "city",
+        "state_or_province",
+        "country",
+    ]
 
     def get_queryset(self):
         """

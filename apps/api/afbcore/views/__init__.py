@@ -15,6 +15,7 @@ classes that are used exclusively by the views in this
 module.
 """
 
+from .branch_viewset import BranchViewSet  # noqa: F401
 from .profile import ProfileViewSet  # noqa: F401
 from .requests import FoodRequestViewSet  # noqa: F401
 from .users import CurrentUserAPIView  # noqa: F401
