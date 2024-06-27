@@ -8,7 +8,7 @@ from django.test import RequestFactory
 from rest_framework.test import APIRequestFactory, APITestCase
 
 
-class FoodRequestViewSetTestCase(APITestCase):
+class FoodRequestViewSetAPITestCase(APITestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.view = FoodRequestViewSet()
