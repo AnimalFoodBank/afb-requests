@@ -25,7 +25,7 @@ const {
 } = useAuth();
 
 const requests = ref([]);
-const role = ref('unknown');
+const role = computed(() => authData.value?.profiles?.[0]?.role || 'unknown');
 
 const fetchRequests = async () => {
   const options = {
