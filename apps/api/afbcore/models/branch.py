@@ -66,3 +66,9 @@ class Branch(PhysicalLocationMixin):
         null=True,
         blank=True,
     )
+
+    # Hide this branch from the public site
+    hidden = models.BooleanField(default=False)
+
+    # Operational status of the branch
+    operational = models.BooleanField(default=True)

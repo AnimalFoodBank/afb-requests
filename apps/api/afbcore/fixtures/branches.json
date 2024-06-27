@@ -24,7 +24,9 @@
       "delivery_regions": [],
       "latitude": 50.0417,
       "longitude": -110.6766,
-      "delivery_radius": 20
+      "delivery_radius": 20,
+      "hidden": false,
+      "operational": false
     }
   },
   {
@@ -52,7 +54,9 @@
       "delivery_regions": [],
       "latitude": 49.0323,
       "longitude": -119.4692,
-      "delivery_radius": 15
+      "delivery_radius": 15,
+      "hidden": false,
+      "operational": true
     }
   },
   {
@@ -80,7 +84,9 @@
       "delivery_regions": [],
       "latitude": 49.9530,
       "longitude": -97.2110,
-      "delivery_radius": 10
+      "delivery_radius": 10,
+      "hidden": false,
+      "operational": false
     }
   },
   {
@@ -108,7 +114,9 @@
       "delivery_regions": [],
       "latitude": 49.9530,
       "longitude": -97.0660,
-      "delivery_radius": 10
+      "delivery_radius": 10,
+      "hidden": false,
+      "operational": false
     }
   },
   {
@@ -136,7 +144,9 @@
       "delivery_regions": [],
       "latitude": 49.8370,
       "longitude": -97.2110,
-      "delivery_radius": 10
+      "delivery_radius": 10,
+      "hidden": false,
+      "operational": false
     }
   },
   {
@@ -164,7 +174,9 @@
       "delivery_regions": [],
       "latitude": 49.8370,
       "longitude": -97.0660,
-      "delivery_radius": 10
+      "delivery_radius": 10,
+      "hidden": false,
+      "operational": false
     }
   }
 ]
