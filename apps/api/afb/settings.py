@@ -451,14 +451,40 @@ REQUEST_ID_RESPONSE_HEADER = "REQID"
 
 
 class QueryFormatter(logging.Formatter):
+    """
+    This formatter class is designed to enhance logging capabilities by
+    formatting SQL queries to be more readable. It checks for the presence
+    of an SQL query in the log record and formats it using `sqlparse` for
+    better readability in the logs.
+    """
+
     def format(self, record):
+        # Implementation remains the same...
         record.prettysql = ""
-        try:
-            _, rawsql, *_ = record.args
-        except ValueError:
-            print("record.args does not contain enough values to unpack")
+        if hasattr(record, "sql"):
+            # If record has 'sql' attribute, use it directly
+            rawsql = record.sql
+        elif (
+            hasattr(record, "args")
+            and isinstance(record.args, tuple)
+            and len(record.args) > 1
+        ):
+            # If record has 'args' and it's a tuple with at least 2 elements
+            rawsql = record.args[1]
         else:
-            record.prettysql = sqlparse.format(rawsql, reindent=True)
+            # If we can't find SQL, just use an empty string
+            rawsql = ""
+
+        if isinstance(rawsql, str):
+            try:
+                record.prettysql = sqlparse.format(rawsql, reindent=True)
+            except Exception as e:
+                # If formatting fails, just use the raw SQL
+                record.prettysql = rawsql
+                print(f"SQL formatting failed: {e}")
+        else:
+            # If rawsql is not a string, convert it to a string
+            record.prettysql = str(rawsql)
 
         # Call the original formatter class to do the actual formatting
         return super().format(record)
