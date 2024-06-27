@@ -8,6 +8,19 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+const links = [[
+  {
+    label: 'New Request',
+    icon: 'i-ph-plus-square-light',
+    to: '/requests/new',
+  },
+  {
+    label: 'Request History',
+    icon: 'i-heroicons-calendar',
+    to: '/requests',
+    exact: true
+  },
+]]
 
 /**
  * Retrieves the authentication status, data, and token using the useAuth() function.
@@ -63,8 +76,9 @@ onMounted(() => {
 
       </UDashboardNavbar>
 
-      <!-- <UDashboardToolbar>
-      </UDashboardToolbar> -->
+      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block lg:hidden">
+        <UHorizontalNavigation :links="links" class="" />
+      </UDashboardToolbar>
 
       <DashboardClientView :requests="requests" v-if="isClient" />
       <DashboardVolunteerView :requests="requests" v-if="isVolunteer" />

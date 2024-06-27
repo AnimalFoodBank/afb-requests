@@ -23,11 +23,11 @@ const items = computed(() => [
     },
   ],
   [
-    {
-      label: "Profile",
-      icon: "i-heroicons-user",
-      to: "/profile",
-    },
+    //{
+    //  label: "Profile",
+    //  icon: "i-heroicons-user",
+    //  to: "/profile",
+    //},
     {
       label: "Settings",
       icon: "i-heroicons-cog-8-tooth",
