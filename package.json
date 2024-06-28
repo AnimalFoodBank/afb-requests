@@ -7,9 +7,9 @@
   "scripts": {
     "_docs:dev": "nuxt dev --spa --tunnel --host apps/ui",
     "build_debug": "NODE_OPTIONS='--trace-deprecation' dotenv nuxt build apps/ui",
-    "build": "dotenv nuxt build apps/ui",
+    "build": "dotenv nuxi build apps/ui",
     "caddy": "caddy run --config /etc/caddy/Caddyfile",
-    "dev": "dotenv nuxt dev apps/ui",
+    "dev": "dotenv nuxi dev apps/ui",
     "django:run": "pnpm django runserver_plus --print-sql",
     "django:shell": "pnpm django shell_plus",
     "django:test": "pnpm django test",
