@@ -29,7 +29,7 @@ router = DefaultRouter()
 # e.g. /api/v1/requests/abcdef1234/
 router.register("requests", FoodRequestViewSet, basename="foodrequest")
 router.register("profiles", ProfileViewSet, basename="profile")
-router.register("branches", BranchViewSet)
+router.register("branches", BranchViewSet, basename="branch")
 
 urlpatterns = [
     path("afbadmin/", afbcore_admin.site.urls, name="admin"),

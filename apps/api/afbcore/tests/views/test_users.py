@@ -10,8 +10,7 @@ from rest_framework.test import APIClient, APITestCase
 
 """
 How to run the tests:
-    - python manage.py test apps/api/afbcore/tests/views/test_users.py
-    - python manage.py test afbcore.tests.views.test_users.RegisterTestCase.test_register_valid_data
+    - pnpm django:test apps/api/afbcore/tests/views/test_users.py
 
 
 """

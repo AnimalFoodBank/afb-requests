@@ -25,14 +25,19 @@ class BranchSerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
             "delivery_radius",
-            # Include fields from PhysicalLocationMixin if needed
-            "street_address",
+            # Updated fields from PhysicalLocationMixin
+            "location_name",
+            "address_line1",
+            "address_line2",
             "city",
-            "province_state",
+            "state_or_province",
+            "postal_code",
             "country",
-            "postal_zip_code",
+            "ext_id",
         ]
         read_only_fields = ["id"]
+
+    # ... rest of the serializer code remains the same
 
     def validate_delivery_radius(self, value):
         if value is not None and value <= 0:

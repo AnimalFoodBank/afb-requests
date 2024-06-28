@@ -400,7 +400,15 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
-    }
+    },
+    "test": {
+        "ENGINE": os.getenv("DB_ENGINE"),
+        "NAME": "test_" + (os.getenv("DB_NAME") or ""),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
+    },
 }
 
 # Password validation
@@ -514,7 +522,7 @@ LOGGING = {
             "filters": ["request_id"],
         },
         "console_db": {
-            "level": "DEBUG",
+            "level": "FATAL",
             "class": "logging.StreamHandler",
             "formatter": "sql",
             "filters": ["request_id"],
