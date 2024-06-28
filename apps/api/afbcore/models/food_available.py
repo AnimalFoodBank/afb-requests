@@ -1,9 +1,12 @@
 """This module defines the FoodAvailable model."""
 
 import uuid
+from enum import Enum
 
 from django.db import models
-from enum import Enum
+
+from .base import BaseAbstractModel
+from .mixins import HasDetailsMixin
 
 
 class PetType(Enum):
@@ -12,7 +15,7 @@ class PetType(Enum):
     OTHER = "Other"
 
 
-class FoodAvailable(models.Model):
+class FoodAvailable(HasDetailsMixin, BaseAbstractModel):
     """
     Needs to support fields for different types of pets (e.g. cats, dogs, and other pets), as well as different types of food (e.g. dry and wet) and different amounts of food based on the size of the pet.
 

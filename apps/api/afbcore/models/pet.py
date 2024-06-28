@@ -4,6 +4,9 @@ from enum import Enum
 from django.db import models
 from django.db.models import JSONField
 
+from .base import BaseAbstractModel
+from .mixins import HasDetailsMixin
+
 
 class PetSize(Enum):
     TOY = "Toy - up to 10lbs"
@@ -13,8 +16,7 @@ class PetSize(Enum):
     GIANT_BREED = "Giant Breed - 100+ lbs"
 
 
-class Pet(models.Model):
-
+class Pet(HasDetailsMixin, BaseAbstractModel):
     """
     Pet model to store information about pets belonging to a profile.
 

@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 
 from .base import BaseAbstractModel
-from .mixins import PhysicalLocationMixin
+from .mixins import HasDetailsMixin, PhysicalLocationMixin
 
 """
     Run these tests with the following command:
@@ -12,7 +12,7 @@ from .mixins import PhysicalLocationMixin
 """
 
 
-class DeliveryRegion(PhysicalLocationMixin, BaseAbstractModel):
+class DeliveryRegion(PhysicalLocationMixin, HasDetailsMixin, BaseAbstractModel):
     """
     Represents a delivery region with an address.
 

@@ -63,7 +63,6 @@ class FoodRequestViewSetTestCase(TestCase):
                         "pet_dob": "2020",
                         "food_details": {
                             "allergies": "Being picked up",
-                            "usual_brands": "All of them",
                             "foodtype": "Either",
                         },
                         "dog_details": {"size": "10-20 lbs (Small)"},

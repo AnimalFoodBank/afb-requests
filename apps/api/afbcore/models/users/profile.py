@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 from ..base import BaseAbstractModel
-from ..mixins import HasDetails
+from ..mixins import HasDetailsMixin
 
 # Profile depends on User and not the other way around
 from .user import User  # noqa: F401
@@ -34,7 +34,7 @@ ROLE_CHOICES = [
 ]
 
 
-class Profile(HasDetails, BaseAbstractModel):
+class Profile(HasDetailsMixin, BaseAbstractModel):
     """
     A model representing a user profile.
 

@@ -34,10 +34,43 @@ class BranchSerializer(serializers.ModelSerializer):
             "postal_code",
             "country",
             "ext_id",
+            "hidden",
+            "operational",
+            "created",
+            "modified",
         ]
-        read_only_fields = ["id"]
-
-    # ... rest of the serializer code remains the same
+        # Branch details are read-only in the API. They can
+        # only be updated via the Django admin interface.
+        read_only_fields = [
+            "id",
+            "display_name",
+            "delivery_regions",
+            "pickup_locations",
+            "frequency_of_requests",
+            "spay_neuter_requirement",
+            "pets_per_household_max",
+            "delivery_deadline_days",
+            "delivery_type",
+            "delivery_pickup_details",
+            "blurb",
+            "blurb_image",
+            "latitude",
+            "longitude",
+            "delivery_radius",
+            # Updated fields from PhysicalLocationMixin
+            "location_name",
+            "address_line1",
+            "address_line2",
+            "city",
+            "state_or_province",
+            "postal_code",
+            "country",
+            "ext_id",
+            "hidden",
+            "operational",
+            "created",
+            "modified",
+        ]
 
     def validate_delivery_radius(self, value):
         if value is not None and value <= 0:

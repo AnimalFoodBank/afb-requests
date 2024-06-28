@@ -2,10 +2,11 @@ import uuid
 
 from django.db import models
 
-from .mixins import PhysicalLocationMixin
+from .base import BaseAbstractModel
+from .mixins import HasDetailsMixin, PhysicalLocationMixin
 
 
-class Branch(PhysicalLocationMixin):
+class Branch(HasDetailsMixin, PhysicalLocationMixin, BaseAbstractModel):
     class Meta:
         verbose_name_plural = "Branches"
 

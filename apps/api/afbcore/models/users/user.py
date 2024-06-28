@@ -21,7 +21,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel, UUIDModel
 
-from ..mixins import HasDetails
+from ..mixins import HasDetailsMixin
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +89,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(UUIDModel, TimeStampedModel, HasDetails, AbstractUser):
+class User(UUIDModel, TimeStampedModel, HasDetailsMixin, AbstractUser):
     """
     A custom user model that extends Django's built-in AbstractUser model.
 

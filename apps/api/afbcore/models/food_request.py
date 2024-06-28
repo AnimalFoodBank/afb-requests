@@ -7,6 +7,7 @@ from model_utils.choices import Choices
 from phonenumber_field.modelfields import PhoneNumberField
 
 from .base import BaseAbstractModel
+from .mixins import HasDetailsMixin
 
 STATUS_CHOICES = [
     ("submitted", "Request Submitted"),
@@ -32,7 +33,7 @@ BUILDING_TYPE_CHOICES = Choices(
 )
 
 
-class FoodRequest(BaseAbstractModel):
+class FoodRequest(HasDetailsMixin, BaseAbstractModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # TODO: Should this be a foreign key to the user model? A user can have
