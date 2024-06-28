@@ -93,6 +93,8 @@ export interface Branch extends BaseAbstractModel {
   delivery_radius: number | null;
   hidden: boolean;
   operational: boolean;
+  created: Date;
+  modified: Date;
 
   // Fields from PhysicalLocationMixin
   location_name: string;

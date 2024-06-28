@@ -277,6 +277,7 @@ onMounted(() => {
       value: branch.id,
       dataBranch: branch,
       disabled: branch.hidden,  // NOTE: Not functional yet
+      //selected: !branch.hidden && branch.operational,
     }));
   });
 
@@ -295,7 +296,7 @@ onMounted(() => {
           search: true,
           native: false,
           inputType: "search",
-          autocomplete: "off",
+          autocomplete: "nope",
           items: parsedBranches,
           rules: [],  // it's for display only so not "required" when submitting the form
           label: "Your local branch",
@@ -366,11 +367,10 @@ onMounted(() => {
           label: "Delivery instructions (optional)",
           description: "Please provide any additional information that we'll need to reach your address, e.g. buzz code, suite number, etc",
           placeholder: "e.g. Buzz 1234",
-
           columns: {
             container: 12,
             label: 6,
-            wrapper: 8,
+            wrapper: 12,
           },
           default: state.delivery_address?.instructions,
         },

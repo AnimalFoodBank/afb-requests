@@ -31,7 +31,6 @@ export interface FoodRequestFormState {
       pet_dob: string;
       food_details?: {
         allergies?: string;
-        usual_brands?: string;
         foodtype?: string;
       };
       dog_details?: {

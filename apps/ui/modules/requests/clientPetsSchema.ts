@@ -22,6 +22,9 @@
    };
  });
  */
+
+import { generateYearRange } from '@/utils/timeTools';
+
 const clientPetsSchema = {
   type: "object",
   before: "Please confirm the details of each of your pets that you're requesting for.",
@@ -80,14 +83,7 @@ const clientPetsSchema = {
             type: "select",
             rules: ["required", "max:32"],
             placeholder: "Birth year",
-            items: [
-              '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017',
-              '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009',
-              '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001',
-              '2000', '1999', '1998', '1997', '1996', '1995', '1994', '1993',
-              '1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985',
-              '1984', '1983', '1982', '1981', '1980'
-            ],
+            items: generateYearRange(),
             columns: {
               container: 6,
             },
@@ -110,14 +106,18 @@ const clientPetsSchema = {
                   container: 6,
                 },
               },
-              usual_brands: {
+              general_notes: {
                 type: "text",
-                placeholder: "Usual brands",
-                rules: [],
-                description: "We try to match brands when possible.",
+                rules: ["max:100"],
+                //label: "Notes",
+                description: "Any additional information you'd like to provide about this pet.",
                 columns: {
                   container: 6,
+                  label: 6,
                 },
+                conditions: [
+                  ['client_pets.pets.*.pet_type', ['Dog', 'Cat', 'Other']],
+                ],
               },
               foodtype: {
                 type: "radiogroup",
@@ -185,19 +185,7 @@ const clientPetsSchema = {
               },
             }
           },
-          general_notes: {
-            type: "text",
-            rules: ["max:100"],
-            label: "Notes",
-            info: "Any additional information you'd like to provide about this pet.",
-            columns: {
-              container: 12,
-              label: 6,
-            },
-            conditions: [
-              ['client_pets.pets.*.pet_type', ['Dog', 'Cat', 'Other']],
-            ],
-          },
+
         },
       },
     },
