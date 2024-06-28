@@ -1,15 +1,21 @@
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
+import tailwindTypography from '@tailwindcss/typography'
 import { iconsPlugin, getIconCollections } from '@egoist/tailwindcss-icons'
 
 export default <Partial<Config>>{
   content: [
-    "./components/**/*.{js,vue,ts}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
-    "./plugins/**/*.{js,ts}",
-    "./app.vue",
-    "./error.vue",
+    `@/components/**/*.{vue,js,ts}`,
+    `@/layouts/**/*.vue`,
+    `@/pages/**/*.vue`,
+    `@/composables/**/*.{js,ts}`,
+    `@/modules/**/*.{js,ts}`,
+    `@/plugins/**/*.{js,ts}`,
+    `@/stores/**/*.{js,ts}`,
+    `@/utils/**/*.{js,ts}`,
+    `@/app.{js,ts,vue}`,
+    `@/error.{js,ts,vue}`,
+    `@/app.config.{js,ts}`,
 
     './vueform.config.ts',
     './node_modules/.pnpm/@vueform+vueform@*/node_modules/@vueform/vueform/themes/tailwind/**/*.vue',
@@ -26,6 +32,7 @@ export default <Partial<Config>>{
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
     require('@vueform/vueform/tailwind'),
     // require('@vueform/builder/tailwind'),
     iconsPlugin({
