@@ -1,5 +1,7 @@
 import type { SessionData } from "./types/index";
 
+// NOTE: External deps config can move from files to here
+// https://nuxt.com/docs/getting-started/configuration#external-configuration-files
 
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
@@ -38,6 +40,40 @@ export default defineNuxtConfig({
    *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
    **/
   ssr: false,
+
+  /**
+   * Typically we don't need to add vite configuration; nuxi and
+   * nuxt-cli handle this for us. Occasionally, there is a bug
+   * or a feature that requires us to add a vite configuration.
+   * Today, we are adding a vite configuration to enable HMR over
+   * wss (secure websockets) instead of the default ws.
+   *
+   * This github issue explains the problem and the solution in
+   * high fidelity, particularly this comment from ayalon:
+   * https://github.com/nuxt/nuxt/issues/27558#issuecomment-2182901776
+   *
+   * The comment from danielroe a few messages down indicates that the
+   * next release of nuxi-cli will have the fix (current 3.12.0).
+   * https://vitejs.dev/config/server-options#server-hmr
+   **/
+  vite: {
+    //"server": {
+    //  "hmr": {
+    //    "protocol": "wss",
+    //    "host": "dev.afb.pet",
+    //  },
+    //},
+    //"build": {
+
+    //},
+  },
+  hooks: {
+    'vite:extendConfig': (config) => {
+      if (typeof config.server!.hmr === 'object') {
+        config.server!.hmr.protocol = 'wss';
+      }
+    },
+  },
 
   /**
   * Enable type checking for dev and build modes.
@@ -199,6 +235,8 @@ export default defineNuxtConfig({
    * sensitive information.
    */
   runtimeConfig: {
+    nitro: {
+    },
     // Public keys are exposed to the client
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
