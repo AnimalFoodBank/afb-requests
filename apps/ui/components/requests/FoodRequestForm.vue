@@ -13,7 +13,7 @@
 
 
 <script setup lang="ts">
-import type { FoodRequestFormState } from '@/types/index';
+import type { Branch, FoodRequestFormState } from '@/types/index';
 
 /**
  * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
@@ -244,10 +244,43 @@ const schema = ref<any>({})
 // Define the schema for the client pets section of the form.
 import clientPetsSchema from '@/modules/requests/clientPetsSchema';
 
+
+
+const branches = ref([]);
+
+const fetchBranches = async () => {
+  const options = {
+    headers: {
+      'Authorization': authToken.value,
+    },
+  }
+
+  const response: Array<Branch> = await $fetch('/api/v1/branches/', options)
+
+  branches.value = response.results;
+
+  console.log(branches);
+}
+
+
+
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
+
+  fetchBranches();
+
+  const parsedBranches = computed(() => {
+    return branches.value.map((branch: Branch) => ({
+      label: branch.display_name + " (" + branch.address_line1 + ")",
+      value: branch.id,
+      dataBranch: branch,
+      disabled: branch.hidden,  // NOTE: Not functional yet
+    }));
+  });
+
+  console.log("parsedBranches", parsedBranches);
 
   schema.value = {
     //
@@ -263,18 +296,18 @@ onMounted(() => {
           native: false,
           inputType: "search",
           autocomplete: "off",
-          items: "/json/branch_locations.json",
+          items: parsedBranches,
           rules: [],  // it's for display only so not "required" when submitting the form
           label: "Your local branch",
           description: "Please contact admin@animalfoodbank.org to change your branch.",
-          disabled: true,
+          disabled: false,
           conditions: [
             ["delivery_address.country", "in", ["CA"]]  // element disappears if doesn't pass
           ],
           columns: {
             label: 12,
             container: 12,
-            wrapper: 6,
+            wrapper: 12,
           },
           default: state.delivery_address?.branch_location,
         },

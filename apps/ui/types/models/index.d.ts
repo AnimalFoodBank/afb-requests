@@ -76,12 +76,33 @@ export interface DeliveryRegion extends BaseAbstractModel {
 
 // Equivalent to Django Branch
 export interface Branch extends BaseAbstractModel {
-  name: string;
-  address: string;
-  phone_number: string;
-  email: string;
-  profile: Profile;
+  id: string; // UUID
+  display_name: string | null;
   delivery_regions: DeliveryRegion[];
+  pickup_locations: string | null;
+  frequency_of_requests: string;
+  spay_neuter_requirement: boolean;
+  pets_per_household_max: number;
+  delivery_deadline_days: number;
+  delivery_type: 'drop_off' | 'pick_up';
+  delivery_pickup_details: string | null;
+  blurb: string | null;
+  blurb_image: string | null; // URL of the image
+  latitude: number | null;
+  longitude: number | null;
+  delivery_radius: number | null;
+  hidden: boolean;
+  operational: boolean;
+
+  // Fields from PhysicalLocationMixin
+  location_name: string;
+  address_line1: string | null;
+  address_line2: string | null;
+  city: string | null;
+  state_or_province: string | null;
+  postal_code: string | null;
+  country: string | null;
+  ext_id: string | null;
 }
 
 // Equivalent to Django FoodAvailable
