@@ -30,8 +30,10 @@ import type { Branch, FoodRequestFormState } from '@/types/index';
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
-  state: FoodRequestFormState;
+  state: FoodRequestFormState | null;
   googleMapsIsReady?: boolean;
+  autocomplete?: google.maps.places.Autocomplete | null;
+  updateAutocomplete: (latitude: number, longitude: number) => void;
   user?: any;
 }>();
 
@@ -68,7 +70,7 @@ const addSummaryFunctionality = (form$: any) => {
 
 
 const submitFoodRequest = async (form$: any, FormData: any) => {
-  // Using form$.data will INCLUDE conditional elements and it
+  // Using form$.data WILL INCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
   // console.log("submitFoodRequest data", form$)
   const foodRequestFormData = form$.data
@@ -140,6 +142,16 @@ const steps = {
     },
     labels: {
       next: "Next: Contact",
+    },
+    onActivate: (form$$: any) => {
+      console.log("Step 0 activated", form$$);
+      form$.value.el$("delivery_address.branch_locations").on("change", (selectedBranchId: string) => {
+        console.log("Branch selected: ", selectedBranchId);
+        const selectedBranch = branchesMap.value.get(selectedBranchId);
+        if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
+          props.updateAutocomplete(selectedBranch.latitude, selectedBranch.longitude);
+        }
+      });
     },
     on: (form$: any, el: any) => {
       console.log("Step 0 on", form$, el);
@@ -253,41 +265,46 @@ const fetchBranches = async () => {
     headers: {
       'Authorization': authToken.value,
     },
+    params: {
+      show_hidden: false
+    }
   }
-
   const response: Array<Branch> = await $fetch('/api/v1/branches/', options)
-
   branches.value = response.results;
-
-  console.log(branches);
 }
 
+const branchesMap = ref(new Map());
 
+const parsedBranches = computed(() => {
+  branchesMap.value.clear();
+  return branches.value.map((branch: Branch) => {
+    const parsedBranch = {
+      label: branch.display_name,
+      value: branch.id,
+      latitude: branch.latitude,
+      longitude: branch.longitude,
+    };
+    branchesMap.value.set(branch.id, parsedBranch);
+    return parsedBranch;
+  });
+});
 
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
+  const branchLocations = form$.value.el$("delivery_address.branch_locations");
 
   fetchBranches();
 
-  const parsedBranches = computed(() => {
-    return branches.value.map((branch: Branch) => ({
-      label: branch.display_name + " (" + branch.address_line1 + ")",
-      value: branch.id,
-      dataBranch: branch,
-      disabled: branch.hidden,  // NOTE: Not functional yet
-      //selected: !branch.hidden && branch.operational,
-    }));
-  });
-
   console.log("parsedBranches", parsedBranches);
-
+  console.log("state", state);
+  console.log("branchLocations", branchLocations);
   schema.value = {
+
     //
     // === STEP 0: Delivery Address ====
     //
-
     delivery_address: {
       type: "object",
       schema: {
@@ -308,9 +325,15 @@ onMounted(() => {
           columns: {
             label: 12,
             container: 12,
-            wrapper: 12,
+            wrapper: 6,
           },
           default: state.delivery_address?.branch_location,
+          onChange: (value: string) => {
+            const selectedBranch = branchesMap.value.get(value);
+            if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
+              props.updateAutocomplete(selectedBranch.latitude, selectedBranch.longitude);
+            }
+          },
         },
         interactive_address: {
           type: "text",

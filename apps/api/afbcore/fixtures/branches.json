@@ -25,7 +25,7 @@
       "latitude": 50.0417,
       "longitude": -110.6766,
       "delivery_radius": 20,
-      "hidden": false,
+      "hidden": true,
       "operational": false
     }
   },
@@ -85,7 +85,7 @@
       "latitude": 49.9530,
       "longitude": -97.2110,
       "delivery_radius": 10,
-      "hidden": false,
+      "hidden": true,
       "operational": false
     }
   },
@@ -115,7 +115,7 @@
       "latitude": 49.9530,
       "longitude": -97.0660,
       "delivery_radius": 10,
-      "hidden": false,
+      "hidden": true,
       "operational": false
     }
   },
@@ -145,7 +145,7 @@
       "latitude": 49.8370,
       "longitude": -97.2110,
       "delivery_radius": 10,
-      "hidden": false,
+      "hidden": true,
       "operational": false
     }
   },
@@ -175,7 +175,7 @@
       "latitude": 49.8370,
       "longitude": -97.0660,
       "delivery_radius": 10,
-      "hidden": false,
+      "hidden": true,
       "operational": false
     }
   }

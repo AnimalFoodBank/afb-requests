@@ -43,8 +43,8 @@ class BranchViewSet(viewsets.ModelViewSet):
         """
         queryset = Branch.objects.all()
         show_hidden = self.request.query_params.get("show_hidden", None)
-        if show_hidden is None or show_hidden.lower() != "true":
-            queryset = queryset.filter(hidden=False)
+        show_hidden = show_hidden is not None and show_hidden.lower() == "true"
+        queryset = queryset.filter(hidden=show_hidden)
         return queryset
 
     def perform_create(self, serializer):

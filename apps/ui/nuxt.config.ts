@@ -235,8 +235,7 @@ export default defineNuxtConfig({
    * sensitive information.
    */
   runtimeConfig: {
-    nitro: {
-    },
+
     // Public keys are exposed to the client
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
