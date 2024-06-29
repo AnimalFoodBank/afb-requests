@@ -315,7 +315,7 @@ onMounted(() => {
           inputType: "search",
           autocomplete: "nope",
           items: parsedBranches,
-          rules: [],  // it's for display only so not "required" when submitting the form
+          rules: ['required'],
           label: "Your local branch",
           description: "Please contact admin@animalfoodbank.org to change your branch.",
           disabled: false,
@@ -351,17 +351,11 @@ onMounted(() => {
             wrapper: 6
           },
           floating: false,
-          // Disable progressing to next step on "Enter" keypress. This
-          // is a rudimentary to prevent the issue but it's not a proper
-          // solution. There should be a way to handle this with either
-          // Vueform or the google autocomplete library itself.
-          onKeypress: (e: any) => {
-            console.log("[interactive_address-debug]", e);
-            if (e.key === "Enter") {
-              e.preventDefault();
-            }
-          },
           default: state.delivery_address?.interactive_address, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
+          disabled: false, // Start disabled
+          conditions: [
+            ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
+          ],
         },
         building_type: {
           type: "radiogroup",
@@ -383,6 +377,9 @@ onMounted(() => {
             wrapper: 8,
           },
           default: state.delivery_address?.building_type,
+          conditions: [
+            ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
+          ],
         },
         instructions: {
           type: "textarea",
@@ -396,6 +393,9 @@ onMounted(() => {
             wrapper: 12,
           },
           default: state.delivery_address?.instructions,
+          conditions: [
+            ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
+          ],
         },
         location: {
           type: "object",
