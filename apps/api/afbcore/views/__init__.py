@@ -16,6 +16,6 @@ module.
 """
 
 from .branch_viewset import BranchViewSet  # noqa: F401
-from .food_request import FoodRequestViewSet  # noqa: F401
+from .food_request_view import FoodRequestViewSet  # noqa: F401
 from .profile_viewset import ProfileViewSet  # noqa: F401
-from .users import CurrentUserAPIView, RegisterUserAPIView  # noqa: F401
+from .user_view import CurrentUserAPIView, RegisterUserAPIView  # noqa: F401

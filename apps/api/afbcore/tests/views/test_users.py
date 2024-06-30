@@ -2,7 +2,7 @@ import os
 import uuid
 
 from afbcore.serializers import UserSerializer
-from afbcore.views.users import CurrentUserAPIView
+from afbcore.views.user_view import CurrentUserAPIView
 from django.contrib.auth import get_user_model
 from django.test import RequestFactory
 from rest_framework import status

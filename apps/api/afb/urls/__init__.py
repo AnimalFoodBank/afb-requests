@@ -7,8 +7,8 @@ from afbcore.views import (
     BranchViewSet,
     FoodRequestViewSet,
     ProfileViewSet,
-    authtoken,
-    users,
+    logout_view,
+    user_view,
 )
 from django.conf import settings
 from django.contrib import admin as afbcore_admin
@@ -35,12 +35,12 @@ urlpatterns = [
     path("afbadmin/", afbcore_admin.site.urls, name="admin"),
     path(
         "api/<str:version>/register/",
-        users.RegisterUserAPIView.as_view(),
+        user_view.RegisterUserAPIView.as_view(),
         name="registration",
     ),
     path(
         "api/<str:version>/current_user/",
-        users.CurrentUserAPIView.as_view(),
+        user_view.CurrentUserAPIView.as_view(),
         name="current_user",
     ),
     path("api/<str:version>/", include(router.urls)),
@@ -52,7 +52,7 @@ urlpatterns = [
     ),
     path(
         "api/<str:version>/authtoken/logout/",
-        authtoken.LogoutView.as_view(),
+        logout_view.LogoutView.as_view(),
         name="api_token_logout",
     ),
     path(
