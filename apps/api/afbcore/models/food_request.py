@@ -61,6 +61,7 @@ class FoodRequest(HasDetailsMixin, BaseAbstractModel):
         default=BUILDING_TYPE_CHOICES.NOT_SPECIFIED,
     )
     address_details = models.JSONField(default=dict)
+    ext_address_details = models.JSONField(default=dict)
 
     address_instructions = models.TextField(
         max_length=50, null=True, blank=True

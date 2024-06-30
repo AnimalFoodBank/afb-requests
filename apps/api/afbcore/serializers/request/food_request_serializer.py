@@ -44,7 +44,35 @@ class AbstractFoodRequestSerializer(serializers.ModelSerializer):
     class Meta:
         abstract = True
         model = FoodRequest
-        fields = [f.name for f in FoodRequest._meta.fields if f.name != "pets"]
+        fields = [
+            "id",
+            "user",
+            "pets",
+            "branch",
+            "address_text",
+            "address_google_place_id",
+            "address_canadapost_id",
+            "address_latitude",
+            "address_longitude",
+            "address_buildingtype",
+            "address_details",
+            "ext_address_details",
+            "address_instructions",
+            "contact_phone",
+            "contact_email",
+            "contact_name",
+            "method_of_contact",
+            "safe_drop_agree",
+            "safe_drop_instructions",
+            "confirm_correct",
+            "accept_terms",
+            "flagged",
+            "date_requested",
+            "request_status",
+            "comments",
+            "created",
+            "modified",
+        ]
 
 
 class FoodRequestCreateSerializer(AbstractFoodRequestSerializer):
@@ -61,5 +89,9 @@ class FoodRequestUpdateSerializer(AbstractFoodRequestSerializer):
             "created",
             "address_canadapost_id",
             "address_google_place_id",
+            "address_latitude",
+            "address_longitude",
+            "address_buildingtype",
+            "address_details",
             "request_status",
         ]

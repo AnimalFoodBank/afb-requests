@@ -15,7 +15,11 @@ export interface FoodRequestFormState {
       postcode: string;
       lat?: number;
       lon?: number;
-    }
+    };
+    ext_address_id?: string;
+    ext_address_details?: {
+      place: google.maps.places.PlaceResult;
+    };
   };
   delivery_contact: {
     contact_name: string;
