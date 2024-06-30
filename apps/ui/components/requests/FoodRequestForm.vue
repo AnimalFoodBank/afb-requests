@@ -574,7 +574,7 @@ onMounted(() => {
           label: "Contact email",
           placeholder: "e.g. your email address",
           floating: false,
-          disabled: true,
+          disabled: (!!userInfo.email),
           columns: {
             container: 12,
             label: 12,
@@ -584,7 +584,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Email']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: profileInfo.email || null,
+          default: userInfo.email || null,
         },
         alt_contact_email: {
           type: "text",
@@ -646,7 +646,7 @@ onMounted(() => {
     //
     // STEP 2 - Your Pets
     //
-    client_pets: clientPetsSchema,
+    client_pets: clientPetsSchema(),
 
     //
     // STEP 3 - Safe Drop
