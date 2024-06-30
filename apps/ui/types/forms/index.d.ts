@@ -56,3 +56,28 @@ export interface FoodRequestFormState {
     accept_terms: boolean;
   };
 }
+
+export interface DeliveryInfoFormState {
+  id: string;
+  user_id: string;
+  delivery_address: {
+    branch_location: string;
+    interactive_address: string;
+    building_type: string;
+    instructions: string;
+    country: string;  // all user addresses assumed to be in the same country
+    location: {
+      address_line1: string;
+      address_line2?: string;
+      city: string;
+      prov_or_state: string;
+      postcode: string;
+      lat?: number;
+      lon?: number;
+    };
+    ext_address_id?: string;
+    ext_address_details?: {
+      place: google.maps.places.PlaceResult;
+    };
+  };
+}

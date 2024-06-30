@@ -22,14 +22,11 @@ onMounted(() => {
   console.log('profile/index.vue onMounted')
 
   state.value = {
-    branch_selection: profileInfo?.branch_selection || 'Medicine Hat',
+    branch_selection: profileInfo?.branch_selection || '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
     name: userInfo.name,
     email: userInfo.email,
     phone_number: profileInfo?.phone_number,
     address: profileInfo?.address || '1234 Southview Drive SE',
-    city: profileInfo?.city || 'Medicine Hat',
-    state: profileInfo?.state || 'AB',
-    zip: profileInfo?.zip || 'T1A 8E1',
   }
 
   console.log('state', state.value)

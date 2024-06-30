@@ -71,7 +71,6 @@ const addSummaryFunctionality = (form$: any) => {
   });
 };
 
-
 const submitFoodRequest = async (form$: any, FormData: any) => {
   // Using form$.data WILL INCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
@@ -121,7 +120,6 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   )
 };
 
-
 const validatedGoogleAddress = class extends Validator {
   async check(value: string) {
     // Wait for the autocomplete to be ready
@@ -142,6 +140,7 @@ const validatedGoogleAddress = class extends Validator {
 }
 
 const autocomplete = ref<google.maps.places.Autocomplete | null>(null);
+
 /**
  * ***************************************************
  *  FORM STEPS
@@ -344,7 +343,6 @@ watch(() => props.autocomplete, (newValue, oldValue) => {
     }
     form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
   });
-
 });
 
 
