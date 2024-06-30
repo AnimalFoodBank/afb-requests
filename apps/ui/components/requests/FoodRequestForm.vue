@@ -14,6 +14,8 @@
 
 <script setup lang="ts">
 import type { Branch, FoodRequestFormState } from '@/types/index';
+import { Validator } from '@vueform/vueform';
+
 
 /**
  * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
@@ -34,6 +36,7 @@ const props = defineProps<{
   googleMapsIsReady?: boolean;
   autocomplete?: google.maps.places.Autocomplete | null;
   updateAutocomplete: (latitude: number, longitude: number) => void;
+  addressSelected: Ref<boolean>;
   user?: any;
 }>();
 
@@ -119,6 +122,28 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
 };
 
 
+const validatedGoogleAddress = class extends Validator {
+  async check(value: string) {
+    // Wait for the autocomplete to be ready
+    while (!props.googleMapsIsReady) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    console.log('hey', props.addressSelected.value, props.addressSelected)
+    // Check if an address has been selected
+    return props.addressSelected.value;
+  }
+
+  get msg() {
+    return 'Please select a valid address from the dropdown.';
+  }
+
+  get isAsync() {
+    return true;
+  }
+}
+
+const autocomplete = ref<google.maps.places.Autocomplete | null>(null);
 /**
  * ***************************************************
  *  FORM STEPS
@@ -157,7 +182,6 @@ const steps = {
       console.log("Step 0 on", form$, el);
     },
     conditions: [
-      // ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
     ],
   },
 
@@ -256,8 +280,6 @@ const schema = ref<any>({})
 // Define the schema for the client pets section of the form.
 import clientPetsSchema from '@/modules/requests/clientPetsSchema';
 
-
-
 const branches = ref([]);
 
 const fetchBranches = async () => {
@@ -327,7 +349,7 @@ onMounted(() => {
             container: 12,
             wrapper: 6,
           },
-          default: state.delivery_address?.branch_location,
+          default: state?.delivery_address?.branch_location,
           onChange: (value: string) => {
             const selectedBranch = branchesMap.value.get(value);
             if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
@@ -335,13 +357,22 @@ onMounted(() => {
             }
           },
         },
+        ext_address_id: { // TODO: Not being filled yet
+          type: "hidden",
+          rules: [],
+          label: "Google selcted address",
+          hidden: true,
+          default: state?.delivery_address?.ext_address_id,
+        },
         interactive_address: {
           type: "text",
           autocomplete: "one-time-code",
           placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
           label: "Your address",
           description: "Please contact us if you need to change your address.",
-          rules: ["required"],
+          rules: [
+            "required",
+          ],
           attrs: {
             autofocus: true,
           },
@@ -351,7 +382,7 @@ onMounted(() => {
             wrapper: 6
           },
           floating: false,
-          default: state.delivery_address?.interactive_address, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
+          default: state?.delivery_address?.interactive_address, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
           disabled: false, // Start disabled
           conditions: [
             ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
@@ -376,9 +407,10 @@ onMounted(() => {
             label: 6,
             wrapper: 8,
           },
-          default: state.delivery_address?.building_type,
+          default: state?.delivery_address?.building_type,
           conditions: [
-            ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
+            ['delivery_address.branch_locations', '!=', null], // Enable when a branch is selected
+            [() => props.addressSelected.value, true],
           ],
         },
         instructions: {
@@ -392,9 +424,10 @@ onMounted(() => {
             label: 6,
             wrapper: 12,
           },
-          default: state.delivery_address?.instructions,
+          default: state?.delivery_address?.instructions,
           conditions: [
-            ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
+            ['delivery_address.branch_locations', '!=', null], // Enable when a branch is selected
+            [() => props.addressSelected.value, true]
           ],
         },
         location: {
@@ -648,7 +681,7 @@ onMounted(() => {
           text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Notice.",
           fieldName: "Terms",
           rules: ["accepted"],
-          default: state.confirmation?.accept_terms,
+          default: state?.confirmation?.accept_terms,
         },
       },
     },

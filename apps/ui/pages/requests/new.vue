@@ -15,7 +15,8 @@
                                  :googleMapsIsReady="googleMapsIsReady"
                                  :user="authData"
                                  :autocomplete="autocomplete"
-                                 :updateAutocomplete="updateAutocomplete" />
+                                 :updateAutocomplete="updateAutocomplete"
+                                 :addressSelected="addressSelected" />
 
       </UDashboardPanelContent>
 
@@ -119,6 +120,7 @@ loader.load().then(async () => {
 
 });
 
+const addressSelected = ref(false);
 const updateAutocomplete = (latitude: number, longitude: number) => {
   if (autocomplete.value) {
     const center = new google.maps.LatLng(latitude, longitude);
@@ -136,6 +138,8 @@ const updateAutocomplete = (latitude: number, longitude: number) => {
       strictBounds: true,
       location: center,
     });
+
+
   }
 };
 
