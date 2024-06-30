@@ -177,6 +177,8 @@ const steps = {
           props.updateAutocomplete(selectedBranch.latitude, selectedBranch.longitude);
         }
       });
+
+
     },
     on: (form$: any, el: any) => {
       console.log("Step 0 on", form$, el);
@@ -310,6 +312,13 @@ const parsedBranches = computed(() => {
     return parsedBranch;
   });
 });
+
+//
+watch(() => props.autocomplete, (newValue, oldValue) => {
+  //console.log("2Place selected {}", props.autocomplete.value);
+
+});
+
 
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
