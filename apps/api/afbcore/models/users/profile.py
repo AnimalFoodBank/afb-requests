@@ -41,8 +41,9 @@ class Profile(HasDetailsMixin, BaseAbstractModel):
     Fields:
     - id: UUIDField, primary key
     - user: ForeignKey to User model
+    - pets: ManyToManyField to Pet model
+    - branch: ForeignKey to Branch model
     - role: OneToOneField to Role model
-    - branches: ManyToManyField to Branch model
     - preferred_name: CharField, max length 64
     - email: EmailField, unique
     - phone_number: PhoneNumberField, max length 20, region US
@@ -76,6 +77,8 @@ class Profile(HasDetailsMixin, BaseAbstractModel):
         blank=True,
         related_name="profiles",
     )
+
+    # pets = models.ManyToManyField("Pet")
 
     # Name fields
     preferred_name = models.CharField(max_length=64, null=True)

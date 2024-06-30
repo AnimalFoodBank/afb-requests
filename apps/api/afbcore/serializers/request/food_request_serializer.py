@@ -1,16 +1,10 @@
 from rest_framework import serializers
 
 from ...models import FoodRequest, Pet
-
-
-class PetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pet
-        fields = "__all__"
+from ..profile.pet_serializer import PetSerializer
 
 
 class ClientPetsSerializer(serializers.Serializer):
-    which_pets = serializers.CharField()
     pets = PetSerializer(many=True)
 
 

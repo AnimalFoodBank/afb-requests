@@ -28,6 +28,14 @@ class Pet(HasDetailsMixin, BaseAbstractModel):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
+    profile = models.ForeignKey(
+        "Profile",
+        on_delete=models.CASCADE,
+        related_name="pets",
+        null=True,
+        blank=True,
+    )
+
     pet_type = models.CharField(max_length=50)  # e.g. "Dog", "Cat", etc.
     pet_name = models.CharField(max_length=50)  # e.g. "Frankie"
     pet_dob = models.CharField(max_length=10)  # date of birth

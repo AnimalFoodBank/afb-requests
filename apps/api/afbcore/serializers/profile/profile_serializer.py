@@ -29,6 +29,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "address_details",
             "ext_address_details",
             "role",
+            "pets",  # pets are modified in their own serializer
             "delivery_regions",
             "validated_postal_code",
             "country",
@@ -42,6 +43,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "user",
             "status",
             "country",
+            "pets",
             "role",
             "delivery_regions",
             "created",
