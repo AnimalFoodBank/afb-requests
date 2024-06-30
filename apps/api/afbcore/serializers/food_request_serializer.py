@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from ...models import FoodRequest, Pet
-from ..profile.pet_serializer import PetSerializer
+from ..models import FoodRequest, Pet
+from .pet_serializer import PetSerializer
 
 
 class ClientPetsSerializer(serializers.Serializer):

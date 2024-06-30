@@ -1,13 +1,15 @@
 from rest_framework import serializers
 
-from ...models import Profile
-from ..delivery_region_serializer import DeliveryRegionSerializer
+from ..models import Profile
+from .delivery_region_serializer import DeliveryRegionSerializer
+from .pet_serializer import PetSerializer
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    # delivery_regions = serializers.ListField(required=False)
-    # delivery_regions = serializers.StringRelatedField(many=True)
+
+    pets = PetSerializer(many=True, read_only=True, required=False)
+
     delivery_regions = DeliveryRegionSerializer(
         many=True, read_only=True, required=False
     )
