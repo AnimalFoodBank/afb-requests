@@ -167,7 +167,7 @@ CSRF_COOKIE_HTTPONLY = False
 # https://docs.djangoproject.com/en/4.2/ref/csrf/#how-it-works
 # CSRF_COOKIE_DOMAIN = ""
 
-TOKEN_EXPIRED_AFTER_WEEKS = 2
+TOKEN_EXPIRED_AFTER_WEEKS = 1
 
 
 # Static files (CSS, JavaScript, Images)
@@ -542,3 +542,17 @@ LOGGING = {
     },
     "root": {"level": LOG_LEVEL, "handlers": ["console"]},
 }
+
+if DEBUG:
+    # RunServerPlus settings
+    # https://django-extensions.readthedocs.io/en/stable/runserver_plus.html
+    RUNSERVER_PLUS_PRINT_SQL_TRUNCATE = 1000
+    RUNSERVERPLUS_POLLER_RELOADER_TYPE = "stat"  # or 'watchdog' or 'auto'
+    RUNSERVER_PLUS_EXCLUDE_PATTERNS = [
+        "*.sqlite3",
+        "*.sqlite3-journal",
+        "#{BASE_DIR}/.local/*",
+        "#{BASE_DIR}/.git/*",
+        "**/.pytest_cache/*",
+        "**/__pycache__/*",
+    ]
