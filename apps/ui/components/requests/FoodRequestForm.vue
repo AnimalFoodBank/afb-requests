@@ -128,8 +128,6 @@ const validatedGoogleAddress = class extends Validator {
     while (!props.googleMapsIsReady) {
       await new Promise(resolve => setTimeout(resolve, 100));
     }
-
-    console.log('hey', props.addressSelected.value, props.addressSelected)
     // Check if an address has been selected
     return props.addressSelected.value;
   }
@@ -313,9 +311,36 @@ const parsedBranches = computed(() => {
   });
 });
 
+// Example of an autocompelete place object:
 //
+//  {
+//    "formatted_address": "5717 Main St, Oliver, BC V0H 1T9, Canada",
+//    "geometry": {
+//      "location": {
+//        "lat": 49.1707449,
+//        "lng": -119.554817
+//      },
+//      "viewport": {
+//        "south": 49.1694338697085,
+//        "west": -119.5562589802915,
+//        "north": 49.1721318302915,
+//        "east": -119.5535610197085
+//      }
+//    },
+//    "place_id": "ChIJa6nSKT3qglQR7h3ZGH7NUmg",
+//    "html_attributions": []
+//  }
+
 watch(() => props.autocomplete, (newValue, oldValue) => {
-  //console.log("2Place selected {}", props.autocomplete.value);
+  console.log("Autocomplete ready", newValue);
+  if (!newValue) {
+    return;
+  }
+  newValue.addListener("place_changed", () => {
+    const place = newValue.getPlace();
+    form$.value.el$("delivery_address.ext_address_id").value = place.place_id;
+    form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
+  });
 
 });
 
@@ -393,6 +418,9 @@ onMounted(() => {
           floating: false,
           default: state?.delivery_address?.interactive_address, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
           disabled: false, // Start disabled
+          onBlur: (value: string) => {
+            console.log("Selected address: ", value.value);
+          },
           conditions: [
             ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
           ],
@@ -418,8 +446,7 @@ onMounted(() => {
           },
           default: state?.delivery_address?.building_type,
           conditions: [
-            ['delivery_address.branch_locations', '!=', null], // Enable when a branch is selected
-            [() => props.addressSelected.value, true],
+            ['delivery_address.ext_address_id', '!=', null],
           ],
         },
         instructions: {
@@ -435,8 +462,7 @@ onMounted(() => {
           },
           default: state?.delivery_address?.instructions,
           conditions: [
-            ['delivery_address.branch_locations', '!=', null], // Enable when a branch is selected
-            [() => props.addressSelected.value, true]
+            ['delivery_address.ext_address_id', '!=', null],
           ],
         },
         location: {

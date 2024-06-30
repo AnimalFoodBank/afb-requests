@@ -27,7 +27,7 @@ import { generateYearRange } from '@/utils/timeTools';
 
 const clientPetsSchema = {
   type: "object",
-  before: "Please confirm the details of each of your pets that you're requesting for.",
+  before: "Please confirm the details of each of your pets that you're requesting for. ",
   schema: {
     which_pets: {
       type: "radiogroup",
@@ -109,7 +109,7 @@ const clientPetsSchema = {
               general_notes: {
                 type: "text",
                 rules: ["max:100"],
-                //label: "Notes",
+                placeholder: "Notes",
                 description: "Any additional information you'd like to provide about this pet.",
                 columns: {
                   container: 6,
