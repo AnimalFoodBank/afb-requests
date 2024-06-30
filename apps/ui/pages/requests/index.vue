@@ -22,7 +22,7 @@ const links = [[
 
 const {
   status: authStatus,
-  data: authData,
+  data: userInfo,
   token: authToken,
 } = useAuth();
 

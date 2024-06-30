@@ -1,6 +1,36 @@
 [
   {
     "model": "afbcore.branch",
+    "pk": "f1b1b1b1-1b1b-1b1b-1b1b-1b1b1b1b1b1b",
+    "fields": {
+      "location_name": "No branch",
+      "address_line1": "1234 56th Street",
+      "address_line2": null,
+      "city": "Calgary",
+      "state_or_province": "AB",
+      "postal_code": "T2N 1A1",
+      "country": "Canada",
+      "ext_id": null,
+      "display_name": "No branch",
+      "pickup_locations": null,
+      "frequency_of_requests": "7",
+      "spay_neuter_requirement": false,
+      "pets_per_household_max": 4,
+      "delivery_deadline_days": 14,
+      "delivery_type": "drop_off",
+      "delivery_pickup_details": " ",
+      "blurb": " ",
+      "blurb_image": "",
+      "delivery_regions": [],
+      "latitude": 51.0447,
+      "longitude": -114.0719,
+      "delivery_radius": 10,
+      "hidden": false,
+      "operational": true
+    }
+  },
+  {
+    "model": "afbcore.branch",
     "pk": "f684ab06-c155-4b30-b046-80a721879b52",
     "fields": {
       "location_name": "Medicine Hat",

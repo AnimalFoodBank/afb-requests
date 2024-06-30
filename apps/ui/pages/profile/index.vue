@@ -22,11 +22,13 @@ onMounted(() => {
   console.log('profile/index.vue onMounted')
 
   state.value = {
-    branch_selection: profileInfo?.branch_selection || '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
+    profile_id: profileInfo?.id,
+    user_id: userInfo.id,
+    branch_selection: profileInfo?.branch_selection, //|| '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
     name: userInfo.name,
     email: userInfo.email,
     phone_number: profileInfo?.phone_number,
-    address: profileInfo?.address || '1234 Southview Drive SE',
+    address: profileInfo?.address,
   }
 
   console.log('state', state.value)
@@ -41,13 +43,13 @@ onMounted(() => {
 
     <UDivider class="mb-16" />
 
-    <UDashboardSection title="Account Changes" description="These actions are not reversible." class="">
+    <!--<UDashboardSection title="Account Changes" description="These actions are not reversible." class="">
       <div>
         <UButton color="red" label="Delete account" size="md" @click="isDeleteAccountModalOpen = true" />
       </div>
-    </UDashboardSection>
+    </UDashboardSection>-->
 
   </UDashboardPanelContent>
 
-  <SettingsDeleteAccountModal v-model="isDeleteAccountModalOpen" />
+
 </template>

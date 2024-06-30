@@ -33,12 +33,12 @@ const links = [[
  */
 const {
   status: authStatus,
-  data: authData,
+  data: userInfo,
   token: authToken,
 } = useAuth();
 
 const requests = ref([]);
-const role = computed(() => authData.value?.profiles?.[0]?.role || 'unknown');
+const role = computed(() => userInfo.value?.profiles?.[0]?.role || 'unknown');
 
 const fetchRequests = async () => {
   const options = {
@@ -61,7 +61,7 @@ const isManager = computed(() => role.value === 'manager');
 onMounted(() => {
   fetchRequests();
 
-  const userInfo = authData?.value || {}
+  const userInfo = userInfo?.value || {}
   const profile = userInfo.profiles?.[0] || {}
   role.value = profile?.role || 'unknown';
 });

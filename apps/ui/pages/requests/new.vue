@@ -13,7 +13,7 @@
         <RequestsFoodRequestForm v-if="state"
                                  :state="state"
                                  :googleMapsIsReady="googleMapsIsReady"
-                                 :user="authData"
+                                 :user="userInfo"
                                  :autocomplete="autocomplete"
                                  :updateAutocomplete="updateAutocomplete"
                                  :addressSelected="addressSelected" />
@@ -54,7 +54,7 @@ const links = [[
 
 const {
   status,
-  data: authData,
+  data: userInfo,
 } = useAuth();
 
 /**

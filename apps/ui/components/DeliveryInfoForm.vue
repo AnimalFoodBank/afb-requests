@@ -15,6 +15,10 @@ const {
   authToken,
 } = useProfile();
 
+console.log('profileInfo:', profileInfo)
+console.log('userInfo:', userInfo)
+
+
 const googleAPIKey = config.public.googleAPIKey;
 const googleMapsIsReady = ref(false)
 const autocomplete = ref<google.maps.places.Autocomplete | null>(null);
@@ -66,20 +70,65 @@ const toast = useToast()
 function validate (state: any): FormError[] {
   const errors = []
   if (!state.name) errors.push({ path: 'name', message: 'Please enter your name.' })
+  if (!state.address) errors.push({ path: 'address', message: 'Please enter your address.' })
+  if (!state.phone_number) errors.push({ path: 'phone_number', message: 'Please enter your phone number.' })
   if (!state.email) errors.push({ path: 'email', message: 'Please enter your email.' })
   if (!state.branch_selection) errors.push({ path: 'branch_selection', message: 'Please doublecheck branch location.' })
   return errors
 }
+async function onSubmit(event: FormSubmitEvent<any>) {
 
-async function onSubmit (event: FormSubmitEvent<any>) {
-  // Do something with data
-  console.log(event.data)
+  try {
+    // Prepare the data to be sent
+    const profileData = {
+      id: props.state.value.profile_id,
+      user_id: props.state.value.user_id,
+      preferred_name: event.data.name,
+      phone_number: event.data.phone_number,
+      address: event.data.address,
+      // Add any other fields you want to update
+    }
 
-  toast.add({
-    title: `${props.title} updated`,
-    icon: 'i-heroicons-check-circle',
-  })
+    console.log('event.data:', event.data)
+    console.log('Profile data:', profileData)
+
+    if (event.data.branch_selection) {
+      profileData.branch_selection = event.data.branch_selection;
+    }
+
+    if (event.data.ext_address_details) {
+      profileData.ext_address_details = event.data.ext_address_details;
+    }
+
+    // Make the API call
+    const response = await $fetch('/api/v1/profiles/', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${authToken.value}`
+      }
+    })
+
+    // Handle successful response
+    console.log('Profile updated:', response)
+
+    toast.add({
+      title: `${props.title} updated`,
+      icon: 'i-heroicons-check-circle',
+    })
+  } catch (error) {
+    console.error('Error updating profile:', error)
+
+    toast.add({
+      title: 'Error updating profile',
+      description: 'Please try again later.',
+      icon: 'i-heroicons-exclamation-circle',
+      color: 'red'
+    })
+  }
 }
+
 
 const addressInput = ref(null);
 
@@ -90,7 +139,7 @@ const loader = new Loader({
 });
 
 // Get the currently select branch from branch_locations and
-// extract the center lat lon to use as the default location.
+// extract the center lat lng to use as the default location.
 const defaultCenter = { lat: 50.064192, lng: -110.605469 };
 
 loader.load().then(async () => {
@@ -135,9 +184,9 @@ onMounted(() => {
 
   const state = props.state;
 
-
+  if (state.branch_selection) {
     updateInputAddressCenterPoint(state.branch_selection)
-
+  }
 
   watch(() => autocomplete, (newValue, oldValue) => {
     console.log("Autocomplete ready", newValue);
@@ -163,8 +212,9 @@ onMounted(() => {
 const updateInputAddressCenterPoint = (value: string) => {
   const branch = branchesMap.value.get(value);
   if (branch) {
-    state.value.zip = branch.value;
     updateAutocomplete(branch.latitude, branch.longitude);
+    // Trigger reactivity update
+    props.state.branch_selection = value;
   }
 }
 
@@ -190,12 +240,22 @@ const updateAutocomplete = (latitude: number, longitude: number) => {
   }
 };
 
+const deliveryAreaLink = computed(() => {
+  const branch = branchesMap.value.get(props.state.branch_selection);
+  if (branch) {
+    return `/requests/area/?lat=${branch.latitude}&lng=${branch.longitude}`;
+  }
+  return '/requests/area/';
+});
+
+const isProfileDeliveryAreaModal = ref(false)
 </script>
 
 
 <template>
     <div>
       <UForm :state="state" :validate="validate" :validate-on="['submit']" @submit="onSubmit" ref="form$">
+
         <UDashboardSection :title="title" :description="description" :icon="icon">
           <template #links v-if="cta">
             <UButton type="submit" label="Save changes" class="block rounded-md bg-primary text-white dark:text-white"/>
@@ -207,6 +267,7 @@ const updateAutocomplete = (latitude: number, longitude: number) => {
             description="The location that will fulfill your request."
             required
             class="grid grid-cols-2 gap-2"
+            autocomplete="nope"
             :ui="{ container: '' }"
           >
 
@@ -221,7 +282,7 @@ const updateAutocomplete = (latitude: number, longitude: number) => {
             />
 
             <p class="text-gray-500 text-xs">
-              <NuxtLink to="/requests/area/" class="text-secondary underline font-medium">See delivery area</NuxtLink>
+              <NuxtLink :to="deliveryAreaLink" class="text-secondary underline font-medium">See delivery area</NuxtLink>
             </p>
             <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update your branch.</p>
           </UFormGroup>
@@ -244,6 +305,7 @@ const updateAutocomplete = (latitude: number, longitude: number) => {
             class="grid grid-cols-2 gap-2 items-center"
             :ui="{ container: '' }"
           >
+
             <UInput v-model="state.email" autocomplete="off" icon="i-heroicons-envelope" size="md" disabled />
           </UFormGroup>
 
@@ -267,9 +329,7 @@ const updateAutocomplete = (latitude: number, longitude: number) => {
           >
 
             <UInput v-model="state.ext_address_details" type="hidden" name="ext_address_details" />
-
-
-            <UInput v-model="state.address" type="address" autocomplete="off" icon="i-heroicons-envelope" size="md" name="address" ref="addressInput">
+            <UInput v-model="state.address" type="address" autocomplete="nope" icon="i-heroicons-envelope" size="md" name="address" ref="addressInput">
               <template #trailing>
                 <span class="text-gray-500 dark:text-gray-400 text-sm">{{ state.zip }}</span>
               </template>
@@ -280,4 +340,6 @@ const updateAutocomplete = (latitude: number, longitude: number) => {
       </UForm>
 
     </div>
+
+    <ProfileDeliveryAreaModal v-model="isProfileDeliveryAreaModal" />
   </template>

@@ -84,7 +84,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   // Show loading spinner
   form$.submitting = true
 
-  const userId = authData?.value?.id;
+  const userId = userInfo?.value?.id;
 
   const foodRequestAPIData = {
     // Match the API field names exactly

@@ -12,21 +12,24 @@ definePageMeta({
 
 // Get the google api Key from nuxt config
 const config = useRuntimeConfig()
-console.log('config', config);
+
 const googleAPIKey = config.public.googleAPIKey;
 
-const centerV = { lat: 49.282, lng: -123.12 };
-const centerMH = { lat: 50.04, lng: -110.667, zoom: 12};
-// const center = centerMH;
+// Get the query params name lat and lng
+const route = useRoute();
+const lat = (route.query.lat || '49.282') as string;
+const lng = (route.query.lng || '-123.12') as string;
+const zoom = (route.query.zoom || '12') as string;
+const center = {
+  lat: Math.max(-90, Math.min(90, parseFloat(lat))),
+  lng: Math.max(-180, Math.min(180, parseFloat(lng))),
+  zoom: Math.max(1, Math.min(20, parseInt(zoom))),
+}
+console.log('center', center)
 
 let apiPromise: Promise<typeof window.google> | undefined = undefined;
 
 
-const center = {
-  lat: 50.04,
-  lng: -110.667,
-  zoom: 12,
-};
 const colour = '#00FF00';
 type City = {
   center: { lat: number, lng: number },
