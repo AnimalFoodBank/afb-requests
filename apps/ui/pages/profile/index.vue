@@ -15,7 +15,9 @@ const {
   profileInfo,
 } = useProfile();
 
-const isDeleteAccountModalOpen = ref(false)
+console.log('profileInfo', profileInfo)
+
+//const isDeleteAccountModalOpen = ref(false)
 const state = ref({})
 
 onMounted(() => {
@@ -24,14 +26,13 @@ onMounted(() => {
   state.value = {
     profile_id: profileInfo?.id,
     user_id: userInfo.id,
-    branch_selection: profileInfo?.branch_selection, //|| '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
+    branch_selection: profileInfo?.branch, //|| '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
     name: userInfo.name,
     email: userInfo.email,
     phone_number: profileInfo?.phone_number,
     address: profileInfo?.address,
+    ext_address_details: profileInfo?.ext_address_details,
   }
-
-  console.log('state', state.value)
 })
 
 </script>
@@ -51,5 +52,6 @@ onMounted(() => {
 
   </UDashboardPanelContent>
 
+<!--<SettingsDeleteAccountModal v-model:visible="isDeleteAccountModalOpen" />-->
 
 </template>

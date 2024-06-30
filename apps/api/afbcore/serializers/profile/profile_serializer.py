@@ -21,6 +21,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "user",
+            "branch",
             "preferred_name",
             "phone_number",
             "address_verbatim",

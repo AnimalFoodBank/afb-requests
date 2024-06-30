@@ -69,7 +69,13 @@ class Profile(HasDetailsMixin, BaseAbstractModel):
     )
 
     # Usually just one, but can be multiple
-    branches = models.ManyToManyField("Branch", **MANY_TO_MANY_DEFAULTS)
+    branch = models.ForeignKey(
+        "Branch",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="profiles",
+    )
 
     # Name fields
     preferred_name = models.CharField(max_length=64, null=True)

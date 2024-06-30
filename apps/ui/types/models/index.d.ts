@@ -49,7 +49,7 @@ export interface User extends BaseAbstractModel {
 export interface Profile extends BaseAbstractModel {
   user: User;
   role: Role;
-  branches: Branch[];
+  branch: Branch;
   preferred_name: string;
   email: string;
   phone_number: string;
@@ -60,6 +60,8 @@ export interface Profile extends BaseAbstractModel {
   status: 'active' | 'on_hold' | 'banned';
   points_earned: number;
   delivery_regions: DeliveryRegion[];
+  ext_address_id: string | null;
+
 }
 
 // Equivalent to Django Role

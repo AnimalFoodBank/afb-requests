@@ -37,8 +37,12 @@ const {
   token: authToken,
 } = useAuth();
 
+const {
+  profileInfo,
+} = useProfile();
+
 const requests = ref([]);
-const role = computed(() => userInfo.value?.profiles?.[0]?.role || 'unknown');
+const role = computed(() => profileInfo?.role || 'unknown');
 
 const fetchRequests = async () => {
   const options = {
@@ -61,9 +65,6 @@ const isManager = computed(() => role.value === 'manager');
 onMounted(() => {
   fetchRequests();
 
-  const userInfo = userInfo?.value || {}
-  const profile = userInfo.profiles?.[0] || {}
-  role.value = profile?.role || 'unknown';
 });
 
 

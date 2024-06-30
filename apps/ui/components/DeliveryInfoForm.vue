@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import { Loader } from "@googlemaps/js-api-loader";
 import { defineProps, ref } from 'vue';
+import type { Branch } from '~/types';
 
 const config = useRuntimeConfig();
 
-const {
-  status,
-  data: authData,
-} = useAuth();
 
 const {
   profileInfo,
   userInfo,
   authToken,
 } = useProfile();
-
-console.log('profileInfo:', profileInfo)
-console.log('userInfo:', userInfo)
 
 
 const googleAPIKey = config.public.googleAPIKey;
@@ -30,6 +24,28 @@ const props = defineProps<{
   cta?: boolean
   icon?: string
 }>()
+
+
+
+
+watch(() => autocomplete.value, (newValue, oldValue) => {
+  //console.log("Autocomplete ready", newValue);
+  if (!newValue) {
+    return;
+  }
+
+  newValue.addListener("place_changed", () => {
+    const place = newValue.getPlace();
+
+    props.state.address = place.formatted_address;
+
+    const ext_address_details = {
+      place: place,
+    }
+    props.state.ext_address_details = ext_address_details;
+
+  });
+});
 
 
 const branches = ref([]);
@@ -81,27 +97,25 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   try {
     // Prepare the data to be sent
     const profileData = {
-      id: props.state.value.profile_id,
-      user_id: props.state.value.user_id,
+      id: props.state.profile_id,
+      user_id: props.state.user_id,
       preferred_name: event.data.name,
       phone_number: event.data.phone_number,
       address: event.data.address,
-      // Add any other fields you want to update
     }
 
-    console.log('event.data:', event.data)
-    console.log('Profile data:', profileData)
-
     if (event.data.branch_selection) {
-      profileData.branch_selection = event.data.branch_selection;
+      profileData.branch = event.data.branch_selection;
     }
 
     if (event.data.ext_address_details) {
       profileData.ext_address_details = event.data.ext_address_details;
     }
 
+    const profilePath = `/api/v1/profiles/${profileData.id}/`
+
     // Make the API call
-    const response = await $fetch('/api/v1/profiles/', {
+    const response = await $fetch(profilePath, {
       method: 'PUT',
       body: JSON.stringify(profileData),
       headers: {
@@ -178,7 +192,6 @@ loader.load().then(async () => {
 });
 
 
-
 onMounted(() => {
   fetchBranches();
 
@@ -187,25 +200,6 @@ onMounted(() => {
   if (state.branch_selection) {
     updateInputAddressCenterPoint(state.branch_selection)
   }
-
-  watch(() => autocomplete, (newValue, oldValue) => {
-    console.log("Autocomplete ready", newValue);
-    if (!newValue) {
-      return;
-    }
-
-    newValue.addListener("place_changed", () => {
-      const place = newValue.getPlace();
-
-      state.address = place.formatted_address;
-
-      const ext_address_details = {
-        place: place,
-      }
-      state.ext_address_details = ext_address_details;
-
-    });
-  });
 
 })
 
@@ -327,7 +321,6 @@ const deliveryAreaLink = computed(() => {
             :ui="{ container: '' }"
           >
 
-            <UInput v-model="state.ext_address_details" type="hidden" name="ext_address_details" />
             <UInput v-model="state.address" type="address" autocomplete="nope" icon="i-heroicons-envelope" size="md" name="address" ref="addressInput">
               <template #trailing>
                 <span class="text-gray-500 dark:text-gray-400 text-sm">{{ state.zip }}</span>
