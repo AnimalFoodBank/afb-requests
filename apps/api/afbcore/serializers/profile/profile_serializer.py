@@ -25,11 +25,15 @@ class ProfileSerializer(serializers.ModelSerializer):
             "phone_number",
             "address_verbatim",
             "address",
+            "address_details",
+            "ext_address_details",
             "role",
             "delivery_regions",
             "validated_postal_code",
             "country",
             "status",
+            "created",
+            "modified",
         ]
         # depth = 1
         read_only_fields = [
@@ -39,4 +43,5 @@ class ProfileSerializer(serializers.ModelSerializer):
             "country",
             "role",
             "delivery_regions",
+            "created",
         ]

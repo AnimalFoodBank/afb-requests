@@ -89,6 +89,15 @@ class Profile(HasDetailsMixin, BaseAbstractModel):
     # i.e. An address from Canada Post or Google Maps
     address = models.CharField(max_length=255, blank=True, null=True)
 
+    # An open-ended field for additional address details if needed
+    address_details = models.JSONField(default=dict)
+
+    # Used to store the google places `PlaceResult` object.
+    #
+    # e.g. { 'place': { 'place_id': 'ChIJd8BlQ2BZwokRAFUEcm_qrcA', 'formatted_address': '123 Main St, Winnipeg, MB R3C 1A5, Canada', 'geometry': { 'location': { 'lat': 49.895077, 'lng': -97.138451 }, 'viewport': { 'northeast': { 'lat': 49.89642582989272, 'lng': -97.13710217010728 }, 'southwest': { 'lat': 49.89372617010728, 'lng': -97.13980182989273 } } }, 'name': '123 Main St', 'types': [ 'street_address' ] }
+    #
+    ext_address_details = models.JSONField(default=dict)
+
     role = models.CharField(
         _("role"),
         choices=ROLE_CHOICES,
