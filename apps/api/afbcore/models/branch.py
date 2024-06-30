@@ -9,6 +9,7 @@ from .mixins import HasDetailsMixin, PhysicalLocationMixin
 class Branch(HasDetailsMixin, PhysicalLocationMixin, BaseAbstractModel):
     class Meta:
         verbose_name_plural = "Branches"
+        ordering = ["-created"]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
