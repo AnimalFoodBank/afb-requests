@@ -7,7 +7,7 @@
            display-errors
            display-success
            @submit="submitFoodRequest"
-           @mounted="addSummaryFunctionality"
+           @mounted="onFormMounted"
            ref="form$" />
 </template>
 
@@ -16,6 +16,7 @@
 import type { Branch, FoodRequestFormState } from '@/types/index';
 import { Validator } from '@vueform/vueform';
 
+const toast = useToast();
 
 /**
  * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
@@ -58,8 +59,8 @@ const {
 // updates the summary based on the form data that's been
 // entered. This is a good way to keep the summary in sync
 // with the form data.
-const addSummaryFunctionality = (form$: any) => {
-  console.log("Form mounted", 'form$');
+const onFormMounted = (form$: any) => {
+  console.log("Form mounted", form$);
 
   let summaryStep = form$.steps$.steps$.step4;
 
@@ -69,6 +70,9 @@ const addSummaryFunctionality = (form$: any) => {
     // TODO: Generate the summary based on the form data
     // and update the summary element in the form.
   });
+
+  console.log(form$.el$("delivery_address.branch_locations"));
+  //form$.el$('delivery_address.branch_locations').value = profileInfo.value?.branch || null;
 };
 
 const submitFoodRequest = async (form$: any, FormData: any) => {
@@ -134,7 +138,7 @@ const validatedGoogleAddress = class extends Validator {
     return 'Please select a valid address from the dropdown.';
   }
 
-  get isAsync() {
+get isAsync() {
     return true;
   }
 }
@@ -337,11 +341,18 @@ watch(() => props.autocomplete, (newValue, oldValue) => {
   }
   newValue.addListener("place_changed", () => {
     const place = newValue.getPlace();
-    form$.value.el$("delivery_address.ext_address_id").value = place.place_id;
-    form$.value.el$("delivery_address.ext_address_details").value = {
-      place: place,
-    }
-    form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
+
+    //if (!place.geometry || !place.geometry.location) {
+
+      // Set the address selected flag to true
+      props.addressSelected.value = true;
+      form$.value.el$("delivery_address.ext_address_id").value = place.place_id;
+      form$.value.el$("delivery_address.ext_address_details").value = {
+        place: place,
+      }
+      form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
+
+
   });
 });
 
@@ -351,6 +362,21 @@ onMounted(() => {
 
   const state = props.state;
   const branchLocations = form$.value.el$("delivery_address.branch_locations");
+
+//  state.value = state || {} as FoodRequestFormState;
+//  state.value.delivery_address = state.value.delivery_address || {};
+//
+//  if (profileInfo.value) {
+//    state.value.delivery_address.branch_location = profileInfo.value?.branch || null;
+//    state.value.delivery_contact = state.value.delivery_contact || {};
+//    state.value.delivery_contact.contact_name = profileInfo.value?.preferred_name || null;
+//    state.value.delivery_contact.contact_email = profileInfo.value?.email || null;
+//    state.value.delivery_contact.contact_phone = profileInfo.value?.phone_number || null;
+//  }
+
+  console.log("state", state);
+  console.log("branch:", profileInfo.branch);
+
 
   fetchBranches();
 
@@ -384,7 +410,7 @@ onMounted(() => {
             container: 12,
             wrapper: 6,
           },
-          default: state?.delivery_address?.branch_location,
+          default: profileInfo.branch || null,
           onChange: (value: string) => {
             const selectedBranch = branchesMap.value.get(value);
             if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
@@ -404,7 +430,7 @@ onMounted(() => {
           rules: [],
           label: "A google.maps.places.PlaceResult object",
           hidden: true,
-          default: state?.delivery_address?.ext_address_details,
+          default: profileInfo.ext_address_details || null,
         },
         interactive_address: {
           type: "text",
@@ -424,7 +450,7 @@ onMounted(() => {
             wrapper: 6
           },
           floating: false,
-          default: state?.delivery_address?.interactive_address, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
+          default: profileInfo.address || null, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
           disabled: false, // Start disabled
           onBlur: (value: string) => {
             console.log("Selected address: ", value.value);
@@ -513,7 +539,7 @@ onMounted(() => {
             label: 12,
             wrapper: 3,
           },
-          default: state.delivery_contact?.contact_name || "Delbo Baggins",
+          default: profileInfo.preferred_name || null,
           conditions: [
             ['delivery_contact.choose_contact', true],
           ],
@@ -558,7 +584,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Email']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact?.contact_email || 'profile?.email',
+          default: profileInfo.email || null,
         },
         alt_contact_email: {
           type: "text",
@@ -578,12 +604,13 @@ onMounted(() => {
         },
         contact_phone: {
           type: "text",
-          rules: ["required", "max:16"],
+          rules: ["required", "max:24"],
           label: "Contact phone",
           placeholder: "(123) 456-7890",
+          description: "If you want to update your phone number, please update it in your profile before submitting a request.",
           floating: false,
-          mask: "(000) 000-0000",
-          disabled: true,
+          mask: "+1 (000) 000-0000",
+          disabled: (!!profileInfo.phone_number),
           columns: {
             container: 12,
             label: 12,
@@ -593,7 +620,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Call', 'Text']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact?.contact_phone || '123-456-7890',
+          default: profileInfo.phone_number || null,
         },
         alt_contact_phone: {
           type: "text",

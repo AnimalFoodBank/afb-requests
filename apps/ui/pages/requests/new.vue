@@ -53,9 +53,10 @@ const links = [[
 ]]
 
 const {
-  status,
-  data: userInfo,
-} = useAuth();
+  profileInfo,
+  userInfo,
+  authToken,
+} = useProfile();
 
 /**
  *

@@ -27,7 +27,7 @@ onMounted(() => {
     profile_id: profileInfo?.id,
     user_id: userInfo.id,
     branch_selection: profileInfo?.branch, //|| '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
-    name: userInfo.name,
+    name: profileInfo.preferred_name || userInfo.name,
     email: userInfo.email,
     phone_number: profileInfo?.phone_number,
     address: profileInfo?.address,

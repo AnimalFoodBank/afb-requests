@@ -80,14 +80,13 @@ const parsedBranches = computed(() => {
 });
 
 
-//const errors = ref<FormError[]>([])
-const toast = useToast()
+const toast = useToast();
 
 function validate (state: any): FormError[] {
   const errors = []
   if (!state.name) errors.push({ path: 'name', message: 'Please enter your name.' })
   if (!state.address) errors.push({ path: 'address', message: 'Please enter your address.' })
-  if (!state.phone_number) errors.push({ path: 'phone_number', message: 'Please enter your phone number.' })
+  if (state.phone_number && state.phone_number.length < 10) errors.push({ path: 'phone_number', message: 'Please enter a valid phone number.' })
   if (!state.email) errors.push({ path: 'email', message: 'Please enter your email.' })
   if (!state.branch_selection) errors.push({ path: 'branch_selection', message: 'Please doublecheck branch location.' })
   return errors
