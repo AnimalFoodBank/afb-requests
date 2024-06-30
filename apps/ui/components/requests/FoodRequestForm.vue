@@ -14,7 +14,7 @@
 
 
 <script setup lang="ts">
-import type { Branch, FoodRequestFormState } from '@/types/index';
+import type { Branch, FoodRequestFormState, PetInfo } from '@/types/index';
 import { Validator } from '@vueform/vueform';
 
 const toast = useToast();
@@ -68,7 +68,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
 
   const foodRequestAPIData = {
     // Match the API field names exactly
-    user: userId,  // not user_id
+    user: profileInfo.user,  // field name is not `user_id`
     address_text: requestData.delivery_address.interactive_address,
     address_google_place_id: null,
     address_canadapost_id: null,
@@ -85,7 +85,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
     branch_location: requestData.branch_locations,
     location: requestData.location,
     delivery_contact: requestData.delivery_contact,
-    client_pets: requestData.client_pets,
+    pets: requestData.client_pets.pets,
     confirmation: requestData.confirmation,
     safe_drop: requestData.safe_drop,
   };
@@ -344,6 +344,22 @@ onMounted(() => {
 
   fetchBranches();
 
+  const defaultPetExample: PetInfo = {
+    id: "3ef6ef2a-fd22-4082-a096-8bc95efa5a75",
+    pet_type: "Dog",
+    pet_name: "Buddy",
+    pet_dob: "2018",
+    food_details: {
+      allergies: "Chicken",
+      general_notes: "Loves to play fetch",
+      foodtype: "Dry"
+    },
+    dog_details: {
+      size: "20-50 lbs (Medium)"
+    },
+    spay_or_neutered: "Yes"
+  };
+
   schema.value = {
 
     //
@@ -395,7 +411,7 @@ onMounted(() => {
         },
         interactive_address: {
           type: "text",
-          autocomplete: "one-time-code",
+          autocomplete: "nope",
           placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
           label: "Your address",
           description: "Please contact us if you need to change your address.",
@@ -607,7 +623,7 @@ onMounted(() => {
     //
     // STEP 2 - Your Pets
     //
-    client_pets: clientPetsSchema(),
+    client_pets: clientPetsSchema([defaultPetExample]),
 
     //
     // STEP 3 - Safe Drop

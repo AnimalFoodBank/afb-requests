@@ -5,31 +5,128 @@
            size="lg"
            display-errors
            display-success
+           :endpoint="false"
+           @submit="onSubmit"
            ref="form$" />
 </template>
 
 <script setup lang="ts">
 // import type { PetFormState } from '@/types/forms/index';
+import type { FormSubmitEvent } from "#ui/types";
 import clientPetsSchema from '@/modules/requests/clientPetsSchema';
+import type { PetInfo } from '@/types/index';
 
 const toast = useToast()
+
+const {
+  profileInfo,
+  userInfo,
+  authToken,
+} = useProfile();
+
 
 const props = defineProps<{
   title?: String
   description?: String
   state?: Object
   cta?: Boolean
+  icon?: String
+  user?: Object
+  profile?: Object
 }>()
 
 const schema = ref({})
+
+const defaultPetExample: PetInfo = {
+  id: "3ef6ef2a-fd22-4082-a096-8bc95efa5a75",
+  pet_type: "Dog",
+  pet_name: "Buddy",
+  pet_dob: "2018",
+  food_details: {
+    allergies: "Chicken",
+    general_notes: "Loves to play fetch",
+    foodtype: "Dry"
+  },
+  dog_details: {
+    size: "20-50 lbs (Medium)"
+  },
+  spay_or_neutered: "Yes"
+};
+
+
+function validate(state: any): FormError[] {
+  const errors = []
+  if (!state.pets) errors.push({ path: 'name', message: 'Please enter at least one pet.' })
+  return errors
+}
+
+
+async function onSubmit(event: FormSubmitEvent<any>) {
+
+try {
+  // Prepare the data to be sent
+  const profileData = {
+    id: props.profile.id,
+    user_id: props.user.id,
+    pets: event.data.pets,
+  }
+
+  const petsPath = `/api/v1/profiles/${profileData.id}/pets/`
+
+  // Make the API call
+  const response = await $fetch(petsPath, {
+    method: 'PUT',
+    body: JSON.stringify(profileData),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${authToken.value}`
+    }
+  })
+
+  // Handle successful response
+  console.log('Profile updated:', response)
+
+  toast.add({
+    title: `${props.title} updated`,
+    icon: 'i-heroicons-check-circle',
+  })
+} catch (error) {
+  console.error('Error updating profile:', error)
+
+  toast.add({
+    title: 'Error updating profile',
+    description: 'Please try again later.',
+    icon: 'i-heroicons-exclamation-circle',
+    color: 'red'
+  })
+}
+}
 
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
+  const profilePets = props.profile?.pets || [defaultPetExample];
 
   schema.value = {
-    client_pets: clientPetsSchema,
+    client_pets: clientPetsSchema(profilePets),
+    save: {
+      type: 'button',
+      submits: true,
+      buttonLabel: 'Update Pets',
+      full: true,
+      size: 'lg',
+      loading: false,
+      ui: {
+        variant: 'secondary',
+        icon: 'i-heroicons-check-circle',
+      },
+      onClick: (event: FormSubmitEvent<any>) => {
+        event.form.setLoading('save', true);
+        onSubmit(event);
+
+      },
+    },
   }
 
 });

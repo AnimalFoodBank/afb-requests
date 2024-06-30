@@ -7,4 +7,4 @@ export { FoodAvailable, DeliveryRegion, Branch } from './models/index.d.ts';
 
 export { FoodRequestFormState } from './forms/index.d.ts';
 
-export { Branch, Profile } from './models/index.d.ts';
+export { Branch, Profile, PetInfo } from './models/index.d.ts';

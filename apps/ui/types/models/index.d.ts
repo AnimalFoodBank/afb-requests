@@ -142,3 +142,22 @@ export interface FoodRequest extends BaseAbstractModel {
   status: string; // Assuming this is a string representation of STATUS_CHOICES
   comments: Record<string, unknown>; // JSONField
 }
+
+
+export interface PetInfo extends BaseAbstractModel  {
+  pet_type: 'Cat' | 'Dog' | 'Other';
+  pet_name: string;
+  pet_dob: string;
+  food_details: {
+    allergies?: string;
+    general_notes?: string;
+    foodtype: 'Either' | 'Dry' | 'Wet';
+  };
+  dog_details?: {
+    size: 'Up to 10 lbs (Toy)' | '10-20 lbs (Small)' | '20-50 lbs (Medium)' | '50-100 lbs (Large)' | 'Over 100 lbs (Extra Large)';
+  };
+  spay_or_neutered?: 'Yes' | 'No';
+  other_details?: {
+    animal_type: string;
+  };
+}

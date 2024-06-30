@@ -1,3 +1,110 @@
+<template>
+  <div>
+    <UForm :state="state"
+           :validate="validate"
+           :validate-on="['submit']"
+           @submit="onSubmit"
+           ref="form$">
+
+      <UDashboardSection :title="title"
+                         :description="description"
+                         :icon="icon">
+        <template #links
+                  v-if="cta">
+          <UButton type="submit"
+                   label="Save changes"
+                   class="block rounded-md bg-primary text-white dark:text-black" />
+        </template>
+
+        <UFormGroup name="branch"
+                    label="AFB Branch"
+                    description="The location that will fulfill your request."
+                    required
+                    class="grid grid-cols-2 gap-2"
+                    autocomplete="nope"
+                    :ui="{ container: '' }">
+
+          <USelect v-model="state.branch_selection"
+                   name="branch_selection"
+                   :options="parsedBranches"
+                   placeholder="Select a branch"
+                   icon="i-ph-map-pin"
+                   size="md"
+                   @change="updateInputAddressCenterPoint" />
+
+          <p class="text-gray-500 text-xs">
+            <NuxtLink :to="deliveryAreaLink"
+                      class="text-secondary underline font-medium">See delivery area</NuxtLink>
+          </p>
+          <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update your branch.</p>
+        </UFormGroup>
+
+        <UFormGroup name="name"
+                    label="Your Name"
+                    description="Please enter your name."
+                    required
+                    class="grid grid-cols-2 gap-2 items-center"
+                    :ui="{ container: '' }">
+          <UInput v-model="state.name"
+                  autocomplete="off"
+                  icon="i-heroicons-user"
+                  size="md"
+                  name="name" />
+        </UFormGroup>
+
+        <UFormGroup name="email"
+                    label="Your Email"
+                    description="The email address you use to sign in. We also use this for co-ordinating food requests."
+                    class="grid grid-cols-2 gap-2 items-center"
+                    :ui="{ container: '' }">
+
+          <UInput v-model="state.email"
+                  autocomplete="off"
+                  icon="i-heroicons-envelope"
+                  size="md"
+                  disabled />
+        </UFormGroup>
+
+        <UFormGroup name="phone_number"
+                    label="Your Phone (optional)"
+                    description="Please enter your phone number."
+                    class="grid grid-cols-2 gap-2 items-center"
+                    :ui="{ container: '' }">
+          <UInput v-model="state.phone_number"
+                  autocomplete="off"
+                  icon="i-heroicons-phone"
+                  size="md"
+                  name="phone_number" />
+        </UFormGroup>
+
+        <UFormGroup name="address"
+                    label="Address"
+                    description="The address for the pet food delivery."
+                    required
+                    class="grid grid-cols-2 gap-2"
+                    :ui="{ container: '' }">
+
+          <UInput v-model="state.address"
+                  type="address"
+                  autocomplete="nope"
+                  icon="i-heroicons-envelope"
+                  size="md"
+                  name="address"
+                  ref="addressInput">
+            <template #trailing>
+              <span class="text-gray-500 dark:text-gray-400 text-sm">{{ state.zip }}</span>
+            </template>
+          </UInput>
+        </UFormGroup>
+
+      </UDashboardSection>
+    </UForm>
+
+  </div>
+
+</template>
+
+
 <script setup lang="ts">
 import { Loader } from "@googlemaps/js-api-loader";
 import { defineProps, ref } from 'vue';
@@ -82,7 +189,7 @@ const parsedBranches = computed(() => {
 
 const toast = useToast();
 
-function validate (state: any): FormError[] {
+function validate(state: any): FormError[] {
   const errors = []
   if (!state.name) errors.push({ path: 'name', message: 'Please enter your name.' })
   if (!state.address) errors.push({ path: 'address', message: 'Please enter your address.' })
@@ -91,6 +198,7 @@ function validate (state: any): FormError[] {
   if (!state.branch_selection) errors.push({ path: 'branch_selection', message: 'Please doublecheck branch location.' })
   return errors
 }
+
 async function onSubmit(event: FormSubmitEvent<any>) {
 
   try {
@@ -242,94 +350,3 @@ const deliveryAreaLink = computed(() => {
 });
 
 </script>
-
-
-<template>
-    <div>
-      <UForm :state="state" :validate="validate" :validate-on="['submit']" @submit="onSubmit" ref="form$">
-
-        <UDashboardSection :title="title" :description="description" :icon="icon">
-          <template #links v-if="cta">
-            <UButton type="submit" label="Save changes" class="block rounded-md bg-primary text-white dark:text-white"/>
-          </template>
-
-          <UFormGroup
-            name="branch"
-            label="AFB Branch"
-            description="The location that will fulfill your request."
-            required
-            class="grid grid-cols-2 gap-2"
-            autocomplete="nope"
-            :ui="{ container: '' }"
-          >
-
-            <USelect
-              v-model="state.branch_selection"
-              name="branch_selection"
-              :options="parsedBranches"
-              placeholder="Select a branch"
-              icon="i-ph-map-pin"
-              size="md"
-              @change="updateInputAddressCenterPoint"
-            />
-
-            <p class="text-gray-500 text-xs">
-              <NuxtLink :to="deliveryAreaLink" class="text-secondary underline font-medium">See delivery area</NuxtLink>
-            </p>
-            <p class="text-gray-500 text-xs italic">Please contact admin@animalfoodbank.org to update your branch.</p>
-          </UFormGroup>
-
-          <UFormGroup
-            name="name"
-            label="Your Name"
-            description="Please enter your name."
-            required
-            class="grid grid-cols-2 gap-2 items-center"
-            :ui="{ container: '' }"
-          >
-            <UInput v-model="state.name" autocomplete="off" icon="i-heroicons-user" size="md" name="name" />
-          </UFormGroup>
-
-          <UFormGroup
-            name="email"
-            label="Your Email"
-            description="The email address you use to sign in. We also use this for co-ordinating food requests."
-            class="grid grid-cols-2 gap-2 items-center"
-            :ui="{ container: '' }"
-          >
-
-            <UInput v-model="state.email" autocomplete="off" icon="i-heroicons-envelope" size="md" disabled />
-          </UFormGroup>
-
-          <UFormGroup
-            name="name"
-            label="Your Phone (optional)"
-            description="Please enter your name."
-            class="grid grid-cols-2 gap-2 items-center"
-            :ui="{ container: '' }"
-          >
-            <UInput v-model="state.phone_number" autocomplete="off" icon="i-heroicons-phone" size="md" name="phone_number" />
-          </UFormGroup>
-
-          <UFormGroup
-            name="address"
-            label="Address"
-            description="The address for the pet food delivery."
-            required
-            class="grid grid-cols-2 gap-2"
-            :ui="{ container: '' }"
-          >
-
-            <UInput v-model="state.address" type="address" autocomplete="nope" icon="i-heroicons-envelope" size="md" name="address" ref="addressInput">
-              <template #trailing>
-                <span class="text-gray-500 dark:text-gray-400 text-sm">{{ state.zip }}</span>
-              </template>
-            </UInput>
-          </UFormGroup>
-
-        </UDashboardSection>
-      </UForm>
-
-    </div>
-
-  </template>

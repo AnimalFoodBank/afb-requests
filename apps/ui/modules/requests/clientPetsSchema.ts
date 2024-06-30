@@ -1,20 +1,11 @@
 import { generateYearRange } from '@/utils/timeTools';
+import type { PetInfo } from '@/types';
 
-const clientPetsSchema = (defaultPets = []) => ({
+
+const clientPetsSchema = (defaultPets: PetInfo[] = []) => ({
   type: "object",
   before: "Please confirm the details of each of your pets that you're requesting for. ",
   schema: {
-    which_pets: {
-      type: "radiogroup",
-      label: "Which pets are you requesting for?",
-      items: ["All", "Selected"],
-      rules: ["required"],
-      columns: {
-        container: 12,
-      },
-      hidden: true,
-      required: false,
-    },
     pets: {
       type: "list",
       max: 4,
@@ -31,6 +22,10 @@ const clientPetsSchema = (defaultPets = []) => ({
       object: {
         type: "object",
         schema: {
+          pet_id: {
+            type: "hidden",
+            default: null,
+          },
           pet_type: {
             type: "radiogroup",
             view: "tabs",
