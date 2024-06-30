@@ -339,6 +339,9 @@ watch(() => props.autocomplete, (newValue, oldValue) => {
   newValue.addListener("place_changed", () => {
     const place = newValue.getPlace();
     form$.value.el$("delivery_address.ext_address_id").value = place.place_id;
+    form$.value.el$("delivery_address.ext_address_details").value = {
+      place: place,
+    }
     form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
   });
 
@@ -394,9 +397,16 @@ onMounted(() => {
         ext_address_id: { // TODO: Not being filled yet
           type: "hidden",
           rules: [],
-          label: "Google selcted address",
+          label: "Google selcted address id ",
           hidden: true,
           default: state?.delivery_address?.ext_address_id,
+        },
+        ext_address_details: { // TODO: Not being filled yet
+          type: "hidden",
+          rules: [],
+          label: "A google.maps.places.PlaceResult object",
+          hidden: true,
+          default: state?.delivery_address?.ext_address_details,
         },
         interactive_address: {
           type: "text",
