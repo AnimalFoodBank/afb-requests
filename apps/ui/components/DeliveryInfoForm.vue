@@ -248,7 +248,6 @@ const deliveryAreaLink = computed(() => {
   return '/requests/area/';
 });
 
-const isProfileDeliveryAreaModal = ref(false)
 </script>
 
 
@@ -341,5 +340,4 @@ const isProfileDeliveryAreaModal = ref(false)
 
     </div>
 
-    <ProfileDeliveryAreaModal v-model="isProfileDeliveryAreaModal" />
   </template>

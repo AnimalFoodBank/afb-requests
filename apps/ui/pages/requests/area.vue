@@ -75,7 +75,7 @@ for (const key in cities) {
   circles[key] = {
     center: cities[key].center,
     population: cities[key].population,
-    radius: Math.sqrt(cities[key].population) * 20,
+    radius: Math.sqrt(cities[key].population) * 10,
     strokeColor: colour,
     strokeOpacity: 0.8,
     strokeWeight: 2,
