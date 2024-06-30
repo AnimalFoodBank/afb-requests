@@ -49,31 +49,6 @@ const {
   authToken,
 } = useProfile();
 
-// Use the form's mounted event to add custom functionality to
-// the confirmation step. This is where we can add a summary
-// of the form data for the user to review before submitting.
-//
-// We need to do this at the time of mounting so that the
-// entire form is rendered and available to us. We can then
-// add a function to the confirmation step that dynamically
-// updates the summary based on the form data that's been
-// entered. This is a good way to keep the summary in sync
-// with the form data.
-const onFormMounted = (form$: any) => {
-  console.log("Form mounted", form$);
-
-  let summaryStep = form$.steps$.steps$.step4;
-
-  summaryStep.on("activate", (form$: any) => {
-    console.log("Summary step activated", form$);
-
-    // TODO: Generate the summary based on the form data
-    // and update the summary element in the form.
-  });
-
-  console.log(form$.el$("delivery_address.branch_locations"));
-  //form$.el$('delivery_address.branch_locations').value = profileInfo.value?.branch || null;
-};
 
 const submitFoodRequest = async (form$: any, FormData: any) => {
   // Using form$.data WILL INCLUDE conditional elements and it
@@ -143,6 +118,14 @@ get isAsync() {
   }
 }
 
+const onBranchLocationChange = (selectedBranchId: string) => {
+  console.log("Branch selected: ", selectedBranchId);
+  const selectedBranch = branchesMap.value.get(selectedBranchId);
+  if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
+    props.updateAutocomplete(selectedBranch.latitude, selectedBranch.longitude);
+  }
+}
+
 const autocomplete = ref<google.maps.places.Autocomplete | null>(null);
 
 /**
@@ -170,16 +153,9 @@ const steps = {
       next: "Next: Contact",
     },
     onActivate: (form$$: any) => {
+      const branchLocations = form$?.value?.el$("delivery_address.branch_locations");
       console.log("Step 0 activated", form$$);
-      form$.value.el$("delivery_address.branch_locations").on("change", (selectedBranchId: string) => {
-        console.log("Branch selected: ", selectedBranchId);
-        const selectedBranch = branchesMap.value.get(selectedBranchId);
-        if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
-          props.updateAutocomplete(selectedBranch.latitude, selectedBranch.longitude);
-        }
-      });
-
-
+      branchLocations.on("change", onBranchLocationChange);
     },
     on: (form$: any, el: any) => {
       console.log("Step 0 on", form$, el);
@@ -363,26 +339,8 @@ onMounted(() => {
   const state = props.state;
   const branchLocations = form$.value.el$("delivery_address.branch_locations");
 
-//  state.value = state || {} as FoodRequestFormState;
-//  state.value.delivery_address = state.value.delivery_address || {};
-//
-//  if (profileInfo.value) {
-//    state.value.delivery_address.branch_location = profileInfo.value?.branch || null;
-//    state.value.delivery_contact = state.value.delivery_contact || {};
-//    state.value.delivery_contact.contact_name = profileInfo.value?.preferred_name || null;
-//    state.value.delivery_contact.contact_email = profileInfo.value?.email || null;
-//    state.value.delivery_contact.contact_phone = profileInfo.value?.phone_number || null;
-//  }
-
-  console.log("state", state);
-  console.log("branch:", profileInfo.branch);
-
-
   fetchBranches();
 
-  console.log("parsedBranches", parsedBranches);
-  console.log("state", state);
-  console.log("branchLocations", branchLocations);
   schema.value = {
 
     //
@@ -811,8 +769,29 @@ onMounted(() => {
     },
   };
 
-
 });
+
+
+// Use the form's mounted event to add custom functionality to
+// the confirmation step. This is where we can add a summary
+// of the form data for the user to review before submitting.
+//
+// We need to do this at the time of mounting so that the
+// entire form is rendered and available to us. We can then
+// add a function to the confirmation step that dynamically
+// updates the summary based on the form data that's been
+// entered. This is a good way to keep the summary in sync
+// with the form data.
+const onFormMounted = (form$: any) => {
+  let summaryStep = form$.steps$.steps$.step4;
+
+  summaryStep.on("activate", (form$: any) => {
+    console.log("Summary step activated", form$);
+
+    // TODO: Generate the summary based on the form data
+    // and update the summary element in the form.
+  });
+};
 
 </script>
 

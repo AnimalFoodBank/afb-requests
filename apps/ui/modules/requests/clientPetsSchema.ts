@@ -1,31 +1,6 @@
-/**
- * The `clientPetsSchema` is an object that defines the schema for the "Your Pets" section of the food request form. This schema is imported and used in the `FoodRequestForm.vue` component.
-
- Here's a breakdown of the `clientPetsSchema` object:
-
-1. `which_pets`: A "radiogroup" field for selecting the pets being requested for.
-2. `pets`: A "list" field for adding multiple pets (max 4). Each entry follows the schema defined in `object.schema`.
-
- In `FoodRequestForm.vue`, the `clientPetsSchema` is imported and used within the `schema` object of the form:
-
- ```js
- import clientPetsSchema from '@/modules/requests/clientPetsSchema';
-
- onMounted(() => {
-   // ...
-
-   schema.value = {
-   // ...
-
-   client_pets: clientPetsSchema,
-   // ...
-   };
- });
- */
-
 import { generateYearRange } from '@/utils/timeTools';
 
-const clientPetsSchema = {
+const clientPetsSchema = (defaultPets = []) => ({
   type: "object",
   before: "Please confirm the details of each of your pets that you're requesting for. ",
   schema: {
@@ -52,6 +27,7 @@ const clientPetsSchema = {
           wrapper: 'text-[20px] font-semibold mb-4'
         },
       },
+      default: defaultPets,
       object: {
         type: "object",
         schema: {
@@ -159,7 +135,7 @@ const clientPetsSchema = {
             rules: [],
             columns: {
               container: 12,
-                  label: 6,
+              label: 6,
             },
             conditions: [
               ['client_pets.pets.*.pet_type', ['Dog', 'Cat']],
@@ -185,12 +161,10 @@ const clientPetsSchema = {
               },
             }
           },
-
         },
       },
     },
-
   },
-}
+});
 
 export default clientPetsSchema;
