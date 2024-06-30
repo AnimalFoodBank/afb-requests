@@ -312,24 +312,26 @@ const parsedBranches = computed(() => {
 //  }
 
 watch(() => props.autocomplete, (newValue, oldValue) => {
-  console.log("Autocomplete ready", newValue);
+  const branchLocations = form$?.value?.el$("delivery_address.branch_locations");
+  const branchCurrentLocation = branchLocations.value;
+  console.log("Autocomplete ready", newValue, branchCurrentLocation);
+  onBranchLocationChange(branchCurrentLocation);
   if (!newValue) {
     return;
   }
   newValue.addListener("place_changed", () => {
     const place = newValue.getPlace();
 
-    //if (!place.geometry || !place.geometry.location) {
-
-      // Set the address selected flag to true
-      props.addressSelected.value = true;
-      form$.value.el$("delivery_address.ext_address_id").value = place.place_id;
-      form$.value.el$("delivery_address.ext_address_details").value = {
-        place: place,
-      }
-      form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
-
-
+    if (!place.geometry || !place.geometry.location) {
+      console.log("Place details are incomplete. Please select a valid address from the dropdown.");
+      return;
+    }
+    // Set the address selected flag to tru
+    form$.value.el$("delivery_address.ext_address_id").value = place.place_id;
+    form$.value.el$("delivery_address.ext_address_details").value = {
+      place: place,
+    }
+    form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
   });
 });
 
