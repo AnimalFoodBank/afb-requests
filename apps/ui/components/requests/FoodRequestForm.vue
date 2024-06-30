@@ -8,6 +8,7 @@
            display-success
            @submit="submitFoodRequest"
            @mounted="onFormMounted"
+           @keydown.enter.prevent
            ref="form$" />
 </template>
 
