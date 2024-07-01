@@ -1,8 +1,8 @@
 from rest_framework import exceptions, status, viewsets
 from rest_framework.response import Response
 
-from ...models import FoodRequest
-from ...serializers import (
+from ..models import FoodRequest
+from ..serializers import (
     FoodRequestCreateSerializer,
     FoodRequestUpdateSerializer,
 )

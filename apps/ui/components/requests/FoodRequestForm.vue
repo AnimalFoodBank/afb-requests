@@ -7,13 +7,17 @@
            display-errors
            display-success
            @submit="submitFoodRequest"
-           @mounted="addSummaryFunctionality"
+           @mounted="onFormMounted"
+           @keydown.enter.prevent
            ref="form$" />
 </template>
 
 
 <script setup lang="ts">
-import type { FoodRequestFormState } from '@/types/index';
+import type { Branch, FoodRequestFormState, PetInfo } from '@/types/index';
+import { Validator } from '@vueform/vueform';
+
+const toast = useToast();
 
 /**
  * WARNING! ATTENTION! ACHTUNG! ATENCIÓN! 注意! ВНИМАНИЕ! توجه!
@@ -30,12 +34,20 @@ import type { FoodRequestFormState } from '@/types/index';
 const props = defineProps<{
   // validate: (state: any) => { path: string; message: string }[];
   // onSubmit: (state: any) => void;
-  state: FoodRequestFormState;
+  state: FoodRequestFormState | null;
   googleMapsIsReady?: boolean;
+  autocomplete?: google.maps.places.Autocomplete | null;
+  updateAutocomplete: (latitude: number, longitude: number) => void;
+  addressSelected: Ref<boolean>;
   user?: any;
 }>();
 
 const form$ = ref<any>(null);
+const computeTrigger = ref(false);
+
+const triggerComputation = () => {
+  computeTrigger.value = true
+}
 
 const {
   profileInfo,
@@ -43,35 +55,12 @@ const {
   authToken,
 } = useProfile();
 
-// Use the form's mounted event to add custom functionality to
-// the confirmation step. This is where we can add a summary
-// of the form data for the user to review before submitting.
-//
-// We need to do this at the time of mounting so that the
-// entire form is rendered and available to us. We can then
-// add a function to the confirmation step that dynamically
-// updates the summary based on the form data that's been
-// entered. This is a good way to keep the summary in sync
-// with the form data.
-const addSummaryFunctionality = (form$: any) => {
-  console.log("Form mounted", 'form$');
-
-  let summaryStep = form$.steps$.steps$.step4;
-
-  summaryStep.on("activate", (form$: any) => {
-    console.log("Summary step activated", form$);
-
-    // TODO: Generate the summary based on the form data
-    // and update the summary element in the form.
-  });
-};
-
 
 const submitFoodRequest = async (form$: any, FormData: any) => {
-  // Using form$.data will INCLUDE conditional elements and it
+  // Using form$.data WILL INCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
   // console.log("submitFoodRequest data", form$)
-  const foodRequestFormData = form$.data
+  const foodRequestAllFormData = form$.data
 
   // Using form$.requestData will EXCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
@@ -80,11 +69,13 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   // Show loading spinner
   form$.submitting = true
 
-  const userId = authData?.value?.id;
+  const userId = userInfo?.value?.id;
+  const petsUUIDs = foodRequestAllFormData.client_pets.pets.map((pet: PetInfo) => pet.id);
+  console.log("Pets UUIDs: ", petsUUIDs);
 
   const foodRequestAPIData = {
     // Match the API field names exactly
-    user: userId,  // not user_id
+    user: profileInfo.user,  // field name is not `user_id`
     address_text: requestData.delivery_address.interactive_address,
     address_google_place_id: null,
     address_canadapost_id: null,
@@ -101,9 +92,12 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
     branch_location: requestData.branch_locations,
     location: requestData.location,
     delivery_contact: requestData.delivery_contact,
-    client_pets: requestData.client_pets,
+    pets: petsUUIDs,
     confirmation: requestData.confirmation,
     safe_drop: requestData.safe_drop,
+    // As a safety net, let's store the complete form data in the API request
+    // so that we can debug any issues with the form data post-hoc.
+    details: foodRequestAllFormData,
   };
 
   const options = {
@@ -116,6 +110,34 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   )
 };
 
+const validatedGoogleAddress = class extends Validator {
+  async check(value: string) {
+    // Wait for the autocomplete to be ready
+    while (!props.googleMapsIsReady) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    // Check if an address has been selected
+    return props.addressSelected.value;
+  }
+
+  get msg() {
+    return 'Please select a valid address from the dropdown.';
+  }
+
+get isAsync() {
+    return true;
+  }
+}
+
+const onBranchLocationChange = (selectedBranchId: string) => {
+  console.log("Branch selected: ", selectedBranchId);
+  const selectedBranch = branchesMap.value.get(selectedBranchId);
+  if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
+    props.updateAutocomplete(selectedBranch.latitude, selectedBranch.longitude);
+  }
+}
+
+const autocomplete = ref<google.maps.places.Autocomplete | null>(null);
 
 /**
  * ***************************************************
@@ -141,11 +163,15 @@ const steps = {
     labels: {
       next: "Next: Contact",
     },
+    onActivate: (form$$: any) => {
+      const branchLocations = form$?.value?.el$("delivery_address.branch_locations");
+      console.log("Step 0 activated", form$$);
+      branchLocations.on("change", onBranchLocationChange);
+    },
     on: (form$: any, el: any) => {
       console.log("Step 0 on", form$, el);
     },
     conditions: [
-      // ["step0.delivery_address", "in", ["CA"]]  // element disappears if doesn't pass
     ],
   },
 
@@ -194,10 +220,10 @@ const steps = {
       next: "Next: Confirmation",
     },
     onActivate: (form$: any) => {
-      console.log("Step 1 activated", form$);
+      console.log("Step 3 activated", form$);
     },
     onComplete: (form$: any) => {
-      console.log("Step 1 completed", form$);
+      console.log("Step 3 completed", form$);
     },
   },
 
@@ -219,6 +245,7 @@ const steps = {
     },
     onActivate: (form$: any) => {
       console.log("Step 4 onActivate", form$, this);
+      triggerComputation();
     },
   },
 };
@@ -244,16 +271,98 @@ const schema = ref<any>({})
 // Define the schema for the client pets section of the form.
 import clientPetsSchema from '@/modules/requests/clientPetsSchema';
 
+const branches = ref([]);
+
+const fetchBranches = async () => {
+  const options = {
+    headers: {
+      'Authorization': authToken.value,
+    },
+    params: {
+      show_hidden: false
+    }
+  }
+  const response: Array<Branch> = await $fetch('/api/v1/branches/', options)
+  branches.value = response.results;
+}
+
+const branchesMap = ref(new Map());
+
+const parsedBranches = computed(() => {
+  branchesMap.value.clear();
+  return branches.value.map((branch: Branch) => {
+    const parsedBranch = {
+      label: branch.display_name,
+      value: branch.id,
+      latitude: branch.latitude,
+      longitude: branch.longitude,
+    };
+    branchesMap.value.set(branch.id, parsedBranch);
+    return parsedBranch;
+  });
+});
+
+// Example of an autocompelete place object:
+//
+//  {
+//    "formatted_address": "5717 Main St, Oliver, BC V0H 1T9, Canada",
+//    "geometry": {
+//      "location": {
+//        "lat": 49.1707449,
+//        "lng": -119.554817
+//      },
+//      "viewport": {
+//        "south": 49.1694338697085,
+//        "west": -119.5562589802915,
+//        "north": 49.1721318302915,
+//        "east": -119.5535610197085
+//      }
+//    },
+//    "place_id": "ChIJa6nSKT3qglQR7h3ZGH7NUmg",
+//    "html_attributions": []
+//  }
+
+watch(() => props.autocomplete, (newValue, oldValue) => {
+  const branchLocations = form$?.value?.el$("delivery_address.branch_locations");
+  const branchCurrentLocation = branchLocations.value;
+  console.log("Autocomplete ready", newValue, branchCurrentLocation);
+  onBranchLocationChange(branchCurrentLocation);
+  if (!newValue) {
+    return;
+  }
+  newValue.addListener("place_changed", () => {
+    const place = newValue.getPlace();
+
+    if (!place.geometry || !place.geometry.location) {
+      console.log("Place details are incomplete. Please select a valid address from the dropdown.");
+      return;
+    }
+    // Set the address selected flag to tru
+    form$.value.el$("delivery_address.ext_address_id").value = place.place_id;
+    form$.value.el$("delivery_address.ext_address_details").value = {
+      place: place,
+    }
+    form$.value.el$("delivery_address.interactive_address").value = place.formatted_address;
+  });
+});
+
+
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
   const state = props.state;
+  const branchLocations = form$.value.el$("delivery_address.branch_locations");
+  const profilePets = profileInfo.pets || []
+  const withControls = false;
+  const beforeText = "Please confirm the details for each of your pets you are including in this request.";
+
+  fetchBranches();
 
   schema.value = {
+
     //
     // === STEP 0: Delivery Address ====
     //
-
     delivery_address: {
       type: "object",
       schema: {
@@ -262,12 +371,12 @@ onMounted(() => {
           search: true,
           native: false,
           inputType: "search",
-          autocomplete: "off",
-          items: "/json/branch_locations.json",
-          rules: [],  // it's for display only so not "required" when submitting the form
+          autocomplete: "nope",
+          items: parsedBranches,
+          rules: ['required'],
           label: "Your local branch",
           description: "Please contact admin@animalfoodbank.org to change your branch.",
-          disabled: true,
+          disabled: false,
           conditions: [
             ["delivery_address.country", "in", ["CA"]]  // element disappears if doesn't pass
           ],
@@ -276,15 +385,37 @@ onMounted(() => {
             container: 12,
             wrapper: 6,
           },
-          default: state.delivery_address?.branch_location,
+          default: profileInfo.branch || null,
+          onChange: (value: string) => {
+            const selectedBranch = branchesMap.value.get(value);
+            if (selectedBranch && selectedBranch.latitude && selectedBranch.longitude) {
+              props.updateAutocomplete(selectedBranch.latitude, selectedBranch.longitude);
+            }
+          },
+        },
+        ext_address_id: { // TODO: Not being filled yet
+          type: "hidden",
+          rules: [],
+          label: "Google selcted address id ",
+          hidden: true,
+          default: state?.delivery_address?.ext_address_id,
+        },
+        ext_address_details: { // TODO: Not being filled yet
+          type: "hidden",
+          rules: [],
+          label: "A google.maps.places.PlaceResult object",
+          hidden: true,
+          default: profileInfo.ext_address_details || null,
         },
         interactive_address: {
           type: "text",
-          autocomplete: "one-time-code",
+          autocomplete: "nope",
           placeholder: "e.g. 123 Yukon St. Vancouver, BC V5V 1V1",
           label: "Your address",
           description: "Please contact us if you need to change your address.",
-          rules: ["required"],
+          rules: [
+            "required",
+          ],
           attrs: {
             autofocus: true,
           },
@@ -294,17 +425,14 @@ onMounted(() => {
             wrapper: 6
           },
           floating: false,
-          // Disable progressing to next step on "Enter" keypress. This
-          // is a rudimentary to prevent the issue but it's not a proper
-          // solution. There should be a way to handle this with either
-          // Vueform or the google autocomplete library itself.
-          onKeypress: (e: any) => {
-            console.log("[interactive_address-debug]", e);
-            if (e.key === "Enter") {
-              e.preventDefault();
-            }
+          default: profileInfo.address || null, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
+          disabled: false, // Start disabled
+          onBlur: (value: string) => {
+            console.log("Selected address: ", value.value);
           },
-          default: state.delivery_address?.interactive_address, // || "1234 Southview Drive SE, Medicine Hat, AB, Canada",
+          conditions: [
+            ['delivery_address.branch_locations', '!=', null] // Enable when a branch is selected
+          ],
         },
         building_type: {
           type: "radiogroup",
@@ -322,10 +450,29 @@ onMounted(() => {
           label: "Building type <i>(optional)</i>",
           columns: {
             container: 12,
-            label: 12,
+            label: 6,
             wrapper: 8,
           },
-          default: state.delivery_address?.building_type,
+          default: state?.delivery_address?.building_type,
+          conditions: [
+            ['delivery_address.ext_address_id', '!=', null],
+          ],
+        },
+        instructions: {
+          type: "textarea",
+          rules: ["max:50"],
+          label: "Delivery instructions (optional)",
+          description: "Please provide any additional information that we'll need to reach your address, e.g. buzz code, suite number, etc",
+          placeholder: "e.g. Buzz 1234",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 12,
+          },
+          default: state?.delivery_address?.instructions,
+          conditions: [
+            ['delivery_address.ext_address_id', '!=', null],
+          ],
         },
         location: {
           type: "object",
@@ -367,7 +514,7 @@ onMounted(() => {
             label: 12,
             wrapper: 3,
           },
-          default: state.delivery_contact?.contact_name || "Delbo Baggins",
+          default: profileInfo.preferred_name || null,
           conditions: [
             ['delivery_contact.choose_contact', true],
           ],
@@ -402,7 +549,7 @@ onMounted(() => {
           label: "Contact email",
           placeholder: "e.g. your email address",
           floating: false,
-          disabled: true,
+          disabled: (!!userInfo.email),
           columns: {
             container: 12,
             label: 12,
@@ -412,7 +559,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Email']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact?.contact_email || 'profile?.email',
+          default: userInfo.email || null,
         },
         alt_contact_email: {
           type: "text",
@@ -432,12 +579,13 @@ onMounted(() => {
         },
         contact_phone: {
           type: "text",
-          rules: ["required", "max:16"],
+          rules: ["required", "max:24"],
           label: "Contact phone",
           placeholder: "(123) 456-7890",
+          description: "If you want to update your phone number, please update it in your profile before submitting a request.",
           floating: false,
-          mask: "(000) 000-0000",
-          disabled: true,
+          mask: "+1 (000) 000-0000",
+          disabled: (!!profileInfo.phone_number),
           columns: {
             container: 12,
             label: 12,
@@ -447,7 +595,7 @@ onMounted(() => {
             ['delivery_contact.preferred_method', ['Call', 'Text']],
             ['delivery_contact.choose_contact', true],
           ],
-          default: state.delivery_contact?.contact_phone || '123-456-7890',
+          default: profileInfo.phone_number || null,
         },
         alt_contact_phone: {
           type: "text",
@@ -473,7 +621,7 @@ onMounted(() => {
     //
     // STEP 2 - Your Pets
     //
-    client_pets: clientPetsSchema,
+    client_pets: clientPetsSchema(profilePets, withControls, beforeText),
 
     //
     // STEP 3 - Safe Drop
@@ -523,42 +671,175 @@ onMounted(() => {
         location: {
           type: "static",
           tag: "p",
+          label: "Location",
           columns: {
             container: 12,
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Address:</strong> " + state.delivery_address?.interactive_address,
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el = form$.value.el$("delivery_address.interactive_address")
+            if (!el) {
+              return "";
+            }
+            return "" + el.value;
+          }),
+        },
+        branch: {
+          type: "static",
+          tag: "p",
+          label: "Branch",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el = form$.value.el$("delivery_address.branch_locations")
+            if (!el) {
+              return "";
+            }
+            const branchLocation = el.value;
+            return "" + branchesMap.value.get(branchLocation)?.label;
+          }),
         },
         contact: {
           type: "static",
           tag: "p",
+          label: "Contact",
           columns: {
-            container: 12,
+            container: 6,
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Contact:</strong> " + state.delivery_contact?.contact_name + " (" + state.delivery_contact?.contact_phone + ")",
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el1 = form$.value.el$("delivery_contact.contact_name");
+            const el2 = form$.value.el$("delivery_contact.contact_phone");
+            const el3 = form$.value.el$("delivery_contact.email");
+            const el4 = form$.value.el$("delivery_contact.preferred_method");
+            if (!el1 || (!el2 || !el3 || !el4)) {
+              return "";
+            }
+            const contactName = el1.value;
+            const contactPhone = el2.value;
+            const contactEmail = el3.value;
+            const contactMethod = el4.value;
+            return "" + contactName + " (" + contactPhone + ") " + contactEmail + " by " + contactMethod;
+          }),
+        },
+        alt_contact: {
+          type: "static",
+          tag: "p",
+          label: "Contact (Alt)",
+          columns: {
+            container: 6,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el1 = form$.value.el$("delivery_contact.alt_contact_name");
+            const el2 = form$.value.el$("delivery_contact.alt_contact_phone");
+            if (!el1 || !el2) {
+              return "";
+            }
+            const contactName = el1.value;
+            const contactPhone = el2.value;
+            return "" + contactName + " (" + contactPhone + ")";
+          }),
         },
         pets: {
           type: "static",
           tag: "p",
+          label: "Pets",
           columns: {
             container: 12,
-            label: 6,
-            wrapper: 6,
+            label: 12,
+            wrapper: 12,
           },
-          content: "<strong>Pets:</strong> ",
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el = form$.value.el$("client_pets.pets");
+            if (!el) {
+              return "";
+            }
+            // Parse pets list of objects into a simple, readable string
+            // with just the animal names and dobs.
+            const pets = el.value.map((pet: PetInfo) => {
+              return `${pet.pet_name} (${pet.pet_dob})`;
+            }).join(", ");
+            return pets;
+          }),
         },
         safe_drop: {
           type: "static",
           tag: "p",
+          label: "Safe Drop",
           columns: {
             container: 12,
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Safe Drop:</strong> " + (state.safe_drop?.safe_drop ? "Yes" : "No") + " - " + state.safe_drop?.safe_drop_instructions,
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el1 = form$.value.el$("safe_drop.confirm");
+            const el2 = form$.value.el$("safe_drop.instructions");
+            if (!el1 || !el2) {
+              return "";
+            }
+            const safeDrop = el1.value;
+            const safeDropInstructions = el2.value;
+            return "" + safeDrop + " (Instructions: " +( safeDropInstructions||'') + ")";
+          }),
+        },
+        confirm_correct: {
+          type: "static",
+          tag: "p",
+          label: "Confirmation",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el1 = form$.value.el$("confirmation.confirm_info");
+            if (!el1) {
+              return "";
+            }
+            const confirmInfo = el1.value;
+            return "" + confirmInfo;
+          }),
+        },
+        confirm_terms: {
+          type: "static",
+          tag: "p",
+          label: "Agree to terms",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el2 = form$.value.el$("confirmation.accept_terms");
+            if (!el2) {
+              return "";
+            }
+            const acceptTerms = el2.value;
+            return "" + acceptTerms;
+          }),
         },
       },
     },
@@ -578,7 +859,7 @@ onMounted(() => {
           text: "I have read, accepted, and agreed to the Terms and Conditions and Privacy Notice.",
           fieldName: "Terms",
           rules: ["accepted"],
-          default: state.confirmation?.accept_terms,
+          default: state?.confirmation?.accept_terms,
         },
       },
     },
@@ -638,8 +919,29 @@ onMounted(() => {
     },
   };
 
-
 });
+
+
+// Use the form's mounted event to add custom functionality to
+// the confirmation step. This is where we can add a summary
+// of the form data for the user to review before submitting.
+//
+// We need to do this at the time of mounting so that the
+// entire form is rendered and available to us. We can then
+// add a function to the confirmation step that dynamically
+// updates the summary based on the form data that's been
+// entered. This is a good way to keep the summary in sync
+// with the form data.
+const onFormMounted = (form$: any) => {
+  let summaryStep = form$.steps$.steps$.step4;
+
+  summaryStep.on("activate", (form$: any) => {
+    console.log("Summary step activated", form$);
+
+    // TODO: Generate the summary based on the form data
+    // and update the summary element in the form.
+  });
+};
 
 </script>
 

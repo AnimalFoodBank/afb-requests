@@ -1,7 +1,7 @@
 # /apps/api/afbcore/tests/views/test__requests__view.py
 
 from afbcore.models import FoodRequest
-from afbcore.views.requests import FoodRequestViewSet
+from afbcore.views.food_request_view import FoodRequestViewSet
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework import status
@@ -63,7 +63,6 @@ class FoodRequestViewSetTestCase(TestCase):
                         "pet_dob": "2020",
                         "food_details": {
                             "allergies": "Being picked up",
-                            "usual_brands": "All of them",
                             "foodtype": "Either",
                         },
                         "dog_details": {"size": "10-20 lbs (Small)"},

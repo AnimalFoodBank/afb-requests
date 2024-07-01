@@ -6,9 +6,23 @@ definePageMeta({
 const q = ref("");
 
 
+const links = [[
+  {
+    label: 'New Request',
+    icon: 'i-ph-plus-square-light',
+    to: '/requests/new',
+  },
+  {
+    label: 'Request History',
+    icon: 'i-heroicons-calendar',
+    to: '/requests',
+    exact: true
+  },
+]]
+
 const {
   status: authStatus,
-  data: authData,
+  data: userInfo,
   token: authToken,
 } = useAuth();
 
@@ -40,7 +54,12 @@ onMounted(() => {
 <template>
   <UDashboardPage>
     <UDashboardPanel>
-      <UDashboardNavbar title="Requests"> </UDashboardNavbar>
+      <UDashboardNavbar title="Requests">
+      </UDashboardNavbar>
+
+      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block">
+        <UHorizontalNavigation :links="links" class="" />
+      </UDashboardToolbar>
 
       <UDashboardPanelContent class="pb-24">
         <UDashboardSection

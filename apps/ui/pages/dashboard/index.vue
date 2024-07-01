@@ -8,6 +8,19 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+const links = [[
+  {
+    label: 'New Request',
+    icon: 'i-ph-plus-square-light',
+    to: '/requests/new',
+  },
+  {
+    label: 'Request History',
+    icon: 'i-heroicons-calendar',
+    to: '/requests',
+    exact: true
+  },
+]]
 
 /**
  * Retrieves the authentication status, data, and token using the useAuth() function.
@@ -20,12 +33,16 @@ definePageMeta({
  */
 const {
   status: authStatus,
-  data: authData,
+  data: userInfo,
   token: authToken,
 } = useAuth();
 
+const {
+  profileInfo,
+} = useProfile();
+
 const requests = ref([]);
-const role = computed(() => authData.value?.profiles?.[0]?.role || 'unknown');
+const role = computed(() => profileInfo?.role || 'unknown');
 
 const fetchRequests = async () => {
   const options = {
@@ -48,9 +65,6 @@ const isManager = computed(() => role.value === 'manager');
 onMounted(() => {
   fetchRequests();
 
-  const userInfo = authData?.value || {}
-  const profile = userInfo.profiles?.[0] || {}
-  role.value = profile?.role || 'unknown';
 });
 
 
@@ -63,8 +77,9 @@ onMounted(() => {
 
       </UDashboardNavbar>
 
-      <!-- <UDashboardToolbar>
-      </UDashboardToolbar> -->
+      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block lg:hidden">
+        <UHorizontalNavigation :links="links" class="" />
+      </UDashboardToolbar>
 
       <DashboardClientView :requests="requests" v-if="isClient" />
       <DashboardVolunteerView :requests="requests" v-if="isVolunteer" />

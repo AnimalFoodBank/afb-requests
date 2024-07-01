@@ -167,7 +167,7 @@ CSRF_COOKIE_HTTPONLY = False
 # https://docs.djangoproject.com/en/4.2/ref/csrf/#how-it-works
 # CSRF_COOKIE_DOMAIN = ""
 
-TOKEN_EXPIRED_AFTER_WEEKS = 2
+TOKEN_EXPIRED_AFTER_WEEKS = 1
 
 
 # Static files (CSS, JavaScript, Images)
@@ -400,7 +400,15 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
-    }
+    },
+    "test": {
+        "ENGINE": os.getenv("DB_ENGINE"),
+        "NAME": "test_" + (os.getenv("DB_NAME") or ""),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
+    },
 }
 
 # Password validation
@@ -451,14 +459,40 @@ REQUEST_ID_RESPONSE_HEADER = "REQID"
 
 
 class QueryFormatter(logging.Formatter):
+    """
+    This formatter class is designed to enhance logging capabilities by
+    formatting SQL queries to be more readable. It checks for the presence
+    of an SQL query in the log record and formats it using `sqlparse` for
+    better readability in the logs.
+    """
+
     def format(self, record):
+        # Implementation remains the same...
         record.prettysql = ""
-        try:
-            _, rawsql, *_ = record.args
-        except ValueError:
-            print("record.args does not contain enough values to unpack")
+        if hasattr(record, "sql"):
+            # If record has 'sql' attribute, use it directly
+            rawsql = record.sql
+        elif (
+            hasattr(record, "args")
+            and isinstance(record.args, tuple)
+            and len(record.args) > 1
+        ):
+            # If record has 'args' and it's a tuple with at least 2 elements
+            rawsql = record.args[1]
         else:
-            record.prettysql = sqlparse.format(rawsql, reindent=True)
+            # If we can't find SQL, just use an empty string
+            rawsql = ""
+
+        if isinstance(rawsql, str):
+            try:
+                record.prettysql = sqlparse.format(rawsql, reindent=True)
+            except Exception as e:
+                # If formatting fails, just use the raw SQL
+                record.prettysql = rawsql
+                print(f"SQL formatting failed: {e}")
+        else:
+            # If rawsql is not a string, convert it to a string
+            record.prettysql = str(rawsql)
 
         # Call the original formatter class to do the actual formatting
         return super().format(record)
@@ -488,7 +522,7 @@ LOGGING = {
             "filters": ["request_id"],
         },
         "console_db": {
-            "level": "DEBUG",
+            "level": "FATAL",
             "class": "logging.StreamHandler",
             "formatter": "sql",
             "filters": ["request_id"],
@@ -508,3 +542,17 @@ LOGGING = {
     },
     "root": {"level": LOG_LEVEL, "handlers": ["console"]},
 }
+
+if DEBUG:
+    # RunServerPlus settings
+    # https://django-extensions.readthedocs.io/en/stable/runserver_plus.html
+    RUNSERVER_PLUS_PRINT_SQL_TRUNCATE = 1000
+    RUNSERVERPLUS_POLLER_RELOADER_TYPE = "stat"  # or 'watchdog' or 'auto'
+    RUNSERVER_PLUS_EXCLUDE_PATTERNS = [
+        "*.sqlite3",
+        "*.sqlite3-journal",
+        "#{BASE_DIR}/.local/*",
+        "#{BASE_DIR}/.git/*",
+        "**/.pytest_cache/*",
+        "**/__pycache__/*",
+    ]

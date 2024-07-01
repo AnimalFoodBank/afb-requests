@@ -1,16 +1,10 @@
 from rest_framework import serializers
 
-from ...models import FoodRequest, Pet
-
-
-class PetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pet
-        fields = "__all__"
+from ..models import FoodRequest, Pet
+from .pet_serializer import PetSerializer
 
 
 class ClientPetsSerializer(serializers.Serializer):
-    which_pets = serializers.CharField()
     pets = PetSerializer(many=True)
 
 
@@ -19,6 +13,10 @@ class DeliveryContactSerializer(serializers.Serializer):
     contact_name = serializers.CharField()
     preferred_method = serializers.CharField()
     contact_phone = serializers.CharField()
+    contact_email = serializers.CharField()
+    alt_contact_name = serializers.CharField()
+    alt_contact_phone = serializers.CharField()
+    alt_contact_email = serializers.CharField()
 
 
 class ConfirmationSerializer(serializers.Serializer):
@@ -35,7 +33,7 @@ class AbstractFoodRequestSerializer(serializers.ModelSerializer):
     method_of_contact = serializers.CharField()
     delivery_contact = DeliveryContactSerializer()
 
-    contact_phone = serializers.CharField()
+    # contact_phone = serializers.CharField()
 
     client_pets = ClientPetsSerializer()
     confirmation = ConfirmationSerializer()
@@ -44,12 +42,41 @@ class AbstractFoodRequestSerializer(serializers.ModelSerializer):
     class Meta:
         abstract = True
         model = FoodRequest
-        fields = [f.name for f in FoodRequest._meta.fields if f.name != "pets"]
+        fields = [
+            "id",
+            "user",
+            "pets",
+            "branch",
+            "address_text",
+            "address_google_place_id",
+            "address_canadapost_id",
+            "address_latitude",
+            "address_longitude",
+            "address_buildingtype",
+            "address_details",
+            "ext_address_details",
+            "address_instructions",
+            "contact_phone",
+            "contact_email",
+            "contact_name",
+            "method_of_contact",
+            "safe_drop_agree",
+            "safe_drop_instructions",
+            "confirm_correct",
+            "accept_terms",
+            "flagged",
+            "date_requested",
+            "request_status",
+            "comments",
+            "details",
+            "created",
+            "modified",
+        ]
 
 
 class FoodRequestCreateSerializer(AbstractFoodRequestSerializer):
     class Meta(AbstractFoodRequestSerializer.Meta):
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = ["id", "created", "modified"]
 
 
 class FoodRequestUpdateSerializer(AbstractFoodRequestSerializer):
@@ -61,5 +88,9 @@ class FoodRequestUpdateSerializer(AbstractFoodRequestSerializer):
             "created",
             "address_canadapost_id",
             "address_google_place_id",
+            "address_latitude",
+            "address_longitude",
+            "address_buildingtype",
+            "address_details",
             "request_status",
         ]

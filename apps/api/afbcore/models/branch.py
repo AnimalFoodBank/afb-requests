@@ -1,12 +1,16 @@
 import uuid
 
 from django.db import models
-from .mixins import PhysicalLocationMixin
+
+from .base import BaseAbstractModel
+from .mixins import HasDetailsMixin, PhysicalLocationMixin
 
 
-class Branch(PhysicalLocationMixin):
+class Branch(HasDetailsMixin, PhysicalLocationMixin, BaseAbstractModel):
     class Meta:
+        app_label = "afbcore"
         verbose_name_plural = "Branches"
+        ordering = ["-created"]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -53,4 +57,21 @@ class Branch(PhysicalLocationMixin):
     blurb = models.TextField(blank=True, null=True)
 
     # Blurb image A picture to go along with the blurb
-    blurb_image = models.ImageField(upload_to="branch_images/", blank=True, null=True)
+    blurb_image = models.ImageField(
+        upload_to="branch_images/", blank=True, null=True
+    )
+
+    latitude = models.FloatField(null=True, blank=True, help_text="Latitude")
+    longitude = models.FloatField(null=True, blank=True, help_text="Longitude")
+    delivery_radius = models.IntegerField(
+        default=1,
+        help_text="Delivery radius in kilometers",
+        null=True,
+        blank=True,
+    )
+
+    # Hide this branch from the public site
+    hidden = models.BooleanField(default=False)
+
+    # Operational status of the branch
+    operational = models.BooleanField(default=True)

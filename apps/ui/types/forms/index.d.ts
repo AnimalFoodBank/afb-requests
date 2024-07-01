@@ -5,6 +5,7 @@ export interface FoodRequestFormState {
     branch_location: string;
     interactive_address: string;
     building_type: string;
+    instructions: string;
     country: string;  // all user addresses assumed to be in the same country
     location: {
       address_line1: string;
@@ -14,7 +15,11 @@ export interface FoodRequestFormState {
       postcode: string;
       lat?: number;
       lon?: number;
-    }
+    };
+    ext_address_id?: string;
+    ext_address_details?: {
+      place: google.maps.places.PlaceResult;
+    };
   };
   delivery_contact: {
     contact_name: string;
@@ -30,13 +35,13 @@ export interface FoodRequestFormState {
       pet_dob: string;
       food_details?: {
         allergies?: string;
-        usual_brands?: string;
         foodtype?: string;
       };
       dog_details?: {
         size: string;
       };
-      other_details?: {
+      spay_or_neutered: boolean | null;  // null when not answered (*or not applicable)
+      animal_details?: {
         animal_description: string;
       };
       details?: string;
@@ -50,5 +55,30 @@ export interface FoodRequestFormState {
   confirmation: {
     confirm_correct: boolean;
     accept_terms: boolean;
+  };
+}
+
+export interface DeliveryInfoFormState {
+  id: string;
+  user_id: string;
+  delivery_address: {
+    branch_location: string;
+    interactive_address: string;
+    building_type: string;
+    instructions: string;
+    country: string;  // all user addresses assumed to be in the same country
+    location: {
+      address_line1: string;
+      address_line2?: string;
+      city: string;
+      prov_or_state: string;
+      postcode: string;
+      lat?: number;
+      lon?: number;
+    };
+    ext_address_id?: string;
+    ext_address_details?: {
+      place: google.maps.places.PlaceResult;
+    };
   };
 }

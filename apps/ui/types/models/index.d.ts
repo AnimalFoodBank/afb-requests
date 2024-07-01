@@ -15,8 +15,7 @@
 export interface BaseAbstractModel {
   id: string; // UUIDField, primary key
   created: Date; // DateTimeField, auto_now_add=True
-  updated: Date; // DateTimeField, auto_now=True
-  is_removed: boolean; // BooleanField, default=False
+  modified: Date; // DateTimeField, auto_now=True
 }
 
 // Equivalent to Django PhysicalLocation
@@ -49,7 +48,7 @@ export interface User extends BaseAbstractModel {
 export interface Profile extends BaseAbstractModel {
   user: User;
   role: Role;
-  branches: Branch[];
+  branch: Branch;
   preferred_name: string;
   email: string;
   phone_number: string;
@@ -60,6 +59,8 @@ export interface Profile extends BaseAbstractModel {
   status: 'active' | 'on_hold' | 'banned';
   points_earned: number;
   delivery_regions: DeliveryRegion[];
+  ext_address_id: string | null;
+
 }
 
 // Equivalent to Django Role
@@ -76,12 +77,33 @@ export interface DeliveryRegion extends BaseAbstractModel {
 
 // Equivalent to Django Branch
 export interface Branch extends BaseAbstractModel {
-  name: string;
-  address: string;
-  phone_number: string;
-  email: string;
-  profile: Profile;
+  id: string; // UUID
+  display_name: string | null;
   delivery_regions: DeliveryRegion[];
+  pickup_locations: string | null;
+  frequency_of_requests: string;
+  spay_neuter_requirement: boolean;
+  pets_per_household_max: number;
+  delivery_deadline_days: number;
+  delivery_type: 'drop_off' | 'pick_up';
+  delivery_pickup_details: string | null;
+  blurb: string | null;
+  blurb_image: string | null; // URL of the image
+  latitude: number | null;
+  longitude: number | null;
+  delivery_radius: number | null;
+  hidden: boolean;
+  operational: boolean;
+
+  // Fields from PhysicalLocationMixin
+  location_name: string;
+  address_line1: string | null;
+  address_line2: string | null;
+  city: string | null;
+  state_or_province: string | null;
+  postal_code: string | null;
+  country: string | null;
+  ext_id: string | null;
 }
 
 // Equivalent to Django FoodAvailable
@@ -116,4 +138,21 @@ export interface FoodRequest extends BaseAbstractModel {
   date_requested: string; // Assuming this is a string representation of a date
   status: string; // Assuming this is a string representation of STATUS_CHOICES
   comments: Record<string, unknown>; // JSONField
+}
+
+
+export interface PetInfo extends BaseAbstractModel  {
+  pet_type: 'cat' | 'dog' | 'other';
+  pet_name: string;
+  pet_dob: string;
+  food_details: {
+    allergies?: string;
+    general_notes?: string;
+    foodtype: 'either' | 'dry' | 'wet';
+  };
+  dog_details?: object;
+  spay_or_neutered?: 'yes' | 'no';
+  animal_details?: {
+    animal_type: string;
+  };
 }

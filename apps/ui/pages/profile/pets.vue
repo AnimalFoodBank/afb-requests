@@ -1,30 +1,14 @@
-<script setup lang="ts">
-
-const state = reactive({})
-
-const title = 'Your Pets'
-const description = 'Manage your pet information. '
-const icon = 'i-ph-paw-print'
-const cta = false
-
-definePageMeta({
-  layout: 'dashboard',
-})
-
-
-</script>
-
 <template>
   <UDashboardPanelContent class="pb-24">
 
     <UDashboardSection :title="title" :description="description" :icon="icon">
       <template #links v-if="cta">
-        <UButton type="submit" label="Save changes" color="black" />
+        <UButton type="submit" label="Save changes" class="block rounded-md bg-primary text-white dark:text-black" />
       </template>
     </UDashboardSection>
 
     <UDashboardSection>
-      <PetsForm :cta="false" :state="state" />
+      <PetsForm :cta="false" :state="state" :user="userInfo" :profile="profileInfo" />
     </UDashboardSection>
 
     <UDashboardSection class="mb-8 text-md italic">
@@ -46,3 +30,25 @@ definePageMeta({
 
   </UDashboardPanelContent>
 </template>
+
+
+<script setup lang="ts">
+
+const state = reactive({})
+
+const title = 'Your Pets'
+const description = 'Manage your pet information. '
+const icon = 'i-ph-paw-print'
+const cta = false;
+
+definePageMeta({
+  layout: 'dashboard',
+})
+
+const {
+  profileInfo,
+  userInfo,
+  authToken,
+} = useProfile();
+
+</script>

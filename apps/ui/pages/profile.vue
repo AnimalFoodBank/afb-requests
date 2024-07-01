@@ -11,13 +11,13 @@ definePageMeta({
 const links = [[
   {
     label: 'Delivery Information',
-    icon: 'i-heroicons-user-circle',
+    icon: 'i-heroicons-home',
     to: '/profile',
     exact: true
   },
   {
     label: 'My Pets',
-    icon: 'i-heroicons-home',
+    icon: 'i-ph-paw-print',
     to: '/profile/pets',
   }
 ]]
@@ -29,7 +29,7 @@ const links = [[
     <UDashboardPanel grow>
       <UDashboardNavbar title="Profile" />
 
-      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block lg:hidden">
+      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block">
         <UHorizontalNavigation :links="links" class="" />
       </UDashboardToolbar>
 

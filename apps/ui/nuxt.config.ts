@@ -1,5 +1,7 @@
 import type { SessionData } from "./types/index";
 
+// NOTE: External deps config can move from files to here
+// https://nuxt.com/docs/getting-started/configuration#external-configuration-files
 
 export default defineNuxtConfig({
   extends: [process.env.NUXT_UI_PRO_PATH || "@nuxt/ui-pro"],
@@ -38,6 +40,40 @@ export default defineNuxtConfig({
    *  https://nuxt.com/docs/guide/concepts/rendering#client-side-rendering
    **/
   ssr: false,
+
+  /**
+   * Typically we don't need to add vite configuration; nuxi and
+   * nuxt-cli handle this for us. Occasionally, there is a bug
+   * or a feature that requires us to add a vite configuration.
+   * Today, we are adding a vite configuration to enable HMR over
+   * wss (secure websockets) instead of the default ws.
+   *
+   * This github issue explains the problem and the solution in
+   * high fidelity, particularly this comment from ayalon:
+   * https://github.com/nuxt/nuxt/issues/27558#issuecomment-2182901776
+   *
+   * The comment from danielroe a few messages down indicates that the
+   * next release of nuxi-cli will have the fix (current 3.12.0).
+   * https://vitejs.dev/config/server-options#server-hmr
+   **/
+  vite: {
+    //"server": {
+    //  "hmr": {
+    //    "protocol": "wss",
+    //    "host": "dev.afb.pet",
+    //  },
+    //},
+    //"build": {
+
+    //},
+  },
+  hooks: {
+    'vite:extendConfig': (config) => {
+      if (typeof config.server!.hmr === 'object') {
+        config.server!.hmr.protocol = 'wss';
+      }
+    },
+  },
 
   /**
   * Enable type checking for dev and build modes.
@@ -112,12 +148,14 @@ export default defineNuxtConfig({
         signUp: { path: "/register", method: "post" },
         getSession: { path: "/current_user/", method: "get" },
       },
-      sessionDataType: {
-        id: "string",
-        email: "string",
-        name: "string",
-        role: "admin | guest | client | volunteer | branchmanager",
-        subscriptions: "{ id: number, status: 'ACTIVE' | 'INACTIVE' }[]",
+      session: {
+        dataType: {
+          id: "string",
+          email: "string",
+          name: "string",
+          role: "admin | guest | client | volunteer | branchmanager",
+          subscriptions: "{ id: number, status: 'ACTIVE' | 'INACTIVE' }[]",
+        },
       },
       token: {
         signInResponseTokenPointer: "/token", // json path in response
@@ -125,18 +163,18 @@ export default defineNuxtConfig({
         type: "Token",
         cookieName: 'auth.token',
         headerName: 'Authorization',
-        maxAgeInSeconds: 3600 * 24 * 30,
+        maxAgeInSeconds: 3600 * 24 * 30,  // 30 days
         sameSiteAttribute: 'strict',
       },
     },
-    session: {
+    sessionRefresh: {
       // Whether to refresh the session every time the browser window is refocused.
-      enableRefreshOnWindowFocus: true,
+      enableOnWindowFocus: false,
 
       // Whether to refresh the session every `X` milliseconds. Set
       // this to `false` to turn it off. The session will only be
       // refreshed if a session already exists.
-      enableRefreshPeriodically: 60000 * 5, // 5 minutes
+      enablePeriodically: 60000 * 10, // 10 minutes
     },
   },
 
@@ -199,6 +237,7 @@ export default defineNuxtConfig({
    * sensitive information.
    */
   runtimeConfig: {
+
     // Public keys are exposed to the client
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,

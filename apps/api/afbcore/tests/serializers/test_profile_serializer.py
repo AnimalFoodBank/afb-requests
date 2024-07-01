@@ -4,7 +4,7 @@ from afbcore.models import (
     DeliveryRegion,
     Profile,
 )
-from afbcore.models.mixins import HasDetails
+from afbcore.models.mixins import HasDetailsMixin
 from afbcore.serializers import DeliveryRegionSerializer, ProfileSerializer
 from django.contrib.auth import get_user_model
 from django.test import override_settings

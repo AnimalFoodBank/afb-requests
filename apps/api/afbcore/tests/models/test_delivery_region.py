@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from afbcore.models.delivery_region import DeliveryRegion
 
 """
