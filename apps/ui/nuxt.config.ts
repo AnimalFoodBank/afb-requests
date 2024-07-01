@@ -148,12 +148,14 @@ export default defineNuxtConfig({
         signUp: { path: "/register", method: "post" },
         getSession: { path: "/current_user/", method: "get" },
       },
-      sessionDataType: {
-        id: "string",
-        email: "string",
-        name: "string",
-        role: "admin | guest | client | volunteer | branchmanager",
-        subscriptions: "{ id: number, status: 'ACTIVE' | 'INACTIVE' }[]",
+      session: {
+        dataType: {
+          id: "string",
+          email: "string",
+          name: "string",
+          role: "admin | guest | client | volunteer | branchmanager",
+          subscriptions: "{ id: number, status: 'ACTIVE' | 'INACTIVE' }[]",
+        },
       },
       token: {
         signInResponseTokenPointer: "/token", // json path in response
@@ -161,18 +163,18 @@ export default defineNuxtConfig({
         type: "Token",
         cookieName: 'auth.token',
         headerName: 'Authorization',
-        maxAgeInSeconds: 3600 * 24 * 30,
+        maxAgeInSeconds: 3600 * 24 * 30,  // 30 days
         sameSiteAttribute: 'strict',
       },
     },
-    session: {
+    sessionRefresh: {
       // Whether to refresh the session every time the browser window is refocused.
-      enableRefreshOnWindowFocus: true,
+      enableOnWindowFocus: false,
 
       // Whether to refresh the session every `X` milliseconds. Set
       // this to `false` to turn it off. The session will only be
       // refreshed if a session already exists.
-      enableRefreshPeriodically: 60000 * 5, // 5 minutes
+      enablePeriodically: 60000 * 10, // 10 minutes
     },
   },
 
