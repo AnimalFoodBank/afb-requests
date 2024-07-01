@@ -43,6 +43,11 @@ const props = defineProps<{
 }>();
 
 const form$ = ref<any>(null);
+const computeTrigger = ref(false);
+
+const triggerComputation = () => {
+  computeTrigger.value = true
+}
 
 const {
   profileInfo,
@@ -215,10 +220,10 @@ const steps = {
       next: "Next: Confirmation",
     },
     onActivate: (form$: any) => {
-      console.log("Step 1 activated", form$);
+      console.log("Step 3 activated", form$);
     },
     onComplete: (form$: any) => {
-      console.log("Step 1 completed", form$);
+      console.log("Step 3 completed", form$);
     },
   },
 
@@ -240,6 +245,7 @@ const steps = {
     },
     onActivate: (form$: any) => {
       console.log("Step 4 onActivate", form$, this);
+      triggerComputation();
     },
   },
 };
@@ -667,11 +673,13 @@ onMounted(() => {
           tag: "p",
           label: "Location",
           columns: {
-            container: 6,
+            container: 12,
             label: 6,
             wrapper: 6,
           },
           content: computed(() => {
+            if (!computeTrigger.value) return ''
+
             const el = form$.value.el$("delivery_address.interactive_address")
             if (!el) {
               return "";
@@ -684,11 +692,13 @@ onMounted(() => {
           tag: "p",
           label: "Branch",
           columns: {
-            container: 6,
+            container: 12,
             label: 6,
             wrapper: 6,
           },
           content: computed(() => {
+            if (!computeTrigger.value) return ''
+
             const el = form$.value.el$("delivery_address.branch_locations")
             if (!el) {
               return "";
@@ -707,6 +717,8 @@ onMounted(() => {
             wrapper: 6,
           },
           content: computed(() => {
+            if (!computeTrigger.value) return ''
+
             const el1 = form$.value.el$("delivery_contact.contact_name");
             const el2 = form$.value.el$("delivery_contact.contact_phone");
             const el3 = form$.value.el$("delivery_contact.email");
@@ -731,6 +743,8 @@ onMounted(() => {
             wrapper: 6,
           },
           content: computed(() => {
+            if (!computeTrigger.value) return ''
+
             const el1 = form$.value.el$("delivery_contact.alt_contact_name");
             const el2 = form$.value.el$("delivery_contact.alt_contact_phone");
             if (!el1 || !el2) {
@@ -751,12 +765,18 @@ onMounted(() => {
             wrapper: 12,
           },
           content: computed(() => {
+            if (!computeTrigger.value) return ''
+
             const el = form$.value.el$("client_pets.pets");
             if (!el) {
               return "";
             }
-            // Parse pets list into a string
-            const pets = JSON.stringify(el.value);
+            // Parse pets list of objects into a simple, readable string
+            // with just the animal names and dobs.
+            const pets = el.value.map((pet: PetInfo) => {
+              return `${pet.pet_name} (${pet.pet_dob})`;
+            }).join(", ");
+            return pets;
           }),
         },
         safe_drop: {
@@ -769,6 +789,8 @@ onMounted(() => {
             wrapper: 6,
           },
           content: computed(() => {
+            if (!computeTrigger.value) return ''
+
             const el1 = form$.value.el$("safe_drop.confirm");
             const el2 = form$.value.el$("safe_drop.instructions");
             if (!el1 || !el2) {
@@ -776,10 +798,10 @@ onMounted(() => {
             }
             const safeDrop = el1.value;
             const safeDropInstructions = el2.value;
-            return "" + safeDrop + " (" + safeDropInstructions + ")";
+            return "" + safeDrop + " (Instructions: " +( safeDropInstructions||'') + ")";
           }),
         },
-        confirmation: {
+        confirm_correct: {
           type: "static",
           tag: "p",
           label: "Confirmation",
@@ -789,14 +811,34 @@ onMounted(() => {
             wrapper: 6,
           },
           content: computed(() => {
+            if (!computeTrigger.value) return ''
+
             const el1 = form$.value.el$("confirmation.confirm_info");
-            const el2 = form$.value.el$("confirmation.accept_terms");
-            if (!el1 || !el2) {
+            if (!el1) {
               return "";
             }
             const confirmInfo = el1.value;
+            return "" + confirmInfo;
+          }),
+        },
+        confirm_terms: {
+          type: "static",
+          tag: "p",
+          label: "Agree to terms",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            if (!computeTrigger.value) return ''
+
+            const el2 = form$.value.el$("confirmation.accept_terms");
+            if (!el2) {
+              return "";
+            }
             const acceptTerms = el2.value;
-            return "Correct: " + confirmInfo + " Terms: " + acceptTerms;
+            return "" + acceptTerms;
           }),
         },
       },
