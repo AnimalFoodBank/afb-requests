@@ -14,7 +14,7 @@
 
 
 <script setup lang="ts">
-import type { Branch, FoodRequestFormState } from '@/types/index';
+import type { Branch, FoodRequestFormState, PetInfo } from '@/types/index';
 import { Validator } from '@vueform/vueform';
 
 const toast = useToast();
@@ -55,7 +55,7 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   // Using form$.data WILL INCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
   // console.log("submitFoodRequest data", form$)
-  const foodRequestFormData = form$.data
+  const foodRequestAllFormData = form$.data
 
   // Using form$.requestData will EXCLUDE conditional elements and it
   // will submit the form as "Content-Type: application/json".
@@ -65,6 +65,8 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
   form$.submitting = true
 
   const userId = userInfo?.value?.id;
+  const petsUUIDs = foodRequestAllFormData.client_pets.pets.map((pet: PetInfo) => pet.id);
+  console.log("Pets UUIDs: ", petsUUIDs);
 
   const foodRequestAPIData = {
     // Match the API field names exactly
@@ -85,9 +87,12 @@ const submitFoodRequest = async (form$: any, FormData: any) => {
     branch_location: requestData.branch_locations,
     location: requestData.location,
     delivery_contact: requestData.delivery_contact,
-    pets: requestData.client_pets.pets,
+    pets: petsUUIDs,
     confirmation: requestData.confirmation,
     safe_drop: requestData.safe_drop,
+    // As a safety net, let's store the complete form data in the API request
+    // so that we can debug any issues with the form data post-hoc.
+    details: foodRequestAllFormData,
   };
 
   const options = {
@@ -704,14 +709,16 @@ onMounted(() => {
           content: computed(() => {
             const el1 = form$.value.el$("delivery_contact.contact_name");
             const el2 = form$.value.el$("delivery_contact.contact_phone");
-            const el3 = form$.value.el$("delivery_contact.preferred_method");
-            if (!el1 || !el2) {
+            const el3 = form$.value.el$("delivery_contact.email");
+            const el4 = form$.value.el$("delivery_contact.preferred_method");
+            if (!el1 || (!el2 || !el3 || !el4)) {
               return "";
             }
             const contactName = el1.value;
             const contactPhone = el2.value;
-            const contactMethod = el3.value;
-            return "" + contactName + " (" + contactPhone + ") by " + contactMethod;
+            const contactEmail = el3.value;
+            const contactMethod = el4.value;
+            return "" + contactName + " (" + contactPhone + ") " + contactEmail + " by " + contactMethod;
           }),
         },
         alt_contact: {

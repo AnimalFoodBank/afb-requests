@@ -13,6 +13,10 @@ class DeliveryContactSerializer(serializers.Serializer):
     contact_name = serializers.CharField()
     preferred_method = serializers.CharField()
     contact_phone = serializers.CharField()
+    contact_email = serializers.CharField()
+    alt_contact_name = serializers.CharField()
+    alt_contact_phone = serializers.CharField()
+    alt_contact_email = serializers.CharField()
 
 
 class ConfirmationSerializer(serializers.Serializer):
@@ -29,7 +33,7 @@ class AbstractFoodRequestSerializer(serializers.ModelSerializer):
     method_of_contact = serializers.CharField()
     delivery_contact = DeliveryContactSerializer()
 
-    contact_phone = serializers.CharField()
+    # contact_phone = serializers.CharField()
 
     client_pets = ClientPetsSerializer()
     confirmation = ConfirmationSerializer()
@@ -64,6 +68,7 @@ class AbstractFoodRequestSerializer(serializers.ModelSerializer):
             "date_requested",
             "request_status",
             "comments",
+            "details",
             "created",
             "modified",
         ]
