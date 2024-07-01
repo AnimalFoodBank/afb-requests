@@ -7,7 +7,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import PermissionDenied, ValidationError
 
-from ..models import Pet
+from ..models import Pet, Profile
 from ..serializers import PetSerializer
 from .base import UserFilterBaseViewSet
 
@@ -35,31 +35,44 @@ class PetViewSet(UserFilterBaseViewSet):
 
     def perform_create(self, serializer):
         """
-        When creating a new pet, associate it with one of the user's profiles.
+        When creating a new pet, ensure it's associated with one of the user's profiles.
         """
         user = self.request.user
+        profile_id = self.request.data.get("profile")
+
         try:
-            # Get the first profile of the user
-            profile = user.profiles.first()
+            if profile_id:
+                profile = Profile.objects.get(id=profile_id, user=user)
+            else:
+                profile = user.profiles.first()
+
             if profile is None:
                 raise ObjectDoesNotExist
             serializer.save(profile=profile)
         except ObjectDoesNotExist:
             raise ValidationError(
-                "User does not have any profiles. Please create a profile first."
+                "Invalid profile or user does not have any profiles. Please provide a valid profile or create one first."
             )
 
     def perform_update(self, serializer):
         """
-        Ensure that the user can only update pets associated with their profiles.
+        Ensure that the user can only update pets associated with their profiles,
+        and can only move pets between their own profiles.
         """
         instance = self.get_object()
         user = self.request.user
+        new_profile_id = self.request.data.get("profile")
 
         try:
-            # Check if the pet's profile belongs to the user
+            # Check if the pet's current profile belongs to the user
             user.profiles.get(id=instance.profile.id)
-            serializer.save()
+
+            if new_profile_id:
+                # If a new profile is specified, check if it belongs to the user
+                new_profile = user.profiles.get(id=new_profile_id)
+                serializer.save(profile=new_profile)
+            else:
+                serializer.save()
         except ObjectDoesNotExist:
             raise PermissionDenied(
                 "You can only update pets associated with your profiles."

@@ -19,6 +19,8 @@ class PetViewSetTestCase(APITestCase):
         self.profile2 = Profile.objects.create(user=self.user2)
         self.pet1 = Pet.objects.create(pet_name="Pet1", profile=self.profile1)
         self.pet2 = Pet.objects.create(pet_name="Pet2", profile=self.profile2)
+
+        # The default client used in these tests is authenticated as user1
         self.token1 = Token.objects.create(user=self.user1)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token1.key)
 
@@ -97,3 +99,95 @@ class PetViewSetTestCase(APITestCase):
         self.client.credentials()  # Remove authentication
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_pet_missing_fields(self):
+        data = {
+            "pet_name": "NewPet",
+            "pet_type": "dog",
+            # Missing pet_dob field
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_update_pet_food_details(self):
+        data = {"food_details": {"type": "dry", "brand": "Acme"}}
+        response = self.client.patch(self.detail_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.pet1.refresh_from_db()
+        self.assertEqual(
+            self.pet1.food_details, {"type": "dry", "brand": "Acme"}
+        )
+
+    def test_user_with_multiple_profiles(self):
+        """Checks if a user can create and view pets across multiple profiles."""
+
+        # Create a second profile for user1
+        second_profile = Profile.objects.create(user=self.user1)
+
+        # Create a pet for the second profile
+        data = {
+            "pet_name": "SecondProfilePet",
+            "pet_type": "cat",
+            "pet_dob": "2019",
+            "profile": second_profile.id,
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # Check that the pet was created and associated with the correct profile
+        created_pet = Pet.objects.get(pet_name="SecondProfilePet")
+        self.assertEqual(created_pet.profile, second_profile)
+
+        # Check that the user can see both pets in the list
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data["results"]), 2)
+
+    def test_create_pet_for_other_user_profile(self):
+        """Ensures a user can't create a pet for a profile that doesn't belong to them."""
+        data = {
+            "pet_name": "OtherUserPet",
+            "pet_type": "bird",
+            "pet_dob": "2021",
+            "profile": self.profile2.id,  # This profile belongs to user2
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_update_pet_to_different_profile_same_user(self):
+        """Verifies that a user can move a pet between their own profiles."""
+        # Create a second profile for user1
+        second_profile = Profile.objects.create(user=self.user1)
+
+        data = {"pet_name": "UpdatedPet", "profile": second_profile.id}
+        response = self.client.patch(self.detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.pet1.refresh_from_db()
+        self.assertEqual(self.pet1.profile, second_profile)
+
+    def test_update_pet_to_different_user_profile(self):  # fail
+        """Checks that a user can't move a pet to a profile belonging to another user."""
+        data = {
+            "pet_name": "UpdatedPet",
+            "profile": self.profile2.id,  # This profile belongs to user2
+        }
+        response = self.client.patch(self.detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_list_pets_from_all_profiles(self):
+        """Ensures that when listing pets, the user sees pets from all their profiles."""
+        # Create a second profile for user1 and add a pet to it
+        second_profile = Profile.objects.create(user=self.user1)
+        Pet.objects.create(
+            pet_name="SecondProfilePet",
+            profile=second_profile,
+            pet_type="cat",
+            pet_dob="2019",
+        )
+
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            len(response.data["results"]), 2
+        )  # Should see pets from both profiles
