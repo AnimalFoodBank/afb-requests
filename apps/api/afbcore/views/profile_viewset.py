@@ -22,7 +22,7 @@ class ProfileViewSet(UserFilterBaseViewSet):
     associated with the currently logged in user.
     """
 
-    queryset = Profile.objects.order_by("-created_at")
+    queryset = Profile.objects.order_by("-created")
     serializer_class = ProfileSerializer  # must be a class, not string
     permission_classes = [
         permissions.IsAuthenticated,

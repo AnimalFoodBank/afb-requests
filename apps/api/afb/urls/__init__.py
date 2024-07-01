@@ -6,6 +6,7 @@ URL configuration for afb project.
 from afbcore.views import (
     BranchViewSet,
     FoodRequestViewSet,
+    PetViewSet,
     ProfileViewSet,
     logout_view,
     user_view,
@@ -30,6 +31,7 @@ router = DefaultRouter()
 router.register("requests", FoodRequestViewSet, basename="foodrequest")
 router.register("profiles", ProfileViewSet, basename="profile")
 router.register("branches", BranchViewSet, basename="branch")
+router.register("pets", PetViewSet, basename="pet")
 
 urlpatterns = [
     path("afbadmin/", afbcore_admin.site.urls, name="admin"),

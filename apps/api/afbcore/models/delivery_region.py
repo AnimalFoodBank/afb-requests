@@ -38,6 +38,11 @@ class DeliveryRegion(PhysicalLocationMixin, HasDetailsMixin, BaseAbstractModel):
     )
     description = models.TextField(null=True, blank=True)
 
+    class Meta:
+        app_label = "afbcore"
+        verbose_name_plural = "Delivery Regions"
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 

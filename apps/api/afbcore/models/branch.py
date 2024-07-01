@@ -8,6 +8,7 @@ from .mixins import HasDetailsMixin, PhysicalLocationMixin
 
 class Branch(HasDetailsMixin, PhysicalLocationMixin, BaseAbstractModel):
     class Meta:
+        app_label = "afbcore"
         verbose_name_plural = "Branches"
         ordering = ["-created"]
 

@@ -1,7 +1,7 @@
 # /apps/api/afbcore/tests/views/test__requests__view.py
 
 from afbcore.models import FoodRequest
-from afbcore.views.requests import FoodRequestViewSet
+from afbcore.views.food_request_view import FoodRequestViewSet
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework import status

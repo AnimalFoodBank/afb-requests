@@ -71,7 +71,7 @@ class AbstractFoodRequestSerializer(serializers.ModelSerializer):
 
 class FoodRequestCreateSerializer(AbstractFoodRequestSerializer):
     class Meta(AbstractFoodRequestSerializer.Meta):
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = ["id", "created", "modified"]
 
 
 class FoodRequestUpdateSerializer(AbstractFoodRequestSerializer):
