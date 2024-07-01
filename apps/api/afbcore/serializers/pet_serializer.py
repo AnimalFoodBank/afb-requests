@@ -14,6 +14,8 @@ class PetSerializer(serializers.ModelSerializer):
             "profile",
             "food_details",
             "dog_details",
+            "animal_details",
+            "spay_or_neutered",
             "created",
             "modified",
         ]

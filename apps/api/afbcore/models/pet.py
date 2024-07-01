@@ -42,6 +42,8 @@ class Pet(HasDetailsMixin, BaseAbstractModel):
 
     food_details = JSONField(default=dict)  # JSON blob
     dog_details = JSONField(default=dict)  # JSON blob
+    animal_details = JSONField(default=dict)  # JSON blob
+    spay_or_neutered = models.BooleanField(default=None, null=True)
 
     def save(self, *args, **kwargs):
         self.pet_type = self.pet_type.lower()
