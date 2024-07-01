@@ -14,7 +14,7 @@
 
 
 <script setup lang="ts">
-import type { Branch, FoodRequestFormState, PetInfo } from '@/types/index';
+import type { Branch, FoodRequestFormState } from '@/types/index';
 import { Validator } from '@vueform/vueform';
 
 const toast = useToast();
@@ -347,22 +347,6 @@ onMounted(() => {
 
   fetchBranches();
 
-  const defaultPetExample: PetInfo = {
-    id: "3ef6ef2a-fd22-4082-a096-8bc95efa5a75",
-    pet_type: "dog",
-    pet_name: "Buddy",
-    pet_dob: "2018",
-    food_details: {
-      allergies: "Chicken",
-      general_notes: "Loves to play fetch",
-      foodtype: "dry"
-    },
-    dog_details: {
-      size: "20-50 lbs (Medium)"
-    },
-    spay_or_neutered: "yes"
-  };
-
   schema.value = {
 
     //
@@ -676,42 +660,137 @@ onMounted(() => {
         location: {
           type: "static",
           tag: "p",
+          label: "Location",
           columns: {
-            container: 12,
+            container: 6,
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Address:</strong> " + state.delivery_address?.interactive_address,
+          content: computed(() => {
+            const el = form$.value.el$("delivery_address.interactive_address")
+            if (!el) {
+              return "";
+            }
+            return "" + el.value;
+          }),
+        },
+        branch: {
+          type: "static",
+          tag: "p",
+          label: "Branch",
+          columns: {
+            container: 6,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            const el = form$.value.el$("delivery_address.branch_locations")
+            if (!el) {
+              return "";
+            }
+            const branchLocation = el.value;
+            return "" + branchesMap.value.get(branchLocation)?.label;
+          }),
         },
         contact: {
           type: "static",
           tag: "p",
+          label: "Contact",
           columns: {
-            container: 12,
+            container: 6,
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Contact:</strong> " + state.delivery_contact?.contact_name + " (" + state.delivery_contact?.contact_phone + ")",
+          content: computed(() => {
+            const el1 = form$.value.el$("delivery_contact.contact_name");
+            const el2 = form$.value.el$("delivery_contact.contact_phone");
+            const el3 = form$.value.el$("delivery_contact.preferred_method");
+            if (!el1 || !el2) {
+              return "";
+            }
+            const contactName = el1.value;
+            const contactPhone = el2.value;
+            const contactMethod = el3.value;
+            return "" + contactName + " (" + contactPhone + ") by " + contactMethod;
+          }),
+        },
+        alt_contact: {
+          type: "static",
+          tag: "p",
+          label: "Contact (Alt)",
+          columns: {
+            container: 6,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            const el1 = form$.value.el$("delivery_contact.alt_contact_name");
+            const el2 = form$.value.el$("delivery_contact.alt_contact_phone");
+            if (!el1 || !el2) {
+              return "";
+            }
+            const contactName = el1.value;
+            const contactPhone = el2.value;
+            return "" + contactName + " (" + contactPhone + ")";
+          }),
         },
         pets: {
           type: "static",
           tag: "p",
+          label: "Pets",
           columns: {
             container: 12,
-            label: 6,
-            wrapper: 6,
+            label: 12,
+            wrapper: 12,
           },
-          content: "<strong>Pets:</strong> ",
+          content: computed(() => {
+            const el = form$.value.el$("client_pets.pets");
+            if (!el) {
+              return "";
+            }
+            // Parse pets list into a string
+            const pets = JSON.stringify(el.value);
+          }),
         },
         safe_drop: {
           type: "static",
           tag: "p",
+          label: "Safe Drop",
           columns: {
             container: 12,
             label: 6,
             wrapper: 6,
           },
-          content: "<strong>Safe Drop:</strong> " + (state.safe_drop?.safe_drop ? "Yes" : "No") + " - " + state.safe_drop?.safe_drop_instructions,
+          content: computed(() => {
+            const el1 = form$.value.el$("safe_drop.confirm");
+            const el2 = form$.value.el$("safe_drop.instructions");
+            if (!el1 || !el2) {
+              return "";
+            }
+            const safeDrop = el1.value;
+            const safeDropInstructions = el2.value;
+            return "" + safeDrop + " (" + safeDropInstructions + ")";
+          }),
+        },
+        confirmation: {
+          type: "static",
+          tag: "p",
+          label: "Confirmation",
+          columns: {
+            container: 12,
+            label: 6,
+            wrapper: 6,
+          },
+          content: computed(() => {
+            const el1 = form$.value.el$("confirmation.confirm_info");
+            const el2 = form$.value.el$("confirmation.accept_terms");
+            if (!el1 || !el2) {
+              return "";
+            }
+            const confirmInfo = el1.value;
+            const acceptTerms = el2.value;
+            return "Correct: " + confirmInfo + " Terms: " + acceptTerms;
+          }),
         },
       },
     },
