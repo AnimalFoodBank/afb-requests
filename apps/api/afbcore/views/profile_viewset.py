@@ -98,7 +98,12 @@ class ProfileViewSet(UserFilterBaseViewSet):
         profile = self.get_object()
         pets_data = request.data.get("pets", [])
 
+        logger.info(f"Starting pet reconciliation for profile {profile.id}")
+
         if not isinstance(pets_data, list):
+            logger.warning(
+                f"Invalid pets data received for profile {profile.id}: not a list"
+            )
             return Response(
                 {"error": "Pets data must be a list"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -108,21 +113,35 @@ class ProfileViewSet(UserFilterBaseViewSet):
         existing_pet_ids = set(
             str(id) for id in profile.pets.values_list("id", flat=True)
         )
+        logger.info(
+            f"Existing pet IDs for profile {profile.id}: {existing_pet_ids}"
+        )
 
         # Process each pet in the request
         processed_pet_ids = set()
         for pet_data in pets_data:
             pet_id = pet_data.get("id")
+            pet_name = pet_data.get("pet_name")
+
+            logger.info(f"Processing pet data: {pet_id} - {pet_name}")
 
             if pet_id:
                 # Update existing pet
+                logger.info(f"Checking pet {pet_id} for profile {profile.id}")
                 try:
                     pet = profile.pets.get(id=pet_id)
+                    logger.info(
+                        f"Updating existing pet {pet_id} for profile {profile.id}"
+                    )
                     serializer = PetSerializer(pet, data=pet_data, partial=True)
                     serializer.is_valid(raise_exception=True)
                     serializer.save()
                     processed_pet_ids.add(str(pet_id))
+                    logger.info(f"Updated pet {pet_id} with data: {pet_data}")
                 except Pet.DoesNotExist:
+                    logger.error(
+                        f"Pet with id {pet_id} does not exist for profile {profile.id}"
+                    )
                     return Response(
                         {
                             "error": f"Pet with id {pet_id} does not exist for this profile"
@@ -131,15 +150,26 @@ class ProfileViewSet(UserFilterBaseViewSet):
                     )
             else:
                 # Create new pet
+                logger.info(f"Creating new pet for profile {profile.id}")
                 serializer = PetSerializer(data=pet_data)
                 serializer.is_valid(raise_exception=True)
                 pet = serializer.save(profile=profile)
                 processed_pet_ids.add(str(pet.id))
+                logger.info(f"Created new pet {pet.id} with data: {pet_data}")
 
         # Remove pets that were not in the request
         pets_to_remove = existing_pet_ids - processed_pet_ids
-        profile.pets.filter(id__in=pets_to_remove).delete()
+        if pets_to_remove:
+            logger.info(
+                f"Removing pets {pets_to_remove} from profile {profile.id}"
+            )
+            profile.pets.filter(id__in=pets_to_remove).delete()
 
         # Return updated profile with reconciled pets
+        logger.info(f"Pet reconciliation completed for profile {profile.id}")
+        logger.info(
+            f"Final set of pet IDs for profile {profile.id}: {processed_pet_ids}"
+        )
+
         serializer = self.get_serializer(profile)
         return Response(serializer.data)
