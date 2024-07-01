@@ -26,7 +26,11 @@ export default <Partial<Config>>{
     extend: {
       fontFamily: {
         sans: ['DM Sans', ...defaultTheme.fontFamily.sans]
-      }
+      },
+      colors: {
+        // This is a tester, not currently used
+        'custom-cancel': '#f3f4f6',
+      },
     },
     darkMode: 'class',
   },

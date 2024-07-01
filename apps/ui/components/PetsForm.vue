@@ -25,6 +25,7 @@ const {
   authToken,
 } = useProfile();
 
+const router = useRouter()
 
 const props = defineProps<{
   title?: String
@@ -48,7 +49,7 @@ const defaultPetExample: PetInfo = {
     general_notes: "Loves to play fetch",
     foodtype: "dry"
   },
-  animal_details: {
+  dog_details: {
     size: "20-50 lbs (Medium)"
   },
   spay_or_neutered: "yes",
@@ -111,9 +112,12 @@ onMounted(() => {
 
   const state = props.state;
   const profilePets = props.profile?.pets || [defaultPetExample];
+  // Allow adding pets only if the user has no pets yet
+  const withControls = (props.profile?.pets || []).length === 0;
+  const beforeText = "Please confirm the details of each of your pets. If you need to add more pets, please contact us.";
 
   schema.value = {
-    client_pets: clientPetsSchema(profilePets),
+    client_pets: clientPetsSchema(profilePets, withControls, beforeText),
     save: {
       type: 'button',
       submits: true,
@@ -147,6 +151,28 @@ onMounted(() => {
           // Optionally, you can focus on the first error field
           event.form$.focus();
         }
+      },
+    },
+    cancel: {
+      type: 'button',
+      buttonLabel: 'Cancel',
+      full: true,
+      size: 'lg',
+      addClass: 'form-btn-container',  // this is a parent div
+      addClasses: {
+        ButtonElement: {
+          button: 'bg-custom-cancel',  // this is the acutal <button> element
+          wrapper: 'bg-custom-cancel2',  // this is the parent div
+        },
+      },
+      ui: {
+        icon: 'i-heroicons-x-circle',
+      },
+      onClick: (event: FormSubmitEvent<any>) => {
+        // Reset the form to its initial state, immediately
+        event.form$.reset();
+        // Then go back to the main profile screen
+        router.push('/profile');
       },
     },
   }
@@ -201,5 +227,10 @@ onMounted(() => {
     --vf-ring-color: #07bf9b66;
     --vf-link-color: var(--vf-primary);
     --vf-link-decoration: inherit;
+  }
+  .afbcore-form, .afbcore-form *, .afbcore-form :before, .afbcore-form :after {
+    button.bg-custom-cancel {
+      -background-color: #ffffff !important;
+    }
   }
 </style>

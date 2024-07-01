@@ -8,11 +8,11 @@ import type { PetInfo } from '@/types';
  * @param withControls - If `true` (default), the form will include controls for adding and removing pets.
  * @returns - A schema object that can be used to generate a form.
  */
-const clientPetsSchema = (defaultPets: PetInfo[] = [], withControls: boolean = true) => {
+const clientPetsSchema = (defaultPets: PetInfo[] = [], withControls: boolean = true, beforeText: string = "") => {
   console.log("Creating client pets schema with default pets:", defaultPets);
   return {
     type: "object",
-    before: "Please confirm the details of each of your pets. ",
+    before: beforeText,
     schema: {
       pets: {
         type: "list",
@@ -29,7 +29,6 @@ const clientPetsSchema = (defaultPets: PetInfo[] = [], withControls: boolean = t
           },
           ElementLabel: {
             wrapper: 'text-[20px] font-semibold mb-4',
-
           },
         },
         default: defaultPets,

@@ -341,6 +341,9 @@ onMounted(() => {
 
   const state = props.state;
   const branchLocations = form$.value.el$("delivery_address.branch_locations");
+  const profilePets = profileInfo.pets || []
+  const withControls = false;
+  const beforeText = "Please confirm the details for each of your pets you are including in this request.";
 
   fetchBranches();
 
@@ -623,7 +626,7 @@ onMounted(() => {
     //
     // STEP 2 - Your Pets
     //
-    client_pets: clientPetsSchema([defaultPetExample]),
+    client_pets: clientPetsSchema(profilePets, withControls, beforeText),
 
     //
     // STEP 3 - Safe Drop
