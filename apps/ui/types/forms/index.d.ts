@@ -40,7 +40,8 @@ export interface FoodRequestFormState {
       dog_details?: {
         size: string;
       };
-      other_details?: {
+      spay_or_neutered: boolean | null;  // null when not answered (*or not applicable)
+      animal_details?: {
         animal_description: string;
       };
       details?: string;

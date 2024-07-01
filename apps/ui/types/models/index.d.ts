@@ -15,8 +15,7 @@
 export interface BaseAbstractModel {
   id: string; // UUIDField, primary key
   created: Date; // DateTimeField, auto_now_add=True
-  updated: Date; // DateTimeField, auto_now=True
-  is_removed: boolean; // BooleanField, default=False
+  modified: Date; // DateTimeField, auto_now=True
 }
 
 // Equivalent to Django PhysicalLocation
@@ -95,8 +94,6 @@ export interface Branch extends BaseAbstractModel {
   delivery_radius: number | null;
   hidden: boolean;
   operational: boolean;
-  created: Date;
-  modified: Date;
 
   // Fields from PhysicalLocationMixin
   location_name: string;
@@ -145,19 +142,17 @@ export interface FoodRequest extends BaseAbstractModel {
 
 
 export interface PetInfo extends BaseAbstractModel  {
-  pet_type: 'Cat' | 'Dog' | 'Other';
+  pet_type: 'cat' | 'dog' | 'other';
   pet_name: string;
   pet_dob: string;
   food_details: {
     allergies?: string;
     general_notes?: string;
-    foodtype: 'Either' | 'Dry' | 'Wet';
+    foodtype: 'either' | 'dry' | 'wet';
   };
-  dog_details?: {
-    size: 'Up to 10 lbs (Toy)' | '10-20 lbs (Small)' | '20-50 lbs (Medium)' | '50-100 lbs (Large)' | 'Over 100 lbs (Extra Large)';
-  };
-  spay_or_neutered?: 'Yes' | 'No';
-  other_details?: {
+  dog_details?: object;
+  spay_or_neutered?: 'yes' | 'no';
+  animal_details?: {
     animal_type: string;
   };
 }

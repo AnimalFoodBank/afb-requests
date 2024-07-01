@@ -346,18 +346,18 @@ onMounted(() => {
 
   const defaultPetExample: PetInfo = {
     id: "3ef6ef2a-fd22-4082-a096-8bc95efa5a75",
-    pet_type: "Dog",
+    pet_type: "dog",
     pet_name: "Buddy",
     pet_dob: "2018",
     food_details: {
       allergies: "Chicken",
       general_notes: "Loves to play fetch",
-      foodtype: "Dry"
+      foodtype: "dry"
     },
     dog_details: {
       size: "20-50 lbs (Medium)"
     },
-    spay_or_neutered: "Yes"
+    spay_or_neutered: "yes"
   };
 
   schema.value = {

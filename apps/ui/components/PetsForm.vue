@@ -6,7 +6,8 @@
            display-errors
            display-success
            :endpoint="false"
-           @submit="onSubmit"
+           @submit="handleOnSubmit"
+           @change="() => isSaveButtonDisabled = false"
            ref="form$" />
 </template>
 
@@ -39,18 +40,20 @@ const schema = ref({})
 
 const defaultPetExample: PetInfo = {
   id: "3ef6ef2a-fd22-4082-a096-8bc95efa5a75",
-  pet_type: "Dog",
+  pet_type: "dog",
   pet_name: "Buddy",
   pet_dob: "2018",
   food_details: {
     allergies: "Chicken",
     general_notes: "Loves to play fetch",
-    foodtype: "Dry"
+    foodtype: "dry"
   },
-  dog_details: {
+  animal_details: {
     size: "20-50 lbs (Medium)"
   },
-  spay_or_neutered: "Yes"
+  spay_or_neutered: "yes",
+  created: new Date("2021-09-29T17:00:00Z"),
+  modified: new Date("2021-09-29T17:05:00Z"),
 };
 
 
@@ -60,48 +63,49 @@ function validate(state: any): FormError[] {
   return errors
 }
 
+async function handleOnSubmit(event: FormSubmitEvent<any>) {
 
-async function onSubmit(event: FormSubmitEvent<any>) {
-
-try {
-  // Prepare the data to be sent
-  const profileData = {
-    id: props.profile.id,
-    user_id: props.user.id,
-    pets: event.data.pets,
-  }
-
-  const petsPath = `/api/v1/pets/`
-
-  // Make the API call
-  const response = await $fetch(petsPath, {
-    method: 'PUT',
-    body: JSON.stringify(profileData),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `${authToken.value}`
+  try {
+    // Prepare the data to be sent
+    const profileData = {
+      id: props.profile.id,
+      user_id: props.user.id,
+      pets: event.data.client_pets.pets,
     }
-  })
+    //debugger
 
-  // Handle successful response
-  console.log('Profile updated:', response)
+    const petsPath = `/api/v1/profiles/${props.profile.id}/reconcile_pets/`
 
-  toast.add({
-    title: `${props.title} updated`,
-    icon: 'i-heroicons-check-circle',
-  })
-} catch (error) {
-  console.error('Error updating profile:', error)
+    // Make the API call
+    const response = await $fetch(petsPath, {
+      method: 'POST',
+      body: JSON.stringify(profileData),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${authToken.value}`
+      }
+    })
 
-  toast.add({
-    title: 'Error updating profile',
-    description: 'Please try again later.',
-    icon: 'i-heroicons-exclamation-circle',
-    color: 'red'
-  })
+    // Handle successful response
+    console.log('Profile updated:', response)
+
+    toast.add({
+      title: `Pets updated`,
+      icon: 'i-heroicons-check-circle',
+    })
+  } catch (error) {
+    console.error('Error updating profile:', error)
+
+    toast.add({
+      title: 'Error updating profile',
+      description: 'Please try again later.',
+      icon: 'i-heroicons-exclamation-circle',
+      color: 'red'
+    })
+  }
 }
-}
 
+const isSaveButtonDisabled = ref(false);
 onMounted(() => {
   // console.log("FoodRequestFormState has been mounted");
 
@@ -116,15 +120,33 @@ onMounted(() => {
       buttonLabel: 'Update Pets',
       full: true,
       size: 'lg',
-      loading: false,
+      loading: isSaveButtonDisabled,
+      disabled: isSaveButtonDisabled,
       ui: {
         variant: 'secondary',
         icon: 'i-heroicons-check-circle',
       },
-      onClick: (event: FormSubmitEvent<any>) => {
-        //event.form.setLoading('save', true);
-        //onSubmit(event);
-
+      onClick: async (event: FormSubmitEvent<any>) => {
+        isSaveButtonDisabled.value = true;
+        // Check if the form is valid
+        if (event.form$.validate()) {
+          try {
+            isSaveButtonDisabled.value = true;
+            // Perform your submission logic here
+            //await handleOnSubmit(event);
+          } catch (error) {
+            // Handle any errors that occur during submission
+            console.error('Error submitting form:', error);
+            // You might want to show an error message to the user here
+          } finally {
+            //isSaveButtonDisabled.value = false;
+          }
+        } else {
+          // Form is not valid, you might want to show an error message
+          console.log('Form has errors. Please correct them before submitting.');
+          // Optionally, you can focus on the first error field
+          event.form$.focus();
+        }
       },
     },
   }
