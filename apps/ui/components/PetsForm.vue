@@ -71,7 +71,7 @@ try {
     pets: event.data.pets,
   }
 
-  const petsPath = `/api/v1/profiles/${profileData.id}/pets/`
+  const petsPath = `/api/v1/pets/`
 
   // Make the API call
   const response = await $fetch(petsPath, {
@@ -122,8 +122,8 @@ onMounted(() => {
         icon: 'i-heroicons-check-circle',
       },
       onClick: (event: FormSubmitEvent<any>) => {
-        event.form.setLoading('save', true);
-        onSubmit(event);
+        //event.form.setLoading('save', true);
+        //onSubmit(event);
 
       },
     },

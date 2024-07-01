@@ -10,6 +10,11 @@ from rest_framework.test import APITestCase
 
 User = get_user_model()
 
+"""
+ How to run the tests:
+     - pnpm django:test apps/api/afbcore/tests/views/test_pet_viewset.py
+"""
+
 
 class PetViewSetTestCase(APITestCase):
     def setUp(self):

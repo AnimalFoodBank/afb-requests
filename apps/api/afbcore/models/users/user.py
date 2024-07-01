@@ -144,3 +144,9 @@ class User(UUIDModel, TimeStampedModel, HasDetailsMixin, AbstractUser):
             "Indicates whether the user has agreed to the terms of service."
         ),
     )
+
+    def __str__(self):
+        return "%s" % self.id
+
+    def get_default_profile(self):
+        return self.profiles.first()

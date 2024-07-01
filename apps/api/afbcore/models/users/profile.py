@@ -62,7 +62,9 @@ class Profile(HasDetailsMixin, BaseAbstractModel):
     """
 
     class Meta:
-        ordering = ["-created"]
+        # Order by oldest to newest by default so that the first
+        # profile created is always the "main" profile.
+        ordering = ["created"]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
@@ -150,4 +152,4 @@ class Profile(HasDetailsMixin, BaseAbstractModel):
     )
 
     def __str__(self):
-        return f"{self.preferred_name}"
+        return f"{self.user}/{self.id}"

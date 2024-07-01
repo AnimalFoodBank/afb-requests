@@ -20,9 +20,9 @@ class Pet(HasDetailsMixin, BaseAbstractModel):
     """
     Pet model to store information about pets belonging to a profile.
 
-    The maximum number of pet profiles that would be allowed
-    to be created would be deteremined from the Branch
-    setting of "Number of Pet's Serviced/Houeshold" above
+    The maximum number of pet profiles that would be allowed to be
+    created would be deteremined from the Branch setting of "Number
+    of Pet's Serviced/Houeshold". The default is 4.
 
     """
 
@@ -36,12 +36,16 @@ class Pet(HasDetailsMixin, BaseAbstractModel):
         blank=True,
     )
 
-    pet_type = models.CharField(max_length=50)  # e.g. "Dog", "Cat", etc.
+    pet_type = models.CharField(max_length=50)  # e.g. "dog", "cat", etc.
     pet_name = models.CharField(max_length=50)  # e.g. "Frankie"
     pet_dob = models.CharField(max_length=10)  # date of birth
 
     food_details = JSONField(default=dict)  # JSON blob
     dog_details = JSONField(default=dict)  # JSON blob
 
+    def save(self, *args, **kwargs):
+        self.pet_type = self.pet_type.lower()
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.pet_name
+        return "%s (%s)" % (self.pet_name, self.pet_type)
