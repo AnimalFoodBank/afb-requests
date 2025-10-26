@@ -100,3 +100,4 @@ tmp/*
 !.env.example
 mailpit.db*
 .output/
+*.rdb
