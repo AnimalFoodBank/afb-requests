@@ -152,4 +152,4 @@ class Profile(HasDetailsMixin, BaseAbstractModel):
     )
 
     def __str__(self):
-        return f"{self.user}/{self.id}"
+        return self.preferred_name or f"{self.user}/{self.id}"

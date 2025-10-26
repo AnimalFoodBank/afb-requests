@@ -20,6 +20,10 @@ class PetViewSetTestCase(APITestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(email="user1", name="name1")
         self.user2 = User.objects.create_user(email="user2", name="name2")
+        # Delete auto-created profiles from signal
+        Profile.objects.filter(user=self.user1).delete()
+        Profile.objects.filter(user=self.user2).delete()
+        # Create test profiles
         self.profile1 = Profile.objects.create(user=self.user1)
         self.profile2 = Profile.objects.create(user=self.user2)
         self.pet1 = Pet.objects.create(pet_name="Pet1", profile=self.profile1)

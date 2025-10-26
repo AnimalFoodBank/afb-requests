@@ -66,6 +66,8 @@ jobs:
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_ENGINE: django.db.backends.postgresql
+      # Django SECRET_KEY for testing (not used in production)
+      SECRET_KEY: test-secret-key-for-ci-only-not-for-production
 
     # All steps should run in the Django app
     # subdirectory by default.
