@@ -55,13 +55,13 @@ class FoodRequestViewSetTestCase(TestCase):
             "address_latitude": None,
             "address_longitude": None,
             "contact_name": "Delbo Baggins",
-            "contact_phone": "+14031234567",  # E.164 format without spaces
+            "contact_phone": "+16135551234",  # Valid Canadian test number
             "method_of_contact": "Call",
             "delivery_contact": {
                 "choose_contact": True,
                 "contact_name": "Delbo Baggins",
                 "preferred_method": "Call",
-                "contact_phone": "+14031234567",
+                "contact_phone": "+16135551234",  # Valid Canadian test number
                 "contact_email": "delbo@example.com",
                 "alt_contact_name": "",
                 "alt_contact_phone": "",
