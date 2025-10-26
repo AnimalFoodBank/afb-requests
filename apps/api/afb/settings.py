@@ -167,6 +167,9 @@ CSRF_COOKIE_HTTPONLY = False
 # https://docs.djangoproject.com/en/4.2/ref/csrf/#how-it-works
 # CSRF_COOKIE_DOMAIN = ""
 
+# Token expiration reduced to 1 week for enhanced security posture.
+# This ensures users re-authenticate more frequently, reducing the window
+# of opportunity for compromised tokens to be exploited.
 TOKEN_EXPIRED_AFTER_WEEKS = 1
 
 
@@ -403,7 +406,7 @@ DATABASES = {
     },
     "test": {
         "ENGINE": os.getenv("DB_ENGINE"),
-        "NAME": "test_" + (os.getenv("DB_NAME") or ""),
+        "NAME": "test_" + (os.getenv("DB_NAME") or "afbcore"),
         "USER": os.getenv("DB_USER"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
