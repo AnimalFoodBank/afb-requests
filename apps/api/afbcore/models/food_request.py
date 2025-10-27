@@ -7,9 +7,10 @@ from model_utils.choices import Choices
 from phonenumber_field.modelfields import PhoneNumberField
 
 from .base import BaseAbstractModel
+from .mixins import HasDetailsMixin
 
 STATUS_CHOICES = [
-    ("received", "Request Received"),
+    ("submitted", "Request Submitted"),
     ("approved", "Request Approved & in Queue"),
     ("denied", "Request Denied"),
     ("assigned", "Volunteer Assigned"),
@@ -32,7 +33,7 @@ BUILDING_TYPE_CHOICES = Choices(
 )
 
 
-class FoodRequest(BaseAbstractModel):
+class FoodRequest(HasDetailsMixin, BaseAbstractModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # TODO: Should this be a foreign key to the user model? A user can have
@@ -60,12 +61,17 @@ class FoodRequest(BaseAbstractModel):
         default=BUILDING_TYPE_CHOICES.NOT_SPECIFIED,
     )
     address_details = models.JSONField(default=dict)
+    ext_address_details = models.JSONField(default=dict)
+
+    address_instructions = models.TextField(
+        max_length=50, null=True, blank=True
+    )
 
     # A PhoneNumberField, which is a custom field provided by the 'phonenumber_field' library. It stores a phone number in a standardized format and includes region-specific validation. The 'region' parameter is set to "CA" to indicate that the phone number should be formatted according to Canadian standards.
-    contact_phone = PhoneNumberField(region="CA", blank=True)
+    contact_phone = PhoneNumberField(region="CA", blank=True, null=True)
 
     # An EmailField, which is a built-in field provided by Django. It stores an email address and performs basic email validation.
-    contact_email = models.EmailField(blank=True)
+    contact_email = models.EmailField(blank=True, null=True)
 
     # Someone else may be there for the food delivery, or they may prefer a different name.
     contact_name = models.CharField(max_length=100)
@@ -97,7 +103,7 @@ class FoodRequest(BaseAbstractModel):
 
     # Request Received, Request Approved & in Queue, Request Denied, Volunteer Assigned, Request Ready For Volunteer Pickup, Delivery Scheduled, Out For Delivery, Delivered, Undeliverable
     request_status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default="received"
+        max_length=50, choices=STATUS_CHOICES, default="received"
     )
 
     # Free form comments from driver, client, volunteer, etc.

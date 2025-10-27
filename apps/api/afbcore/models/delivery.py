@@ -1,12 +1,18 @@
 import uuid
+
 from django.db import models
 
+from .base import BaseAbstractModel
+from .mixins import HasDetailsMixin
 
-class Delivery(models.Model):
+
+class Delivery(HasDetailsMixin, BaseAbstractModel):
     client = models.ForeignKey("User", on_delete=models.DO_NOTHING)
     food_request = models.ForeignKey("FoodRequest", on_delete=models.DO_NOTHING)
 
-    food_available = models.ForeignKey("FoodAvailable", on_delete=models.DO_NOTHING)
+    food_available = models.ForeignKey(
+        "FoodAvailable", on_delete=models.DO_NOTHING
+    )
 
     delivery_date = models.DateField()
     delivery_time = models.TimeField()

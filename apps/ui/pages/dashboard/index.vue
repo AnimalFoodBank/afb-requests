@@ -1,12 +1,5 @@
 <script setup lang="ts">
-/**
- * Represents a Vue component that represents a dashboard page.
- *
- * @param {Function} useSeoMeta - A function that sets the SEO meta information for the page.
- * @param {Function} definePageMeta - A function that defines the layout and authentication requirements for the page.
- * @param {Array} requests - An array of objects representing the requests.
- * @returns {Object} - The rendered HTML structure of the dashboard page, including sections, cards, and a request list component.
- */
+
 useSeoMeta({
   title: "Dashboard",
 })
@@ -15,6 +8,19 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+const links = [[
+  {
+    label: 'New Request',
+    icon: 'i-ph-plus-square-light',
+    to: '/requests/new',
+  },
+  {
+    label: 'Request History',
+    icon: 'i-heroicons-calendar',
+    to: '/requests',
+    exact: true
+  },
+]]
 
 /**
  * Retrieves the authentication status, data, and token using the useAuth() function.
@@ -27,11 +33,16 @@ definePageMeta({
  */
 const {
   status: authStatus,
-  data: authData,
+  data: userInfo,
   token: authToken,
 } = useAuth();
 
+const {
+  profileInfo,
+} = useProfile();
+
 const requests = ref([]);
+const role = computed(() => profileInfo?.role || 'unknown');
 
 const fetchRequests = async () => {
   const options = {
@@ -47,8 +58,13 @@ const fetchRequests = async () => {
   console.log(requests);
 }
 
+const isClient = computed(() => role.value === 'client');
+const isVolunteer = computed(() => role.value === 'volunteer');
+const isManager = computed(() => role.value === 'manager');
+
 onMounted(() => {
   fetchRequests();
+
 });
 
 
@@ -61,29 +77,16 @@ onMounted(() => {
 
       </UDashboardNavbar>
 
-      <!-- <UDashboardToolbar>
-      </UDashboardToolbar> -->
+      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto md:block lg:hidden">
+        <UHorizontalNavigation :links="links" class="" />
+      </UDashboardToolbar>
 
-      <UDashboardPanelContent>
-
-        <UDashboardSection
-          icon="i-heroicons-user"
-          title="Client Portal"
-          description="Your delivery address, pet info, requests history and more. "
-          />
-
-        <UDashboardCard class="mx-9 mb-9 max-w-prose">
-          <UDashboardSection class="mb-2 text-md italic">
-            Please note that creating an account does not automaticaly create a request for food for you.
-            If you've just created your account, please click the "Request Pet Food" button. You will need to complete this form each time you need food.
-          </UDashboardSection>
-        </UDashboardCard>
-
-        <!-- <h2 class="text-2xl sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight"></h2> -->
-
-        <RequestsList title="Request History" description="" :cta="true" :requests="requests" />
-
-      </UDashboardPanelContent>
+      <DashboardClientView :requests="requests" v-if="isClient" />
+      <DashboardVolunteerView :requests="requests" v-if="isVolunteer" />
+      <DashboardManagerView :requests="requests" v-if="isManager" />
+      <div v-if="role === 'unknown'">
+        <p>Loading dashboard content...</p>
+      </div>
 
     </UDashboardPanel>
   </UDashboardPage>

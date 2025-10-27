@@ -9,10 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import logging
 import os
 from pathlib import Path
 
+import sqlparse
 from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
@@ -64,7 +65,7 @@ IN_PRODUCTION = not DEBUG
 
 USE_X_FORWARDED_HOST = True
 
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 ALLOWED_HOSTS = [
@@ -100,6 +101,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
+    "log_request_id.middleware.RequestIDMiddleware",
     # "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -165,7 +167,10 @@ CSRF_COOKIE_HTTPONLY = False
 # https://docs.djangoproject.com/en/4.2/ref/csrf/#how-it-works
 # CSRF_COOKIE_DOMAIN = ""
 
-TOKEN_EXPIRED_AFTER_WEEKS = 2
+# Token expiration reduced to 1 week for enhanced security posture.
+# This ensures users re-authenticate more frequently, reducing the window
+# of opportunity for compromised tokens to be exploited.
+TOKEN_EXPIRED_AFTER_WEEKS = 1
 
 
 # Static files (CSS, JavaScript, Images)
@@ -272,7 +277,7 @@ PASSWORDLESS_AUTH = {
     "PASSWORDLESS_BASE_URI": UI_BASE_URI,
     "PASSWORDLESS_AUTH_TYPES": ["EMAIL"],  # and/or 'MOBILE'
     "PASSWORDLESS_EMAIL_NOREPLY_ADDRESS": "noreply@animalfoodbank.org",  # or None
-    "PASSWORDLESS_EMAIL_SUBJECT": "Your AFB login link",
+    "PASSWORDLESS_EMAIL_SUBJECT": "Continue signing in",
     "PASSWORDLESS_EMAIL_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_token_email.txt",
     "PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME": "onboarding/passwordless_token_email.html",
     "PASSWORDLESS_EMAIL_VERIFICATION_PLAINTEXT_TEMPLATE_NAME": "onboarding/passwordless_verification_email.txt",
@@ -398,7 +403,15 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
-    }
+    },
+    "test": {
+        "ENGINE": os.getenv("DB_ENGINE"),
+        "NAME": "test_" + (os.getenv("DB_NAME") or "afbcore"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
+    },
 }
 
 # Password validation
@@ -445,14 +458,63 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # more details on how to customize your logging configuration.
 LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
+REQUEST_ID_RESPONSE_HEADER = "REQID"
+
+
+class QueryFormatter(logging.Formatter):
+    """
+    This formatter class is designed to enhance logging capabilities by
+    formatting SQL queries to be more readable. It checks for the presence
+    of an SQL query in the log record and formats it using `sqlparse` for
+    better readability in the logs.
+    """
+
+    def format(self, record):
+        # Implementation remains the same...
+        record.prettysql = ""
+        if hasattr(record, "sql"):
+            # If record has 'sql' attribute, use it directly
+            rawsql = record.sql
+        elif (
+            hasattr(record, "args")
+            and isinstance(record.args, tuple)
+            and len(record.args) > 1
+        ):
+            # If record has 'args' and it's a tuple with at least 2 elements
+            rawsql = record.args[1]
+        else:
+            # If we can't find SQL, just use an empty string
+            rawsql = ""
+
+        if isinstance(rawsql, str):
+            try:
+                record.prettysql = sqlparse.format(rawsql, reindent=True)
+            except Exception as e:
+                # If formatting fails, just use the raw SQL
+                record.prettysql = rawsql
+                print(f"SQL formatting failed: {e}")
+        else:
+            # If rawsql is not a string, convert it to a string
+            record.prettysql = str(rawsql)
+
+        # Call the original formatter class to do the actual formatting
+        return super().format(record)
+
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s",
+            "format": "%(levelname)s [%(request_id)s] %(asctime)s %(module)s %(process)d %(thread)d %(message)s",
         },
+        "sql": {
+            "()": QueryFormatter,
+            "format": "%(levelname)s [%(request_id)s] [SQL: %(name)s'] \n %(prettysql)s",
+        },
+    },
+    "filters": {
+        "request_id": {"()": "log_request_id.filters.RequestIDFilter"},
     },
     "handlers": {
         "console": {
@@ -460,7 +522,40 @@ LOGGING = {
             # "class": "rich.logging.RichHandler",  # see afbcore/apps.py
             "class": "logging.StreamHandler",
             "formatter": "verbose",
-        }
+            "filters": ["request_id"],
+        },
+        "console_db": {
+            "level": "FATAL",
+            "class": "logging.StreamHandler",
+            "formatter": "sql",
+            "filters": ["request_id"],
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["console_db"],
+            "level": "DEBUG",  # Set to DEBUG to capture all SQL queries
+            "propagate": False,
+        },
     },
     "root": {"level": LOG_LEVEL, "handlers": ["console"]},
 }
+
+if DEBUG:
+    # RunServerPlus settings
+    # https://django-extensions.readthedocs.io/en/stable/runserver_plus.html
+    RUNSERVER_PLUS_PRINT_SQL_TRUNCATE = 1000
+    RUNSERVERPLUS_POLLER_RELOADER_TYPE = "stat"  # or 'watchdog' or 'auto'
+    RUNSERVER_PLUS_EXCLUDE_PATTERNS = [
+        "*.sqlite3",
+        "*.sqlite3-journal",
+        "#{BASE_DIR}/.local/*",
+        "#{BASE_DIR}/.git/*",
+        "**/.pytest_cache/*",
+        "**/__pycache__/*",
+    ]

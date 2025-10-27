@@ -3,7 +3,14 @@ URL configuration for afb project.
 
 """
 
-from afbcore.views import FoodRequestViewSet, authtoken, users
+from afbcore.views import (
+    BranchViewSet,
+    FoodRequestViewSet,
+    PetViewSet,
+    ProfileViewSet,
+    logout_view,
+    user_view,
+)
 from django.conf import settings
 from django.contrib import admin as afbcore_admin
 from django.urls import include, path
@@ -22,18 +29,20 @@ router = DefaultRouter()
 
 # e.g. /api/v1/requests/abcdef1234/
 router.register("requests", FoodRequestViewSet, basename="foodrequest")
-
+router.register("profiles", ProfileViewSet, basename="profile")
+router.register("branches", BranchViewSet, basename="branch")
+router.register("pets", PetViewSet, basename="pet")
 
 urlpatterns = [
     path("afbadmin/", afbcore_admin.site.urls, name="admin"),
     path(
         "api/<str:version>/register/",
-        users.RegisterUserAPIView.as_view(),
+        user_view.RegisterUserAPIView.as_view(),
         name="registration",
     ),
     path(
         "api/<str:version>/current_user/",
-        users.CurrentUserAPIView.as_view(),
+        user_view.CurrentUserAPIView.as_view(),
         name="current_user",
     ),
     path("api/<str:version>/", include(router.urls)),
@@ -45,7 +54,7 @@ urlpatterns = [
     ),
     path(
         "api/<str:version>/authtoken/logout/",
-        authtoken.LogoutView.as_view(),
+        logout_view.LogoutView.as_view(),
         name="api_token_logout",
     ),
     path(

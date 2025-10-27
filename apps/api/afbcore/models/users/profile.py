@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 from ..base import BaseAbstractModel
-from ..mixins import HasDetails
+from ..mixins import HasDetailsMixin
 
 # Profile depends on User and not the other way around
 from .user import User  # noqa: F401
@@ -34,15 +34,16 @@ ROLE_CHOICES = [
 ]
 
 
-class Profile(HasDetails, BaseAbstractModel):
+class Profile(HasDetailsMixin, BaseAbstractModel):
     """
     A model representing a user profile.
 
     Fields:
     - id: UUIDField, primary key
     - user: ForeignKey to User model
+    - pets: ManyToManyField to Pet model
+    - branch: ForeignKey to Branch model
     - role: OneToOneField to Role model
-    - branches: ManyToManyField to Branch model
     - preferred_name: CharField, max length 64
     - email: EmailField, unique
     - phone_number: PhoneNumberField, max length 20, region US
@@ -60,13 +61,26 @@ class Profile(HasDetails, BaseAbstractModel):
 
     """
 
+    class Meta:
+        # Order by oldest to newest by default so that the first
+        # profile created is always the "main" profile.
+        ordering = ["created"]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="profiles"
     )
 
     # Usually just one, but can be multiple
-    branches = models.ManyToManyField("Branch", **MANY_TO_MANY_DEFAULTS)
+    branch = models.ForeignKey(
+        "Branch",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="profiles",
+    )
+
+    # pets = models.ManyToManyField("Pet")
 
     # Name fields
     preferred_name = models.CharField(max_length=64, null=True)
@@ -86,6 +100,15 @@ class Profile(HasDetails, BaseAbstractModel):
     # i.e. An address from Canada Post or Google Maps
     address = models.CharField(max_length=255, blank=True, null=True)
 
+    # An open-ended field for additional address details if needed
+    address_details = models.JSONField(default=dict)
+
+    # Used to store the google places `PlaceResult` object.
+    #
+    # e.g. { 'place': { 'place_id': 'ChIJd8BlQ2BZwokRAFUEcm_qrcA', 'formatted_address': '123 Main St, Winnipeg, MB R3C 1A5, Canada', 'geometry': { 'location': { 'lat': 49.895077, 'lng': -97.138451 }, 'viewport': { 'northeast': { 'lat': 49.89642582989272, 'lng': -97.13710217010728 }, 'southwest': { 'lat': 49.89372617010728, 'lng': -97.13980182989273 } } }, 'name': '123 Main St', 'types': [ 'street_address' ] }
+    #
+    ext_address_details = models.JSONField(default=dict)
+
     role = models.CharField(
         _("role"),
         choices=ROLE_CHOICES,
@@ -99,7 +122,9 @@ class Profile(HasDetails, BaseAbstractModel):
 
     # Postal/Zip Codes/Cities will deliver to
     # We will use this to notify them of available deliveries in their "regions"
-    delivery_regions = models.ManyToManyField("DeliveryRegion")
+    delivery_regions = models.ManyToManyField(
+        "DeliveryRegion", related_name="delivery_regions"
+    )
 
     #
     # Via Client
@@ -127,4 +152,4 @@ class Profile(HasDetails, BaseAbstractModel):
     )
 
     def __str__(self):
-        return f"{self.preferred_name}"
+        return self.preferred_name or f"{self.user}/{self.id}"

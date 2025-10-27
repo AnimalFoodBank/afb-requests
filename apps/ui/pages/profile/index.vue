@@ -5,45 +5,34 @@ const description = 'Update your delivery information.'
 const icon = 'i-heroicons-home'
 const cta = true
 
-useHead({
-  title: 'New Food Request',
-})
-
 definePageMeta({
   layout: 'dashboard',
 })
 
 
-/**
- * Retrieves the authentication status, data, and token using the useAuth() function.
- *
- * @returns {{
- *   status: string,
- *   data: any,
- *   token: string
- * }} The authentication status, data, and token.
-*/
 const {
-  status: authStatus,
-  data: authData,
-  token: authToken,
-} = useAuth();
+  userInfo,
+  profileInfo,
+} = useProfile();
 
+console.log('profileInfo', profileInfo)
 
-const isDeleteAccountModalOpen = ref(false)
-const state = reactive({
-  name: authData?.name || 'Delbo Baggins',
-  branch_selection: 'Medicine Hat',
-  email: authData?.email || 'delbo@solutious.com',
-  phone: '123-456-7890',
-  address: '1234 Southview Drive SE, Medicine Hat, AB, Canada',
-})
+//const isDeleteAccountModalOpen = ref(false)
+const state = ref({})
 
 onMounted(() => {
   console.log('profile/index.vue onMounted')
 
-  console.log('authData', authData)
-  // state.value.email = authData?.email || 'delbo2@solutious.com'
+  state.value = {
+    profile_id: profileInfo?.id,
+    user_id: userInfo.id,
+    branch_selection: profileInfo?.branch, //|| '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
+    name: profileInfo.preferred_name || userInfo.name,
+    email: userInfo.email,
+    phone_number: profileInfo?.phone_number,
+    address: profileInfo?.address,
+    ext_address_details: profileInfo?.ext_address_details,
+  }
 })
 
 </script>
@@ -55,12 +44,14 @@ onMounted(() => {
 
     <UDivider class="mb-16" />
 
-    <UDashboardSection title="Account Changes" description="These actions are not reversible." class="">
+    <!--<UDashboardSection title="Account Changes" description="These actions are not reversible." class="">
       <div>
         <UButton color="red" label="Delete account" size="md" @click="isDeleteAccountModalOpen = true" />
       </div>
-    </UDashboardSection>
+    </UDashboardSection>-->
 
   </UDashboardPanelContent>
-  <SettingsDeleteAccountModal v-model="isDeleteAccountModalOpen" />
+
+<!--<SettingsDeleteAccountModal v-model:visible="isDeleteAccountModalOpen" />-->
+
 </template>

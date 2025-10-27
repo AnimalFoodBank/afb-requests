@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 """
     To run this test, run the following command:
-    python manage.py test afbcore.tests.serializers.test_register_user_serializer
+    python manage.py test afbcore.tests.serializers.test_user_serializer
 """
 
 
@@ -16,7 +16,7 @@ class TestCase(APITestCase):
         cls.User = get_user_model()
         cls.valid_password = "xyz9.helloPLEASE"
 
-    def test_register_user_serializer_valid_data(self):
+    def test_user_serializer_valid_data(self):
         password_str = TestCase.valid_password
         data = {
             "name": "testuser",
@@ -39,7 +39,7 @@ class TestCase(APITestCase):
         self.assertEqual(user.name, data["name"])
         self.assertEqual(user.email, data["email"])
 
-    def test_register_user_serializer_invalid_email(self):
+    def test_user_serializer_invalid_email(self):
         data = {
             "name": "testuser",
             "email": "invalid_email",
@@ -49,7 +49,7 @@ class TestCase(APITestCase):
         self.assertFalse(serializer.is_valid())
         self.assertIn("email", serializer.errors)
 
-    def test_register_user_serializer_password_ignored(self):
+    def test_user_serializer_password_ignored(self):
         password_str = TestCase.valid_password
         data = {
             "name": "testuser",

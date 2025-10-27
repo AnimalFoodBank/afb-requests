@@ -6,11 +6,92 @@
 ## UI
 
 
+
+### Nuxt.js 3 (Vue 3)
+
+https://nuxtjs.org/docs/3.x/get-started/installation
+
+Nuxt.js is a framework for building server-side rendered (SSR) applications with Vue.js. It is a powerful tool for building SEO-friendly, fast, and scalable web applications. Nuxt.js 3 is the latest version of the framework and it is built on top of Vue 3.
+
+
+### Vueform
+
+
+https://vueform.com/docs/getting-started
+
+
+## API
+
 ### Django Rest Framework (DRF)
 
+[Django 5.1](https://docs.djangoproject.com/en/5.1/)
+
+https://www.django-rest-framework.org/
 
 
-### Mailpit
+### PostgreSQL 15
+
+[PostgreSQL 15](https://www.postgresql.org/docs/15/index.html)
+
+
+## Deployment
+
+
+### Gunicorn
+
+
+[Gunicorn Deployment docs](https://docs.gunicorn.org/en/latest/deploy.html)
+
+
+
+### Caddy Server
+
+https://caddyserver.com/docs/getting-started
+
+Caddy is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go. It is a production-ready server that is easy to use, configure, and extend.
+
+We use Caddy as a reverse proxy to serve the Django application and the Vue.js frontend. It also handles the automatic HTTPS certificate generation and renewal. Configuration is simple and straightforward. Here is an example of a Caddyfile:
+
+```caddy
+    example.com {
+        reverse_proxy
+        {
+            to localhost:8000
+        }
+    }
+```
+
+This configuration will automatically generate an HTTPS certificate for example.com and proxy all requests to the Django application running on port 8000.
+
+
+
+## Dev tools
+
+
+### Email Server (from cookiecutter-django)
+
+In development, it is often nice to be able to see emails that are being sent from your application. If you choose to use [Mailpit](https://github.com/axllent/mailpit) when generating the project a local SMTP server with a web interface will be available.
+
+1. [Download the latest Mailpit release](https://github.com/axllent/mailpit/releases) for your OS.
+
+2. Copy the binary file to the project root.
+
+3. Make it executable:
+
+```bash
+        $ chmod +x mailpit
+```
+
+4. Spin up another terminal window and start it there:
+
+```bash
+    ./mailpit
+```
+
+5. Check out http://127.0.0.1:8025/ to see how it goes.
+
+
+#### Mailpit
 
 Send emails from your Django application in development without sending them to real email addresses. Mailpit is a local SMTP server with a web interface that allows you to view emails sent from your application.
 
@@ -169,33 +250,6 @@ https://github.com/unfoldadmin/django-unfold#installation
 ```
 
 
-## Links nov 19
-
-https://httptoolkit.com/blog/how-to-debug-cors-errors/
-
-
-### Email Server (from cookiecutter-django)
-
-In development, it is often nice to be able to see emails that are being sent from your application. If you choose to use [Mailpit](https://github.com/axllent/mailpit) when generating the project a local SMTP server with a web interface will be available.
-
-1. [Download the latest Mailpit release](https://github.com/axllent/mailpit/releases) for your OS.
-
-2. Copy the binary file to the project root.
-
-3. Make it executable:
-
-```bash
-        $ chmod +x mailpit
-```
-
-4. Spin up another terminal window and start it there:
-
-```bash
-    ./mailpit
-```
-
-5. Check out http://127.0.0.1:8025/ to see how it goes.
-
 
 
 ### Django Unfold Admin
@@ -203,30 +257,3 @@ In development, it is often nice to be able to see emails that are being sent fr
 https://
 
 The Django Unfold Admin is a modern Django admin theme that uses the latest technologies. It is a drop-in replacement for Django's built-in admin interface.
-
-
-### Caddy Server
-
-https://caddyserver.com/docs/getting-started
-
-Caddy is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go. It is a production-ready server that is easy to use, configure, and extend.
-
-We use Caddy as a reverse proxy to serve the Django application and the Vue.js frontend. It also handles the automatic HTTPS certificate generation and renewal. Configuration is simple and straightforward. Here is an example of a Caddyfile:
-
-```caddy
-    example.com {
-        reverse_proxy
-        {
-            to localhost:8000
-        }
-    }
-```
-
-This configuration will automatically generate an HTTPS certificate for example.com and proxy all requests to the Django application running on port 8000.
-
-
-### Nuxt.js 3 (Vue 3)
-
-https://nuxtjs.org/docs/3.x/get-started/installation
-
-Nuxt.js is a framework for building server-side rendered (SSR) applications with Vue.js. It is a powerful tool for building SEO-friendly, fast, and scalable web applications. Nuxt.js 3 is the latest version of the framework and it is built on top of Vue 3.

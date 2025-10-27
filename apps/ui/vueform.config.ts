@@ -36,5 +36,10 @@ export default defineConfig({
     // builder,
     PluginMask,
   ],
+  addClasses: {
+    Vueform: {
+      form: 'afbcore-form',
+    },
+  },
   axios: httpClient,
 })

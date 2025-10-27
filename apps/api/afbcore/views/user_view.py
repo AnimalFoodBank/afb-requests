@@ -9,7 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 
-from ...serializers import UserSerializer
+from ..serializers import UserSerializer
 
 User = get_user_model()
 

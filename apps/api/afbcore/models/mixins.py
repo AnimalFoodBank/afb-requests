@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class HasDetails(models.Model):
+class HasDetailsMixin(models.Model):
     """
     A mixin for models that have a details field.
 

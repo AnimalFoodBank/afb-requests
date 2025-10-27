@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -15,6 +17,8 @@ from ..serializers import UserSerializer
 # valid and (currently) can be used N times until they expire.
 # See: PASSWORDLESS_TOKEN_EXPIRE_TIME in settings.py.
 
+logger = logging.getLogger(__name__)
+
 
 class LogoutView(GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -25,6 +29,10 @@ class LogoutView(GenericAPIView):
             request.user.auth_token.delete()
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
+            logger.error(
+                f"Error logging out user: {request.user.id} - {str(e)}"
+            )
             return Response(
-                data={"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST
+                data={"detail": "Server error"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
