@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from ..profile.profile_serializer import ProfileSerializer
+from .profile_serializer import ProfileSerializer
 
 logger = logging.getLogger(__name__)
 

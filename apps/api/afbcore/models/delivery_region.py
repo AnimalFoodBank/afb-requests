@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 
 from .base import BaseAbstractModel
-from .mixins import PhysicalLocationMixin
+from .mixins import HasDetailsMixin, PhysicalLocationMixin
 
 """
     Run these tests with the following command:
@@ -12,7 +12,7 @@ from .mixins import PhysicalLocationMixin
 """
 
 
-class DeliveryRegion(PhysicalLocationMixin, BaseAbstractModel):
+class DeliveryRegion(PhysicalLocationMixin, HasDetailsMixin, BaseAbstractModel):
     """
     Represents a delivery region with an address.
 
@@ -37,6 +37,11 @@ class DeliveryRegion(PhysicalLocationMixin, BaseAbstractModel):
         help_text="Name of the region (e.g. postal code, city, or area)",
     )
     description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        app_label = "afbcore"
+        verbose_name_plural = "Delivery Regions"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

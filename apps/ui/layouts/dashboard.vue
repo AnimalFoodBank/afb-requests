@@ -6,7 +6,7 @@ const { isHelpSlideoverOpen } = useDashboard()
 const links = [
   {
     id: 'home',
-    label: 'Home',
+    label: 'Portal Home',
     icon: 'i-heroicons-home',
     to: '/dashboard',
     tooltip: {
@@ -19,18 +19,18 @@ const links = [
     icon: 'i-ph-phone',
     defaultOpen: route.path.startsWith('/requests'),
     to: '/requests',
-    children: [
-      {
-        label: 'Request History',
-        to: '/requests',
-        exact: true
-      },
-      {
-        label: 'New Request',
-        to: '/requests/new',
-        exact: true
-      },
-    ],
+    //children: [
+    //  {
+    //    label: 'Request History',
+    //    to: '/requests',
+    //    exact: true
+    //  },
+    //  {
+    //    label: 'New Request',
+    //    to: '/requests/new',
+    //    exact: true
+    //  },
+    //],
 
     tooltip: {
       text: 'Your history of requests',
@@ -41,18 +41,18 @@ const links = [
     label: 'Profile',
     to: '/profile',
     icon: 'i-heroicons-user',
-    children: [
-      {
-        label: 'Address',
-        to: '/profile',
-        exact: true
-      },
-      {
-        label: 'Pets',
-        to: '/profile/pets',
-        exact: true
-      },
-    ],
+    //children: [
+    //  {
+    //    label: 'Address',
+    //    to: '/profile',
+    //    exact: true
+    //  },
+    //  {
+    //    label: 'Pets',
+    //    to: '/profile/pets',
+    //    exact: true
+    //  },
+    //],
     tooltip: {
       text: 'Your profile details',
     }

@@ -25,15 +25,21 @@ class TestProfileSerializerMeta:
         expected_fields = [
             "id",
             "user",
+            "branch",
             "preferred_name",
             "phone_number",
             "address_verbatim",
             "address",
+            "address_details",
+            "ext_address_details",
             "role",
+            "pets",
             "delivery_regions",
             "validated_postal_code",
             "country",
             "status",
+            "created",
+            "modified",
         ]
         fields = ProfileSerializer.Meta.fields
         assert set(fields) == set(
@@ -46,8 +52,10 @@ class TestProfileSerializerMeta:
             "user",
             "status",
             "country",
+            "pets",
             "role",
             "delivery_regions",
+            "created",
         ]
         read_only_fields = ProfileSerializer.Meta.read_only_fields
         assert set(read_only_fields) == set(
@@ -110,10 +118,11 @@ class TestProfileSerializerMeta:
                 "role": "client",
             }
             Profile.objects.create(**invalid_profile_data)
-        assert (
-            str(e.value)
-            == "NOT NULL constraint failed: afbcore_profile.user_id"
-        ), "Expected error message not raised"
+        # Check for database constraint error (works with both SQLite and PostgreSQL)
+        error_msg = str(e.value).lower()
+        assert "user_id" in error_msg and (
+            "null" in error_msg or "not null" in error_msg
+        ), f"Expected NOT NULL constraint error for user_id, got: {e.value}"
 
     # Meta class correctly maps to Profile model
     def test_meta_class_maps_to_profile_model(self):

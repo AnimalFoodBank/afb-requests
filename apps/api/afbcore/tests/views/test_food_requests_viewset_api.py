@@ -3,7 +3,7 @@ from afbcore.serializers import (
     FoodRequestCreateSerializer,
     FoodRequestUpdateSerializer,
 )
-from afbcore.views.requests import FoodRequestViewSet
+from afbcore.views.food_request_view import FoodRequestViewSet
 from django.test import RequestFactory
 from rest_framework.test import APIRequestFactory, APITestCase
 

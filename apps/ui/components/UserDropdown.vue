@@ -5,7 +5,7 @@ const { metaSymbol } = useShortcuts();
 
 const {
   status,
-  data: authData,
+  data: userInfo,
   token,
   lastRefreshedAt,
   getSession,
@@ -23,11 +23,11 @@ const items = computed(() => [
     },
   ],
   [
-    {
-      label: "Profile",
-      icon: "i-heroicons-user",
-      to: "/profile",
-    },
+    //{
+    //  label: "Profile",
+    //  icon: "i-heroicons-user",
+    //  to: "/profile",
+    //},
     {
       label: "Settings",
       icon: "i-heroicons-cog-8-tooth",
@@ -57,7 +57,7 @@ const items = computed(() => [
         color="gray"
         variant="ghost"
         class="w-full"
-        :label="authData?.name || 'AFB Client'"
+        :label="userInfo?.name || 'AFB Client'"
         :class="[open && 'bg-gray-50 dark:bg-gray-800']"
       >
         <template #leading>
@@ -74,7 +74,7 @@ const items = computed(() => [
       <div class="text-left">
         <p>Signed in as</p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
-          {{ authData?.email }}
+          {{ userInfo?.email }}
         </p>
       </div>
     </template>

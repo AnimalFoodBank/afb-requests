@@ -15,24 +15,24 @@ const {
   profileInfo,
 } = useProfile();
 
-const isDeleteAccountModalOpen = ref(false)
+console.log('profileInfo', profileInfo)
+
+//const isDeleteAccountModalOpen = ref(false)
 const state = ref({})
 
 onMounted(() => {
   console.log('profile/index.vue onMounted')
 
   state.value = {
-    branch_selection: profileInfo?.branch_selection || 'Medicine Hat',
-    name: userInfo.name,
+    profile_id: profileInfo?.id,
+    user_id: userInfo.id,
+    branch_selection: profileInfo?.branch, //|| '5c3549e0-a728-4510-a64a-69bcd26d52d5', // Osoyoos
+    name: profileInfo.preferred_name || userInfo.name,
     email: userInfo.email,
     phone_number: profileInfo?.phone_number,
-    address: profileInfo?.address || '1234 Southview Drive SE',
-    city: profileInfo?.city || 'Medicine Hat',
-    state: profileInfo?.state || 'AB',
-    zip: profileInfo?.zip || 'T1A 8E1',
+    address: profileInfo?.address,
+    ext_address_details: profileInfo?.ext_address_details,
   }
-
-  console.log('state', state.value)
 })
 
 </script>
@@ -44,13 +44,14 @@ onMounted(() => {
 
     <UDivider class="mb-16" />
 
-    <UDashboardSection title="Account Changes" description="These actions are not reversible." class="">
+    <!--<UDashboardSection title="Account Changes" description="These actions are not reversible." class="">
       <div>
         <UButton color="red" label="Delete account" size="md" @click="isDeleteAccountModalOpen = true" />
       </div>
-    </UDashboardSection>
+    </UDashboardSection>-->
 
   </UDashboardPanelContent>
 
-  <SettingsDeleteAccountModal v-model="isDeleteAccountModalOpen" />
+<!--<SettingsDeleteAccountModal v-model:visible="isDeleteAccountModalOpen" />-->
+
 </template>

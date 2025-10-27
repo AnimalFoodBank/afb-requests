@@ -37,19 +37,18 @@ class ProfileModelTest(TestCase):
             validated_postal_code="12345",
             country="USA",
             status="active",
+            branch=cls.Branch,
         )
 
-        cls.profile.branches.add(cls.Branch)
         cls.profile.delivery_regions.add(cls.DeliveryRegion)
 
     def test_profile_user_relation(self):
         profile = Profile.objects.get(id=self.profile.id)
         self.assertEqual(profile.user, self.user)
 
-    def test_profile_branches_relation(self):
+    def test_profile_branch_relation(self):
         profile = Profile.objects.get(id=self.profile.id)
-        self.assertEqual(profile.branches.count(), 1)
-        self.assertEqual(profile.branches.first(), self.Branch)
+        self.assertEqual(profile.branch, self.Branch)
 
     def test_profile_delivery_regions_relation(self):
         profile = Profile.objects.get(id=self.profile.id)
