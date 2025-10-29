@@ -50,7 +50,7 @@
     "date-fns": "^3.6.0",
     "lodash": "^4.17.21",
     "next": "^14.2.32",
-    "next-auth": "~4.24.7",
+    "next-auth": "~4.24.12",
     "nitro": "^0.0.0",
     "nouislider": "^15.8.1",
     "nuxt-og-image": "3.0.0-rc.43",
